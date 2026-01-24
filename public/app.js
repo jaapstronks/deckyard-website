@@ -1,4 +1,4 @@
-const LS_LANG_KEY = 'dreamslides.lang.ui';
+const LS_LANG_KEY = 'deckyard.lang.ui';
 
 function $(sel, root = document) {
   return root.querySelector(sel);
