@@ -4,7 +4,7 @@ import starlight from '@astrojs/starlight';
 export default defineConfig({
   integrations: [
     starlight({
-      title: 'DreamSlides',
+      title: 'Deckyard',
       description: 'Open source, self-hosted presentation system.',
       sidebar: [
         {
