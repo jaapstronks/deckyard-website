@@ -1,0 +1,204 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { locales, defaultLocale, useTranslations, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(l => l !== defaultLocale).map(locale => ({
+      params: { locale }
+    }))
+  ];
+}
+
+const locale = (Astro.params.locale || defaultLocale) as Locale;
+const t = useTranslations(locale);
+
+function getLocalePath(path: string): string {
+  if (locale === defaultLocale) {
+    return path;
+  }
+  return `/${locale}${path}`;
+}
+---
+
+<BaseLayout
+  title={t('compareClaper.meta.title')}
+  description={t('compareClaper.meta.description')}
+  locale={locale}
+>
+  <section class="hero hero-compact">
+    <div class="container">
+      <p class="eyebrow"><a href={getLocalePath('/')}>{t('nav.backToHome')}</a></p>
+      <h1>{t('compareClaper.hero.title')}</h1>
+      <p class="lead">{t('compareClaper.hero.lead')}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('compareClaper.comparison.title')}</h2>
+
+      <div class="comparison-table-wrap">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Deckyard</th>
+              <th>Claper</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{t('compareClaper.comparison.license')}</td>
+              <td class="yes">MIT</td>
+              <td class="partial">GPLv3</td>
+            </tr>
+            <tr>
+              <td>{t('compareClaper.comparison.slideEditor')}</td>
+              <td class="yes">✓ 44 slide types</td>
+              <td class="no">✗ None (overlay only)</td>
+            </tr>
+            <tr>
+              <td>{t('compareClaper.comparison.aiGeneration')}</td>
+              <td class="yes">✓ BYO API keys</td>
+              <td class="no">✗ None</td>
+            </tr>
+            <tr>
+              <td>{t('compareClaper.comparison.livePolls')}</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+            </tr>
+            <tr>
+              <td>{t('compareClaper.comparison.qna')}</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+            </tr>
+            <tr>
+              <td>{t('compareClaper.comparison.wordClouds')}</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+            </tr>
+            <tr>
+              <td>{t('compareClaper.comparison.selfHosting')}</td>
+              <td class="yes">✓ Docker</td>
+              <td class="yes">✓ Docker</td>
+            </tr>
+            <tr>
+              <td>{t('compareClaper.comparison.pdfImport')}</td>
+              <td class="yes">✓ With AI extraction</td>
+              <td class="yes">✓ Basic overlay</td>
+            </tr>
+            <tr>
+              <td>{t('compareClaper.comparison.managedCloud')}</td>
+              <td class="yes">✓ EU-hosted</td>
+              <td class="yes">✓</td>
+            </tr>
+            <tr>
+              <td>{t('compareClaper.comparison.exportFormats')}</td>
+              <td class="yes">PDF, PPTX, HTML, JSON</td>
+              <td class="partial">PDF only</td>
+            </tr>
+            <tr>
+              <td>{t('compareClaper.comparison.commercialUse')}</td>
+              <td class="yes">Unrestricted (MIT)</td>
+              <td class="partial">Copyleft required</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>{t('compareClaper.chooseDeckyard.title')}</h2>
+      <p class="section-lead">{t('compareClaper.chooseDeckyard.lead')}</p>
+
+      <div class="reasons">
+        <article class="reason">
+          <h3>{t('compareClaper.chooseDeckyard.fullEditor.title')}</h3>
+          <p>{t('compareClaper.chooseDeckyard.fullEditor.description')}</p>
+        </article>
+
+        <article class="reason">
+          <h3>{t('compareClaper.chooseDeckyard.mitLicense.title')}</h3>
+          <p>{t('compareClaper.chooseDeckyard.mitLicense.description')}</p>
+        </article>
+
+        <article class="reason">
+          <h3>{t('compareClaper.chooseDeckyard.aiFeatures.title')}</h3>
+          <p>{t('compareClaper.chooseDeckyard.aiFeatures.description')}</p>
+        </article>
+
+        <article class="reason">
+          <h3>{t('compareClaper.chooseDeckyard.exportOptions.title')}</h3>
+          <p>{t('compareClaper.chooseDeckyard.exportOptions.description')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section content-section">
+    <div class="container">
+      <h2>{t('compareClaper.chooseClaper.title')}</h2>
+      <p>{t('compareClaper.chooseClaper.lead')}</p>
+      <ul class="bullets">
+        <li><strong>{t('compareClaper.chooseClaper.overlayOnly')}</strong></li>
+        <li><strong>{t('compareClaper.chooseClaper.gpl')}</strong></li>
+        <li><strong>{t('compareClaper.chooseClaper.elixir')}</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-alt content-section">
+    <div class="container">
+      <h2>{t('compareClaper.licenseComparison.title')}</h2>
+      <p class="section-lead">{t('compareClaper.licenseComparison.lead')}</p>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>MIT (Deckyard)</th>
+              <th>GPLv3 (Claper)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{t('compareClaper.licenseComparison.commercial')}</td>
+              <td class="yes">{t('compareClaper.licenseComparison.unrestricted')}</td>
+              <td class="partial">{t('compareClaper.licenseComparison.mustShareChanges')}</td>
+            </tr>
+            <tr>
+              <td>{t('compareClaper.licenseComparison.modifications')}</td>
+              <td class="yes">{t('compareClaper.licenseComparison.canKeepPrivate')}</td>
+              <td class="partial">{t('compareClaper.licenseComparison.mustOpenSource')}</td>
+            </tr>
+            <tr>
+              <td>{t('compareClaper.licenseComparison.enterpriseFriendly')}</td>
+              <td class="yes">{t('compareClaper.licenseComparison.yes')}</td>
+              <td class="partial">{t('compareClaper.licenseComparison.legalReview')}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <h2>{t('compareClaper.cta.title')}</h2>
+      <p class="section-lead">{t('compareClaper.cta.lead')}</p>
+      <div class="cta-row cta-center">
+        <a class="btn btn-primary btn-lg" href="https://sandbox.deckyard.eu">
+          {t('compareClaper.cta.trySandbox')}
+        </a>
+        <a class="btn btn-secondary btn-lg" href="https://github.com/deckyard/deckyard" target="_blank" rel="noreferrer">
+          {t('compareClaper.cta.viewOnGithub')}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { locales, defaultLocale, useTranslations, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(l => l !== defaultLocale).map(locale => ({
+      params: { locale }
+    }))
+  ];
+}
+
+const locale = (Astro.params.locale || defaultLocale) as Locale;
+const t = useTranslations(locale);
+
+function getLocalePath(path: string): string {
+  if (locale === defaultLocale) {
+    return path;
+  }
+  return `/${locale}${path}`;
+}
+---
+
+<BaseLayout
+  title={t('euPrivacy.meta.title')}
+  description={t('euPrivacy.meta.description')}
+  locale={locale}
+>
+  <section class="hero hero-compact">
+    <div class="container">
+      <p class="eyebrow"><a href={getLocalePath('/')}>{t('nav.backToHome')}</a></p>
+      <h1>{t('euPrivacy.hero.title')}</h1>
+      <p class="lead">{t('euPrivacy.hero.lead')}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-map-pin"></use></svg></div>
+          <h3>{t('euPrivacy.features.hostedInFrance.title')}</h3>
+          <p>{t('euPrivacy.features.hostedInFrance.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-shield-check"></use></svg></div>
+          <h3>{t('euPrivacy.features.gdprCompliant.title')}</h3>
+          <p>{t('euPrivacy.features.gdprCompliant.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-eye-slash"></use></svg></div>
+          <h3>{t('euPrivacy.features.noTracking.title')}</h3>
+          <p>{t('euPrivacy.features.noTracking.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-lock"></use></svg></div>
+          <h3>{t('euPrivacy.features.yourKeys.title')}</h3>
+          <p>{t('euPrivacy.features.yourKeys.description')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt content-section">
+    <div class="container">
+      <h2>{t('euPrivacy.dataProcessing.title')}</h2>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{t('euPrivacy.dataProcessing.whatWeStore')}</th>
+              <th>{t('euPrivacy.dataProcessing.where')}</th>
+              <th>{t('euPrivacy.dataProcessing.retention')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{t('euPrivacy.dataProcessing.presentationContent')}</td>
+              <td>{t('euPrivacy.dataProcessing.scalewayFrance')}</td>
+              <td>{t('euPrivacy.dataProcessing.untilYouDelete')}</td>
+            </tr>
+            <tr>
+              <td>{t('euPrivacy.dataProcessing.audienceResponses')}</td>
+              <td>{t('euPrivacy.dataProcessing.scalewayFrance')}</td>
+              <td>{t('euPrivacy.dataProcessing.untilDeletePresentation')}</td>
+            </tr>
+            <tr>
+              <td>{t('euPrivacy.dataProcessing.accountData')}</td>
+              <td>{t('euPrivacy.dataProcessing.scalewayFrance')}</td>
+              <td>{t('euPrivacy.dataProcessing.untilAccountDeletion')}</td>
+            </tr>
+            <tr>
+              <td>{t('euPrivacy.dataProcessing.apiKeys')}</td>
+              <td>{t('euPrivacy.dataProcessing.scalewayFrance')}</td>
+              <td>{t('euPrivacy.dataProcessing.untilYouRemove')}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>{t('euPrivacy.dataProcessing.whatWeDontStore')}</h3>
+      <ul class="bullets">
+        <li>{t('euPrivacy.dataProcessing.noIpAddresses')}</li>
+        <li>{t('euPrivacy.dataProcessing.noAiPrompts')}</li>
+        <li>{t('euPrivacy.dataProcessing.noAnalytics')}</li>
+        <li>{t('euPrivacy.dataProcessing.noCookies')}</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section content-section">
+    <div class="container">
+      <h2>{t('euPrivacy.selfHosting.title')}</h2>
+      <p>{t('euPrivacy.selfHosting.lead')}</p>
+
+      <ul class="bullets">
+        <li><strong>{t('euPrivacy.selfHosting.airGapped')}</strong></li>
+        <li><strong>{t('euPrivacy.selfHosting.onPremise')}</strong></li>
+        <li><strong>{t('euPrivacy.selfHosting.internalAi')}</strong></li>
+        <li><strong>{t('euPrivacy.selfHosting.audit')}</strong></li>
+      </ul>
+
+      <p>
+        <a class="btn btn-secondary" href={getLocalePath('/self-hosting')}>{t('euPrivacy.selfHosting.cta')}</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>{t('euPrivacy.faq.title')}</h2>
+
+      <div class="faq">
+        <details class="faq-item">
+          <summary class="faq-question">{t('euPrivacy.faq.dpa.question')}</summary>
+          <p class="faq-answer">{t('euPrivacy.faq.dpa.answer')}</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">{t('euPrivacy.faq.cloudAct.question')}</summary>
+          <p class="faq-answer">{t('euPrivacy.faq.cloudAct.answer')}</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">{t('euPrivacy.faq.audienceData.question')}</summary>
+          <p class="faq-answer">{t('euPrivacy.faq.audienceData.answer')}</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">{t('euPrivacy.faq.aiGdpr.question')}</summary>
+          <p class="faq-answer">{t('euPrivacy.faq.aiGdpr.answer')}</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">{t('euPrivacy.faq.exportData.question')}</summary>
+          <p class="faq-answer">{t('euPrivacy.faq.exportData.answer')}</p>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">{t('euPrivacy.faq.deleteAccount.question')}</summary>
+          <p class="faq-answer">{t('euPrivacy.faq.deleteAccount.answer')}</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <h2>{t('euPrivacy.cta.title')}</h2>
+      <p class="section-lead">{t('euPrivacy.cta.lead')}</p>
+      <div class="cta-row cta-center">
+        <a class="btn btn-primary btn-lg" href="mailto:privacy@deckyard.eu">
+          {t('euPrivacy.cta.contactPrivacy')}
+        </a>
+        <a class="btn btn-secondary btn-lg" href={getLocalePath('/self-hosting')}>
+          {t('euPrivacy.cta.selfHostingGuide')}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

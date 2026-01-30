@@ -42,7 +42,7 @@ Variables:
 
 ### AI vendors (optional)
 
-- **LLM_VENDOR**: choose default when multiple are configured (`openai` / `claude` / `mistral` / `deepseek` / `openai-compat`)
+- **LLM_VENDOR**: choose default when multiple are configured (`openai` / `claude`)
 
 OpenAI:
 
@@ -58,18 +58,6 @@ Mistral:
 
 - **MISTRAL_API**
 - **MISTRAL_MODEL**
-
-DeepSeek:
-
-- **DEEPSEEK_API**
-- **DEEPSEEK_MODEL** (default: `deepseek-chat`)
-
-OpenAI-compatible endpoint (Ollama, Together AI, Fireworks, Groq, vLLM, etc.):
-
-- **OPENAI_COMPAT_ENDPOINT**: full chat completions URL (e.g. `http://localhost:11434/v1/chat/completions`)
-- **OPENAI_COMPAT_MODEL**: model identifier (required)
-- **OPENAI_COMPAT_API**: API key (optional — not needed for local servers like Ollama)
-- **OPENAI_COMPAT_LABEL**: display name in the UI (optional, default: `Custom LLM`)
 
 ### Notion (optional)
 

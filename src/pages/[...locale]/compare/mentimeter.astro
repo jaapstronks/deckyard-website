@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { locales, defaultLocale, useTranslations, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(l => l !== defaultLocale).map(locale => ({
+      params: { locale }
+    }))
+  ];
+}
+
+const locale = (Astro.params.locale || defaultLocale) as Locale;
+const t = useTranslations(locale);
+
+function getLocalePath(path: string): string {
+  if (locale === defaultLocale) {
+    return path;
+  }
+  return `/${locale}${path}`;
+}
+---
+
+<BaseLayout
+  title={t('compareMentimeter.meta.title')}
+  description={t('compareMentimeter.meta.description')}
+  locale={locale}
+>
+  <section class="hero hero-compact">
+    <div class="container">
+      <p class="eyebrow"><a href={getLocalePath('/')}>{t('nav.backToHome')}</a></p>
+      <h1>{t('compareMentimeter.hero.title')}</h1>
+      <p class="lead">{t('compareMentimeter.hero.lead')}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('compareMentimeter.comparison.title')}</h2>
+
+      <div class="comparison-table-wrap">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Deckyard</th>
+              <th>Mentimeter</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{t('compareMentimeter.comparison.openSource')}</td>
+              <td class="yes">✓ MIT license</td>
+              <td class="no">✗ Proprietary</td>
+            </tr>
+            <tr>
+              <td>{t('compareMentimeter.comparison.selfHosting')}</td>
+              <td class="yes">✓ Docker deploy</td>
+              <td class="no">✗ Cloud only</td>
+            </tr>
+            <tr>
+              <td>{t('compareMentimeter.comparison.fullSlideEditor')}</td>
+              <td class="yes">✓ 44 slide types</td>
+              <td class="partial">Limited templates</td>
+            </tr>
+            <tr>
+              <td>{t('compareMentimeter.comparison.livePolls')}</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+            </tr>
+            <tr>
+              <td>{t('compareMentimeter.comparison.wordClouds')}</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+            </tr>
+            <tr>
+              <td>{t('compareMentimeter.comparison.qna')}</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+            </tr>
+            <tr>
+              <td>{t('compareMentimeter.comparison.quizzes')}</td>
+              <td class="yes">✓</td>
+              <td class="yes">✓</td>
+            </tr>
+            <tr>
+              <td>{t('compareMentimeter.comparison.aiGeneration')}</td>
+              <td class="yes">✓ BYO API keys</td>
+              <td class="yes">✓ Built-in (paid)</td>
+            </tr>
+            <tr>
+              <td>{t('compareMentimeter.comparison.euHosting')}</td>
+              <td class="yes">✓ France</td>
+              <td class="partial">Stockholm (US company)</td>
+            </tr>
+            <tr>
+              <td>{t('compareMentimeter.comparison.pricingModel')}</td>
+              <td class="yes">Free / flat rate</td>
+              <td class="no">Per-seat ($11.99+/mo)</td>
+            </tr>
+            <tr>
+              <td>{t('compareMentimeter.comparison.audienceLimit')}</td>
+              <td class="yes">Unlimited</td>
+              <td class="no">50 (free) / varies</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>{t('compareMentimeter.reasons.title')}</h2>
+
+      <div class="reasons">
+        <article class="reason">
+          <h3>{t('compareMentimeter.reasons.pricing.title')}</h3>
+          <p>{t('compareMentimeter.reasons.pricing.description')}</p>
+        </article>
+
+        <article class="reason">
+          <h3>{t('compareMentimeter.reasons.fullEditor.title')}</h3>
+          <p>{t('compareMentimeter.reasons.fullEditor.description')}</p>
+        </article>
+
+        <article class="reason">
+          <h3>{t('compareMentimeter.reasons.dataSovereignty.title')}</h3>
+          <p>{t('compareMentimeter.reasons.dataSovereignty.description')}</p>
+        </article>
+
+        <article class="reason">
+          <h3>{t('compareMentimeter.reasons.byoAi.title')}</h3>
+          <p>{t('compareMentimeter.reasons.byoAi.description')}</p>
+        </article>
+
+        <article class="reason">
+          <h3>{t('compareMentimeter.reasons.openSource.title')}</h3>
+          <p>{t('compareMentimeter.reasons.openSource.description')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section content-section">
+    <div class="container">
+      <h2>{t('compareMentimeter.whenMentimeter.title')}</h2>
+      <p>{t('compareMentimeter.whenMentimeter.lead')}</p>
+      <ul class="bullets">
+        <li><strong>{t('compareMentimeter.whenMentimeter.turnkey')}</strong></li>
+        <li><strong>{t('compareMentimeter.whenMentimeter.soloPresenter')}</strong></li>
+        <li><strong>{t('compareMentimeter.whenMentimeter.integrations')}</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-alt content-section">
+    <div class="container">
+      <h2>{t('compareMentimeter.migration.title')}</h2>
+      <p>{t('compareMentimeter.migration.lead')}</p>
+
+      <ol class="numbered-list">
+        <li><strong>{t('compareMentimeter.migration.step1')}</strong></li>
+        <li><strong>{t('compareMentimeter.migration.step2')}</strong></li>
+        <li><strong>{t('compareMentimeter.migration.step3')}</strong></li>
+        <li><strong>{t('compareMentimeter.migration.step4')}</strong></li>
+      </ol>
+
+      <p>{t('compareMentimeter.migration.needHelp')} <a href="mailto:hello@deckyard.eu">{t('compareMentimeter.migration.contactUs')}</a> for migration support.</p>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <h2>{t('compareMentimeter.cta.title')}</h2>
+      <p class="section-lead">{t('compareMentimeter.cta.lead')}</p>
+      <div class="cta-row cta-center">
+        <a class="btn btn-primary btn-lg" href="https://sandbox.deckyard.eu">
+          {t('compareMentimeter.cta.trySandbox')}
+        </a>
+        <a class="btn btn-secondary btn-lg" href={getLocalePath('/self-hosting')}>
+          {t('compareMentimeter.cta.selfHostingGuide')}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

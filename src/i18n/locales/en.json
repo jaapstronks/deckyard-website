@@ -12,6 +12,7 @@
     "euPrivacy": "EU & Privacy",
     "docs": "Docs",
     "selfHost": "Self-host",
+    "github": "GitHub",
     "trySandbox": "Try sandbox",
     "menu": "Menu",
     "closeMenu": "Close menu",
@@ -38,7 +39,7 @@
     "github": "GitHub",
     "discussions": "Discussions",
     "issues": "Issues",
-    "tagline": "Open source presentations with live interaction.",
+    "tagline": "Open-source presentation platform. Self-hostable.",
     "mitLicensed": "MIT licensed. Made in Europe."
   },
   "languagePicker": {
@@ -47,15 +48,16 @@
   },
   "home": {
     "meta": {
-      "title": "Deckyard — The presentation platform that respects your data",
-      "description": "EU-hosted, GDPR-native, self-hostable presentation platform. 44 slide types, built-in polls and Q&A, AI generation with your own keys. MIT licensed and open source."
+      "title": "Deckyard — Modern presentations, zero lock-in",
+      "description": "Turn-key presentation platform with 44 slide types, AI generation, and real-time collaboration. Open source, open API, portable formats. Self-host for free or use our EU cloud. MIT licensed."
     },
     "hero": {
-      "eyebrow": "EU-hosted · GDPR-native · Self-hostable · Open Source",
-      "title": "The presentation platform that respects your data",
-      "lead": "EU-hosted, GDPR-compliant by design, and fully self-hostable. Create professional presentations with 44 slide types, built-in polls and Q&A, and AI generation using your own API keys.",
-      "trySandbox": "Try sandbox",
+      "eyebrow": "Open Source · 44 Slide Types · AI Generation · Self-hostable",
+      "title": "Modern presentations, zero lock-in",
+      "lead": "A turn-key platform with 44 slide types, AI generation, and real-time collaboration. Built on open standards and portable formats, so you're never locked in. Self-host for free or let us run it for you.",
+      "trySandbox": "Try the sandbox",
       "selfHostFree": "Self-host free",
+      "viewOnGithub": "View on GitHub",
       "badges": {
         "hostedInFrance": "Hosted in France",
         "gdprNative": "GDPR-native",
@@ -68,7 +70,7 @@
     },
     "features": {
       "title": "Everything you need to create professional presentations",
-      "lead": "Deckyard isn't a toy—it's a complete presentation platform with 44 slide types covering everything from data visualizations to process diagrams to image galleries.",
+      "lead": "44 slide types covering data visualizations, process diagrams, image galleries, and much more. Ready for your next presentation.",
       "data": {
         "title": "Data & Visualizations",
         "description": "Charts, KPIs, tables, funnels, pyramids, SWOT matrices. Present your numbers with clarity."
@@ -84,6 +86,10 @@
       "export": {
         "title": "Import & Export",
         "description": "Import from Markdown, PowerPoint, Notion, or JSON. Export to PDF, PPTX, HTML, images, or JSON. Your content, your format."
+      },
+      "interaction": {
+        "title": "Audience Interaction",
+        "description": "Live polls, Q&A, Likert scales, and feedback forms built into your slides. Engage your audience in real-time."
       }
     },
     "interaction": {
@@ -133,12 +139,54 @@
         "disableAi": "Or disable AI entirely"
       }
     },
+    "portability": {
+      "title": "Publish, share, translate",
+      "lead": "Open formats, any language, any platform. Your presentations go wherever you need them.",
+      "publish": {
+        "title": "Publish & embed",
+        "description": "Share via link, embed with the SDK, auto-generate OpenGraph previews."
+      },
+      "i18n": {
+        "title": "Built-in translation",
+        "description": "12 UI languages. AI-powered slide and deck translation to any language."
+      },
+      "formats": {
+        "title": "Portable by design",
+        "description": "Markdown in, JSON storage, PDF and PowerPoint out. Import from Notion, PowerPoint, or plain text."
+      },
+      "collaboration": {
+        "title": "Real-time collaboration",
+        "description": "Edit together, leave comments, track versions, manage sharing permissions."
+      }
+    },
+    "openPlatform": {
+      "title": "Open source and built to extend",
+      "lead": "MIT licensed, fully transparent, designed to integrate. Your presentations live in open formats, accessible through a full API, extensible with custom themes and slide types.",
+      "opensource": {
+        "title": "Fully open source",
+        "description": "Every line of code on GitHub. MIT licensed, no hidden modules, no source-available tricks. Fork it, extend it, audit it."
+      },
+      "api": {
+        "title": "REST API & MCP",
+        "description": "Programmatic access to everything. Automate workflows, build integrations, or let AI tools interact with your presentations via Model Context Protocol."
+      },
+      "community": {
+        "title": "Community-driven",
+        "description": "Report bugs, request features, contribute code. Development happens in the open — help shape the roadmap."
+      },
+      "themes": {
+        "title": "Custom themes & slide types",
+        "description": "Build your own themes, create custom slide types, extend the editor. Make it truly yours."
+      },
+      "viewOnGithub": "View on GitHub",
+      "apiDocs": "API docs →"
+    },
     "sovereignty": {
-      "title": "Your infrastructure, your rules",
-      "lead": "Run Deckyard on your own servers with Docker, or use our managed EU cloud. Either way, your data stays where you want it.",
+      "title": "Your infrastructure, or ours",
+      "lead": "Self-host on your own servers for free, or let us handle the infrastructure with our EU-managed cloud. Either way, your data stays where you decide.",
       "selfHost": {
         "title": "Self-host (always free)",
-        "docker": "Docker Compose setup in 5 minutes",
+        "docker": "Docker Compose setup in minutes",
         "fullControl": "Full control over data and infrastructure",
         "noDeps": "No external dependencies required",
         "scale": "Scale as needed, pay only for your servers",
@@ -148,37 +196,17 @@
         "title": "EU Managed Cloud",
         "scaleway": "Hosted on Scaleway (France)",
         "noUsTransfers": "No US data transfers",
-        "updates": "We handle updates and backups",
+        "updates": "We handle updates, backups, and scaling",
         "gdpr": "GDPR compliant by design",
-        "cta": "Learn about EU hosting →"
+        "cta": "View pricing →"
       }
     },
-    "opensource": {
-      "title": "Open source. No tricks.",
-      "lead": "Deckyard is MIT licensed. View the source, audit the code, fork it, extend it, self-host it forever. We believe the best way to earn your trust is to be completely transparent.",
-      "noLockin": {
-        "title": "No vendor lock-in",
-        "description": "Import from Markdown, export to JSON or PPTX. Your presentations are stored in open formats and never held hostage."
-      },
-      "inspect": {
-        "title": "Inspect everything",
-        "description": "Security-conscious? Read every line of code. We have nothing to hide."
-      },
-      "community": {
-        "title": "Community-driven",
-        "description": "Report bugs, request features, contribute code. Help shape the roadmap."
-      },
-      "enterprise": {
-        "title": "Enterprise-friendly",
-        "description": "MIT license means no legal headaches for your procurement team."
-      },
-      "viewOnGithub": "View on GitHub"
-    },
     "cta": {
-      "title": "Ready to own your presentations?",
-      "lead": "Try the sandbox with no signup, or deploy on your own infrastructure in minutes.",
+      "title": "Ready to build better presentations?",
+      "lead": "Try the sandbox with no signup, self-host for free, or let us run it for you.",
       "trySandbox": "Try the sandbox",
-      "readDocs": "Read the docs"
+      "readDocs": "Read the docs",
+      "viewOnGithub": "View on GitHub"
     }
   },
   "selfHosting": {

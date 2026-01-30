@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { locales, defaultLocale, useTranslations, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(l => l !== defaultLocale).map(locale => ({
+      params: { locale }
+    }))
+  ];
+}
+
+const locale = (Astro.params.locale || defaultLocale) as Locale;
+const t = useTranslations(locale);
+
+function getLocalePath(path: string): string {
+  if (locale === defaultLocale) {
+    return path;
+  }
+  return `/${locale}${path}`;
+}
+---
+
+<BaseLayout
+  title={t('caseStudies.meta.title')}
+  description={t('caseStudies.meta.description')}
+  locale={locale}
+>
+  <section class="hero hero-compact">
+    <div class="container">
+      <p class="eyebrow"><a href={getLocalePath('/')}>{t('nav.backToHome')}</a></p>
+      <h1>{t('caseStudies.hero.title')}</h1>
+      <p class="lead">{t('caseStudies.hero.lead')}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('caseStudies.featured.title')}</h2>
+      <p class="section-lead">{t('caseStudies.featured.lead')}</p>
+
+      <div class="case-studies-grid">
+        <article class="case-study-card case-study-placeholder">
+          <div class="case-study-content">
+            <span class="case-study-category">{t('caseStudies.categories.selfHosted')}</span>
+            <h3>{t('caseStudies.comingSoon.selfHosted.title')}</h3>
+            <p>{t('caseStudies.comingSoon.selfHosted.description')}</p>
+          </div>
+        </article>
+
+        <article class="case-study-card case-study-placeholder">
+          <div class="case-study-content">
+            <span class="case-study-category">{t('caseStudies.categories.education')}</span>
+            <h3>{t('caseStudies.comingSoon.education.title')}</h3>
+            <p>{t('caseStudies.comingSoon.education.description')}</p>
+          </div>
+        </article>
+
+        <article class="case-study-card case-study-placeholder">
+          <div class="case-study-content">
+            <span class="case-study-category">{t('caseStudies.categories.government')}</span>
+            <h3>{t('caseStudies.comingSoon.government.title')}</h3>
+            <p>{t('caseStudies.comingSoon.government.description')}</p>
+          </div>
+        </article>
+
+        <article class="case-study-card case-study-placeholder">
+          <div class="case-study-content">
+            <span class="case-study-category">{t('caseStudies.categories.nonprofit')}</span>
+            <h3>{t('caseStudies.comingSoon.nonprofit.title')}</h3>
+            <p>{t('caseStudies.comingSoon.nonprofit.description')}</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt content-section">
+    <div class="container">
+      <h2>{t('caseStudies.shareYourStory.title')}</h2>
+      <p class="section-lead">{t('caseStudies.shareYourStory.lead')}</p>
+
+      <p>{t('caseStudies.shareYourStory.paragraph1')}</p>
+
+      <ul class="bullets">
+        <li>{t('caseStudies.shareYourStory.benefit1')}</li>
+        <li>{t('caseStudies.shareYourStory.benefit2')}</li>
+        <li>{t('caseStudies.shareYourStory.benefit3')}</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <h2>{t('caseStudies.cta.title')}</h2>
+      <p class="section-lead">{t('caseStudies.cta.lead')}</p>
+      <div class="cta-row cta-center">
+        <a class="btn btn-primary btn-lg" href="mailto:hello@deckyard.eu">
+          {t('caseStudies.cta.shareStory')}
+        </a>
+        <a class="btn btn-secondary btn-lg" href="https://sandbox.deckyard.eu">
+          {t('caseStudies.cta.trySandbox')}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .case-studies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .case-study-card {
+    background: var(--gray-100);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .case-study-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .case-study-placeholder {
+    border: 2px dashed var(--gray-300);
+    background: var(--gray-50);
+  }
+
+  .case-study-content {
+    padding: 1.5rem;
+  }
+
+  .case-study-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--brand-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .case-study-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .case-study-card p {
+    color: var(--gray-600);
+    font-size: 0.95rem;
+  }
+</style>

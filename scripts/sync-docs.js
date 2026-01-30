@@ -6,10 +6,11 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const websiteRoot = path.resolve(__dirname, '..');
-const repoRoot = path.resolve(websiteRoot, '..');
 
-const srcDocsRoot = path.join(repoRoot, 'docs');
-const destDocsRoot = path.join(websiteRoot, 'src', 'content', 'docs');
+// Docs now live in this repo directly (moved from main deckyard repo)
+const srcDocsRoot = path.join(websiteRoot, 'docs');
+// Nested under docs/docs so Starlight serves at /docs/* paths
+const destDocsRoot = path.join(websiteRoot, 'src', 'content', 'docs', 'docs');
 
 async function rmDir(p) {
   try {
@@ -36,6 +37,8 @@ async function copyDir(src, dest) {
     if (!e.isFile()) continue;
     // Only copy markdown files; Starlight reads MD/MDX from content/docs.
     if (!e.name.toLowerCase().endsWith('.md')) continue;
+    // Skip README files - they're meta docs about the folder, not site content
+    if (e.name.toLowerCase() === 'readme.md') continue;
     await fs.copyFile(s, d);
   }
 }
@@ -71,48 +74,36 @@ async function injectFrontmatterIfMissing(relPath, title) {
 
 async function main() {
   // Start fresh to avoid stale removed files.
-  await rmDir(destDocsRoot);
+  // Clean the parent docs collection folder, not just the nested one
+  const docsCollectionRoot = path.join(websiteRoot, 'src', 'content', 'docs');
+  await rmDir(docsCollectionRoot);
   await ensureDir(destDocsRoot);
 
-  // Copy doc trees we intend to publish.
-  await copyDir(path.join(srcDocsRoot, 'product'), path.join(destDocsRoot, 'product'));
-  await copyDir(path.join(srcDocsRoot, 'developer'), path.join(destDocsRoot, 'developer'));
+  // Copy docs from ./docs/ to ./src/content/docs/
+  // User/product docs now live directly in this repo's docs/ folder
+  await copyDir(srcDocsRoot, destDocsRoot);
 
   // Starlight expects an index page at the docs root.
   await ensureIndexIfMissing(
     '',
     'Documentation',
     [
-      'Welcome!',
+      'Welcome to the Deckyard documentation!',
       '',
-      '- **Product docs**: see the sidebar under “Product”.',
-      '- **Developer docs**: see the sidebar under “Developer”.',
+      'Browse the sidebar to find guides on getting started, configuration, hosting, and integrations.',
+      '',
+      'For developer/contributor docs, see the [main repository](https://github.com/jaapstronks/deckyard/tree/main/docs/developer).',
       '',
     ].join('\n')
   );
 
-  // Provide nicer directory landing pages if they are missing.
-  await ensureIndexIfMissing(
-    'product',
-    'Product docs',
-    'Docs for self-hosting operators and app users.\n'
-  );
-  await ensureIndexIfMissing(
-    'developer',
-    'Developer docs',
-    'Docs for contributors and maintainers.\n'
-  );
-
   // Ensure key pages have titles without forcing you to change the source docs yet.
-  await injectFrontmatterIfMissing('product/getting-started.md', 'Getting started');
-  await injectFrontmatterIfMissing('product/configuration/environment.md', 'Environment (.env)');
-  await injectFrontmatterIfMissing('product/integrations/analytics.md', 'Analytics');
-  await injectFrontmatterIfMissing('product/integrations/webhooks.md', 'Webhooks');
-
-  await injectFrontmatterIfMissing('developer/dev-setup.md', 'Dev setup');
-  await injectFrontmatterIfMissing('developer/architecture.md', 'Architecture');
-  await injectFrontmatterIfMissing('developer/contributing.md', 'Contributing');
-  await injectFrontmatterIfMissing('developer/slide-types.md', 'Slide types');
+  await injectFrontmatterIfMissing('getting-started.md', 'Getting started');
+  await injectFrontmatterIfMissing('user-manual.md', 'User manual');
+  await injectFrontmatterIfMissing('configuration/environment.md', 'Environment (.env)');
+  await injectFrontmatterIfMissing('hosting/website-hosting.md', 'Website hosting');
+  await injectFrontmatterIfMissing('integrations/analytics.md', 'Analytics');
+  await injectFrontmatterIfMissing('integrations/webhooks.md', 'Webhooks');
 }
 
 main().catch((err) => {

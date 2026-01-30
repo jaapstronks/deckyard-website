@@ -1,53 +1,10 @@
-const LS_LANG_KEY = 'deckyard.lang.ui';
-
+// Utility functions
 function $(sel, root = document) {
   return root.querySelector(sel);
 }
 
 function $all(sel, root = document) {
   return Array.from(root.querySelectorAll(sel));
-}
-
-function setAriaPressed(btns, lang) {
-  for (const b of btns) {
-    const isActive = String(b.dataset.lang || '') === lang;
-    b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-  }
-}
-
-function readUiLang() {
-  try {
-    const v = localStorage.getItem(LS_LANG_KEY);
-    return v === 'nl' ? 'nl' : 'en';
-  } catch {
-    return 'en';
-  }
-}
-
-function writeUiLang(lang) {
-  try {
-    localStorage.setItem(LS_LANG_KEY, lang);
-  } catch {
-    // ignore
-  }
-}
-
-function initLanguageSwitchUiOnly() {
-  const btns = $all('[data-js="langBtn"]');
-  if (btns.length === 0) return;
-
-  // UI only: we persist a selected language so the toggle feels real,
-  // but we do not translate page content in v1.
-  const initial = readUiLang();
-  setAriaPressed(btns, initial);
-
-  for (const b of btns) {
-    b.addEventListener('click', () => {
-      const lang = String(b.dataset.lang || '') === 'nl' ? 'nl' : 'en';
-      writeUiLang(lang);
-      setAriaPressed(btns, lang);
-    });
-  }
 }
 
 function initMobileNav() {
@@ -191,7 +148,6 @@ function initHeroEmbed() {
   frame.setAttribute('src', src);
 }
 
-initLanguageSwitchUiOnly();
 initMobileNav();
 initExportChips();
 initExportAccordion();

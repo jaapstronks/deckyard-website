@@ -1,0 +1,303 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { locales, defaultLocale, useTranslations, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return [
+    // Default locale (English) at root
+    { params: { locale: undefined } },
+    // Other locales with prefix
+    ...locales.filter(l => l !== defaultLocale).map(locale => ({
+      params: { locale }
+    }))
+  ];
+}
+
+const locale = (Astro.params.locale || defaultLocale) as Locale;
+const t = useTranslations(locale);
+
+function getLocalePath(path: string): string {
+  if (locale === defaultLocale) {
+    return path;
+  }
+  return `/${locale}${path}`;
+}
+---
+
+<BaseLayout
+  title={t('home.meta.title')}
+  description={t('home.meta.description')}
+  locale={locale}
+>
+  <!-- HERO -->
+  <section id="top" class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow">{t('home.hero.eyebrow')}</p>
+        <h1>{t('home.hero.title')}</h1>
+        <p class="lead">{t('home.hero.lead')}</p>
+
+        <div class="cta-row">
+          <a class="btn btn-primary btn-lg" href="https://sandbox.deckyard.eu">
+            {t('home.hero.trySandbox')}
+          </a>
+          <a class="btn btn-secondary btn-lg" href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noreferrer">
+            {t('home.hero.viewOnGithub')}
+          </a>
+        </div>
+
+        <ul class="badge-row" aria-label="Highlights">
+          <li class="badge"><svg class="badge-icon" aria-hidden="true"><use href="#icon-map-pin"></use></svg> {t('home.hero.badges.hostedInFrance')}</li>
+          <li class="badge"><svg class="badge-icon" aria-hidden="true"><use href="#icon-lock"></use></svg> {t('home.hero.badges.gdprNative')}</li>
+          <li class="badge"><svg class="badge-icon" aria-hidden="true"><use href="#icon-house"></use></svg> {t('home.hero.badges.selfHostable')}</li>
+          <li class="badge"><svg class="badge-icon" aria-hidden="true"><use href="#icon-book-open"></use></svg> {t('home.hero.badges.mitLicensed')}</li>
+        </ul>
+      </div>
+
+      <div class="hero-proof" aria-label="Product preview">
+        <div class="embed-frame">
+          <div class="embed-aspect">
+            <img
+              src="/images/deckyard-editor-preview.png"
+              alt={t('home.hero.screenshotAlt')}
+              class="hero-screenshot"
+              loading="eager"
+            />
+          </div>
+        </div>
+        <p class="fineprint">
+          {t('home.hero.screenshotCaption')} <a href="https://sandbox.deckyard.eu" target="_blank" rel="noreferrer">{t('home.hero.tryItYourself')}</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SLIDE TOOLKIT -->
+  <section id="features" class="section section-alt">
+    <div class="container">
+      <h2>{t('home.features.title')}</h2>
+      <p class="section-lead">{t('home.features.lead')}</p>
+
+      <div class="grid cards">
+        <article class="card card-visual">
+          <div class="card-thumb">
+            <img src="/images/screenshots/chart-slide-editor.png" alt="Chart slide editor showing data visualization options" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-chart-bar"></use></svg></div>
+            <h3>{t('home.features.data.title')}</h3>
+            <p>{t('home.features.data.description')}</p>
+          </div>
+        </article>
+        <article class="card card-visual">
+          <div class="card-thumb">
+            <img src="/images/screenshots/slides-panel.png" alt="Slide panel showing presentation structure and layouts" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-file-text"></use></svg></div>
+            <h3>{t('home.features.layouts.title')}</h3>
+            <p>{t('home.features.layouts.description')}</p>
+          </div>
+        </article>
+        <article class="card card-visual">
+          <div class="card-thumb">
+            <img src="/images/screenshots/image-picker.png" alt="Media picker for images, videos, and embeds" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-globe"></use></svg></div>
+            <h3>{t('home.features.media.title')}</h3>
+            <p>{t('home.features.media.description')}</p>
+          </div>
+        </article>
+        <article class="card card-visual">
+          <div class="card-thumb">
+            <img src="/images/marketing/poll-slide-marketing.png" alt="Live poll slide showing real-time audience voting" loading="lazy" />
+          </div>
+          <div class="card-body">
+            <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-users"></use></svg></div>
+            <h3>{t('home.features.interaction.title')}</h3>
+            <p>{t('home.features.interaction.description')}</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI GENERATION -->
+  <section id="ai" class="section">
+    <div class="container">
+      <h2>{t('home.ai.title')}</h2>
+      <p class="section-lead">{t('home.ai.lead')}</p>
+
+      <div class="tour">
+        <article class="tour-item">
+          <div class="tour-visual">
+            <div class="visual-frame">
+              <img src="/images/screenshots/ai-slide-wizard.png" alt="AI slide wizard generating presentation content from a prompt" class="visual-screenshot" loading="lazy" />
+            </div>
+          </div>
+          <div class="tour-copy">
+            <h3 class="h3-with-icon">
+              <span class="icon-wrap" aria-hidden="true"><svg class="icon"><use href="#icon-sparkle"></use></svg></span>
+              {t('home.ai.byoKeys.title')}
+            </h3>
+            <p>{t('home.ai.byoKeys.description')}</p>
+
+            <h3 class="h3-with-icon">
+              <span class="icon-wrap" aria-hidden="true"><svg class="icon"><use href="#icon-rocket-launch"></use></svg></span>
+              {t('home.ai.fullDeck.title')}
+            </h3>
+            <p>{t('home.ai.fullDeck.description')}</p>
+          </div>
+        </article>
+
+        <article class="tour-item">
+          <div class="tour-visual">
+            <div class="visual-frame">
+              <img src="/images/screenshots/ai-dreambot-dialog.png" alt="DreamBot AI assistant analyzing slides and suggesting improvements" class="visual-screenshot" loading="lazy" />
+            </div>
+          </div>
+          <div class="tour-copy">
+            <h3 class="h3-with-icon">
+              <span class="icon-wrap" aria-hidden="true"><svg class="icon"><use href="#icon-shield-check"></use></svg></span>
+              {t('home.ai.control.title')}
+            </h3>
+            <p>{t('home.ai.control.description')}</p>
+
+            <div class="callout">
+              <h3>{t('home.ai.whyByo.title')}</h3>
+              <p>{t('home.ai.whyByo.description')}</p>
+              <ul class="bullets">
+                <li>{t('home.ai.whyByo.noLimits')}</li>
+                <li>{t('home.ai.whyByo.noMarkup')}</li>
+                <li>{t('home.ai.whyByo.chooseProvider')}</li>
+                <li>{t('home.ai.whyByo.disableAi')}</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- PUBLISH, SHARE, TRANSLATE -->
+  <section id="portability" class="section section-alt">
+    <div class="container">
+      <h2>{t('home.portability.title')}</h2>
+      <p class="section-lead">{t('home.portability.lead')}</p>
+
+      <div class="tour">
+        <article class="tour-item">
+          <div class="tour-visual">
+            <div class="visual-frame">
+              <img src="/images/screenshots/share-links-modal.png" alt="Share dialog showing publishing and link sharing options" class="visual-screenshot" loading="lazy" />
+            </div>
+          </div>
+          <div class="tour-copy">
+            <ul class="bullets">
+              <li><strong>{t('home.portability.formats.title')}</strong> — {t('home.portability.formats.description')}</li>
+              <li><strong>{t('home.portability.publish.title')}</strong> — {t('home.portability.publish.description')}</li>
+              <li><strong>{t('home.portability.i18n.title')}</strong> — {t('home.portability.i18n.description')}</li>
+              <li><strong>{t('home.portability.collaboration.title')}</strong> — {t('home.portability.collaboration.description')}</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPEN SOURCE & EXTENSIBLE -->
+  <section id="open-platform" class="section">
+    <div class="container">
+      <h2>{t('home.openPlatform.title')}</h2>
+      <p class="section-lead">{t('home.openPlatform.lead')}</p>
+
+      <div class="grid cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-shield-check"></use></svg></div>
+          <h3>{t('home.openPlatform.opensource.title')}</h3>
+          <p>{t('home.openPlatform.opensource.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-code"></use></svg></div>
+          <h3>{t('home.openPlatform.api.title')}</h3>
+          <p>{t('home.openPlatform.api.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-users"></use></svg></div>
+          <h3>{t('home.openPlatform.community.title')}</h3>
+          <p>{t('home.openPlatform.community.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-book-open"></use></svg></div>
+          <h3>{t('home.openPlatform.themes.title')}</h3>
+          <p>{t('home.openPlatform.themes.description')}</p>
+        </article>
+      </div>
+
+      <div class="cta-row cta-center">
+        <a class="btn btn-secondary" href="/docs/developer/">{t('home.openPlatform.apiDocs')}</a>
+        <a class="btn btn-primary" href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noreferrer">{t('home.openPlatform.viewOnGithub')}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- YOUR INFRASTRUCTURE OR OURS -->
+  <section id="sovereignty" class="section section-alt">
+    <div class="container">
+      <h2>{t('home.sovereignty.title')}</h2>
+      <p class="section-lead">{t('home.sovereignty.lead')}</p>
+
+      <div class="deploy-options">
+        <article class="deploy-card deploy-card-highlight">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-database"></use></svg></div>
+          <h3>{t('home.sovereignty.selfHost.title')}</h3>
+          <ul class="bullets">
+            <li>{t('home.sovereignty.selfHost.docker')}</li>
+            <li>{t('home.sovereignty.selfHost.fullControl')}</li>
+            <li>{t('home.sovereignty.selfHost.noDeps')}</li>
+            <li>{t('home.sovereignty.selfHost.scale')}</li>
+          </ul>
+          <div class="deploy-visual">
+            <img src="/images/screenshots/dashboard-home-new.png" alt="Deckyard dashboard showing presentations overview" loading="lazy" />
+          </div>
+          <a class="btn btn-secondary" href={getLocalePath('/self-hosting')}>{t('home.sovereignty.selfHost.cta')}</a>
+        </article>
+        <article class="deploy-card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-globe"></use></svg></div>
+          <h3>{t('home.sovereignty.cloud.title')}</h3>
+          <ul class="bullets">
+            <li>{t('home.sovereignty.cloud.scaleway')}</li>
+            <li>{t('home.sovereignty.cloud.noUsTransfers')}</li>
+            <li>{t('home.sovereignty.cloud.updates')}</li>
+            <li>{t('home.sovereignty.cloud.gdpr')}</li>
+          </ul>
+          <div class="deploy-visual">
+            <img src="/images/screenshots/editor-overview.png" alt="Deckyard editor with full presentation editing interface" loading="lazy" />
+          </div>
+          <a class="btn btn-secondary" href={getLocalePath('/pricing')}>{t('home.sovereignty.cloud.cta')}</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="section section-cta">
+    <div class="container">
+      <h2>{t('home.cta.title')}</h2>
+      <p class="section-lead">{t('home.cta.lead')}</p>
+
+      <div class="cta-row cta-center">
+        <a class="btn btn-primary btn-lg" href="https://sandbox.deckyard.eu">
+          {t('home.cta.trySandbox')}
+        </a>
+        <a class="btn btn-secondary btn-lg" href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noreferrer">
+          {t('home.cta.viewOnGithub')}
+        </a>
+        <a class="btn btn-secondary btn-lg" href="/docs/">
+          {t('home.cta.readDocs')}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

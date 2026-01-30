@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { locales, defaultLocale, useTranslations, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(l => l !== defaultLocale).map(locale => ({
+      params: { locale }
+    }))
+  ];
+}
+
+const locale = (Astro.params.locale || defaultLocale) as Locale;
+const t = useTranslations(locale);
+
+function getLocalePath(path: string): string {
+  if (locale === defaultLocale) {
+    return path;
+  }
+  return `/${locale}${path}`;
+}
+---
+
+<BaseLayout
+  title={t('blog.meta.title')}
+  description={t('blog.meta.description')}
+  locale={locale}
+>
+  <section class="hero hero-compact">
+    <div class="container">
+      <p class="eyebrow"><a href={getLocalePath('/')}>{t('nav.backToHome')}</a></p>
+      <h1>{t('blog.hero.title')}</h1>
+      <p class="lead">{t('blog.hero.lead')}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('blog.comingSoon.title')}</h2>
+      <p class="section-lead">{t('blog.comingSoon.lead')}</p>
+
+      <div class="blog-preview-grid">
+        <article class="blog-preview-card">
+          <span class="blog-category">{t('blog.categories.guides')}</span>
+          <h3>{t('blog.upcoming.selfHost.title')}</h3>
+          <p>{t('blog.upcoming.selfHost.description')}</p>
+          <span class="blog-status">{t('blog.status.comingSoon')}</span>
+        </article>
+
+        <article class="blog-preview-card">
+          <span class="blog-category">{t('blog.categories.compliance')}</span>
+          <h3>{t('blog.upcoming.gdpr.title')}</h3>
+          <p>{t('blog.upcoming.gdpr.description')}</p>
+          <span class="blog-status">{t('blog.status.comingSoon')}</span>
+        </article>
+
+        <article class="blog-preview-card">
+          <span class="blog-category">{t('blog.categories.features')}</span>
+          <h3>{t('blog.upcoming.aiGeneration.title')}</h3>
+          <p>{t('blog.upcoming.aiGeneration.description')}</p>
+          <span class="blog-status">{t('blog.status.comingSoon')}</span>
+        </article>
+
+        <article class="blog-preview-card">
+          <span class="blog-category">{t('blog.categories.migration')}</span>
+          <h3>{t('blog.upcoming.migration.title')}</h3>
+          <p>{t('blog.upcoming.migration.description')}</p>
+          <span class="blog-status">{t('blog.status.comingSoon')}</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt content-section">
+    <div class="container">
+      <h2>{t('blog.topics.title')}</h2>
+      <p class="section-lead">{t('blog.topics.lead')}</p>
+
+      <div class="grid cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-code"></use></svg></div>
+          <h3>{t('blog.topics.selfHosting.title')}</h3>
+          <p>{t('blog.topics.selfHosting.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-shield-check"></use></svg></div>
+          <h3>{t('blog.topics.privacy.title')}</h3>
+          <p>{t('blog.topics.privacy.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-sparkle"></use></svg></div>
+          <h3>{t('blog.topics.features.title')}</h3>
+          <p>{t('blog.topics.features.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-users"></use></svg></div>
+          <h3>{t('blog.topics.community.title')}</h3>
+          <p>{t('blog.topics.community.description')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <h2>{t('blog.cta.title')}</h2>
+      <p class="section-lead">{t('blog.cta.lead')}</p>
+      <div class="cta-row cta-center">
+        <a class="btn btn-primary btn-lg" href="https://github.com/deckyard/deckyard" target="_blank" rel="noreferrer">
+          {t('blog.cta.followOnGithub')}
+        </a>
+        <a class="btn btn-secondary btn-lg" href="https://sandbox.deckyard.eu">
+          {t('blog.cta.trySandbox')}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .blog-preview-card {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .blog-preview-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .blog-category {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--brand-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .blog-preview-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .blog-preview-card p {
+    color: var(--gray-600);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+
+  .blog-status {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--gray-500);
+    background: var(--gray-100);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-md);
+  }
+</style>

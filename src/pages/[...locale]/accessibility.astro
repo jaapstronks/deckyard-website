@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { locales, defaultLocale, useTranslations, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(l => l !== defaultLocale).map(locale => ({
+      params: { locale }
+    }))
+  ];
+}
+
+const locale = (Astro.params.locale || defaultLocale) as Locale;
+const t = useTranslations(locale);
+
+function getLocalePath(path: string): string {
+  if (locale === defaultLocale) {
+    return path;
+  }
+  return `/${locale}${path}`;
+}
+---
+
+<BaseLayout
+  title={t('accessibility.meta.title')}
+  description={t('accessibility.meta.description')}
+  locale={locale}
+>
+  <section class="hero hero-compact">
+    <div class="container">
+      <p class="eyebrow"><a href={getLocalePath('/')}>{t('nav.backToHome')}</a></p>
+      <h1>{t('accessibility.hero.title')}</h1>
+      <p class="lead">{t('accessibility.hero.lead')}</p>
+    </div>
+  </section>
+
+  <section class="section content-section">
+    <div class="container">
+      <h2>{t('accessibility.commitment.title')}</h2>
+      <p>{t('accessibility.commitment.paragraph1')}</p>
+      <p>{t('accessibility.commitment.paragraph2')}</p>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>{t('accessibility.standards.title')}</h2>
+      <p class="section-lead">{t('accessibility.standards.lead')}</p>
+
+      <div class="grid cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-eye-slash"></use></svg></div>
+          <h3>{t('accessibility.standards.perceivable.title')}</h3>
+          <p>{t('accessibility.standards.perceivable.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-link"></use></svg></div>
+          <h3>{t('accessibility.standards.operable.title')}</h3>
+          <p>{t('accessibility.standards.operable.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-file-text"></use></svg></div>
+          <h3>{t('accessibility.standards.understandable.title')}</h3>
+          <p>{t('accessibility.standards.understandable.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-code"></use></svg></div>
+          <h3>{t('accessibility.standards.robust.title')}</h3>
+          <p>{t('accessibility.standards.robust.description')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section content-section">
+    <div class="container">
+      <h2>{t('accessibility.features.title')}</h2>
+      <p class="section-lead">{t('accessibility.features.lead')}</p>
+
+      <h3>{t('accessibility.features.editor.title')}</h3>
+      <ul class="bullets">
+        <li>{t('accessibility.features.editor.keyboard')}</li>
+        <li>{t('accessibility.features.editor.screenReader')}</li>
+        <li>{t('accessibility.features.editor.focusIndicators')}</li>
+        <li>{t('accessibility.features.editor.colorContrast')}</li>
+        <li>{t('accessibility.features.editor.textScaling')}</li>
+      </ul>
+
+      <h3>{t('accessibility.features.presentations.title')}</h3>
+      <ul class="bullets">
+        <li>{t('accessibility.features.presentations.altText')}</li>
+        <li>{t('accessibility.features.presentations.headings')}</li>
+        <li>{t('accessibility.features.presentations.linkText')}</li>
+        <li>{t('accessibility.features.presentations.colorNotAlone')}</li>
+      </ul>
+
+      <h3>{t('accessibility.features.audience.title')}</h3>
+      <ul class="bullets">
+        <li>{t('accessibility.features.audience.mobileAccessible')}</li>
+        <li>{t('accessibility.features.audience.largeTargets')}</li>
+        <li>{t('accessibility.features.audience.clearLabels')}</li>
+        <li>{t('accessibility.features.audience.noTimeouts')}</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-alt content-section">
+    <div class="container">
+      <h2>{t('accessibility.compliance.title')}</h2>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{t('accessibility.compliance.standard')}</th>
+              <th>{t('accessibility.compliance.status')}</th>
+              <th>{t('accessibility.compliance.notes')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>WCAG 2.1 Level A</td>
+              <td class="yes">{t('accessibility.compliance.conformant')}</td>
+              <td>{t('accessibility.compliance.wcagANotes')}</td>
+            </tr>
+            <tr>
+              <td>WCAG 2.1 Level AA</td>
+              <td class="partial">{t('accessibility.compliance.partiallyConformant')}</td>
+              <td>{t('accessibility.compliance.wcagAANotes')}</td>
+            </tr>
+            <tr>
+              <td>WCAG 2.1 Level AAA</td>
+              <td class="partial">{t('accessibility.compliance.inProgress')}</td>
+              <td>{t('accessibility.compliance.wcagAAANotes')}</td>
+            </tr>
+            <tr>
+              <td>EN 301 549</td>
+              <td class="yes">{t('accessibility.compliance.conformant')}</td>
+              <td>{t('accessibility.compliance.enNotes')}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section content-section">
+    <div class="container">
+      <h2>{t('accessibility.knownIssues.title')}</h2>
+      <p>{t('accessibility.knownIssues.lead')}</p>
+
+      <ul class="bullets">
+        <li><strong>{t('accessibility.knownIssues.charts')}</strong></li>
+        <li><strong>{t('accessibility.knownIssues.dragDrop')}</strong></li>
+        <li><strong>{t('accessibility.knownIssues.animations')}</strong></li>
+      </ul>
+
+      <p>{t('accessibility.knownIssues.reporting')}</p>
+    </div>
+  </section>
+
+  <section class="section section-alt content-section">
+    <div class="container">
+      <h2>{t('accessibility.testing.title')}</h2>
+      <p class="section-lead">{t('accessibility.testing.lead')}</p>
+
+      <ul class="bullets">
+        <li>{t('accessibility.testing.automated')}</li>
+        <li>{t('accessibility.testing.screenReaders')}</li>
+        <li>{t('accessibility.testing.keyboard')}</li>
+        <li>{t('accessibility.testing.userTesting')}</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <h2>{t('accessibility.cta.title')}</h2>
+      <p class="section-lead">{t('accessibility.cta.lead')}</p>
+      <div class="cta-row cta-center">
+        <a class="btn btn-primary btn-lg" href="mailto:accessibility@deckyard.eu">
+          {t('accessibility.cta.reportIssue')}
+        </a>
+        <a class="btn btn-secondary btn-lg" href="https://github.com/deckyard/deckyard/issues" target="_blank" rel="noreferrer">
+          {t('accessibility.cta.viewIssues')}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

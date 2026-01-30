@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { locales, defaultLocale, useTranslations, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(l => l !== defaultLocale).map(locale => ({
+      params: { locale }
+    }))
+  ];
+}
+
+const locale = (Astro.params.locale || defaultLocale) as Locale;
+const t = useTranslations(locale);
+
+function getLocalePath(path: string): string {
+  if (locale === defaultLocale) {
+    return path;
+  }
+  return `/${locale}${path}`;
+}
+---
+
+<BaseLayout
+  title={t('useCasesTraining.meta.title')}
+  description={t('useCasesTraining.meta.description')}
+  locale={locale}
+>
+  <section class="hero hero-compact">
+    <div class="container">
+      <p class="eyebrow"><a href={getLocalePath('/')}>{t('nav.backToHome')}</a></p>
+      <h1>{t('useCasesTraining.hero.title')}</h1>
+      <p class="lead">{t('useCasesTraining.hero.lead')}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('useCasesTraining.whyTrainers.title')}</h2>
+      <p class="section-lead">{t('useCasesTraining.whyTrainers.lead')}</p>
+
+      <div class="grid cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-chart-bar"></use></svg></div>
+          <h3>{t('useCasesTraining.whyTrainers.engagement.title')}</h3>
+          <p>{t('useCasesTraining.whyTrainers.engagement.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-sparkle"></use></svg></div>
+          <h3>{t('useCasesTraining.whyTrainers.assessment.title')}</h3>
+          <p>{t('useCasesTraining.whyTrainers.assessment.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-file-text"></use></svg></div>
+          <h3>{t('useCasesTraining.whyTrainers.singleTool.title')}</h3>
+          <p>{t('useCasesTraining.whyTrainers.singleTool.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-database"></use></svg></div>
+          <h3>{t('useCasesTraining.whyTrainers.costEffective.title')}</h3>
+          <p>{t('useCasesTraining.whyTrainers.costEffective.description')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt content-section">
+    <div class="container">
+      <h2>{t('useCasesTraining.interactiveElements.title')}</h2>
+      <p class="section-lead">{t('useCasesTraining.interactiveElements.lead')}</p>
+
+      <div class="grid cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-chart-bar"></use></svg></div>
+          <h3>{t('useCasesTraining.interactiveElements.knowledgeChecks.title')}</h3>
+          <p>{t('useCasesTraining.interactiveElements.knowledgeChecks.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-users"></use></svg></div>
+          <h3>{t('useCasesTraining.interactiveElements.icebreakers.title')}</h3>
+          <p>{t('useCasesTraining.interactiveElements.icebreakers.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-sparkle"></use></svg></div>
+          <h3>{t('useCasesTraining.interactiveElements.quizzes.title')}</h3>
+          <p>{t('useCasesTraining.interactiveElements.quizzes.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-file-text"></use></svg></div>
+          <h3>{t('useCasesTraining.interactiveElements.feedback.title')}</h3>
+          <p>{t('useCasesTraining.interactiveElements.feedback.description')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section content-section">
+    <div class="container">
+      <h2>{t('useCasesTraining.workshopFlow.title')}</h2>
+      <p class="section-lead">{t('useCasesTraining.workshopFlow.lead')}</p>
+
+      <ol class="numbered-list">
+        <li><strong>{t('useCasesTraining.workshopFlow.step1')}</strong></li>
+        <li><strong>{t('useCasesTraining.workshopFlow.step2')}</strong></li>
+        <li><strong>{t('useCasesTraining.workshopFlow.step3')}</strong></li>
+        <li><strong>{t('useCasesTraining.workshopFlow.step4')}</strong></li>
+        <li><strong>{t('useCasesTraining.workshopFlow.step5')}</strong></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section-alt content-section">
+    <div class="container">
+      <h2>{t('useCasesTraining.aiForTrainers.title')}</h2>
+      <p class="section-lead">{t('useCasesTraining.aiForTrainers.lead')}</p>
+
+      <ul class="bullets">
+        <li><strong>{t('useCasesTraining.aiForTrainers.contentConversion')}</strong></li>
+        <li><strong>{t('useCasesTraining.aiForTrainers.quizGeneration')}</strong></li>
+        <li><strong>{t('useCasesTraining.aiForTrainers.outlineExpansion')}</strong></li>
+        <li><strong>{t('useCasesTraining.aiForTrainers.languageAdaptation')}</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section content-section">
+    <div class="container">
+      <h2>{t('useCasesTraining.corporateDeployment.title')}</h2>
+      <p class="section-lead">{t('useCasesTraining.corporateDeployment.lead')}</p>
+
+      <ul class="bullets">
+        <li><strong>{t('useCasesTraining.corporateDeployment.onPremise')}</strong></li>
+        <li><strong>{t('useCasesTraining.corporateDeployment.branding')}</strong></li>
+        <li><strong>{t('useCasesTraining.corporateDeployment.analytics')}</strong></li>
+        <li><strong>{t('useCasesTraining.corporateDeployment.lmsIntegration')}</strong></li>
+      </ul>
+
+      <p>
+        <a class="btn btn-secondary" href={getLocalePath('/self-hosting')}>{t('useCasesTraining.corporateDeployment.cta')}</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <h2>{t('useCasesTraining.cta.title')}</h2>
+      <p class="section-lead">{t('useCasesTraining.cta.lead')}</p>
+      <div class="cta-row cta-center">
+        <a class="btn btn-primary btn-lg" href="https://sandbox.deckyard.eu">
+          {t('useCasesTraining.cta.trySandbox')}
+        </a>
+        <a class="btn btn-secondary btn-lg" href="mailto:hello@deckyard.eu">
+          {t('useCasesTraining.cta.contactSales')}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

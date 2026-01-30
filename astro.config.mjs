@@ -34,6 +34,12 @@ export default defineConfig({
     starlight({
       title: 'Deckyard',
       description: 'Open source, self-hosted presentation system.',
+      logo: {
+        light: './src/assets/deckyard-mark.svg',
+        dark: './src/assets/deckyard-mark-dark.svg',
+        replacesTitle: false,
+      },
+      customCss: ['./src/styles/starlight-custom.css'],
       sidebar: [
         {
           label: 'Creating Presentations',
@@ -43,6 +49,7 @@ export default defineConfig({
             { label: 'From Text/Outline', link: '/docs/creating/from-text/' },
             { label: 'From Notion', link: '/docs/creating/from-notion/' },
             { label: 'From PowerPoint', link: '/docs/creating/from-pptx/' },
+            { label: 'From Markdown', link: '/docs/creating/from-markdown/' },
             { label: 'From JSON', link: '/docs/creating/from-json/' },
             { label: 'Duplicating', link: '/docs/creating/duplicating/' }
           ]
@@ -105,6 +112,7 @@ export default defineConfig({
           items: [
             { label: 'Presenter Mode', link: '/docs/presenter/' },
             { label: 'Laser Pointer & Drawing', link: '/docs/presenter/highlighter/' },
+            // { label: 'Live Video Overlay', link: '/docs/presenter/live-video/' }, // TODO: create docs page
             { label: 'Audience Follow Mode', link: '/docs/presenter/follow-mode/' },
             { label: 'Speaker Notes View', link: '/docs/presenter/notes-view/' },
             { label: 'Presentation Locks', link: '/docs/presenter/presentation-locks/' }
@@ -186,6 +194,7 @@ export default defineConfig({
             { label: 'Overview', link: '/docs/deployment/' },
             { label: 'Quick Start', link: '/docs/deployment/quickstart/' },
             { label: 'Docker', link: '/docs/deployment/docker/' },
+            { label: 'Scaling', link: '/docs/deployment/scaling/' },
             { label: 'Website Hosting', link: '/docs/deployment/website-hosting/' }
           ]
         },

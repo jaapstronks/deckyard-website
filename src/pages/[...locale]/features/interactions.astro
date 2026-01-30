@@ -1,0 +1,299 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { locales, defaultLocale, useTranslations, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(l => l !== defaultLocale).map(locale => ({
+      params: { locale }
+    }))
+  ];
+}
+
+const locale = (Astro.params.locale || defaultLocale) as Locale;
+const t = useTranslations(locale);
+
+function getLocalePath(path: string): string {
+  if (locale === defaultLocale) {
+    return path;
+  }
+  return `/${locale}${path}`;
+}
+---
+
+<BaseLayout
+  title={t('featuresInteractions.meta.title')}
+  description={t('featuresInteractions.meta.description')}
+  locale={locale}
+>
+  <section class="hero hero-compact">
+    <div class="container">
+      <p class="eyebrow"><a href={getLocalePath('/features')}>{t('featuresInteractions.hero.backToFeatures')}</a></p>
+      <h1>{t('featuresInteractions.hero.title')}</h1>
+      <p class="lead">{t('featuresInteractions.hero.lead')}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('featuresInteractions.howItWorks.title')}</h2>
+      <p class="section-lead">{t('featuresInteractions.howItWorks.lead')}</p>
+
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-number">{t('featuresInteractions.howItWorks.step1.number')}</div>
+          <h3>{t('featuresInteractions.howItWorks.step1.title')}</h3>
+          <p>{t('featuresInteractions.howItWorks.step1.description')}</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-number">{t('featuresInteractions.howItWorks.step2.number')}</div>
+          <h3>{t('featuresInteractions.howItWorks.step2.title')}</h3>
+          <p>{t('featuresInteractions.howItWorks.step2.description')}</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-number">{t('featuresInteractions.howItWorks.step3.number')}</div>
+          <h3>{t('featuresInteractions.howItWorks.step3.title')}</h3>
+          <p>{t('featuresInteractions.howItWorks.step3.description')}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>{t('featuresInteractions.polls.title')}</h2>
+      <p class="section-lead">{t('featuresInteractions.polls.lead')}</p>
+
+      <div class="two-col">
+        <div>
+          <h3>{t('featuresInteractions.polls.features')}</h3>
+          <ul class="bullets">
+            <li>{t('featuresInteractions.polls.feature1')}</li>
+            <li>{t('featuresInteractions.polls.feature2')}</li>
+            <li>{t('featuresInteractions.polls.feature3')}</li>
+            <li>{t('featuresInteractions.polls.feature4')}</li>
+            <li>{t('featuresInteractions.polls.feature5')}</li>
+          </ul>
+
+          <h3 style="margin-top: 24px;">{t('featuresInteractions.polls.useCases')}</h3>
+          <ul class="bullets">
+            <li>{t('featuresInteractions.polls.useCase1')}</li>
+            <li>{t('featuresInteractions.polls.useCase2')}</li>
+            <li>{t('featuresInteractions.polls.useCase3')}</li>
+            <li>{t('featuresInteractions.polls.useCase4')}</li>
+          </ul>
+        </div>
+        <div class="visual-frame" style="height: 280px;">
+          <div class="visual-placeholder">Poll slide preview</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('featuresInteractions.qna.title')}</h2>
+      <p class="section-lead">{t('featuresInteractions.qna.lead')}</p>
+
+      <div class="two-col">
+        <div class="visual-frame" style="height: 280px;">
+          <div class="visual-placeholder">Q&A slide preview</div>
+        </div>
+        <div>
+          <h3>{t('featuresInteractions.qna.features')}</h3>
+          <ul class="bullets">
+            <li>{t('featuresInteractions.qna.feature1')}</li>
+            <li>{t('featuresInteractions.qna.feature2')}</li>
+            <li>{t('featuresInteractions.qna.feature3')}</li>
+            <li>{t('featuresInteractions.qna.feature4')}</li>
+            <li>{t('featuresInteractions.qna.feature5')}</li>
+          </ul>
+
+          <h3 style="margin-top: 24px;">{t('featuresInteractions.qna.presenterControls')}</h3>
+          <ul class="bullets">
+            <li>{t('featuresInteractions.qna.control1')}</li>
+            <li>{t('featuresInteractions.qna.control2')}</li>
+            <li>{t('featuresInteractions.qna.control3')}</li>
+            <li>{t('featuresInteractions.qna.control4')}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>{t('featuresInteractions.likert.title')}</h2>
+      <p class="section-lead">{t('featuresInteractions.likert.lead')}</p>
+
+      <div class="grid cards">
+        <article class="card">
+          <h3>{t('featuresInteractions.likert.agreement.title')}</h3>
+          <p>{t('featuresInteractions.likert.agreement.description')}</p>
+        </article>
+        <article class="card">
+          <h3>{t('featuresInteractions.likert.numeric.title')}</h3>
+          <p>{t('featuresInteractions.likert.numeric.description')}</p>
+        </article>
+        <article class="card">
+          <h3>{t('featuresInteractions.likert.custom.title')}</h3>
+          <p>{t('featuresInteractions.likert.custom.description')}</p>
+        </article>
+        <article class="card">
+          <h3>{t('featuresInteractions.likert.visual.title')}</h3>
+          <p>{t('featuresInteractions.likert.visual.description')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('featuresInteractions.feedback.title')}</h2>
+      <p class="section-lead">{t('featuresInteractions.feedback.lead')}</p>
+
+      <div class="two-col">
+        <div>
+          <h3>{t('featuresInteractions.feedback.features')}</h3>
+          <ul class="bullets">
+            <li>{t('featuresInteractions.feedback.feature1')}</li>
+            <li>{t('featuresInteractions.feedback.feature2')}</li>
+            <li>{t('featuresInteractions.feedback.feature3')}</li>
+            <li>{t('featuresInteractions.feedback.feature4')}</li>
+          </ul>
+
+          <h3 style="margin-top: 24px;">{t('featuresInteractions.feedback.useCases')}</h3>
+          <ul class="bullets">
+            <li>{t('featuresInteractions.feedback.useCase1')}</li>
+            <li>{t('featuresInteractions.feedback.useCase2')}</li>
+            <li>{t('featuresInteractions.feedback.useCase3')}</li>
+            <li>{t('featuresInteractions.feedback.useCase4')}</li>
+          </ul>
+        </div>
+        <div class="visual-frame" style="height: 280px;">
+          <div class="visual-placeholder">Feedback word cloud</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>{t('featuresInteractions.followAlong.title')}</h2>
+      <p class="section-lead">{t('featuresInteractions.followAlong.lead')}</p>
+
+      <div class="two-col">
+        <div>
+          <h3>{t('featuresInteractions.followAlong.howItWorks')}</h3>
+          <p>{t('featuresInteractions.followAlong.howItWorksDesc')}</p>
+
+          <h3 style="margin-top: 24px;">{t('featuresInteractions.followAlong.benefits')}</h3>
+          <ul class="bullets">
+            <li>{t('featuresInteractions.followAlong.benefit1')}</li>
+            <li>{t('featuresInteractions.followAlong.benefit2')}</li>
+            <li>{t('featuresInteractions.followAlong.benefit3')}</li>
+            <li>{t('featuresInteractions.followAlong.benefit4')}</li>
+          </ul>
+        </div>
+        <div class="visual-frame" style="height: 280px;">
+          <div class="visual-placeholder">Mobile follow-along view</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('featuresInteractions.liveVideo.title')}</h2>
+      <p class="section-lead">{t('featuresInteractions.liveVideo.lead')}</p>
+
+      <div class="two-col">
+        <div class="visual-frame" style="height: 280px;">
+          <div class="visual-placeholder">Video overlay on slide</div>
+        </div>
+        <div>
+          <h3>{t('featuresInteractions.liveVideo.features')}</h3>
+          <ul class="bullets">
+            <li>{t('featuresInteractions.liveVideo.feature1')}</li>
+            <li>{t('featuresInteractions.liveVideo.feature2')}</li>
+            <li>{t('featuresInteractions.liveVideo.feature3')}</li>
+            <li>{t('featuresInteractions.liveVideo.feature4')}</li>
+          </ul>
+
+          <h3 style="margin-top: 24px;">{t('featuresInteractions.liveVideo.providers')}</h3>
+          <ul class="bullets">
+            <li>{t('featuresInteractions.liveVideo.provider1')}</li>
+            <li>{t('featuresInteractions.liveVideo.provider2')}</li>
+            <li>{t('featuresInteractions.liveVideo.provider3')}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>{t('featuresInteractions.comparison.title')}</h2>
+      <p class="section-lead">{t('featuresInteractions.comparison.lead')}</p>
+
+      <div class="comparison-table-wrap">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Deckyard</th>
+              <th>Slides + Mentimeter</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{t('featuresInteractions.comparison.singleTool')}</td>
+              <td class="yes">{t('featuresInteractions.comparison.deckyard.singleTool')}</td>
+              <td class="no">{t('featuresInteractions.comparison.mentimeter.singleTool')}</td>
+            </tr>
+            <tr>
+              <td>{t('featuresInteractions.comparison.consistentDesign')}</td>
+              <td class="yes">{t('featuresInteractions.comparison.deckyardDesign')}</td>
+              <td class="no">{t('featuresInteractions.comparison.mentimeterDesign')}</td>
+            </tr>
+            <tr>
+              <td>{t('featuresInteractions.comparison.flow')}</td>
+              <td class="yes">{t('featuresInteractions.comparison.deckyardFlow')}</td>
+              <td class="partial">{t('featuresInteractions.comparison.mentimeterFlow')}</td>
+            </tr>
+            <tr>
+              <td>{t('featuresInteractions.comparison.cost')}</td>
+              <td class="yes">{t('featuresInteractions.comparison.deckyardCost')}</td>
+              <td class="no">{t('featuresInteractions.comparison.mentimeterCost')}</td>
+            </tr>
+            <tr>
+              <td>{t('featuresInteractions.comparison.export')}</td>
+              <td class="yes">{t('featuresInteractions.comparison.deckyardExport')}</td>
+              <td class="partial">{t('featuresInteractions.comparison.mentimeterExport')}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="cta-center" style="margin-top: 24px;">
+        <a class="btn btn-secondary" href={getLocalePath('/compare/mentimeter')}>{t('featuresInteractions.comparison.seeFullComparison')}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <h2>{t('featuresInteractions.cta.title')}</h2>
+      <p class="section-lead">{t('featuresInteractions.cta.lead')}</p>
+      <div class="cta-row cta-center">
+        <a class="btn btn-primary btn-lg" href="https://sandbox.deckyard.eu">
+          {t('featuresInteractions.cta.trySandbox')}
+        </a>
+        <a class="btn btn-secondary btn-lg" href="/docs/">
+          {t('featuresInteractions.cta.readDocs')}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

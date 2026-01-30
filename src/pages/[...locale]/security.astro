@@ -1,0 +1,201 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { locales, defaultLocale, useTranslations, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(l => l !== defaultLocale).map(locale => ({
+      params: { locale }
+    }))
+  ];
+}
+
+const locale = (Astro.params.locale || defaultLocale) as Locale;
+const t = useTranslations(locale);
+
+function getLocalePath(path: string): string {
+  if (locale === defaultLocale) {
+    return path;
+  }
+  return `/${locale}${path}`;
+}
+---
+
+<BaseLayout
+  title={t('security.meta.title')}
+  description={t('security.meta.description')}
+  locale={locale}
+>
+  <section class="hero hero-compact">
+    <div class="container">
+      <p class="eyebrow"><a href={getLocalePath('/')}>{t('nav.backToHome')}</a></p>
+      <h1>{t('security.hero.title')}</h1>
+      <p class="lead">{t('security.hero.lead')}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('security.infrastructure.title')}</h2>
+      <p class="section-lead">{t('security.infrastructure.lead')}</p>
+
+      <div class="grid cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-map-pin"></use></svg></div>
+          <h3>{t('security.infrastructure.euHosting.title')}</h3>
+          <p>{t('security.infrastructure.euHosting.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-shield-check"></use></svg></div>
+          <h3>{t('security.infrastructure.certifications.title')}</h3>
+          <p>{t('security.infrastructure.certifications.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-lock"></use></svg></div>
+          <h3>{t('security.infrastructure.encryption.title')}</h3>
+          <p>{t('security.infrastructure.encryption.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-database"></use></svg></div>
+          <h3>{t('security.infrastructure.backups.title')}</h3>
+          <p>{t('security.infrastructure.backups.description')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt content-section">
+    <div class="container">
+      <h2>{t('security.application.title')}</h2>
+      <p class="section-lead">{t('security.application.lead')}</p>
+
+      <ul class="bullets">
+        <li><strong>{t('security.application.auth')}</strong></li>
+        <li><strong>{t('security.application.sessions')}</strong></li>
+        <li><strong>{t('security.application.input')}</strong></li>
+        <li><strong>{t('security.application.dependencies')}</strong></li>
+        <li><strong>{t('security.application.csp')}</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section content-section">
+    <div class="container">
+      <h2>{t('security.dataProtection.title')}</h2>
+
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>{t('security.dataProtection.dataType')}</th>
+              <th>{t('security.dataProtection.protection')}</th>
+              <th>{t('security.dataProtection.retention')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{t('security.dataProtection.presentations')}</td>
+              <td>{t('security.dataProtection.presentationsProtection')}</td>
+              <td>{t('security.dataProtection.presentationsRetention')}</td>
+            </tr>
+            <tr>
+              <td>{t('security.dataProtection.apiKeys')}</td>
+              <td>{t('security.dataProtection.apiKeysProtection')}</td>
+              <td>{t('security.dataProtection.apiKeysRetention')}</td>
+            </tr>
+            <tr>
+              <td>{t('security.dataProtection.audienceData')}</td>
+              <td>{t('security.dataProtection.audienceDataProtection')}</td>
+              <td>{t('security.dataProtection.audienceDataRetention')}</td>
+            </tr>
+            <tr>
+              <td>{t('security.dataProtection.accountData')}</td>
+              <td>{t('security.dataProtection.accountDataProtection')}</td>
+              <td>{t('security.dataProtection.accountDataRetention')}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt content-section">
+    <div class="container">
+      <h2>{t('security.compliance.title')}</h2>
+      <p class="section-lead">{t('security.compliance.lead')}</p>
+
+      <div class="grid cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-globe"></use></svg></div>
+          <h3>{t('security.compliance.gdpr.title')}</h3>
+          <p>{t('security.compliance.gdpr.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-file-text"></use></svg></div>
+          <h3>{t('security.compliance.dpa.title')}</h3>
+          <p>{t('security.compliance.dpa.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-users"></use></svg></div>
+          <h3>{t('security.compliance.subprocessors.title')}</h3>
+          <p>{t('security.compliance.subprocessors.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-chart-bar"></use></svg></div>
+          <h3>{t('security.compliance.auditLog.title')}</h3>
+          <p>{t('security.compliance.auditLog.description')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section content-section">
+    <div class="container">
+      <h2>{t('security.selfHosting.title')}</h2>
+      <p class="section-lead">{t('security.selfHosting.lead')}</p>
+
+      <ul class="bullets">
+        <li><strong>{t('security.selfHosting.airGapped')}</strong></li>
+        <li><strong>{t('security.selfHosting.ownInfra')}</strong></li>
+        <li><strong>{t('security.selfHosting.auditCode')}</strong></li>
+        <li><strong>{t('security.selfHosting.internalAi')}</strong></li>
+      </ul>
+
+      <p>
+        <a class="btn btn-secondary" href={getLocalePath('/self-hosting')}>{t('security.selfHosting.cta')}</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-alt content-section">
+    <div class="container">
+      <h2>{t('security.disclosure.title')}</h2>
+      <p>{t('security.disclosure.lead')}</p>
+
+      <ul class="bullets">
+        <li>{t('security.disclosure.step1')}</li>
+        <li>{t('security.disclosure.step2')}</li>
+        <li>{t('security.disclosure.step3')}</li>
+        <li>{t('security.disclosure.step4')}</li>
+      </ul>
+
+      <p>{t('security.disclosure.contact')}: <a href="mailto:security@deckyard.eu">security@deckyard.eu</a></p>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <h2>{t('security.cta.title')}</h2>
+      <p class="section-lead">{t('security.cta.lead')}</p>
+      <div class="cta-row cta-center">
+        <a class="btn btn-primary btn-lg" href="mailto:security@deckyard.eu">
+          {t('security.cta.requestQuestionnaire')}
+        </a>
+        <a class="btn btn-secondary btn-lg" href={getLocalePath('/eu-privacy')}>
+          {t('security.cta.euPrivacy')}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
