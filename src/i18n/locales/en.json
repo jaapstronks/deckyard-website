@@ -1,0 +1,2308 @@
+{
+  "site": {
+    "name": "Deckyard",
+    "description": "Open source, self-hosted presentation system.",
+    "copyright": "© 2026 Deckyard. Open source under MIT license.",
+    "location": "Rotterdam, Netherlands"
+  },
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "pricing": "Pricing",
+    "euPrivacy": "EU & Privacy",
+    "docs": "Docs",
+    "selfHost": "Self-host",
+    "trySandbox": "Try sandbox",
+    "menu": "Menu",
+    "closeMenu": "Close menu",
+    "skipToContent": "Skip to content",
+    "backToHome": "← Back to home"
+  },
+  "footer": {
+    "product": "Product",
+    "resources": "Resources",
+    "compare": "Compare",
+    "community": "Community",
+    "features": "Features",
+    "slideTypes": "Slide types",
+    "aiGeneration": "AI generation",
+    "interactions": "Interactions",
+    "pricing": "Pricing",
+    "selfHosting": "Self-hosting",
+    "euPrivacy": "EU & Privacy",
+    "documentation": "Documentation",
+    "vsMentimeter": "vs Mentimeter",
+    "vsSlidescom": "vs Slides.com",
+    "vsGoogleSlides": "vs Google Slides",
+    "vsPowerPoint": "vs PowerPoint",
+    "github": "GitHub",
+    "discussions": "Discussions",
+    "issues": "Issues",
+    "tagline": "Open source presentations with live interaction.",
+    "mitLicensed": "MIT licensed. Made in Europe."
+  },
+  "languagePicker": {
+    "label": "Language",
+    "selectLanguage": "Select language"
+  },
+  "home": {
+    "meta": {
+      "title": "Deckyard — The presentation platform that respects your data",
+      "description": "EU-hosted, GDPR-native, self-hostable presentation platform. 44 slide types, built-in polls and Q&A, AI generation with your own keys. MIT licensed and open source."
+    },
+    "hero": {
+      "eyebrow": "EU-hosted · GDPR-native · Self-hostable · Open Source",
+      "title": "The presentation platform that respects your data",
+      "lead": "EU-hosted, GDPR-compliant by design, and fully self-hostable. Create professional presentations with 44 slide types, built-in polls and Q&A, and AI generation using your own API keys.",
+      "trySandbox": "Try sandbox",
+      "selfHostFree": "Self-host free",
+      "badges": {
+        "hostedInFrance": "Hosted in France",
+        "gdprNative": "GDPR-native",
+        "selfHostable": "Self-hostable",
+        "mitLicensed": "MIT licensed"
+      },
+      "screenshotAlt": "Deckyard editor showing slide types, live preview, and presenter notes",
+      "screenshotCaption": "The editor in action —",
+      "tryItYourself": "try it yourself"
+    },
+    "features": {
+      "title": "Everything you need to create professional presentations",
+      "lead": "Deckyard isn't a toy—it's a complete presentation platform with 44 slide types covering everything from data visualizations to process diagrams to image galleries.",
+      "data": {
+        "title": "Data & Visualizations",
+        "description": "Charts, KPIs, tables, funnels, pyramids, SWOT matrices. Present your numbers with clarity."
+      },
+      "layouts": {
+        "title": "Layouts & Structure",
+        "description": "Section titles, text slides, multi-column layouts, icon cards, timelines, roadmaps. Build narrative flow."
+      },
+      "media": {
+        "title": "Media & Embeds",
+        "description": "Images, galleries, video embeds, maps, forms. Rich media without friction."
+      },
+      "export": {
+        "title": "Import & Export",
+        "description": "Import from Markdown, PowerPoint, Notion, or JSON. Export to PDF, PPTX, HTML, images, or JSON. Your content, your format."
+      }
+    },
+    "interaction": {
+      "title": "Engage your audience without switching tools",
+      "lead": "Polls, Q&A, Likert scales, and feedback forms—built directly into your slides. No more juggling Mentimeter alongside your presentation.",
+      "realtime": {
+        "title": "Real-time audience interaction",
+        "livePolls": "Live polls",
+        "livePollsDesc": "Multiple choice with instant results display",
+        "likertScales": "Likert scales",
+        "likertScalesDesc": "Agree/disagree or 1-10 rating",
+        "openFeedback": "Open feedback",
+        "openFeedbackDesc": "Free-text responses from your audience",
+        "qna": "Q&A",
+        "qnaDesc": "Collect questions, display and answer live"
+      },
+      "participation": {
+        "title": "Simple audience participation",
+        "qrCode": "Audience joins via QR code or short link",
+        "noApp": "No app download required—works in any browser",
+        "followAlong": "Follow-along mode so attendees see current slide",
+        "resultsRealtime": "Results appear in real-time on your slides"
+      },
+      "compareToMentimeter": "See how we compare to Mentimeter →"
+    },
+    "ai": {
+      "title": "AI that works for you, not against your wallet",
+      "lead": "Generate entire presentations from a prompt. Use your own API keys—OpenAI, Anthropic, Mistral, DeepSeek, or any OpenAI-compatible model. No credits, no limits, no surprises on your bill.",
+      "byoKeys": {
+        "title": "Bring your own keys",
+        "description": "Connect your OpenAI, Anthropic, Mistral, DeepSeek, or self-hosted model. Pay your provider directly at their rates—or run local models for free. No markup, no credits to run out."
+      },
+      "fullDeck": {
+        "title": "Full deck generation",
+        "description": "Describe your presentation and let AI create a complete first draft with appropriate slide types, content, and structure."
+      },
+      "control": {
+        "title": "You're in control",
+        "description": "AI assists—you decide. Every suggestion is reviewable. Nothing changes without your approval. DreamBot analyzes your slides and suggests improvements, but you make the call."
+      },
+      "whyByo": {
+        "title": "Why BYO API keys?",
+        "description": "Other tools charge \"AI credits\" on top of your subscription. Run out? Pay more. With Deckyard, you pay your AI provider directly at their rates.",
+        "noLimits": "No artificial limits",
+        "noMarkup": "No markup on API costs",
+        "chooseProvider": "Choose your provider",
+        "disableAi": "Or disable AI entirely"
+      }
+    },
+    "sovereignty": {
+      "title": "Your infrastructure, your rules",
+      "lead": "Run Deckyard on your own servers with Docker, or use our managed EU cloud. Either way, your data stays where you want it.",
+      "selfHost": {
+        "title": "Self-host (always free)",
+        "docker": "Docker Compose setup in 5 minutes",
+        "fullControl": "Full control over data and infrastructure",
+        "noDeps": "No external dependencies required",
+        "scale": "Scale as needed, pay only for your servers",
+        "cta": "Self-hosting guide →"
+      },
+      "cloud": {
+        "title": "EU Managed Cloud",
+        "scaleway": "Hosted on Scaleway (France)",
+        "noUsTransfers": "No US data transfers",
+        "updates": "We handle updates and backups",
+        "gdpr": "GDPR compliant by design",
+        "cta": "Learn about EU hosting →"
+      }
+    },
+    "opensource": {
+      "title": "Open source. No tricks.",
+      "lead": "Deckyard is MIT licensed. View the source, audit the code, fork it, extend it, self-host it forever. We believe the best way to earn your trust is to be completely transparent.",
+      "noLockin": {
+        "title": "No vendor lock-in",
+        "description": "Import from Markdown, export to JSON or PPTX. Your presentations are stored in open formats and never held hostage."
+      },
+      "inspect": {
+        "title": "Inspect everything",
+        "description": "Security-conscious? Read every line of code. We have nothing to hide."
+      },
+      "community": {
+        "title": "Community-driven",
+        "description": "Report bugs, request features, contribute code. Help shape the roadmap."
+      },
+      "enterprise": {
+        "title": "Enterprise-friendly",
+        "description": "MIT license means no legal headaches for your procurement team."
+      },
+      "viewOnGithub": "View on GitHub"
+    },
+    "cta": {
+      "title": "Ready to own your presentations?",
+      "lead": "Try the sandbox with no signup, or deploy on your own infrastructure in minutes.",
+      "trySandbox": "Try the sandbox",
+      "readDocs": "Read the docs"
+    }
+  },
+  "selfHosting": {
+    "meta": {
+      "title": "Self-hosting Deckyard — Run on your own infrastructure",
+      "description": "Deploy Deckyard on your own servers with Docker. Complete data control, no external dependencies, 5 minute setup."
+    },
+    "hero": {
+      "title": "Run Deckyard on your own infrastructure",
+      "lead": "Complete data control. No external dependencies. Deploy with Docker in 5 minutes."
+    },
+    "quickstart": {
+      "title": "Up and running in 5 minutes",
+      "requirements": "Requirements",
+      "docker": "Docker & Docker Compose — Required for containerized deployment",
+      "ram": "2GB RAM minimum — 4GB recommended for production",
+      "postgres": "PostgreSQL 14+ — Included in compose, or use external database",
+      "s3": "Optional: S3-compatible storage for media files"
+    },
+    "why": {
+      "title": "Why self-host?",
+      "sovereignty": {
+        "title": "Complete data sovereignty",
+        "description": "Your presentation data never leaves your servers. No third-party access, no data mining, no surprises."
+      },
+      "compliance": {
+        "title": "Compliance requirements",
+        "description": "Healthcare, government, education, finance—many organizations require on-premise solutions."
+      },
+      "cost": {
+        "title": "Cost control at scale",
+        "description": "No per-seat pricing anxiety. One deployment serves your entire organization."
+      },
+      "customization": {
+        "title": "Customization freedom",
+        "description": "Modify the source, add integrations, adjust the UI. MIT license means no restrictions."
+      }
+    },
+    "config": {
+      "title": "Configuration",
+      "ai": "AI Providers (optional)",
+      "aiDesc": "Connect your own API keys to enable AI features. You only pay your provider directly—no markup.",
+      "database": "Database",
+      "storage": "Storage (optional)",
+      "viewEnvExample": "View full .env.example →"
+    },
+    "cta": {
+      "title": "Ready to deploy?",
+      "lead": "Get Deckyard running on your infrastructure in minutes.",
+      "viewOnGithub": "View on GitHub",
+      "deploymentGuide": "Deployment guide"
+    }
+  },
+  "euPrivacy": {
+    "meta": {
+      "title": "EU Hosting & GDPR — Deckyard Privacy",
+      "description": "Deckyard is hosted in the EU on French infrastructure. GDPR compliant by design, with data sovereignty and transparent data practices."
+    },
+    "hero": {
+      "title": "EU-hosted. GDPR by design.",
+      "lead": "Your data stays in Europe. On French infrastructure. Under EU law."
+    },
+    "features": {
+      "hostedInFrance": {
+        "title": "Hosted in France",
+        "description": "Our managed cloud runs on Scaleway infrastructure in France. Your data never leaves the EU."
+      },
+      "gdprCompliant": {
+        "title": "GDPR compliant",
+        "description": "Built by an EU company (Netherlands) for EU compliance from day one. No US cloud providers in the chain."
+      },
+      "noTracking": {
+        "title": "No tracking, no analytics",
+        "description": "We don't track your usage. No Google Analytics, no marketing pixels, no behavioral profiling."
+      },
+      "yourKeys": {
+        "title": "Your keys, your AI",
+        "description": "AI features use your own API keys. We never see your prompts or store your AI conversations."
+      }
+    },
+    "dataProcessing": {
+      "title": "Data processing details",
+      "whatWeStore": "What we store",
+      "where": "Where",
+      "retention": "Retention",
+      "presentationContent": "Presentation content",
+      "audienceResponses": "Audience responses",
+      "accountData": "Account data (email)",
+      "apiKeys": "API keys (encrypted)",
+      "scalewayFrance": "Scaleway France",
+      "untilYouDelete": "Until you delete it",
+      "untilDeletePresentation": "Until you delete the presentation",
+      "untilAccountDeletion": "Until account deletion",
+      "untilYouRemove": "Until you remove them",
+      "whatWeDontStore": "What we don't store",
+      "noIpAddresses": "IP addresses of your audience members",
+      "noAiPrompts": "AI prompts or generated content (processed directly with your API keys)",
+      "noAnalytics": "Usage analytics or behavioral data",
+      "noCookies": "Third-party cookies or tracking identifiers"
+    },
+    "selfHosting": {
+      "title": "Self-hosting: complete control",
+      "lead": "For organizations with strict data requirements, Deckyard can run entirely on your own infrastructure:",
+      "airGapped": "Air-gapped deployments — No external network calls required",
+      "onPremise": "On-premise databases — PostgreSQL on your servers",
+      "internalAi": "Internal AI models — Connect to self-hosted LLMs",
+      "audit": "Audit everything — Full source code available under MIT license",
+      "cta": "Self-hosting guide →"
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "dpa": {
+        "question": "Can I get a DPA (Data Processing Agreement)?",
+        "answer": "Yes. Contact us at privacy@deckyard.eu for our standard DPA or to discuss custom requirements."
+      },
+      "cloudAct": {
+        "question": "Is Deckyard subject to US CLOUD Act?",
+        "answer": "No. Deckyard is operated from the Netherlands. We use only EU infrastructure providers (Scaleway). There are no US entities in our data processing chain."
+      },
+      "audienceData": {
+        "question": "What happens to audience response data?",
+        "answer": "Audience responses (poll votes, Q&A submissions, etc.) are stored with your presentation. They're deleted when you delete the presentation. We don't analyze or profile audience behavior."
+      },
+      "aiGdpr": {
+        "question": "Do AI features comply with GDPR?",
+        "answer": "AI features use your own API keys, meaning prompts go directly to your chosen provider (OpenAI, Anthropic, Mistral, DeepSeek, or your own self-hosted model). We don't process or store AI interactions. You maintain your own relationship and DPA with your AI provider. With self-hosted models via the OpenAI-compatible endpoint, no data leaves your infrastructure at all."
+      },
+      "exportData": {
+        "question": "Can I export all my data?",
+        "answer": "Yes. You can export presentations as JSON, and audience data as CSV. For complete account data exports (GDPR Article 20), contact us."
+      },
+      "deleteAccount": {
+        "question": "How do I delete my account?",
+        "answer": "Account deletion is available in settings. All your data is permanently removed within 30 days. For immediate deletion requests, contact privacy@deckyard.eu."
+      }
+    },
+    "cta": {
+      "title": "Questions about privacy?",
+      "lead": "We're happy to discuss your specific requirements.",
+      "contactPrivacy": "Contact privacy team",
+      "selfHostingGuide": "Self-hosting guide"
+    }
+  },
+  "pricing": {
+    "meta": {
+      "title": "Pricing — Deckyard",
+      "description": "Simple pricing. No per-seat anxiety. Self-host for free, or use our managed EU cloud with Pro and Team plans."
+    },
+    "hero": {
+      "title": "Simple pricing. No per-seat anxiety.",
+      "lead": "Self-host for free forever, or let us handle the infrastructure. All features included in every plan."
+    },
+    "plans": {
+      "selfHosted": {
+        "name": "Self-hosted",
+        "price": "Free",
+        "period": "forever",
+        "features": {
+          "unlimitedPresentations": "Unlimited presentations",
+          "unlimitedAudience": "Unlimited audience members",
+          "allSlideTypes": "All 44 slide types",
+          "allInteractive": "All interactive features",
+          "aiGeneration": "AI generation (BYO keys)",
+          "fullSource": "Full source code access",
+          "mitLicense": "MIT license",
+          "yourData": "Your servers, your data"
+        },
+        "cta": "Deploy now"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "€19",
+        "period": "per month",
+        "features": {
+          "everything": "Everything in Self-hosted",
+          "managedHosting": "Managed EU hosting (France)",
+          "autoUpdates": "Automatic updates",
+          "storage": "10 GB storage",
+          "emailSupport": "Email support",
+          "dailyBackups": "Daily backups",
+          "customDomain": "Custom domain",
+          "byoAi": "BYO AI API keys"
+        },
+        "cta": "Start trial"
+      },
+      "team": {
+        "name": "Team",
+        "price": "€49",
+        "period": "per month",
+        "features": {
+          "everything": "Everything in Pro",
+          "teamMembers": "Up to 10 team members",
+          "sharedWorkspaces": "Shared workspaces",
+          "roleBasedPermissions": "Role-based permissions",
+          "storage": "50 GB storage",
+          "prioritySupport": "Priority support",
+          "auditLog": "Audit log",
+          "sso": "SSO (coming soon)"
+        },
+        "cta": "Start trial"
+      }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "selfHostedIncludes": {
+        "question": "What's included in self-hosted?",
+        "answer": "Everything. Self-hosted Deckyard includes all 44 slide types, all interactive features (polls, Q&A, feedback), AI generation, export to all formats, and unlimited presentations and audience members. The only difference is you manage your own infrastructure."
+      },
+      "aiCosts": {
+        "question": "Do I pay for AI features?",
+        "answer": "AI features use your own API keys from OpenAI, Anthropic, Mistral, DeepSeek, or any OpenAI-compatible service. You pay your provider directly at their rates—typically €0.02-0.05 per deck generation. Self-hosted models (via Ollama, vLLM, etc.) are free. We don't mark up API costs or charge AI credits."
+      },
+      "enterprise": {
+        "question": "Is there an enterprise tier?",
+        "answer": "Not yet. For larger teams or specific compliance requirements, contact us to discuss custom arrangements. We're happy to work with you on dedicated hosting, custom SLAs, or specific security requirements."
+      },
+      "switchPlans": {
+        "question": "Can I switch between plans?",
+        "answer": "Yes. You can upgrade, downgrade, or switch to self-hosting at any time. Your data is always exportable in standard formats (JSON, PDF, PPTX)."
+      },
+      "paymentMethods": {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept credit cards and SEPA direct debit for EU customers. Annual billing is available with a 15% discount."
+      },
+      "discounts": {
+        "question": "Do you offer discounts?",
+        "answer": "We offer 50% off for non-profits and educational institutions. Contact us with proof of status to apply."
+      }
+    },
+    "compare": {
+      "title": "Compare to alternatives",
+      "lead": "See how Deckyard pricing compares to other presentation tools.",
+      "freeTier": "Free tier",
+      "proPricing": "Pro pricing",
+      "teamPricing": "Team pricing",
+      "teamCost": "20-person team cost",
+      "aiFeatures": "AI features",
+      "selfHostOption": "Self-host option",
+      "deckyard": {
+        "freeTier": "Full features (self-host)",
+        "proPricing": "€19/month flat",
+        "teamPricing": "€49/month flat",
+        "teamCost": "€49/month",
+        "aiFeatures": "BYO keys (no markup)",
+        "selfHostOption": "Yes (free)"
+      },
+      "mentimeter": {
+        "freeTier": "50 participants",
+        "proPricing": "$11.99/user/month",
+        "teamPricing": "$24.99/user/month",
+        "teamCost": "$500/month",
+        "aiFeatures": "Included (limited)",
+        "selfHostOption": "No"
+      },
+      "slidescom": {
+        "freeTier": "Limited features",
+        "proPricing": "$7/month",
+        "teamPricing": "$18/user/month",
+        "teamCost": "$360/month",
+        "aiFeatures": "None",
+        "selfHostOption": "No"
+      }
+    },
+    "cta": {
+      "title": "Ready to get started?",
+      "lead": "Try the sandbox with no signup, or deploy on your own infrastructure.",
+      "trySandbox": "Try the sandbox",
+      "selfHostingGuide": "Self-hosting guide"
+    }
+  },
+  "compareMentimeter": {
+    "meta": {
+      "title": "Deckyard vs Mentimeter — Open Source Alternative",
+      "description": "Compare Deckyard and Mentimeter for audience interaction. Open source, self-hostable, no per-seat pricing, EU-hosted alternative."
+    },
+    "hero": {
+      "title": "Deckyard vs Mentimeter",
+      "lead": "Love audience interaction, but want to own your tools? Deckyard gives you polls, Q&A, and live feedback—plus a full presentation editor."
+    },
+    "comparison": {
+      "title": "Quick comparison",
+      "openSource": "Open source",
+      "selfHosting": "Self-hosting",
+      "fullSlideEditor": "Full slide editor",
+      "livePolls": "Live polls",
+      "wordClouds": "Word clouds",
+      "qna": "Q&A",
+      "quizzes": "Quizzes",
+      "aiGeneration": "AI generation",
+      "euHosting": "EU hosting",
+      "pricingModel": "Pricing model",
+      "audienceLimit": "Audience limit"
+    },
+    "reasons": {
+      "title": "Why teams switch to Deckyard",
+      "pricing": {
+        "title": "1. No more per-seat pricing anxiety",
+        "description": "Mentimeter charges per presenter. At $11.99/month basic or $24.99/month pro, a 20-person team costs $240–$500/month. Deckyard's flat pricing (or free self-hosting) means your costs don't scale with headcount."
+      },
+      "fullEditor": {
+        "title": "2. Build entire presentations, not just interactions",
+        "description": "Mentimeter excels at interactive slides but lacks a full presentation editor. You end up bouncing between Mentimeter and PowerPoint. Deckyard combines both: design complete decks with 44 slide types, then add live interaction where you need it."
+      },
+      "dataSovereignty": {
+        "title": "3. Real data sovereignty",
+        "description": "Mentimeter is a Swedish company but operates US infrastructure. For GDPR-conscious organizations, that's a concern. Deckyard runs on French servers, or you can self-host entirely on your own infrastructure."
+      },
+      "byoAi": {
+        "title": "4. BYO AI, no markup",
+        "description": "Mentimeter's AI features come with their paid plans. Deckyard lets you connect your own API keys—OpenAI, Anthropic, Mistral, DeepSeek, or any OpenAI-compatible model including self-hosted. You pay only what you use, at provider rates."
+      },
+      "openSource": {
+        "title": "5. Open source transparency",
+        "description": "Deckyard's code is public under MIT license. You can audit it, modify it, contribute to it. No black boxes, no vendor lock-in, no surprise deprecations."
+      }
+    },
+    "whenMentimeter": {
+      "title": "When to stick with Mentimeter",
+      "lead": "We're honest about trade-offs. Mentimeter might be better if:",
+      "turnkey": "You need turnkey simplicity — Mentimeter's SaaS model means zero setup. If you have no technical resources and don't want to manage anything, that's valuable.",
+      "soloPresenter": "You're a solo presenter — For individuals giving occasional talks, Mentimeter's free tier (50 participants) may be sufficient.",
+      "integrations": "You need specific integrations — Mentimeter has more third-party integrations built in. Deckyard is catching up, but check if your specific tool is supported."
+    },
+    "migration": {
+      "title": "Migration is simple",
+      "lead": "Moving from Mentimeter? Here's how:",
+      "step1": "Export your content — Download your Mentimeter presentations as PDFs for reference",
+      "step2": "Recreate in Deckyard — Use our AI generator to quickly rebuild decks, or import content manually",
+      "step3": "Test with your audience — Run a pilot session to ensure everything works",
+      "step4": "Go live — Share your new Deckyard presentation URL with participants",
+      "needHelp": "Need help migrating?",
+      "contactUs": "Contact us"
+    },
+    "cta": {
+      "title": "Ready to try the open alternative?",
+      "lead": "See how Deckyard handles your audience interaction needs.",
+      "trySandbox": "Try the sandbox",
+      "selfHostingGuide": "Self-hosting guide"
+    }
+  },
+  "compareSlidescom": {
+    "meta": {
+      "title": "Deckyard vs Slides.com — Different tools, different philosophies",
+      "description": "Compare Deckyard and Slides.com. Both are excellent tools built on different philosophies: Slides.com for visual freedom, Deckyard for structured speed. Open source, self-hostable, with live audience interaction."
+    },
+    "hero": {
+      "title": "Deckyard vs Slides.com",
+      "lead": "Two excellent tools with fundamentally different approaches. Slides.com gives you a beautiful freeform canvas. Deckyard gives you structured speed. Here's how to choose."
+    },
+    "respect": {
+      "title": "Credit where it's due",
+      "lead": "Slides.com is built by the creator of Reveal.js—the open source presentation framework that powers millions of decks, including Deckyard's own rendering engine. That's a massive contribution to the presentation world, and we have enormous respect for what they've built.",
+      "paragraph": "This isn't a \"we're better\" comparison. These are genuinely different tools for different needs. Our goal is to help you pick the right one."
+    },
+    "philosophy": {
+      "title": "Different design philosophies",
+      "intro": "The biggest difference isn't a feature list—it's a philosophy about who controls design.",
+      "slidescom": {
+        "title": "Slides.com: Design control for everyone",
+        "description": "Slides.com puts visual control in the hands of each user. Drag elements anywhere. Resize anything. Change fonts freely. Every person creating a presentation makes their own design decisions.",
+        "bestFor": "Best for: individual power users who want hands-on control of every visual detail"
+      },
+      "deckyard": {
+        "title": "Deckyard: Design control for design teams",
+        "description": "Deckyard separates design from content. Your brand designers and frontend developers define pixel-perfect themes once—typography, colors, spacing, layouts. Then content creators simply pick slide types and write. They can't accidentally break the brand.",
+        "approach": "This is exactly how modern website development works. Nobody gives content editors a freeform canvas to build web pages—they get beautifully designed components that are impossible to mess up. Same principle, applied to presentations.",
+        "speed": "The result? Pixel-perfect brand consistency across every presentation, every team, every department. And content creators work an order of magnitude faster because they're writing, not designing.",
+        "bestFor": "Best for: teams and organizations that need brand consistency and fast content creation"
+      }
+    },
+    "slideTypes": {
+      "title": "44 slide types with built-in intent",
+      "lead": "Deckyard's structured approach enables something powerful: every slide type has semantic meaning. A \"Quote\" slide is different from a \"Key Point\" slide. A \"Process\" slide implies sequential steps. A \"Comparison\" slide suggests weighing options.",
+      "aiAdvantage": "This structure is why our AI generation works so well. When an LLM understands that your content describes a process, it knows to use a Process slide. When you're highlighting a key insight, it chooses a Quote or Key Point slide. The baked-in semantics guide both humans and AI toward better presentations.",
+      "categories": "Our 44 slide types cover: data visualizations, timelines, comparisons, quotes, team profiles, image galleries, video embeds, interactive polls, Q&A, and much more. Every type is styled for your brand automatically."
+    },
+    "comparison": {
+      "title": "Quick comparison",
+      "openSource": "Open source",
+      "selfHosting": "Self-hosting",
+      "webBasedEditor": "Web-based editor",
+      "livePollsQna": "Live polls & Q&A",
+      "wordClouds": "Word clouds",
+      "audienceFeedback": "Audience feedback",
+      "aiGeneration": "AI generation",
+      "revealjsExport": "Reveal.js export",
+      "customCssThemes": "Custom CSS/themes",
+      "euHosting": "EU hosting",
+      "pricing": "Pricing"
+    },
+    "reasons": {
+      "title": "Other reasons teams choose Deckyard",
+      "audienceInteraction": {
+        "title": "Built-in audience interaction",
+        "description": "Slides.com creates beautiful static presentations. Deckyard includes live polls, Q&A, word clouds, Likert scales, and feedback collection—all in one tool, no integrations needed."
+      },
+      "sovereignty": {
+        "title": "Open source and data sovereignty",
+        "description": "Slides.com is US-hosted and closed-source. If data sovereignty matters to you—or you simply want to control your own infrastructure—Deckyard gives you that choice. Self-host with Docker, or use our EU-hosted cloud in France."
+      },
+      "aiChoice": {
+        "title": "Choose your AI provider",
+        "description": "Deckyard lets you bring your own API keys from OpenAI, Anthropic, Mistral, DeepSeek, or any OpenAI-compatible service. Run local models with Ollama for zero cost. You pick the model, you pay provider rates directly. No markup, no credits, no lock-in to a single AI vendor."
+      },
+      "openSource": {
+        "title": "MIT licensed, forever",
+        "description": "If Slides.com changes pricing, removes features, or shuts down, you lose access. Deckyard's MIT-licensed code means you can fork it, modify it, and run it yourself—forever."
+      },
+      "euData": {
+        "title": "EU data residency",
+        "description": "Slides.com runs on US infrastructure. Deckyard's managed cloud is hosted in France on Scaleway. For EU organizations, that's a meaningful difference for GDPR compliance."
+      }
+    },
+    "whenSlidescom": {
+      "title": "When Slides.com is the better choice",
+      "lead": "We're not saying Deckyard is always better—it depends on how you work:",
+      "individual": "You're an individual creator — If you're making presentations for yourself and enjoy hands-on design control, Slides.com's canvas approach lets you craft exactly what you envision.",
+      "revealjs": "You're a Reveal.js power user — Slides.com is built directly on Reveal.js with deep integration. If you need Reveal.js's full feature set, they wrote the book.",
+      "noThemeTeam": "You don't have design resources — Deckyard shines when you have designers who can create custom themes. If you're starting from scratch without design support, Slides.com's visual editor gives you more immediate flexibility.",
+      "staticOnly": "You only need static presentations — If you never need audience interaction, Slides.com is simpler and more focused."
+    },
+    "migration": {
+      "title": "Switching from Slides.com",
+      "lead": "Both tools can export to standard formats, making migration straightforward:",
+      "step1": "Export from Slides.com — Download your presentations as HTML or PDF",
+      "step2": "Import content to Deckyard — Paste content or use AI to regenerate slides from your source material",
+      "step3": "Add interactivity — Enhance your static slides with polls, Q&A, and audience feedback",
+      "step4": "Publish and share — Your new Deckyard presentations work on any device"
+    },
+    "cta": {
+      "title": "Try Deckyard today",
+      "lead": "See if the structured approach fits how you work. The sandbox is free, no signup required.",
+      "trySandbox": "Try the sandbox",
+      "viewSource": "View source"
+    }
+  },
+  "compareGoogleSlides": {
+    "meta": {
+      "title": "Deckyard vs Google Slides — Open Source Alternative",
+      "description": "Compare Deckyard and Google Slides. Open source, self-hostable, with built-in audience interaction. EU-hosted alternative to Google Workspace."
+    },
+    "hero": {
+      "title": "Deckyard vs Google Slides",
+      "lead": "Need audience interaction without add-ons? Want to keep your data out of Google's cloud? Deckyard gives you a full presentation editor with polls, Q&A, and EU hosting."
+    },
+    "comparison": {
+      "title": "Quick comparison",
+      "openSource": "Open source",
+      "selfHosting": "Self-hosting",
+      "livePollsQna": "Live polls & Q&A",
+      "audienceFeedback": "Audience feedback",
+      "aiGeneration": "AI generation",
+      "realTimeCollab": "Real-time co-editing",
+      "dataLocation": "Data location",
+      "gdprCompliant": "GDPR compliant",
+      "offlineAccess": "Offline access",
+      "pricing": "Pricing"
+    },
+    "reasons": {
+      "title": "Why teams choose Deckyard over Google Slides",
+      "audienceInteraction": {
+        "title": "1. Built-in audience interaction",
+        "description": "Google Slides has no native polling, Q&A, or feedback features. You need third-party add-ons like Slido or Mentimeter, creating extra costs and complexity. Deckyard includes polls, Likert scales, Q&A, and feedback collection built right in."
+      },
+      "dataSovereignty": {
+        "title": "2. EU data sovereignty",
+        "description": "Google Slides runs on Google Cloud, primarily in US data centers. Even with a DPA, your data is subject to US jurisdiction. Deckyard runs on French servers, or you can self-host entirely on your own EU infrastructure."
+      },
+      "googleFree": {
+        "title": "3. Google-free compliance",
+        "description": "Some organizations—schools, government agencies, privacy-focused companies—need to avoid Google services. Deckyard gives you professional presentations without a Google account or ecosystem dependency."
+      },
+      "aiChoice": {
+        "title": "4. Choose your AI provider",
+        "description": "Google Slides ties you to Gemini for AI features. Deckyard lets you connect OpenAI, Anthropic, Mistral, DeepSeek, or any OpenAI-compatible model—including self-hosted via Ollama. You pay provider rates directly—no markup, no lock-in."
+      },
+      "openSource": {
+        "title": "5. Open source transparency",
+        "description": "Google Slides is a black box. Deckyard's MIT-licensed code is fully auditable. Modify it, contribute to it, or fork it. No vendor lock-in, no surprise deprecations."
+      }
+    },
+    "whenGoogleSlides": {
+      "title": "When Google Slides makes sense",
+      "lead": "We're honest about trade-offs. Google Slides might be better if:",
+      "workspaceIntegration": "Deep Google Workspace integration — If your org is all-in on Google (Drive, Meet, Calendar), Slides' native integration is seamless.",
+      "realTimeCollab": "Real-time co-editing — Google's simultaneous editing is best-in-class. Deckyard has comments and sharing, but not live cursor collaboration.",
+      "simpleNeeds": "Simple needs, zero budget — Google Slides is free with a Google account. If you don't need audience interaction or data sovereignty, it's hard to beat free."
+    },
+    "migration": {
+      "title": "Migrating from Google Slides",
+      "lead": "Moving your presentations is straightforward:",
+      "step1": "Export from Google — Download your presentations as PPTX or PDF",
+      "step2": "Import to Deckyard — Upload PPTX files or use AI to regenerate from your content",
+      "step3": "Add interactivity — Enhance your slides with polls, Q&A, and feedback",
+      "step4": "Share — Deckyard presentations work on any device, no Google account required",
+      "needHelp": "Need help with migration?",
+      "contactUs": "Contact us"
+    },
+    "cta": {
+      "title": "Ready for Google-free presentations?",
+      "lead": "Try Deckyard and see how built-in interaction and EU hosting make a difference.",
+      "trySandbox": "Try the sandbox",
+      "selfHostingGuide": "Self-hosting guide"
+    }
+  },
+  "features": {
+    "meta": {
+      "title": "Features — Deckyard",
+      "description": "44 slide types, built-in polls and Q&A, AI generation with your own keys, export to any format. Everything for professional presentations."
+    },
+    "hero": {
+      "backToHome": "← Back to home",
+      "title": "Everything for professional presentations",
+      "lead": "44 slide types, built-in audience interaction, AI-powered generation, and export to any format. All in one open-source platform."
+    },
+    "quickLinks": {
+      "slideTypes": "Slide Types",
+      "aiGeneration": "AI Generation",
+      "liveInteractions": "Live Interactions"
+    },
+    "slideTypes": {
+      "title": "44 slide types for every need",
+      "lead": "From data visualizations to interactive polls, from image galleries to team cards. No more switching between tools.",
+      "viewAll": "View all 44 slide types →",
+      "data": {
+        "title": "Data & Visualizations",
+        "description": "Charts, KPIs, tables, funnels, pyramids, SWOT matrices. Present numbers with clarity."
+      },
+      "interactive": {
+        "title": "Interactive",
+        "description": "Live polls, Q&A, Likert scales, feedback forms. Engage your audience without extra tools."
+      },
+      "cards": {
+        "title": "Content Cards",
+        "description": "Team cards, icon cards, logo walls, galleries, process diagrams. Structure information beautifully."
+      },
+      "media": {
+        "title": "Media & Embeds",
+        "description": "Images, galleries, video embeds, maps, forms. Rich media without friction."
+      }
+    },
+    "ai": {
+      "title": "AI that works for you, not your wallet",
+      "lead": "Generate entire presentations from a prompt. Use your own API keys—pay only what you use, at provider rates.",
+      "fullDeck": {
+        "title": "Full deck generation",
+        "description": "Describe your presentation and let AI create a complete first draft with appropriate slide types, content, and structure."
+      },
+      "docConversion": {
+        "title": "Document conversion",
+        "description": "Upload a PDF, Word doc, or Notion export. AI extracts key points and structures them into presentation slides."
+      },
+      "byoKeys": {
+        "title": "Bring your own keys",
+        "description": "Connect your OpenAI, Anthropic, Mistral, DeepSeek, or self-hosted model. Pay your provider directly—or run local models for free. No markup, no credits to run out."
+      },
+      "typicalCosts": {
+        "title": "Typical costs",
+        "description": "With BYO API keys, generating a full deck costs approximately €0.02-0.05 depending on length and provider.",
+        "compare": "Compare:",
+        "compareDesc": "Other tools charge $5-10 per month just for limited AI features, or sell \"AI credits\" at a markup."
+      },
+      "learnMore": "Learn about AI features →"
+    },
+    "interactions": {
+      "title": "Engage your audience without switching tools",
+      "lead": "Polls, Q&A, Likert scales, and feedback—built directly into your slides. No more juggling Mentimeter alongside your presentation.",
+      "livePolls": {
+        "title": "Live polls",
+        "description": "Multiple choice with instant results. Audience votes via QR code or short link, results appear live on screen."
+      },
+      "qna": {
+        "title": "Q&A",
+        "description": "Collect questions from your audience. Upvoting, moderation, and live display of selected questions."
+      },
+      "likert": {
+        "title": "Likert scales",
+        "description": "Agreement scales (strongly disagree to strongly agree) or 1-10 ratings. Great for gauging sentiment."
+      },
+      "feedback": {
+        "title": "Open feedback",
+        "description": "Free-text responses from your audience. Collect ideas, feedback, or answers in their own words."
+      },
+      "learnMore": "Learn about interactions →"
+    },
+    "export": {
+      "title": "Export and publish anywhere",
+      "lead": "Your presentations, your format. Export to PDF, PowerPoint, HTML, images, or JSON.",
+      "pdf": {
+        "title": "PDF",
+        "description": "Print-ready PDF export with all slides. Perfect for handouts or archiving."
+      },
+      "pptx": {
+        "title": "PowerPoint (PPTX)",
+        "description": "Export to PowerPoint format for colleagues who prefer desktop tools."
+      },
+      "html": {
+        "title": "HTML embed",
+        "description": "Embed presentations on your website with a simple iframe. Fully interactive."
+      },
+      "json": {
+        "title": "JSON data",
+        "description": "Export raw data for analysis, backup, or migration. Full data portability."
+      }
+    },
+    "import": {
+      "title": "Import from anywhere",
+      "lead": "Already have content? Bring it in. Deckyard imports from multiple formats — including direct Markdown support for developers who write slides as code.",
+      "markdown": {
+        "title": "Markdown",
+        "description": "Write slides in your editor, version-control in git, import with one click. No AI, no API keys — deterministic 1:1 mapping from standard Markdown conventions."
+      },
+      "pptx": {
+        "title": "PowerPoint",
+        "description": "Upload a .pptx and convert it to native Deckyard slides. Text, images, and speaker notes carry over."
+      },
+      "notion": {
+        "title": "Notion",
+        "description": "Connect your Notion workspace and turn any page into a presentation. Headings, lists, tables, and images are all converted."
+      },
+      "text": {
+        "title": "Plain text (AI)",
+        "description": "Paste any text — notes, briefs, documents — and let AI structure it into slides automatically."
+      },
+      "learnMore": "See all import methods →"
+    },
+    "collaboration": {
+      "title": "Collaboration built in",
+      "lead": "Work together on presentations with your team. Workspaces, permissions, and shared assets.",
+      "workspaces": {
+        "title": "Workspaces",
+        "description": "Organize presentations by project, client, or team. Share access without sharing your entire account."
+      },
+      "permissions": {
+        "title": "Role-based permissions",
+        "description": "Owner, editor, and viewer roles. Control who can edit, present, or just view."
+      },
+      "assets": {
+        "title": "Shared assets",
+        "description": "Upload images, logos, and media once. Use across all presentations in your workspace."
+      },
+      "themes": {
+        "title": "Custom themes",
+        "description": "Create branded themes with your colors, fonts, and logo. Apply to any presentation with one click."
+      },
+      "audit": {
+        "title": "Audit log (Team)",
+        "description": "Track who made changes and when. Required for compliance in many organizations."
+      },
+      "sso": {
+        "title": "Coming soon: SSO",
+        "description": "Single sign-on integration for enterprise identity providers."
+      }
+    },
+    "cta": {
+      "title": "Ready to try it?",
+      "lead": "Try the sandbox with no signup, or deploy on your own infrastructure.",
+      "trySandbox": "Try the sandbox",
+      "selfHosting": "Self-hosting guide"
+    }
+  },
+  "featuresSlideTypes": {
+    "meta": {
+      "title": "Slide Types — Deckyard",
+      "description": "44 slide types for every need: data visualizations, interactive polls, content cards, media embeds, and more. See the full gallery."
+    },
+    "hero": {
+      "backToFeatures": "← Features",
+      "title": "44 slide types for every need",
+      "lead": "From data visualizations to interactive polls, from image galleries to team cards. Browse by category or see them all."
+    },
+    "categories": {
+      "all": "All",
+      "data": "Data",
+      "interactive": "Interactive",
+      "cards": "Cards",
+      "media": "Media",
+      "structure": "Structure"
+    },
+    "types": {
+      "chart": { "name": "Chart", "desc": "Bar, line, pie, and area charts for data visualization" },
+      "kpiMetrics": { "name": "KPI Metrics", "desc": "Highlight key numbers with large, prominent displays" },
+      "table": { "name": "Table", "desc": "Structured data in rows and columns" },
+      "funnel": { "name": "Funnel", "desc": "Visualize conversion stages or process flow" },
+      "pyramid": { "name": "Pyramid", "desc": "Hierarchical data with layered structure" },
+      "timeline": { "name": "Timeline", "desc": "Events and milestones in chronological order" },
+      "matrix": { "name": "Matrix", "desc": "2x2 or larger grids for comparisons (SWOT, etc.)" },
+      "agenda": { "name": "Agenda", "desc": "Meeting or presentation agenda with timing" },
+      "cycle": { "name": "Cycle", "desc": "PDCA, continuous improvement, or circular process diagrams" },
+      "poll": { "name": "Poll", "desc": "Multiple choice voting with live results" },
+      "likert": { "name": "Likert Scale", "desc": "Agreement scale from strongly disagree to strongly agree" },
+      "likertSlider": { "name": "Likert Slider", "desc": "Numeric rating on a 1-10 scale with slider input" },
+      "feedback": { "name": "Feedback", "desc": "Open text responses from your audience" },
+      "qna": { "name": "Q&A", "desc": "Collect and display audience questions with upvoting" },
+      "followInvite": { "name": "Follow Invite", "desc": "QR code for audience to join follow-along mode" },
+      "wordCloud": { "name": "Word Cloud", "desc": "Visualize audience responses as a dynamic word cloud" },
+      "quiz": { "name": "Quiz", "desc": "Multiple choice with correct answers and scoring" },
+      "cardStack": { "name": "Card Stack", "desc": "Multiple content cards in a flexible grid" },
+      "iconCards": { "name": "Icon Cards", "desc": "Features or benefits with icons and descriptions" },
+      "fourCards": { "name": "4 Cards", "desc": "Four content cards in a balanced grid layout" },
+      "teamOverview": { "name": "Team Overview", "desc": "Grid of team member cards with photos and roles" },
+      "teamCards": { "name": "Team Cards", "desc": "Individual team member spotlight" },
+      "logoWall": { "name": "Logo Wall", "desc": "Display client logos, partners, or technologies" },
+      "gallery": { "name": "Gallery", "desc": "Image gallery with captions" },
+      "partnerSplit": { "name": "Partner Split", "desc": "Side-by-side partner or team member presentation" },
+      "process": { "name": "Process", "desc": "Step-by-step process or workflow visualization" },
+      "comparison": { "name": "Comparison", "desc": "Side-by-side comparison of options or features" },
+      "image": { "name": "Image", "desc": "Full-bleed or contained image display" },
+      "imageText": { "name": "Image + Text", "desc": "Image with accompanying text content" },
+      "imageBlocks": { "name": "Image Blocks", "desc": "Multiple images with titles and captions" },
+      "video": { "name": "Video", "desc": "Embed YouTube, Vimeo, or self-hosted videos" },
+      "embed": { "name": "Embed", "desc": "iFrame embed for external content" },
+      "code": { "name": "Code", "desc": "Syntax-highlighted code snippets" },
+      "title": { "name": "Title", "desc": "Opening slide with title and subtitle" },
+      "chapter": { "name": "Chapter", "desc": "Section divider with chapter title" },
+      "sectionTitle": { "name": "Section Title", "desc": "Clean section header for organizing content" },
+      "section": { "name": "Section", "desc": "Sub-section header within a chapter" },
+      "content": { "name": "Content", "desc": "Standard text slide with title and body" },
+      "contentColumns": { "name": "Content Columns", "desc": "Multi-column layout for organized content" },
+      "textBlocks": { "name": "Text Blocks", "desc": "Multiple text sections with headings" },
+      "quote": { "name": "Quote", "desc": "Featured quote with attribution" },
+      "list": { "name": "List", "desc": "Bullet points or numbered list" },
+      "twoColumn": { "name": "Two Column", "desc": "Side-by-side content layout" },
+      "payoff": { "name": "Payoff", "desc": "Closing slide with call-to-action" },
+      "thankYou": { "name": "Thank You", "desc": "Closing slide with contact information" }
+    },
+    "cta": {
+      "title": "See them in action",
+      "lead": "Try the sandbox to explore all slide types interactively.",
+      "trySandbox": "Try the sandbox",
+      "readDocs": "Read the docs"
+    }
+  },
+  "featuresAi": {
+    "meta": {
+      "title": "AI Generation — Deckyard",
+      "description": "Generate presentations with AI using your own API keys. Full deck generation, document conversion, no markup on costs. OpenAI, Anthropic, Mistral, DeepSeek, and any OpenAI-compatible model supported—including self-hosted via Ollama."
+    },
+    "hero": {
+      "backToFeatures": "← Features",
+      "title": "AI that works for you, not against your wallet",
+      "lead": "Generate entire presentations from a prompt, convert documents to slides, and improve your content—all using your own API keys with no markup."
+    },
+    "fullDeck": {
+      "title": "Full deck generation",
+      "lead": "Describe your presentation, and AI creates a complete first draft with appropriate slide types, content, and structure.",
+      "howItWorks": "How it works",
+      "step1": "Open the AI Wizard — Click the AI button in the editor toolbar",
+      "step2": "Describe your presentation — \"A 10-slide pitch deck for a B2B SaaS product targeting HR teams\"",
+      "step3": "Review and generate — AI suggests a structure, you approve, it generates",
+      "step4": "Edit as needed — Every slide is fully editable, add your own content",
+      "tipsTitle": "Tips for better results",
+      "tip1": "Be specific — Include audience, purpose, and desired length",
+      "tip2": "Mention slide types — \"Include a poll slide for audience engagement\"",
+      "tip3": "Provide context — \"For a technical audience familiar with cloud infrastructure\"",
+      "examplePrompts": "Example prompts",
+      "example1": "\"Create a 15-slide presentation about our Q4 results for the board of directors. Include KPI metrics, charts for revenue and growth, and a timeline for next year's roadmap.\"",
+      "example2": "\"Build a workshop introduction with an icebreaker poll, agenda, and section dividers for 4 topics: design thinking, user research, prototyping, and testing.\""
+    },
+    "docConversion": {
+      "title": "Document conversion",
+      "lead": "Upload a document and AI extracts key points, structures them logically, and creates presentation slides.",
+      "pdf": {
+        "title": "PDF documents",
+        "description": "Upload reports, whitepapers, or proposals. AI extracts main points and creates structured slides."
+      },
+      "word": {
+        "title": "Word documents",
+        "description": "Convert .docx files to presentations. Headings become slide titles, content gets restructured."
+      },
+      "markdown": {
+        "title": "Markdown/Notion exports",
+        "description": "Paste markdown content or Notion exports. Structure is preserved and enhanced."
+      },
+      "text": {
+        "title": "Text content",
+        "description": "Paste any text content. AI analyzes structure and creates appropriate slides."
+      }
+    },
+    "byoKeys": {
+      "title": "Bring your own API keys",
+      "lead": "Connect your own AI provider account. Pay provider rates directly—no markup, no credits, no limits.",
+      "providers": "Supported providers",
+      "openai": "OpenAI",
+      "openaiModels": "GPT-4o, GPT-4 Turbo",
+      "anthropic": "Anthropic",
+      "anthropicModels": "Claude 3.5 Sonnet, Claude 3 Opus",
+      "mistral": "Mistral",
+      "mistralModels": "Mistral Large, Mixtral",
+      "deepseek": "DeepSeek",
+      "deepseekModels": "DeepSeek Chat, DeepSeek Coder",
+      "openaiCompat": "Any OpenAI-compatible",
+      "openaiCompatModels": "Ollama, Together AI, Fireworks, Groq, vLLM",
+      "setupTitle": "Setup is simple",
+      "setup1": "Get an API key from your provider",
+      "setup2": "Add it in Deckyard settings",
+      "setup3": "Start generating",
+      "costs": {
+        "title": "Typical costs",
+        "lead": "With current API pricing, generating a full 15-slide deck costs approximately:",
+        "gpt4o": "GPT-4o: ~€0.02-0.04",
+        "claude": "Claude 3.5 Sonnet: ~€0.02-0.05",
+        "mistral": "Mistral Large: ~€0.01-0.03",
+        "deepseek": "DeepSeek Chat: ~€0.01-0.02",
+        "local": "Self-hosted (Ollama): free",
+        "note": "Costs vary by deck length and complexity. These are estimates based on typical usage."
+      }
+    },
+    "whyByo": {
+      "title": "Why BYO API keys?",
+      "lead": "Other tools charge \"AI credits\" on top of your subscription. We think that's unnecessary.",
+      "noLimits": {
+        "title": "No artificial limits",
+        "description": "Generate as many decks as you want. No monthly quotas, no credit packs to purchase."
+      },
+      "noMarkup": {
+        "title": "No markup",
+        "description": "Pay your AI provider directly at their published rates. We don't add any margin."
+      },
+      "chooseProvider": {
+        "title": "Choose your provider",
+        "description": "Prefer Claude over GPT? Use it. Have a Mistral or DeepSeek account? Connect it. Running Ollama locally? Point Deckyard at it. Your choice."
+      },
+      "disableAi": {
+        "title": "Or disable entirely",
+        "description": "Don't want AI features? Don't add a key. Deckyard works perfectly without AI."
+      }
+    },
+    "privacy": {
+      "title": "Privacy and your data",
+      "lead": "Your API keys and prompts stay between you and your provider.",
+      "whatWeSend": "What we send to AI providers",
+      "send1": "Your prompt (presentation description)",
+      "send2": "Document content (if uploading)",
+      "send3": "Slide structure for editing suggestions",
+      "whatWeDontStore": "What we don't store",
+      "dontStore1": "API keys are encrypted and never logged",
+      "dontStore2": "Prompts are not stored after generation",
+      "dontStore3": "We don't train on your content",
+      "selfHosting": "Self-hosting for maximum control",
+      "selfHostingDesc": "If you self-host Deckyard, AI requests go directly from your server to your chosen provider. We never see your API key or content.",
+      "selfHostingGuide": "Self-hosting guide →"
+    },
+    "cta": {
+      "title": "Ready to try AI generation?",
+      "lead": "The sandbox includes demo AI features. Add your own keys for full access.",
+      "trySandbox": "Try the sandbox",
+      "readDocs": "Read the docs"
+    }
+  },
+  "featuresInteractions": {
+    "meta": {
+      "title": "Live Interactions — Deckyard",
+      "description": "Engage your audience with built-in polls, Q&A, Likert scales, and feedback forms. No separate tools needed—interactions are part of your slides."
+    },
+    "hero": {
+      "backToFeatures": "← Features",
+      "title": "Engage your audience without switching tools",
+      "lead": "Polls, Q&A, Likert scales, and feedback forms—built directly into your slides. No more juggling Mentimeter alongside your presentation."
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "lead": "Simple for presenters, effortless for audiences.",
+      "step1": {
+        "number": "1",
+        "title": "Add an interactive slide",
+        "description": "Insert a poll, Q&A, Likert, or feedback slide in the editor. Set your question and options."
+      },
+      "step2": {
+        "number": "2",
+        "title": "Audience joins via QR or link",
+        "description": "During presentation, display a QR code or short link. Audience scans/clicks to join—no app needed."
+      },
+      "step3": {
+        "number": "3",
+        "title": "Results appear live",
+        "description": "As votes come in, results update in real-time on your slides. Animate reveals for impact."
+      }
+    },
+    "polls": {
+      "title": "Live polls",
+      "lead": "Multiple choice voting with instant results visualization.",
+      "features": "Features",
+      "feature1": "2-6 answer options — Simple yes/no to complex multi-choice",
+      "feature2": "Real-time bar chart — Votes animate as they come in",
+      "feature3": "Anonymous or identified — Choose whether to track who voted",
+      "feature4": "Results reveal — Hide results until you're ready to show them",
+      "feature5": "Export responses — Download all votes as CSV",
+      "useCases": "Use cases",
+      "useCase1": "Icebreaker questions at the start",
+      "useCase2": "Quick pulse checks during workshops",
+      "useCase3": "Decision making with the room",
+      "useCase4": "Testing understanding in training"
+    },
+    "qna": {
+      "title": "Q&A",
+      "lead": "Collect questions from your audience with upvoting and moderation.",
+      "features": "Features",
+      "feature1": "Audience submits questions — From their phone or laptop",
+      "feature2": "Upvoting — Best questions rise to the top",
+      "feature3": "Moderation — Review and approve before displaying",
+      "feature4": "Mark as answered — Track which questions you've addressed",
+      "feature5": "Anonymous option — Let shy attendees ask freely",
+      "presenterControls": "Presenter controls",
+      "control1": "Choose which questions to display",
+      "control2": "Dismiss inappropriate questions",
+      "control3": "Highlight featured questions",
+      "control4": "Export all questions after"
+    },
+    "likert": {
+      "title": "Likert scales",
+      "lead": "Measure agreement, satisfaction, or any spectrum-based response.",
+      "agreement": {
+        "title": "Agreement scale",
+        "description": "Strongly disagree → Strongly agree. Classic 5-point scale for opinions and attitudes."
+      },
+      "numeric": {
+        "title": "Numeric rating",
+        "description": "1-10 slider for satisfaction, NPS-style questions, or any numeric range."
+      },
+      "custom": {
+        "title": "Custom labels",
+        "description": "Define your own scale labels: \"Not at all likely\" to \"Extremely likely\"."
+      },
+      "visual": {
+        "title": "Visual results",
+        "description": "Results displayed as distribution chart showing where responses cluster."
+      }
+    },
+    "feedback": {
+      "title": "Open feedback",
+      "lead": "Collect free-text responses when you need more than a vote.",
+      "features": "Features",
+      "feature1": "Text responses — Short answers or longer feedback",
+      "feature2": "Word cloud option — Visualize common themes",
+      "feature3": "Moderated display — Choose which responses to show",
+      "feature4": "Export all — Download responses for analysis",
+      "useCases": "Use cases",
+      "useCase1": "Brainstorming and idea collection",
+      "useCase2": "Post-session feedback",
+      "useCase3": "\"What questions do you have?\"",
+      "useCase4": "Collecting suggestions or concerns"
+    },
+    "followAlong": {
+      "title": "Follow-along mode",
+      "lead": "Keep your audience in sync with your current slide.",
+      "howItWorks": "How it works",
+      "howItWorksDesc": "Audience members who join via QR code see the current slide on their device. As you advance, their view updates automatically.",
+      "benefits": "Benefits",
+      "benefit1": "Remote attendees — Participants can follow from anywhere",
+      "benefit2": "Accessibility — Audience can zoom on their own device",
+      "benefit3": "Large venues — No need for everyone to see the screen",
+      "benefit4": "Interactive slides — Vote/respond from the same view"
+    },
+    "liveVideo": {
+      "title": "Live video overlay",
+      "lead": "Float a video stream on top of your slides—perfect for webcam overlays, hybrid events, and remote training.",
+      "features": "Features",
+      "feature1": "Persistent overlay — Video stays visible as you navigate slides, no rebuffering",
+      "feature2": "Configurable position — PiP corners, full-width strips, or centered overlay",
+      "feature3": "Mobile-aware — Docks to top/bottom on small screens, or hides entirely",
+      "feature4": "Per-slide control — Hide the overlay on specific slides where it would cover content",
+      "providers": "Supported providers",
+      "provider1": "YouTube Live, Vimeo, and Bunny Stream — Iframe embeds with autoplay",
+      "provider2": "Mux and HLS (.m3u8) — Native video player with adaptive streaming",
+      "provider3": "Cloudflare Stream — Iframe embed with autoplay"
+    },
+    "comparison": {
+      "title": "No extra tools needed",
+      "lead": "Compare to running Mentimeter alongside your slides.",
+      "singleTool": "Single tool",
+      "deckyard": { "singleTool": "Everything in one place" },
+      "mentimeter": { "singleTool": "Switch between apps" },
+      "consistentDesign": "Consistent design",
+      "deckyardDesign": "Interactions match your theme",
+      "mentimeterDesign": "Different styling",
+      "flow": "Flow",
+      "deckyardFlow": "Interactive slides in sequence",
+      "mentimeterFlow": "Jump to Mentimeter and back",
+      "cost": "Cost",
+      "deckyardCost": "Included (or self-host free)",
+      "mentimeterCost": "Extra subscription",
+      "export": "Export",
+      "deckyardExport": "All data in one export",
+      "mentimeterExport": "Separate exports",
+      "seeFullComparison": "See full Mentimeter comparison →"
+    },
+    "cta": {
+      "title": "Ready to engage your audience?",
+      "lead": "Try interactive slides in the sandbox.",
+      "trySandbox": "Try the sandbox",
+      "readDocs": "Read the docs"
+    }
+  },
+  "comparePowerPoint": {
+    "meta": {
+      "title": "Deckyard vs PowerPoint — Open Source Alternative",
+      "description": "Compare Deckyard and Microsoft PowerPoint. Open source, no license fees, with built-in audience interaction and EU hosting."
+    },
+    "hero": {
+      "title": "Deckyard vs PowerPoint",
+      "lead": "Tired of per-seat licensing? Need audience interaction without extra tools? Deckyard offers professional presentations at a fraction of the cost."
+    },
+    "comparison": {
+      "title": "Quick comparison",
+      "openSource": "Open source",
+      "licenseCost": "License cost",
+      "livePollsQna": "Live polls & Q&A",
+      "audienceFeedback": "Audience feedback",
+      "aiGeneration": "AI generation",
+      "webBased": "Web-based",
+      "selfHosting": "Self-hosting",
+      "advancedAnimations": "Advanced animations",
+      "offlineDesktop": "Offline desktop app",
+      "exportFormats": "Export formats"
+    },
+    "reasons": {
+      "title": "Why teams switch from PowerPoint to Deckyard",
+      "noLicense": {
+        "title": "1. No license fees",
+        "description": "PowerPoint requires Microsoft 365 at $12.50-22/user/month. For a 50-person team, that's $7,500-13,200/year just for the software. Deckyard is free to self-host, or €49/month flat for teams—regardless of size."
+      },
+      "audienceInteraction": {
+        "title": "2. Built-in audience interaction",
+        "description": "PowerPoint has no polling, Q&A, or feedback features. You need separate tools like Mentimeter ($500+/month for teams) or Slido. Deckyard includes everything: polls, Likert scales, Q&A, word clouds, and lead capture."
+      },
+      "aiChoice": {
+        "title": "3. AI without Copilot pricing",
+        "description": "Microsoft Copilot costs an extra $30/user/month. For 20 users, that's $7,200/year. Deckyard lets you use OpenAI, Anthropic, Mistral, DeepSeek, or self-hosted models with your own API keys—typically €0.02-0.05 per deck generated, or free with local models."
+      },
+      "openSource": {
+        "title": "4. Open source = no lock-in",
+        "description": "Microsoft can change pricing, deprecate features, or require new subscriptions. Deckyard's MIT license means you can always run it yourself, fork it, or migrate your data."
+      },
+      "webFirst": {
+        "title": "5. Web-first, works anywhere",
+        "description": "Deckyard runs in any browser. No installation, no IT deployment, no version conflicts. Present from any device—your laptop, a conference room PC, or your phone."
+      }
+    },
+    "costComparison": {
+      "title": "Cost comparison",
+      "lead": "See how licensing costs add up:",
+      "scenario": "Scenario",
+      "singleUser": "Single user",
+      "team10": "10-person team",
+      "team50": "50-person team",
+      "withAi": "With AI features"
+    },
+    "whenPowerPoint": {
+      "title": "When PowerPoint makes sense",
+      "lead": "We're honest about trade-offs. PowerPoint might be better if:",
+      "m365Investment": "You're invested in Microsoft 365 — If your organization already pays for M365, PowerPoint is included. The marginal cost is zero.",
+      "advancedAnimations": "You need advanced animations — PowerPoint's animation engine is more sophisticated. Complex motion paths, morph transitions, and video editing are stronger in PowerPoint.",
+      "desktopWorkflow": "You prefer desktop apps — If you want a native app with offline access and keyboard shortcuts you've used for years, PowerPoint's desktop experience is mature.",
+      "enterpriseIt": "Enterprise IT requirements — Some organizations mandate Microsoft tools for compliance, support, or training reasons."
+    },
+    "migration": {
+      "title": "Migration from PowerPoint",
+      "lead": "Deckyard works with your existing files:",
+      "step1": "Import PPTX — Upload PowerPoint files directly to Deckyard (beta)",
+      "step2": "AI conversion — Use AI to analyze your deck and recreate it with native Deckyard slide types",
+      "step3": "Add interactivity — Enhance your presentation with polls, Q&A, and feedback slides",
+      "step4": "Export back — Still need PPTX? Export from Deckyard to PowerPoint format",
+      "pptxSupport": "Note: PPTX import preserves content and basic formatting. Complex animations may need to be recreated."
+    },
+    "cta": {
+      "title": "Ready to escape license fees?",
+      "lead": "Try Deckyard and see how much you can save while gaining audience interaction features.",
+      "trySandbox": "Try the sandbox",
+      "selfHostingGuide": "Self-hosting guide"
+    }
+  },
+  "security": {
+    "meta": {
+      "title": "Security Center — Deckyard",
+      "description": "Security you can verify. EU-hosted infrastructure, encryption, compliance documentation, and self-hosting options for complete control."
+    },
+    "hero": {
+      "title": "Security you can verify",
+      "lead": "Open source means you can audit our code. EU hosting means your data stays in Europe. Self-hosting means complete control."
+    },
+    "infrastructure": {
+      "title": "Infrastructure security",
+      "lead": "Our managed cloud runs on enterprise-grade EU infrastructure with security as the foundation.",
+      "euHosting": {
+        "title": "EU data centers",
+        "description": "Hosted on Scaleway infrastructure in France. Your data never leaves the European Union."
+      },
+      "certifications": {
+        "title": "ISO 27001 infrastructure",
+        "description": "Our infrastructure provider maintains ISO 27001 certification and SOC 2 Type II compliance."
+      },
+      "encryption": {
+        "title": "Encryption in transit & at rest",
+        "description": "TLS 1.3 for all connections. AES-256 encryption for stored data. API keys encrypted with separate keys."
+      },
+      "backups": {
+        "title": "Automated backups",
+        "description": "Daily encrypted backups with 30-day retention. Point-in-time recovery available for Team plans."
+      }
+    },
+    "application": {
+      "title": "Application security",
+      "lead": "Security built into every layer of the application, from authentication to input validation.",
+      "auth": "Secure authentication — Industry-standard password hashing (bcrypt), optional 2FA, secure session management",
+      "sessions": "Session security — HTTP-only cookies, CSRF protection, automatic session expiration",
+      "input": "Input validation — All user input sanitized, parameterized database queries, XSS prevention",
+      "dependencies": "Dependency scanning — Automated vulnerability scanning, regular security updates",
+      "csp": "Content Security Policy — Strict CSP headers prevent code injection and data exfiltration"
+    },
+    "dataProtection": {
+      "title": "Data protection",
+      "dataType": "Data type",
+      "protection": "Protection",
+      "retention": "Retention",
+      "presentations": "Presentation content",
+      "presentationsProtection": "AES-256 encrypted at rest",
+      "presentationsRetention": "Until you delete it",
+      "apiKeys": "API keys",
+      "apiKeysProtection": "Encrypted with separate key material",
+      "apiKeysRetention": "Until you remove them",
+      "audienceData": "Audience responses",
+      "audienceDataProtection": "Encrypted, no IP logging",
+      "audienceDataRetention": "Until presentation deleted",
+      "accountData": "Account data",
+      "accountDataProtection": "Encrypted, minimal collection",
+      "accountDataRetention": "Until account deletion"
+    },
+    "compliance": {
+      "title": "Compliance & documentation",
+      "lead": "We provide the documentation you need for procurement and compliance reviews.",
+      "gdpr": {
+        "title": "GDPR compliant",
+        "description": "EU company, EU hosting, privacy by design. We're GDPR compliant from the ground up, not as an afterthought."
+      },
+      "dpa": {
+        "title": "DPA available",
+        "description": "Standard Data Processing Agreement available on request. Custom DPA terms negotiable for enterprise."
+      },
+      "subprocessors": {
+        "title": "Subprocessor list",
+        "description": "Transparent list of all subprocessors. We use only EU-based providers for data processing."
+      },
+      "auditLog": {
+        "title": "Audit logging",
+        "description": "Team plans include comprehensive audit logs for compliance and security monitoring."
+      }
+    },
+    "selfHosting": {
+      "title": "Self-hosting for complete control",
+      "lead": "For organizations with strict security requirements, self-hosting provides maximum control.",
+      "airGapped": "Air-gapped deployments — Run completely isolated from the internet",
+      "ownInfra": "Your infrastructure — Deploy on your own servers, your cloud, your rules",
+      "auditCode": "Audit the code — MIT license means full source access for security review",
+      "internalAi": "Internal AI — Connect to self-hosted LLMs, no external API calls",
+      "cta": "Self-hosting guide →"
+    },
+    "disclosure": {
+      "title": "Responsible disclosure",
+      "lead": "We take security vulnerabilities seriously and appreciate responsible disclosure.",
+      "step1": "Email security@deckyard.eu with vulnerability details",
+      "step2": "Include steps to reproduce and potential impact",
+      "step3": "We'll acknowledge within 48 hours and investigate promptly",
+      "step4": "We'll credit you (if desired) once the issue is resolved",
+      "contact": "Security contact"
+    },
+    "cta": {
+      "title": "Need more security information?",
+      "lead": "We're happy to answer security questionnaires and discuss your specific requirements.",
+      "requestQuestionnaire": "Request security questionnaire",
+      "euPrivacy": "EU & Privacy details"
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "About Deckyard — Built in Rotterdam, for everyone",
+      "description": "Learn about Deckyard's mission, values, and the team behind the open-source presentation platform."
+    },
+    "hero": {
+      "title": "Built in Rotterdam, for everyone",
+      "lead": "Deckyard is an open-source presentation platform built on the belief that professional tools should be accessible, transparent, and respect your data."
+    },
+    "mission": {
+      "title": "Our mission",
+      "lead": "Make professional presentations accessible to everyone, without compromising on privacy or requiring vendor lock-in.",
+      "description": "We believe the tools you use to communicate ideas shouldn't require expensive subscriptions, shouldn't harvest your data, and shouldn't lock you into a single vendor. Deckyard is our answer: a full-featured presentation platform that's open source, self-hostable, and built with privacy as a default."
+    },
+    "story": {
+      "title": "Our story",
+      "paragraph1": "Deckyard started from a simple frustration: why do presentation tools either cost a fortune, lack essential features, or require you to hand over your data to US cloud providers?",
+      "paragraph2": "We wanted a tool that combined the polish of commercial products with the freedom of open source. One that could be self-hosted for organizations that need it, but also offered a managed option for those who don't want to run their own infrastructure.",
+      "paragraph3": "So we built it. Deckyard is the presentation tool we wanted to use—and now it's available for everyone."
+    },
+    "philosophy": {
+      "title": "Our design philosophy",
+      "lead": "We separate design from content—just like modern web development.",
+      "paragraph1": "In website development, nobody gives content editors a freeform canvas. Design teams create pixel-perfect components, and content creators fill them in. The result is brand consistency across thousands of pages, created by hundreds of people who aren't designers.",
+      "paragraph2": "Deckyard applies the same principle to presentations. Your brand designers and frontend developers define themes—typography, colors, spacing, layouts for 44 slide types. Then everyone else simply picks the right slide type and writes their content. They can't accidentally break the brand.",
+      "paragraph3": "The result is pixel-perfect presentations, consistent across every team and department. And content creators work an order of magnitude faster because they're communicating, not designing.",
+      "semantic": {
+        "title": "Structured slides, smarter AI",
+        "description": "Each slide type has semantic meaning baked in. A 'Quote' slide is different from a 'Key Point' slide. A 'Timeline' implies chronology. A 'Comparison' suggests weighing options. This structure enables our AI to make better decisions about how to present your content—and it helps you think more clearly about what you're trying to say."
+      }
+    },
+    "values": {
+      "title": "Our values",
+      "lead": "The principles that guide how we build Deckyard.",
+      "transparency": {
+        "title": "Transparency",
+        "description": "Open source isn't just a license—it's a commitment to building in public. Our code, our roadmap, and our business model are all visible."
+      },
+      "privacy": {
+        "title": "Privacy by default",
+        "description": "We don't track you. We don't sell your data. We don't even have the technical capability to read your presentations on our managed cloud."
+      },
+      "sovereignty": {
+        "title": "Digital sovereignty",
+        "description": "Your data should stay where you want it. EU hosting, self-hosting, or air-gapped deployment—you choose."
+      },
+      "sustainable": {
+        "title": "Sustainable business",
+        "description": "We're building a business that can support open source development long-term. Fair pricing, no VC pressure to grow at all costs."
+      }
+    },
+    "legal": {
+      "title": "Legal information",
+      "lead": "For procurement and compliance purposes.",
+      "entityName": "Legal entity",
+      "location": "Location",
+      "chamberOfCommerce": "Chamber of Commerce",
+      "vatNumber": "VAT number",
+      "email": "Contact"
+    },
+    "community": {
+      "title": "Community",
+      "lead": "Deckyard is built by a community of contributors. Here's how you can get involved.",
+      "contribute": {
+        "title": "Contribute code",
+        "description": "Found a bug? Want to add a feature? Pull requests are welcome. Check our contributing guide on GitHub."
+      },
+      "discuss": {
+        "title": "Join discussions",
+        "description": "Share ideas, ask questions, and connect with other users in GitHub Discussions."
+      },
+      "translate": {
+        "title": "Help translate",
+        "description": "Deckyard supports 12 languages. Help us reach more users by improving translations."
+      },
+      "feedback": {
+        "title": "Share feedback",
+        "description": "Using Deckyard? Let us know what works and what doesn't. Your feedback shapes the roadmap."
+      }
+    },
+    "cta": {
+      "title": "Want to learn more?",
+      "lead": "Check out the code on GitHub or get in touch directly.",
+      "viewOnGithub": "View on GitHub",
+      "contactUs": "Contact us"
+    }
+  },
+  "accessibility": {
+    "meta": {
+      "title": "Accessibility Statement — Deckyard",
+      "description": "Deckyard's commitment to accessibility. WCAG compliance status, accessibility features, and how to report issues."
+    },
+    "hero": {
+      "title": "Accessibility statement",
+      "lead": "Deckyard is committed to making presentations accessible to everyone, including people with disabilities."
+    },
+    "commitment": {
+      "title": "Our commitment",
+      "paragraph1": "We believe that presentation tools should be usable by everyone, regardless of ability. Deckyard is designed with accessibility in mind, following Web Content Accessibility Guidelines (WCAG) principles.",
+      "paragraph2": "This statement describes our current accessibility status, the features we've implemented, and how you can report accessibility issues."
+    },
+    "standards": {
+      "title": "Accessibility standards",
+      "lead": "We follow WCAG 2.1 guidelines organized around four principles.",
+      "perceivable": {
+        "title": "Perceivable",
+        "description": "Content is presented in ways that users can perceive. Text alternatives for images, sufficient color contrast, resizable text."
+      },
+      "operable": {
+        "title": "Operable",
+        "description": "Interface components are operable by all users. Full keyboard navigation, no time limits, clear focus indicators."
+      },
+      "understandable": {
+        "title": "Understandable",
+        "description": "Content and operation are understandable. Clear language, consistent navigation, helpful error messages."
+      },
+      "robust": {
+        "title": "Robust",
+        "description": "Content works with current and future technologies. Semantic HTML, ARIA labels, screen reader compatibility."
+      }
+    },
+    "features": {
+      "title": "Accessibility features",
+      "lead": "Current accessibility features in Deckyard.",
+      "editor": {
+        "title": "Editor accessibility",
+        "keyboard": "Full keyboard navigation for all editor functions",
+        "screenReader": "Screen reader announcements for actions and changes",
+        "focusIndicators": "Visible focus indicators on all interactive elements",
+        "colorContrast": "Color contrast meets WCAG AA standards",
+        "textScaling": "Interface scales with browser text size settings"
+      },
+      "presentations": {
+        "title": "Presentation accessibility",
+        "altText": "Alt text support for all images",
+        "headings": "Proper heading hierarchy in exported content",
+        "linkText": "Descriptive link text",
+        "colorNotAlone": "Information not conveyed by color alone"
+      },
+      "audience": {
+        "title": "Audience view accessibility",
+        "mobileAccessible": "Mobile-friendly responsive design",
+        "largeTargets": "Large touch targets for interactive elements",
+        "clearLabels": "Clear labels on all form inputs",
+        "noTimeouts": "No time limits on responses"
+      }
+    },
+    "compliance": {
+      "title": "Compliance status",
+      "standard": "Standard",
+      "status": "Status",
+      "notes": "Notes",
+      "conformant": "Conformant",
+      "partiallyConformant": "Partially conformant",
+      "inProgress": "In progress",
+      "wcagANotes": "All Level A criteria met",
+      "wcagAANotes": "Most criteria met, some complex widgets in progress",
+      "wcagAAANotes": "Working toward enhanced accessibility",
+      "enNotes": "EU accessibility directive requirements"
+    },
+    "knownIssues": {
+      "title": "Known issues",
+      "lead": "We're actively working on the following accessibility improvements:",
+      "charts": "Chart accessibility — Data visualizations need improved screen reader descriptions. Workaround: include data in presenter notes.",
+      "dragDrop": "Drag and drop — Slide reordering requires mouse. Workaround: use keyboard shortcuts for slide management.",
+      "animations": "Animation controls — Some animations cannot be paused. Fix in progress.",
+      "reporting": "Found an issue not listed here? Please report it to accessibility@deckyard.eu"
+    },
+    "testing": {
+      "title": "How we test",
+      "lead": "Our accessibility testing process includes:",
+      "automated": "Automated testing with axe-core on every build",
+      "screenReaders": "Manual testing with NVDA, VoiceOver, and JAWS",
+      "keyboard": "Keyboard-only navigation testing",
+      "userTesting": "Feedback from users with disabilities"
+    },
+    "cta": {
+      "title": "Report an accessibility issue",
+      "lead": "If you encounter accessibility barriers, please let us know. We take all reports seriously and work to address issues promptly.",
+      "reportIssue": "Email accessibility team",
+      "viewIssues": "View open issues"
+    }
+  },
+  "roadmap": {
+    "meta": {
+      "title": "Roadmap — Deckyard",
+      "description": "See what's coming next for Deckyard. Public roadmap, recently shipped features, and how to request features."
+    },
+    "hero": {
+      "title": "Roadmap",
+      "lead": "What we're building, what's planned, and how you can shape the future of Deckyard."
+    },
+    "philosophy": {
+      "title": "Our approach",
+      "paragraph1": "We build in public. Our roadmap isn't a marketing document—it's a real reflection of what we're working on and what we're considering.",
+      "paragraph2": "Priorities can change based on community feedback, business needs, and technical discoveries. If something you care about isn't listed, let us know."
+    },
+    "inProgress": {
+      "title": "In progress",
+      "lead": "What we're actively building right now.",
+      "sso": {
+        "title": "SSO integration",
+        "description": "SAML and OIDC support for enterprise identity providers. Connect to Okta, Azure AD, Google Workspace, and more."
+      },
+      "pptxImport": {
+        "title": "PPTX import improvements",
+        "description": "Better preservation of formatting, images, and layouts when importing PowerPoint files."
+      },
+      "moreLanguages": {
+        "title": "Additional languages",
+        "description": "Expanding UI translations beyond our current 12 languages based on user requests."
+      },
+      "aiImprovements": {
+        "title": "AI generation improvements",
+        "description": "Better slide type selection, improved content quality, and support for more AI providers."
+      }
+    },
+    "planned": {
+      "title": "Planned",
+      "lead": "Features we're committed to building in the coming months.",
+      "realTimeCollab": {
+        "title": "Real-time collaboration",
+        "description": "Multiple users editing the same presentation simultaneously with live cursors and presence."
+      },
+      "apiAccess": {
+        "title": "Public API",
+        "description": "REST API for programmatic presentation creation, management, and export."
+      },
+      "analytics": {
+        "title": "Presentation analytics",
+        "description": "Insights into audience engagement, response patterns, and presentation effectiveness."
+      },
+      "templateLibrary": {
+        "title": "Template library",
+        "description": "Community-contributed templates for common presentation types and use cases."
+      },
+      "webhooks": {
+        "title": "Webhooks",
+        "description": "Trigger external actions when presentations are created, presented, or when audience responses come in."
+      },
+      "offlineMode": {
+        "title": "Offline presenting",
+        "description": "Present without an internet connection. Sync audience responses when back online."
+      }
+    },
+    "recentlyShipped": {
+      "title": "Recently shipped",
+      "lead": "Features we've released in recent updates.",
+      "aiGeneration": "AI deck generation — Generate full presentations from prompts using your own API keys",
+      "customThemes": "Custom themes — Brand your presentations with custom colors, fonts, and logos",
+      "wordClouds": "Word clouds — Visualize audience text responses as dynamic word clouds",
+      "pdfExport": "PDF export — High-quality PDF export for all presentations",
+      "followAlong": "Follow-along mode — Audience members can follow your presentation on their devices"
+    },
+    "requestFeature": {
+      "title": "Request a feature",
+      "lead": "Have an idea for Deckyard? Here's how to share it:",
+      "github": "Open a feature request on GitHub Issues — Best for detailed proposals with use cases",
+      "discussions": "Start a discussion on GitHub Discussions — Best for ideas you want community input on",
+      "upvote": "Upvote existing requests — Help us prioritize by showing support for features you want"
+    },
+    "cta": {
+      "title": "Shape the roadmap",
+      "lead": "Join the community and help decide what we build next.",
+      "joinDiscussions": "Join discussions",
+      "viewIssues": "View feature requests"
+    }
+  },
+  "useCasesGovernment": {
+    "meta": {
+      "title": "Deckyard for Government — EU-Compliant Presentation Software",
+      "description": "Presentation software designed for public sector requirements. GDPR compliant, EU-hosted, accessible, with procurement documentation available."
+    },
+    "hero": {
+      "title": "Presentation software for public sector",
+      "lead": "Built to meet the unique requirements of government and public institutions: GDPR compliance, accessibility mandates, and transparent procurement."
+    },
+    "whyDifferent": {
+      "title": "Why government needs different tools",
+      "lead": "Public sector organizations face requirements that commercial tools often can't meet.",
+      "gdpr": "GDPR and data sovereignty — Citizen data must stay in the EU, under EU law",
+      "accessibility": "Accessibility mandates — EN 301 549 and WCAG compliance required",
+      "interoperability": "Interoperability — Open standards and format portability",
+      "procurement": "Procurement transparency — Clear pricing, available documentation, exit strategies"
+    },
+    "requirements": {
+      "title": "How Deckyard meets public sector requirements",
+      "lead": "Built by an EU company, hosted in the EU, designed for compliance from day one.",
+      "euData": {
+        "title": "EU data residency",
+        "description": "Hosted on Scaleway infrastructure in France. No US cloud providers, no transatlantic data transfers."
+      },
+      "gdprNative": {
+        "title": "GDPR native",
+        "description": "Privacy by design, not as an afterthought. Minimal data collection, clear retention policies, easy data deletion."
+      },
+      "openStandards": {
+        "title": "Open standards",
+        "description": "Export to PDF, PPTX, HTML, and JSON. No proprietary formats, no lock-in. MIT license for full transparency."
+      },
+      "wcag": {
+        "title": "WCAG accessibility",
+        "description": "Committed to WCAG 2.1 AA compliance. Keyboard navigation, screen reader support, color contrast requirements met."
+      },
+      "mitLicense": {
+        "title": "MIT license",
+        "description": "No vendor lock-in. Fork it, modify it, self-host it. The code is yours to audit and control."
+      },
+      "dpa": {
+        "title": "DPA available",
+        "description": "Standard Data Processing Agreement available. Custom terms negotiable for specific requirements."
+      }
+    },
+    "citizenEngagement": {
+      "title": "Citizen engagement",
+      "lead": "Interactive features for public consultations and engagement.",
+      "townHalls": {
+        "title": "Town halls",
+        "description": "Live polls let citizens vote on proposals. Q&A collects questions for transparent discussion."
+      },
+      "consultations": {
+        "title": "Public consultations",
+        "description": "Gather structured feedback on policies. Export responses for analysis and reporting."
+      },
+      "training": {
+        "title": "Staff training",
+        "description": "Interactive training presentations with knowledge checks. Track completion and understanding."
+      },
+      "councils": {
+        "title": "Council meetings",
+        "description": "Professional presentations with live audience feedback. Archive for public records."
+      }
+    },
+    "procurement": {
+      "title": "Procurement information",
+      "lead": "Transparent information for procurement processes.",
+      "requirement": "Requirement",
+      "deckyard": "Deckyard",
+      "dataResidency": "Data residency",
+      "dataResidencyAnswer": "✓ EU (France) or self-hosted",
+      "gdprCompliance": "GDPR compliance",
+      "gdprComplianceAnswer": "✓ EU company, privacy by design",
+      "dpaAvailable": "DPA available",
+      "dpaAvailableAnswer": "✓ Standard DPA, custom terms available",
+      "accessibilityCompliance": "Accessibility",
+      "accessibilityComplianceAnswer": "✓ WCAG 2.1 AA (EN 301 549)",
+      "exitStrategy": "Exit strategy",
+      "exitStrategyAnswer": "✓ Export all data, MIT license",
+      "pricing": "Pricing transparency",
+      "pricingAnswer": "✓ Public pricing, no hidden fees"
+    },
+    "selfHosting": {
+      "title": "Self-hosting for maximum control",
+      "lead": "For agencies that require complete control, Deckyard can run entirely on government infrastructure.",
+      "internalNetworks": "Deploy on internal networks — No internet connection required",
+      "governmentCloud": "Government cloud compatible — AWS GovCloud, Azure Government, or on-premise",
+      "auditTrails": "Complete audit trails — Track all access and changes for compliance",
+      "noExternal": "No external dependencies — Air-gapped operation possible",
+      "cta": "Self-hosting guide →"
+    },
+    "cta": {
+      "title": "Ready to evaluate Deckyard?",
+      "lead": "We're happy to provide procurement documentation, answer security questionnaires, and schedule demonstrations.",
+      "requestDocumentation": "Request documentation",
+      "scheduleDemo": "Schedule demo"
+    }
+  },
+  "useCasesEducation": {
+    "meta": {
+      "title": "Deckyard for Education — Privacy-First Student Engagement",
+      "description": "Engage students with interactive presentations while protecting their privacy. Free for self-hosting, discounts for institutions."
+    },
+    "hero": {
+      "title": "Engage students, protect their privacy",
+      "lead": "Interactive presentations for classrooms and lecture halls—without tracking students or requiring them to create accounts."
+    },
+    "whyEducators": {
+      "title": "Why educators choose Deckyard",
+      "lead": "Built with the unique needs of educational institutions in mind.",
+      "studentPrivacy": {
+        "title": "Student privacy first",
+        "description": "No student accounts required. No tracking. Anonymous responses. FERPA and GDPR friendly."
+      },
+      "engagement": {
+        "title": "Increase engagement",
+        "description": "Live polls, quizzes, and Q&A keep students active. Word clouds visualize class thinking."
+      },
+      "noBudget": {
+        "title": "Budget-friendly",
+        "description": "Free to self-host. 50% discount on managed plans for educational institutions."
+      },
+      "institutional": {
+        "title": "Institution-ready",
+        "description": "Self-host on campus infrastructure. Integrate with LMS. Control your data completely."
+      }
+    },
+    "classroom": {
+      "title": "In the classroom",
+      "lead": "Interactive features designed for educational settings.",
+      "checkUnderstanding": {
+        "title": "Check understanding",
+        "description": "Quick polls gauge comprehension in real-time. Identify confused students before moving on."
+      },
+      "qna": {
+        "title": "Anonymous Q&A",
+        "description": "Students ask questions without fear of judgment. Upvoting surfaces the most common confusions."
+      },
+      "quizzes": {
+        "title": "Knowledge checks",
+        "description": "Embedded quizzes with instant feedback. Track class performance without third-party tools."
+      },
+      "feedback": {
+        "title": "Exit tickets",
+        "description": "Collect end-of-class feedback. What was clear? What needs more explanation?"
+      }
+    },
+    "privacy": {
+      "title": "Privacy by design",
+      "lead": "Protecting student data isn't optional—it's fundamental to how Deckyard works.",
+      "noTracking": "No tracking — We don't track student behavior, locations, or device information",
+      "anonymousResponses": "Anonymous by default — Poll responses and Q&A submissions are anonymous unless you choose otherwise",
+      "noAccounts": "No student accounts — Students participate via QR code or link. No signup, no data collected",
+      "euHosted": "EU data hosting — For managed cloud, data stays in France. No US data transfers",
+      "selfHost": "Self-host option — Run on your own servers for complete data control"
+    },
+    "aiForEducators": {
+      "title": "AI for educators",
+      "lead": "Generate lesson content faster, on your terms.",
+      "lessonPlans": "Lesson plan to slides — Describe your topic and AI creates a complete slide deck",
+      "documentConversion": "Document conversion — Turn PDFs, papers, or notes into presentation slides",
+      "byoKeys": "Your API keys — Use your institution's OpenAI, Anthropic, Mistral, DeepSeek, or self-hosted model",
+      "optional": "Completely optional — Don't want AI? Don't use it. Deckyard works perfectly without"
+    },
+    "institutionalDeployment": {
+      "title": "Institutional deployment",
+      "lead": "For universities and school districts that want complete control.",
+      "campus": "Campus-wide deployment — One installation serves all faculty and students",
+      "lms": "LMS integration ready — Embed presentations in Canvas, Moodle, or Blackboard",
+      "sso": "SSO coming soon — Integrate with campus identity providers",
+      "compliance": "Compliance-ready — FERPA, GDPR, state privacy laws",
+      "cta": "Self-hosting guide →"
+    },
+    "cta": {
+      "title": "Ready to try Deckyard in your classroom?",
+      "lead": "Start with the sandbox, or contact us about educational pricing.",
+      "trySandbox": "Try the sandbox",
+      "contactEducation": "Educational pricing",
+      "discount": "Educational institutions receive 50% off managed plans. Contact us with proof of educational status."
+    }
+  },
+  "useCasesNonprofits": {
+    "meta": {
+      "title": "Deckyard for Nonprofits — Budget-Friendly Presentations",
+      "description": "Professional presentations for organizations that put values first. Free self-hosting, 50% nonprofit discount on managed plans."
+    },
+    "hero": {
+      "title": "Professional tools for mission-driven organizations",
+      "lead": "Engage donors, train volunteers, and present your impact—without expensive subscriptions or privacy compromises."
+    },
+    "whyNonprofits": {
+      "title": "Why nonprofits choose Deckyard",
+      "lead": "Built for organizations where every dollar matters and values aren't negotiable.",
+      "budgetFriendly": {
+        "title": "Budget-friendly",
+        "description": "Free to self-host forever. 50% discount on managed plans for registered nonprofits."
+      },
+      "donorPrivacy": {
+        "title": "Donor privacy",
+        "description": "No tracking, no data selling, no third-party analytics. Your donor data stays private."
+      },
+      "valuesAligned": {
+        "title": "Values-aligned",
+        "description": "Open source, transparent, EU-hosted. Built by people who believe in doing things right."
+      },
+      "engagement": {
+        "title": "Stakeholder engagement",
+        "description": "Live polls and Q&A for town halls, board meetings, and community events."
+      }
+    },
+    "useCases": {
+      "title": "How nonprofits use Deckyard",
+      "lead": "From fundraising to training, Deckyard supports your mission.",
+      "fundraising": {
+        "title": "Fundraising presentations",
+        "description": "Compelling impact stories with data visualizations. Live Q&A for donor engagement."
+      },
+      "boardMeetings": {
+        "title": "Board meetings",
+        "description": "Professional presentations with live polling for governance decisions. Export for records."
+      },
+      "volunteerTraining": {
+        "title": "Volunteer training",
+        "description": "Interactive onboarding presentations. Knowledge checks ensure comprehension."
+      },
+      "communityEvents": {
+        "title": "Community events",
+        "description": "Engage audiences at town halls, workshops, and awareness events."
+      }
+    },
+    "pricing": {
+      "title": "Nonprofit pricing",
+      "lead": "We believe every organization should have access to professional tools.",
+      "option": "Option",
+      "cost": "Cost",
+      "bestFor": "Best for",
+      "selfHosted": "Self-hosted",
+      "free": "Free forever",
+      "selfHostedBestFor": "Organizations with technical capacity",
+      "nonprofitPro": "Nonprofit Pro",
+      "nonprofitProCost": "€9.50/month (50% off)",
+      "nonprofitProBestFor": "Small nonprofits",
+      "nonprofitTeam": "Nonprofit Team",
+      "nonprofitTeamCost": "€24.50/month (50% off)",
+      "nonprofitTeamBestFor": "Larger organizations",
+      "eligibility": "To qualify for nonprofit pricing, provide proof of 501(c)(3) status (US), registered charity status (EU/UK), or equivalent nonprofit registration in your jurisdiction."
+    },
+    "valuesAlignment": {
+      "title": "Values alignment",
+      "lead": "We're building Deckyard the way we think software should be built.",
+      "openSource": "Open source — Our code is public, auditable, and improvable by anyone",
+      "privacyFirst": "Privacy first — No tracking, no data selling, no surveillance capitalism",
+      "noVendorLockin": "No vendor lock-in — Export your data anytime, self-host if you want",
+      "sustainable": "Sustainable business — Fair pricing, no VC pressure, building for the long term"
+    },
+    "cta": {
+      "title": "Ready to try Deckyard?",
+      "lead": "Start with the sandbox, or contact us about nonprofit pricing.",
+      "applyDiscount": "Apply for nonprofit discount",
+      "trySandbox": "Try the sandbox"
+    }
+  },
+  "useCasesTraining": {
+    "meta": {
+      "title": "Deckyard for Training & L&D — Interactive Workshop Presentations",
+      "description": "Engage learners with built-in polls, quizzes, and feedback. Single tool for presentations and audience interaction."
+    },
+    "hero": {
+      "title": "Training presentations that keep learners engaged",
+      "lead": "Stop juggling multiple tools. Build interactive workshops with polls, quizzes, and feedback built right into your slides."
+    },
+    "whyTrainers": {
+      "title": "Why trainers choose Deckyard",
+      "lead": "Everything you need for effective training, in one tool.",
+      "engagement": {
+        "title": "Keep learners engaged",
+        "description": "Polls, Q&A, and knowledge checks prevent passive listening. Learners stay active throughout."
+      },
+      "assessment": {
+        "title": "Built-in assessment",
+        "description": "Quiz slides with instant feedback. Track comprehension without separate tools."
+      },
+      "singleTool": {
+        "title": "One tool, not three",
+        "description": "Stop switching between PowerPoint, Mentimeter, and survey tools. Everything in one place."
+      },
+      "costEffective": {
+        "title": "Cost-effective",
+        "description": "Flat pricing or free self-hosting. No per-seat anxiety for large training groups."
+      }
+    },
+    "interactiveElements": {
+      "title": "Interactive elements for training",
+      "lead": "Engagement tools designed for learning contexts.",
+      "knowledgeChecks": {
+        "title": "Knowledge checks",
+        "description": "Quick polls after each section. Identify confusion before moving on."
+      },
+      "icebreakers": {
+        "title": "Icebreaker polls",
+        "description": "Start sessions with engaging questions. Get everyone participating from minute one."
+      },
+      "quizzes": {
+        "title": "Scored quizzes",
+        "description": "Multiple choice with correct answers and scoring. Track individual and group performance."
+      },
+      "feedback": {
+        "title": "Session feedback",
+        "description": "Collect ratings and open feedback. Improve your training based on real responses."
+      }
+    },
+    "workshopFlow": {
+      "title": "Typical workshop flow",
+      "lead": "How trainers structure interactive sessions with Deckyard.",
+      "step1": "Opening poll — Get the room warmed up and gauge baseline knowledge",
+      "step2": "Content delivery — Teach with professional slides and media",
+      "step3": "Knowledge check — Poll to verify understanding before proceeding",
+      "step4": "Q&A collection — Gather questions throughout, address at natural breaks",
+      "step5": "Exit assessment — Final quiz or feedback to measure session effectiveness"
+    },
+    "aiForTrainers": {
+      "title": "AI assistance for trainers",
+      "lead": "Generate training content faster.",
+      "contentConversion": "Convert existing materials — Turn your PDFs, documents, and notes into slide decks",
+      "quizGeneration": "Generate quiz questions — AI suggests knowledge check questions from your content",
+      "outlineExpansion": "Expand outlines — Describe your training and AI creates a complete deck structure",
+      "languageAdaptation": "Adapt content — Adjust reading level or translate for different audiences"
+    },
+    "corporateDeployment": {
+      "title": "Enterprise training deployment",
+      "lead": "For organizations with professional L&D teams.",
+      "onPremise": "On-premise hosting — Keep training content on your own infrastructure",
+      "branding": "Custom branding — Your logo, colors, and fonts on every presentation",
+      "analytics": "Response analytics — Track engagement across sessions (Team plan)",
+      "lmsIntegration": "LMS-ready — Embed presentations in your learning management system",
+      "cta": "Self-hosting guide →"
+    },
+    "cta": {
+      "title": "Ready to transform your training?",
+      "lead": "See how Deckyard can improve learner engagement.",
+      "trySandbox": "Try the sandbox",
+      "contactSales": "Contact sales"
+    }
+  },
+  "useCasesRemoteTeams": {
+    "meta": {
+      "title": "Deckyard for Remote Teams — Async and Live Presentations",
+      "description": "Keep distributed teams engaged with interactive presentations, follow-along mode, and async viewing options."
+    },
+    "hero": {
+      "title": "Presentations for distributed teams",
+      "lead": "Keep remote team members engaged whether they're watching live or catching up later. Follow-along mode, async access, and interactive features that work across time zones."
+    },
+    "challenges": {
+      "title": "Remote presentation challenges",
+      "lead": "Presenting to distributed teams is harder than in-person. Here's why—and how Deckyard helps.",
+      "engagement": {
+        "title": "Engagement drops",
+        "description": "It's easy to tune out on a video call. Deckyard's live polls and Q&A keep attendees actively participating."
+      },
+      "timezones": {
+        "title": "Time zone conflicts",
+        "description": "Not everyone can attend live. Deckyard presentations work asynchronously too."
+      },
+      "feedback": {
+        "title": "Silent audiences",
+        "description": "Hard to gauge understanding remotely. Interactive slides surface confusion and questions."
+      },
+      "tools": {
+        "title": "Tool overload",
+        "description": "Stop switching between Zoom, slides, and Mentimeter. Everything in one place."
+      }
+    },
+    "solutions": {
+      "title": "How Deckyard helps",
+      "lead": "Features designed for distributed collaboration.",
+      "followAlong": {
+        "title": "Follow-along mode",
+        "description": "Team members see your slides on their own device, synced in real-time. No screen sharing lag."
+      },
+      "livePolls": {
+        "title": "Live polls & reactions",
+        "description": "Quick polls check understanding. Reactions let people engage without unmuting."
+      },
+      "qna": {
+        "title": "Async Q&A",
+        "description": "Questions collected throughout. Upvoting surfaces what matters most. Address when convenient."
+      },
+      "asyncAccess": {
+        "title": "Async access",
+        "description": "Share a link. Team members in other time zones view at their convenience."
+      }
+    },
+    "useCases": {
+      "title": "Use cases",
+      "lead": "How remote teams use Deckyard.",
+      "allHands": "All-hands meetings — Keep the whole company engaged with live polls and Q&A",
+      "teamRetros": "Team retrospectives — Collect feedback with word clouds and Likert scales",
+      "onboarding": "Remote onboarding — Interactive training for new hires across time zones",
+      "workshops": "Virtual workshops — Full interactivity for design sprints and planning sessions",
+      "clientMeetings": "Client presentations — Professional slides with live engagement"
+    },
+    "asyncFeatures": {
+      "title": "Async-friendly features",
+      "lead": "For team members who can't attend live.",
+      "shareableLinks": "Shareable links — Send a link, no account needed to view",
+      "embedHtml": "Embed anywhere — Embed in Notion, Confluence, or your internal wiki",
+      "exportPdf": "PDF export — Downloadable version for offline reference",
+      "responseCollection": "Async responses — Interactive slides can collect responses even without a live presenter"
+    },
+    "integration": {
+      "title": "Works with your video tools",
+      "lead": "Deckyard complements, not replaces, your video conferencing.",
+      "videoConf": "Share your screen in Zoom, Meet, or Teams—or share a link for follow-along",
+      "webBased": "Web-based means no app to install, works on any device",
+      "noPlugins": "No plugins needed for your video platform",
+      "mobileResponsive": "Mobile-friendly for attendees joining from anywhere"
+    },
+    "cta": {
+      "title": "Ready to improve remote presentations?",
+      "lead": "See how Deckyard works for distributed teams.",
+      "trySandbox": "Try the sandbox",
+      "viewPricing": "View pricing"
+    }
+  },
+  "compareSlido": {
+    "meta": {
+      "title": "Deckyard vs Slido — Open Source Alternative",
+      "description": "Compare Deckyard and Slido for audience interaction. Open source, self-hostable, with built-in slide editor. No Cisco ownership."
+    },
+    "hero": {
+      "title": "Deckyard vs Slido",
+      "lead": "Looking for a Slido alternative? Deckyard offers the same audience interaction features—plus a full presentation editor, open source transparency, and independence from enterprise giants."
+    },
+    "comparison": {
+      "title": "Quick comparison",
+      "openSource": "Open source",
+      "selfHosting": "Self-hosting",
+      "slideEditor": "Built-in slide editor",
+      "livePolls": "Live polls",
+      "qna": "Q&A",
+      "wordClouds": "Word clouds",
+      "quizzes": "Quizzes",
+      "aiGeneration": "AI generation",
+      "euHosting": "EU hosting",
+      "pricingModel": "Pricing model",
+      "ownership": "Ownership"
+    },
+    "reasons": {
+      "title": "Why teams leave Slido for Deckyard",
+      "ciscoAcquisition": {
+        "title": "1. Independence from Cisco",
+        "description": "Slido was acquired by Cisco in 2020. If you're concerned about enterprise consolidation, data practices of large corporations, or being locked into the Webex ecosystem, Deckyard offers independence."
+      },
+      "fullEditor": {
+        "title": "2. Complete presentation solution",
+        "description": "Slido only does audience interaction—you still need PowerPoint, Google Slides, or Keynote. Deckyard includes a full 44-slide-type editor plus interactions, so you're not switching between tools."
+      },
+      "pricing": {
+        "title": "3. Simpler, cheaper pricing",
+        "description": "Slido's pricing is event-based or enterprise. Deckyard offers flat monthly pricing or free self-hosting—no surprises, no per-event calculations."
+      },
+      "dataSovereignty": {
+        "title": "4. Real EU data sovereignty",
+        "description": "Slido is now a US-owned company (Cisco). While they offer EU hosting, the company is subject to US law. Deckyard is an EU company with EU-only infrastructure—or self-host for complete control."
+      },
+      "openSource": {
+        "title": "5. Open source transparency",
+        "description": "Deckyard's code is public under MIT license. Audit it, modify it, self-host it. No black boxes, no uncertainty about what happens to your data."
+      }
+    },
+    "whenSlido": {
+      "title": "When Slido makes sense",
+      "lead": "We're honest about trade-offs. Slido might be better if:",
+      "webex": "Deep Webex integration — If you're all-in on Cisco Webex, Slido's native integration is seamless.",
+      "enterprise": "Enterprise support requirements — Cisco can offer enterprise SLAs and support that a smaller company can't match.",
+      "existingWorkflow": "Existing workflow — If your team already knows Slido and it works, switching has a cost."
+    },
+    "migration": {
+      "title": "Migrating from Slido",
+      "lead": "Moving from Slido to Deckyard is straightforward:",
+      "step1": "Export your Slido data — Download poll results and Q&A history for your records",
+      "step2": "Build presentations in Deckyard — Use the editor or AI to create new decks with interactions built in",
+      "step3": "Test with a pilot event — Run one session to ensure everything works as expected",
+      "step4": "Roll out — Share the new workflow with your team",
+      "needHelp": "Need help migrating?",
+      "contactUs": "Contact us"
+    },
+    "cta": {
+      "title": "Ready to try the independent alternative?",
+      "lead": "See how Deckyard combines presentations and interactions in one open-source tool.",
+      "trySandbox": "Try the sandbox",
+      "selfHostingGuide": "Self-hosting guide"
+    }
+  },
+  "compareClaper": {
+    "meta": {
+      "title": "Deckyard vs Claper — Open Source Comparison",
+      "description": "Compare Deckyard and Claper, two open-source audience interaction tools. MIT vs GPLv3, full editor vs overlay, feature comparison."
+    },
+    "hero": {
+      "title": "Deckyard vs Claper",
+      "lead": "Both are open-source audience interaction tools. Here's how they differ and which might be right for your needs."
+    },
+    "comparison": {
+      "title": "Quick comparison",
+      "license": "License",
+      "slideEditor": "Built-in slide editor",
+      "aiGeneration": "AI generation",
+      "livePolls": "Live polls",
+      "qna": "Q&A",
+      "wordClouds": "Word clouds",
+      "selfHosting": "Self-hosting",
+      "pdfImport": "PDF import",
+      "managedCloud": "Managed cloud",
+      "exportFormats": "Export formats",
+      "commercialUse": "Commercial use"
+    },
+    "chooseDeckyard": {
+      "title": "Choose Deckyard if you want",
+      "lead": "Deckyard is the better choice when you need more than an interaction overlay.",
+      "fullEditor": {
+        "title": "A complete presentation editor",
+        "description": "Deckyard has 44 slide types for building entire presentations—not just adding interactions to existing PDFs. Design, present, and interact all in one tool."
+      },
+      "mitLicense": {
+        "title": "MIT license flexibility",
+        "description": "MIT license means you can modify Deckyard and keep your changes private. Use it in commercial products without copyleft requirements."
+      },
+      "aiFeatures": {
+        "title": "AI-powered creation",
+        "description": "Generate entire presentations from prompts, convert documents to slides, improve content with AI assistance. Claper has no AI features."
+      },
+      "exportOptions": {
+        "title": "Multiple export formats",
+        "description": "Export to PDF, PPTX, HTML, and JSON. Claper only exports to PDF."
+      }
+    },
+    "chooseClaper": {
+      "title": "Choose Claper if you want",
+      "lead": "Claper might be better for specific use cases:",
+      "overlayOnly": "Interaction overlay only — If you have existing PDFs and just want to add polls/Q&A, Claper's simpler scope may be sufficient",
+      "gpl": "GPLv3 preference — If copyleft licensing aligns with your values or requirements",
+      "elixir": "Elixir ecosystem — If your team prefers Elixir/Phoenix over Node.js for self-hosting and customization"
+    },
+    "licenseComparison": {
+      "title": "License comparison",
+      "lead": "The license difference matters for how you can use and modify the software.",
+      "commercial": "Commercial use",
+      "unrestricted": "Unrestricted",
+      "mustShareChanges": "Must share modifications",
+      "modifications": "Keep modifications private",
+      "canKeepPrivate": "Yes",
+      "mustOpenSource": "No—must open source",
+      "enterpriseFriendly": "Enterprise-friendly",
+      "yes": "Yes",
+      "legalReview": "May need legal review"
+    },
+    "cta": {
+      "title": "Ready to try Deckyard?",
+      "lead": "See the full presentation editor and interaction features in action.",
+      "trySandbox": "Try the sandbox",
+      "viewOnGithub": "View on GitHub"
+    }
+  },
+  "caseStudies": {
+    "meta": {
+      "title": "Case Studies — Deckyard",
+      "description": "See how organizations use Deckyard for presentations and audience engagement. Self-hosting, education, government, and nonprofit stories."
+    },
+    "hero": {
+      "title": "Case studies",
+      "lead": "Real stories from organizations using Deckyard for presentations and audience engagement."
+    },
+    "featured": {
+      "title": "Featured stories",
+      "lead": "We're collecting case studies from our users. Here are the stories we're working on:"
+    },
+    "categories": {
+      "selfHosted": "Self-hosted",
+      "education": "Education",
+      "government": "Government",
+      "nonprofit": "Nonprofit"
+    },
+    "comingSoon": {
+      "selfHosted": {
+        "title": "Self-hosting at scale",
+        "description": "How a tech company deployed Deckyard on their own infrastructure for 500+ employees."
+      },
+      "education": {
+        "title": "University lecture engagement",
+        "description": "How a professor increased participation in 300-person lectures with live polls and Q&A."
+      },
+      "government": {
+        "title": "Public consultation platform",
+        "description": "How a municipality uses Deckyard for citizen engagement in town halls."
+      },
+      "nonprofit": {
+        "title": "Donor engagement presentations",
+        "description": "How a nonprofit improved fundraising results with interactive impact presentations."
+      }
+    },
+    "shareYourStory": {
+      "title": "Share your story",
+      "lead": "Using Deckyard in an interesting way? We'd love to feature your organization.",
+      "paragraph1": "Case studies help other organizations understand how Deckyard can work for them. If you're willing to share your experience, we'll work with you to create a compelling story.",
+      "benefit1": "Get featured on our website and in marketing materials",
+      "benefit2": "Help shape the product roadmap based on your use case",
+      "benefit3": "Connect with other organizations using Deckyard similarly"
+    },
+    "cta": {
+      "title": "Want to be featured?",
+      "lead": "Tell us about how you're using Deckyard.",
+      "shareStory": "Share your story",
+      "trySandbox": "Try the sandbox"
+    }
+  },
+  "blog": {
+    "meta": {
+      "title": "Blog — Deckyard",
+      "description": "Guides, tutorials, and insights about presentations, self-hosting, privacy, and open-source software."
+    },
+    "hero": {
+      "title": "Blog",
+      "lead": "Guides, tutorials, and insights about presentations, audience engagement, and building open-source software."
+    },
+    "comingSoon": {
+      "title": "Coming soon",
+      "lead": "We're working on our first posts. Here's what's in the pipeline:"
+    },
+    "categories": {
+      "guides": "Guides",
+      "compliance": "Compliance",
+      "features": "Features",
+      "migration": "Migration"
+    },
+    "upcoming": {
+      "selfHost": {
+        "title": "How to self-host Deckyard in 5 minutes",
+        "description": "Step-by-step guide to deploying Deckyard on your own infrastructure with Docker."
+      },
+      "gdpr": {
+        "title": "GDPR and presentation tools: What you need to know",
+        "description": "Understanding data residency, DPAs, and compliance requirements for presentation software."
+      },
+      "aiGeneration": {
+        "title": "Getting the most from AI presentation generation",
+        "description": "Tips and prompts for generating better presentations with Deckyard's AI features."
+      },
+      "migration": {
+        "title": "Migrating from Mentimeter: A complete guide",
+        "description": "How to move your presentations and workflows from Mentimeter to Deckyard."
+      }
+    },
+    "status": {
+      "comingSoon": "Coming soon"
+    },
+    "topics": {
+      "title": "What we'll write about",
+      "lead": "Topics we're planning to cover.",
+      "selfHosting": {
+        "title": "Self-hosting",
+        "description": "Deployment guides, Docker tips, infrastructure recommendations, and scaling advice."
+      },
+      "privacy": {
+        "title": "Privacy & compliance",
+        "description": "GDPR guidance, data sovereignty, privacy best practices for presentations."
+      },
+      "features": {
+        "title": "Feature deep-dives",
+        "description": "How to get the most from Deckyard's features, tips and tricks, advanced usage."
+      },
+      "community": {
+        "title": "Community & open source",
+        "description": "Contributor spotlights, community updates, building open-source software."
+      }
+    },
+    "cta": {
+      "title": "Stay updated",
+      "lead": "Follow us on GitHub to get notified when we publish new content.",
+      "followOnGithub": "Follow on GitHub",
+      "trySandbox": "Try the sandbox"
+    }
+  }
+}

@@ -1,0 +1,154 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { locales, defaultLocale, useTranslations, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return [
+    { params: { locale: undefined } },
+    ...locales.filter(l => l !== defaultLocale).map(locale => ({
+      params: { locale }
+    }))
+  ];
+}
+
+const locale = (Astro.params.locale || defaultLocale) as Locale;
+const t = useTranslations(locale);
+
+function getLocalePath(path: string): string {
+  if (locale === defaultLocale) {
+    return path;
+  }
+  return `/${locale}${path}`;
+}
+---
+
+<BaseLayout
+  title={t('selfHosting.meta.title')}
+  description={t('selfHosting.meta.description')}
+  locale={locale}
+>
+  <section class="hero hero-compact">
+    <div class="container">
+      <p class="eyebrow"><a href={getLocalePath('/')}>{t('nav.backToHome')}</a></p>
+      <h1>{t('selfHosting.hero.title')}</h1>
+      <p class="lead">{t('selfHosting.hero.lead')}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('selfHosting.quickstart.title')}</h2>
+      <div class="code-block">
+        <pre><code># Clone the repository
+git clone https://github.com/jaapstronks/deckyard
+cd deckyard
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your settings (see below)
+
+# Start with Docker Compose
+docker-compose up -d
+
+# Visit http://localhost:3000</code></pre>
+      </div>
+
+      <h3>{t('selfHosting.quickstart.requirements')}</h3>
+      <ul class="bullets">
+        <li><strong>Docker & Docker Compose</strong> — {t('selfHosting.quickstart.docker')}</li>
+        <li><strong>2GB RAM minimum</strong> — {t('selfHosting.quickstart.ram')}</li>
+        <li><strong>PostgreSQL 14+</strong> — {t('selfHosting.quickstart.postgres')}</li>
+        <li><strong>Optional:</strong> {t('selfHosting.quickstart.s3')}</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>{t('selfHosting.why.title')}</h2>
+      <div class="grid cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-database"></use></svg></div>
+          <h3>{t('selfHosting.why.sovereignty.title')}</h3>
+          <p>{t('selfHosting.why.sovereignty.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-shield-check"></use></svg></div>
+          <h3>{t('selfHosting.why.compliance.title')}</h3>
+          <p>{t('selfHosting.why.compliance.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-database"></use></svg></div>
+          <h3>{t('selfHosting.why.cost.title')}</h3>
+          <p>{t('selfHosting.why.cost.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-code"></use></svg></div>
+          <h3>{t('selfHosting.why.customization.title')}</h3>
+          <p>{t('selfHosting.why.customization.description')}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>{t('selfHosting.config.title')}</h2>
+
+      <h3>{t('selfHosting.config.ai')}</h3>
+      <p>{t('selfHosting.config.aiDesc')}</p>
+      <div class="code-block">
+        <pre><code># OpenAI
+OPENAI_API=sk-...
+
+# Anthropic (Claude)
+CLAUDE_API=sk-ant-...
+
+# Mistral
+MISTRAL_API=...
+
+# DeepSeek
+DEEPSEEK_API=sk-...
+
+# Or use any OpenAI-compatible endpoint (Ollama, Together AI, etc.)
+OPENAI_COMPAT_ENDPOINT=http://localhost:11434/v1/chat/completions
+OPENAI_COMPAT_MODEL=qwen2.5:72b</code></pre>
+      </div>
+
+      <h3>{t('selfHosting.config.database')}</h3>
+      <div class="code-block">
+        <pre><code>DATABASE_URL=postgresql://user:pass@localhost:5432/deckyard</code></pre>
+      </div>
+
+      <h3>{t('selfHosting.config.storage')}</h3>
+      <div class="code-block">
+        <pre><code># Use S3-compatible storage for media
+S3_ENDPOINT=https://s3.eu-central-1.amazonaws.com
+S3_BUCKET=deckyard-media
+S3_ACCESS_KEY=...
+S3_SECRET_KEY=...</code></pre>
+      </div>
+
+      <p>
+        <a class="btn btn-secondary" href="https://github.com/jaapstronks/deckyard/blob/main/.env.example" target="_blank" rel="noreferrer">
+          {t('selfHosting.config.viewEnvExample')}
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section section-cta">
+    <div class="container">
+      <h2>{t('selfHosting.cta.title')}</h2>
+      <p class="section-lead">{t('selfHosting.cta.lead')}</p>
+      <div class="cta-row cta-center">
+        <a class="btn btn-primary btn-lg" href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noreferrer">
+          {t('selfHosting.cta.viewOnGithub')}
+        </a>
+        <a class="btn btn-secondary btn-lg" href="/docs/product/getting-started/">
+          {t('selfHosting.cta.deploymentGuide')}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

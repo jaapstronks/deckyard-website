@@ -1,0 +1,590 @@
+{
+  "site": {
+    "name": "Deckyard",
+    "description": "Open source, zelf te hosten presentatiesysteem.",
+    "copyright": "© 2026 Deckyard. Open source onder MIT-licentie.",
+    "location": "Rotterdam, Nederland"
+  },
+  "nav": {
+    "home": "Home",
+    "features": "Functies",
+    "pricing": "Prijzen",
+    "euPrivacy": "EU & Privacy",
+    "docs": "Docs",
+    "selfHost": "Zelf hosten",
+    "trySandbox": "Probeer sandbox",
+    "menu": "Menu",
+    "closeMenu": "Sluit menu",
+    "skipToContent": "Ga naar inhoud",
+    "backToHome": "← Terug naar home"
+  },
+  "footer": {
+    "product": "Product",
+    "resources": "Bronnen",
+    "compare": "Vergelijk",
+    "community": "Community",
+    "features": "Functies",
+    "slideTypes": "Slide typen",
+    "aiGeneration": "AI generatie",
+    "interactions": "Interacties",
+    "pricing": "Prijzen",
+    "selfHosting": "Zelf hosten",
+    "euPrivacy": "EU & Privacy",
+    "documentation": "Documentatie",
+    "vsMentimeter": "vs Mentimeter",
+    "vsSlidescom": "vs Slides.com",
+    "vsGoogleSlides": "vs Google Slides",
+    "vsPowerPoint": "vs PowerPoint",
+    "github": "GitHub",
+    "discussions": "Discussies",
+    "issues": "Issues",
+    "tagline": "Open source presentaties met live interactie.",
+    "mitLicensed": "MIT-licentie. Gemaakt in Europa."
+  },
+  "languagePicker": {
+    "label": "Taal",
+    "selectLanguage": "Selecteer taal"
+  },
+  "home": {
+    "meta": {
+      "title": "Deckyard — Het presentatieplatform dat je data respecteert",
+      "description": "EU-gehost, GDPR-native, zelf te hosten presentatieplatform. 44 slide typen, ingebouwde polls en Q&A, AI generatie met je eigen keys. MIT-licentie en open source."
+    },
+    "hero": {
+      "eyebrow": "EU-gehost · GDPR-native · Zelf te hosten · Open Source",
+      "title": "Het presentatieplatform dat je data respecteert",
+      "lead": "EU-gehost, GDPR-compliant by design, en volledig zelf te hosten. Maak professionele presentaties met 44 slide typen, ingebouwde polls en Q&A, en AI generatie met je eigen API keys.",
+      "trySandbox": "Probeer sandbox",
+      "selfHostFree": "Gratis zelf hosten",
+      "badges": {
+        "hostedInFrance": "Gehost in Frankrijk",
+        "gdprNative": "GDPR-native",
+        "selfHostable": "Zelf te hosten",
+        "mitLicensed": "MIT-licentie"
+      },
+      "screenshotAlt": "Deckyard editor met slide typen, live preview, en presentator notities",
+      "screenshotCaption": "De editor in actie —",
+      "tryItYourself": "probeer het zelf"
+    },
+    "features": {
+      "title": "Alles wat je nodig hebt voor professionele presentaties",
+      "lead": "Deckyard is geen speelgoed—het is een compleet presentatieplatform met 44 slide typen voor alles van datavisualisaties tot procesdiagrammen tot afbeeldingsgalerijen.",
+      "data": {
+        "title": "Data & Visualisaties",
+        "description": "Grafieken, KPI's, tabellen, funnels, piramides, SWOT-matrices. Presenteer je cijfers met helderheid."
+      },
+      "layouts": {
+        "title": "Layouts & Structuur",
+        "description": "Sectietitels, tekstslides, meerkolomslayouts, iconkaarten, tijdlijnen, roadmaps. Bouw narratieve flow."
+      },
+      "media": {
+        "title": "Media & Embeds",
+        "description": "Afbeeldingen, galerijen, video embeds, kaarten, formulieren. Rijke media zonder frictie."
+      },
+      "export": {
+        "title": "Exporteer Overal",
+        "description": "HTML voor web, PDF voor print, PPTX voor PowerPoint, PNG voor afbeeldingen, JSON voor data portabiliteit."
+      }
+    },
+    "interaction": {
+      "title": "Betrek je publiek zonder van tool te wisselen",
+      "lead": "Polls, Q&A, Likert-schalen en feedbackformulieren—direct in je slides ingebouwd. Geen gejongleer meer met Mentimeter naast je presentatie.",
+      "realtime": {
+        "title": "Real-time publieksinteractie",
+        "livePolls": "Live polls",
+        "livePollsDesc": "Meerkeuzevragen met directe resultatenweergave",
+        "likertScales": "Likert-schalen",
+        "likertScalesDesc": "Eens/oneens of 1-10 waardering",
+        "openFeedback": "Open feedback",
+        "openFeedbackDesc": "Vrije tekstantwoorden van je publiek",
+        "qna": "Q&A",
+        "qnaDesc": "Verzamel vragen, toon en beantwoord live"
+      },
+      "participation": {
+        "title": "Eenvoudige publieksparticipatie",
+        "qrCode": "Publiek doet mee via QR-code of korte link",
+        "noApp": "Geen app download nodig—werkt in elke browser",
+        "followAlong": "Meevolg-modus zodat deelnemers de huidige slide zien",
+        "resultsRealtime": "Resultaten verschijnen real-time op je slides"
+      },
+      "compareToMentimeter": "Bekijk hoe we vergelijken met Mentimeter →"
+    },
+    "ai": {
+      "title": "AI die voor jou werkt, niet tegen je portemonnee",
+      "lead": "Genereer complete presentaties vanuit een prompt. Gebruik je eigen API keys—OpenAI, Anthropic, Mistral, DeepSeek of elk OpenAI-compatibel model. Geen credits, geen limieten, geen verrassingen op je rekening.",
+      "byoKeys": {
+        "title": "Breng je eigen keys",
+        "description": "Verbind je OpenAI, Anthropic, Mistral, DeepSeek of lokaal model. Betaal je provider direct tegen hun tarieven—of draai lokale modellen gratis. Geen markup, geen credits die opraken."
+      },
+      "fullDeck": {
+        "title": "Volledige deck generatie",
+        "description": "Beschrijf je presentatie en laat AI een complete eerste versie maken met passende slide typen, inhoud en structuur."
+      },
+      "control": {
+        "title": "Jij hebt de controle",
+        "description": "AI assisteert—jij beslist. Elke suggestie is te reviewen. Niets verandert zonder jouw goedkeuring. DreamBot analyseert je slides en suggereert verbeteringen, maar jij maakt de keuze."
+      },
+      "whyByo": {
+        "title": "Waarom BYO API keys?",
+        "description": "Andere tools rekenen \"AI credits\" bovenop je abonnement. Op? Betaal meer. Met Deckyard betaal je je AI provider direct tegen hun tarieven.",
+        "noLimits": "Geen kunstmatige limieten",
+        "noMarkup": "Geen markup op API kosten",
+        "chooseProvider": "Kies je provider",
+        "disableAi": "Of schakel AI volledig uit"
+      }
+    },
+    "sovereignty": {
+      "title": "Jouw infrastructuur, jouw regels",
+      "lead": "Draai Deckyard op je eigen servers met Docker, of gebruik onze managed EU cloud. Hoe dan ook, je data blijft waar jij wilt.",
+      "selfHost": {
+        "title": "Zelf hosten (altijd gratis)",
+        "docker": "Docker Compose setup in 5 minuten",
+        "fullControl": "Volledige controle over data en infrastructuur",
+        "noDeps": "Geen externe afhankelijkheden nodig",
+        "scale": "Schaal naar behoefte, betaal alleen voor je servers",
+        "cta": "Zelf-hosting handleiding →"
+      },
+      "cloud": {
+        "title": "EU Managed Cloud",
+        "scaleway": "Gehost op Scaleway (Frankrijk)",
+        "noUsTransfers": "Geen US datatransfers",
+        "updates": "Wij regelen updates en backups",
+        "gdpr": "GDPR compliant by design",
+        "cta": "Leer over EU hosting →"
+      }
+    },
+    "opensource": {
+      "title": "Open source. Geen trucs.",
+      "lead": "Deckyard is MIT-gelicenseerd. Bekijk de broncode, audit de code, fork het, breid het uit, host het voor altijd zelf. Wij geloven dat de beste manier om je vertrouwen te winnen volledige transparantie is.",
+      "noLockin": {
+        "title": "Geen vendor lock-in",
+        "description": "Als wij morgen verdwijnen, heb je nog steeds een werkend product. Je presentaties worden nooit gegijzeld."
+      },
+      "inspect": {
+        "title": "Inspecteer alles",
+        "description": "Beveiligingsbewust? Lees elke regel code. We hebben niets te verbergen."
+      },
+      "community": {
+        "title": "Community-gedreven",
+        "description": "Meld bugs, vraag features aan, draag code bij. Help de roadmap vormgeven."
+      },
+      "enterprise": {
+        "title": "Enterprise-vriendelijk",
+        "description": "MIT-licentie betekent geen juridische hoofdpijn voor je inkoopteam."
+      },
+      "viewOnGithub": "Bekijk op GitHub"
+    },
+    "cta": {
+      "title": "Klaar om je presentaties te bezitten?",
+      "lead": "Probeer de sandbox zonder registratie, of deploy op je eigen infrastructuur in minuten.",
+      "trySandbox": "Probeer de sandbox",
+      "readDocs": "Lees de docs"
+    }
+  },
+  "selfHosting": {
+    "meta": {
+      "title": "Deckyard zelf hosten — Draai op je eigen infrastructuur",
+      "description": "Deploy Deckyard op je eigen servers met Docker. Volledige datacontrole, geen externe afhankelijkheden, 5 minuten setup."
+    },
+    "hero": {
+      "title": "Draai Deckyard op je eigen infrastructuur",
+      "lead": "Volledige datacontrole. Geen externe afhankelijkheden. Deploy met Docker in 5 minuten."
+    },
+    "quickstart": {
+      "title": "Aan de slag in 5 minuten",
+      "requirements": "Vereisten",
+      "docker": "Docker & Docker Compose — Vereist voor gecontaineriseerde deployment",
+      "ram": "2GB RAM minimum — 4GB aanbevolen voor productie",
+      "postgres": "PostgreSQL 14+ — Inbegrepen in compose, of gebruik externe database",
+      "s3": "Optioneel: S3-compatibele opslag voor mediabestanden"
+    },
+    "why": {
+      "title": "Waarom zelf hosten?",
+      "sovereignty": {
+        "title": "Volledige datasoevereiniteit",
+        "description": "Je presentatiedata verlaat nooit je servers. Geen toegang door derden, geen data mining, geen verrassingen."
+      },
+      "compliance": {
+        "title": "Compliance vereisten",
+        "description": "Gezondheidszorg, overheid, onderwijs, financiën—veel organisaties vereisen on-premise oplossingen."
+      },
+      "cost": {
+        "title": "Kostenbeheersing op schaal",
+        "description": "Geen per-seat prijsangst. Eén deployment bedient je hele organisatie."
+      },
+      "customization": {
+        "title": "Aanpassingsvrijheid",
+        "description": "Pas de broncode aan, voeg integraties toe, pas de UI aan. MIT-licentie betekent geen restricties."
+      }
+    },
+    "config": {
+      "title": "Configuratie",
+      "ai": "AI Providers (optioneel)",
+      "aiDesc": "Verbind je eigen API keys om AI features in te schakelen. Je betaalt alleen je provider direct—geen markup.",
+      "database": "Database",
+      "storage": "Opslag (optioneel)",
+      "viewEnvExample": "Bekijk volledige .env.example →"
+    },
+    "cta": {
+      "title": "Klaar om te deployen?",
+      "lead": "Krijg Deckyard draaiend op je infrastructuur in minuten.",
+      "viewOnGithub": "Bekijk op GitHub",
+      "deploymentGuide": "Deployment handleiding"
+    }
+  },
+  "euPrivacy": {
+    "meta": {
+      "title": "EU Hosting & GDPR — Deckyard Privacy",
+      "description": "Deckyard is gehost in de EU op Franse infrastructuur. GDPR compliant by design, met datasoevereiniteit en transparante datapraktijken."
+    },
+    "hero": {
+      "title": "EU-gehost. GDPR by design.",
+      "lead": "Je data blijft in Europa. Op Franse infrastructuur. Onder EU-wetgeving."
+    },
+    "features": {
+      "hostedInFrance": {
+        "title": "Gehost in Frankrijk",
+        "description": "Onze managed cloud draait op Scaleway infrastructuur in Frankrijk. Je data verlaat nooit de EU."
+      },
+      "gdprCompliant": {
+        "title": "GDPR compliant",
+        "description": "Gebouwd door een EU-bedrijf (Nederland) voor EU compliance vanaf dag één. Geen US cloudproviders in de keten."
+      },
+      "noTracking": {
+        "title": "Geen tracking, geen analytics",
+        "description": "We tracken je gebruik niet. Geen Google Analytics, geen marketing pixels, geen gedragsprofilering."
+      },
+      "yourKeys": {
+        "title": "Jouw keys, jouw AI",
+        "description": "AI features gebruiken je eigen API keys. We zien nooit je prompts en slaan je AI conversaties niet op."
+      }
+    },
+    "dataProcessing": {
+      "title": "Dataverwerkingsdetails",
+      "whatWeStore": "Wat we opslaan",
+      "where": "Waar",
+      "retention": "Bewaartermijn",
+      "presentationContent": "Presentatie-inhoud",
+      "audienceResponses": "Publieksreacties",
+      "accountData": "Accountgegevens (e-mail)",
+      "apiKeys": "API keys (versleuteld)",
+      "scalewayFrance": "Scaleway Frankrijk",
+      "untilYouDelete": "Tot je het verwijdert",
+      "untilDeletePresentation": "Tot je de presentatie verwijdert",
+      "untilAccountDeletion": "Tot accountverwijdering",
+      "untilYouRemove": "Tot je ze verwijdert",
+      "whatWeDontStore": "Wat we niet opslaan",
+      "noIpAddresses": "IP-adressen van je publieksleden",
+      "noAiPrompts": "AI prompts of gegenereerde content (verwerkt direct met je API keys)",
+      "noAnalytics": "Gebruiksanalytics of gedragsdata",
+      "noCookies": "Third-party cookies of tracking identifiers"
+    },
+    "selfHosting": {
+      "title": "Zelf hosten: volledige controle",
+      "lead": "Voor organisaties met strikte datavereisten kan Deckyard volledig op je eigen infrastructuur draaien:",
+      "airGapped": "Air-gapped deployments — Geen externe netwerkoproepen nodig",
+      "onPremise": "On-premise databases — PostgreSQL op je servers",
+      "internalAi": "Interne AI modellen — Verbind met zelf-gehoste LLMs",
+      "audit": "Audit alles — Volledige broncode beschikbaar onder MIT-licentie",
+      "cta": "Zelf-hosting handleiding →"
+    },
+    "faq": {
+      "title": "Veelgestelde vragen",
+      "dpa": {
+        "question": "Kan ik een DPA (Dataverwerkingsovereenkomst) krijgen?",
+        "answer": "Ja. Neem contact op via privacy@deckyard.eu voor onze standaard DPA of om aangepaste vereisten te bespreken."
+      },
+      "cloudAct": {
+        "question": "Is Deckyard onderworpen aan de US CLOUD Act?",
+        "answer": "Nee. Deckyard wordt beheerd vanuit Nederland. We gebruiken alleen EU infrastructuurproviders (Scaleway). Er zijn geen Amerikaanse entiteiten in onze dataverwerkingsketen."
+      },
+      "audienceData": {
+        "question": "Wat gebeurt er met publieksreactiedata?",
+        "answer": "Publieksreacties (poll stemmen, Q&A inzendingen, etc.) worden opgeslagen bij je presentatie. Ze worden verwijderd wanneer je de presentatie verwijdert. We analyseren of profileren publieksgedrag niet."
+      },
+      "aiGdpr": {
+        "question": "Voldoen AI features aan de GDPR?",
+        "answer": "AI features gebruiken je eigen API keys, wat betekent dat prompts direct naar je gekozen provider gaan (OpenAI, Anthropic, etc.). We verwerken of slaan AI interacties niet op. Je onderhoudt je eigen relatie en DPA met je AI provider."
+      },
+      "exportData": {
+        "question": "Kan ik al mijn data exporteren?",
+        "answer": "Ja. Je kunt presentaties exporteren als JSON, en publieksdata als CSV. Voor volledige accountdata-exports (GDPR Artikel 20), neem contact met ons op."
+      },
+      "deleteAccount": {
+        "question": "Hoe verwijder ik mijn account?",
+        "answer": "Accountverwijdering is beschikbaar in instellingen. Al je data wordt permanent verwijderd binnen 30 dagen. Voor directe verwijderingsverzoeken, neem contact op via privacy@deckyard.eu."
+      }
+    },
+    "cta": {
+      "title": "Vragen over privacy?",
+      "lead": "We bespreken graag je specifieke vereisten.",
+      "contactPrivacy": "Contact privacyteam",
+      "selfHostingGuide": "Zelf-hosting handleiding"
+    }
+  },
+  "pricing": {
+    "meta": {
+      "title": "Prijzen — Deckyard",
+      "description": "Eenvoudige prijzen. Geen per-seat angst. Host zelf gratis, of gebruik onze managed EU cloud met Pro en Team plannen."
+    },
+    "hero": {
+      "title": "Eenvoudige prijzen. Geen per-seat angst.",
+      "lead": "Host zelf voor altijd gratis, of laat ons de infrastructuur regelen. Alle features inbegrepen in elk plan."
+    },
+    "plans": {
+      "selfHosted": {
+        "name": "Zelf gehost",
+        "price": "Gratis",
+        "period": "voor altijd",
+        "features": {
+          "unlimitedPresentations": "Onbeperkte presentaties",
+          "unlimitedAudience": "Onbeperkte publieksleden",
+          "allSlideTypes": "Alle 44 slide typen",
+          "allInteractive": "Alle interactieve features",
+          "aiGeneration": "AI generatie (BYO keys)",
+          "fullSource": "Volledige broncode toegang",
+          "mitLicense": "MIT-licentie",
+          "yourData": "Jouw servers, jouw data"
+        },
+        "cta": "Deploy nu"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "€19",
+        "period": "per maand",
+        "features": {
+          "everything": "Alles in Zelf gehost",
+          "managedHosting": "Managed EU hosting (Frankrijk)",
+          "autoUpdates": "Automatische updates",
+          "storage": "10 GB opslag",
+          "emailSupport": "E-mail support",
+          "dailyBackups": "Dagelijkse backups",
+          "customDomain": "Eigen domein",
+          "byoAi": "BYO AI API keys"
+        },
+        "cta": "Start proefperiode"
+      },
+      "team": {
+        "name": "Team",
+        "price": "€49",
+        "period": "per maand",
+        "features": {
+          "everything": "Alles in Pro",
+          "teamMembers": "Tot 10 teamleden",
+          "sharedWorkspaces": "Gedeelde workspaces",
+          "roleBasedPermissions": "Rolgebaseerde rechten",
+          "storage": "50 GB opslag",
+          "prioritySupport": "Prioriteit support",
+          "auditLog": "Audit log",
+          "sso": "SSO (binnenkort)"
+        },
+        "cta": "Start proefperiode"
+      }
+    },
+    "faq": {
+      "title": "Veelgestelde vragen",
+      "selfHostedIncludes": {
+        "question": "Wat zit er in zelf gehost?",
+        "answer": "Alles. Zelf gehoste Deckyard bevat alle 44 slide typen, alle interactieve features (polls, Q&A, feedback), AI generatie, export naar alle formaten, en onbeperkte presentaties en publieksleden. Het enige verschil is dat je je eigen infrastructuur beheert."
+      },
+      "aiCosts": {
+        "question": "Betaal ik voor AI features?",
+        "answer": "AI features gebruiken je eigen API keys van OpenAI, Anthropic, of Mistral. Je betaalt je provider direct tegen hun tarieven—meestal €0.02-0.05 per deck generatie. We rekenen geen markup op API kosten of AI credits."
+      },
+      "enterprise": {
+        "question": "Is er een enterprise tier?",
+        "answer": "Nog niet. Voor grotere teams of specifieke compliance vereisten, neem contact met ons op om aangepaste arrangementen te bespreken. We werken graag met je samen aan dedicated hosting, aangepaste SLA's, of specifieke beveiligingsvereisten."
+      },
+      "switchPlans": {
+        "question": "Kan ik wisselen tussen plannen?",
+        "answer": "Ja. Je kunt upgraden, downgraden, of overstappen naar zelf hosten wanneer je wilt. Je data is altijd exporteerbaar in standaardformaten (JSON, PDF, PPTX)."
+      },
+      "paymentMethods": {
+        "question": "Welke betaalmethoden accepteren jullie?",
+        "answer": "We accepteren creditcards en SEPA automatische incasso voor EU klanten. Jaarlijkse facturering is beschikbaar met 15% korting."
+      },
+      "discounts": {
+        "question": "Bieden jullie kortingen?",
+        "answer": "We bieden 50% korting voor non-profits en onderwijsinstellingen. Neem contact met ons op met bewijs van status om aan te vragen."
+      }
+    },
+    "compare": {
+      "title": "Vergelijk met alternatieven",
+      "lead": "Bekijk hoe Deckyard prijzen vergelijken met andere presentatietools.",
+      "freeTier": "Gratis tier",
+      "proPricing": "Pro prijzen",
+      "teamPricing": "Team prijzen",
+      "teamCost": "Kosten 20-persoons team",
+      "aiFeatures": "AI features",
+      "selfHostOption": "Zelf-host optie",
+      "deckyard": {
+        "freeTier": "Volledige features (zelf hosten)",
+        "proPricing": "€19/maand vast",
+        "teamPricing": "€49/maand vast",
+        "teamCost": "€49/maand",
+        "aiFeatures": "BYO keys (geen markup)",
+        "selfHostOption": "Ja (gratis)"
+      },
+      "mentimeter": {
+        "freeTier": "50 deelnemers",
+        "proPricing": "$11.99/gebruiker/maand",
+        "teamPricing": "$24.99/gebruiker/maand",
+        "teamCost": "$500/maand",
+        "aiFeatures": "Inbegrepen (beperkt)",
+        "selfHostOption": "Nee"
+      },
+      "slidescom": {
+        "freeTier": "Beperkte features",
+        "proPricing": "$7/maand",
+        "teamPricing": "$18/gebruiker/maand",
+        "teamCost": "$360/maand",
+        "aiFeatures": "Geen",
+        "selfHostOption": "Nee"
+      }
+    },
+    "cta": {
+      "title": "Klaar om te starten?",
+      "lead": "Probeer de sandbox zonder registratie, of deploy op je eigen infrastructuur.",
+      "trySandbox": "Probeer de sandbox",
+      "selfHostingGuide": "Zelf-hosting handleiding"
+    }
+  },
+  "compareMentimeter": {
+    "meta": {
+      "title": "Deckyard vs Mentimeter — Open Source Alternatief",
+      "description": "Vergelijk Deckyard en Mentimeter voor publieksinteractie. Open source, zelf te hosten, geen per-seat prijzen, EU-gehost alternatief."
+    },
+    "hero": {
+      "title": "Deckyard vs Mentimeter",
+      "lead": "Hou je van publieksinteractie, maar wil je je tools bezitten? Deckyard geeft je polls, Q&A, en live feedback—plus een volledige presentatie-editor."
+    },
+    "comparison": {
+      "title": "Snelle vergelijking",
+      "openSource": "Open source",
+      "selfHosting": "Zelf hosten",
+      "fullSlideEditor": "Volledige slide editor",
+      "livePolls": "Live polls",
+      "wordClouds": "Woordwolken",
+      "qna": "Q&A",
+      "quizzes": "Quizzen",
+      "aiGeneration": "AI generatie",
+      "euHosting": "EU hosting",
+      "pricingModel": "Prijsmodel",
+      "audienceLimit": "Publiekslimiet"
+    },
+    "reasons": {
+      "title": "Waarom teams overstappen naar Deckyard",
+      "pricing": {
+        "title": "1. Geen per-seat prijsangst meer",
+        "description": "Mentimeter rekent per presentator. Bij $11.99/maand basic of $24.99/maand pro kost een team van 20 personen $240–$500/maand. Deckyards vaste prijzen (of gratis zelf hosten) betekent dat je kosten niet schalen met headcount."
+      },
+      "fullEditor": {
+        "title": "2. Bouw complete presentaties, niet alleen interacties",
+        "description": "Mentimeter blinkt uit in interactieve slides maar mist een volledige presentatie-editor. Je eindigt met jongleren tussen Mentimeter en PowerPoint. Deckyard combineert beide: ontwerp complete decks met 44 slide typen, voeg dan live interactie toe waar nodig."
+      },
+      "dataSovereignty": {
+        "title": "3. Echte datasoevereiniteit",
+        "description": "Mentimeter is een Zweeds bedrijf maar gebruikt Amerikaanse infrastructuur. Voor GDPR-bewuste organisaties is dat een zorg. Deckyard draait op Franse servers, of je kunt volledig zelf hosten op je eigen infrastructuur."
+      },
+      "byoAi": {
+        "title": "4. BYO AI, geen markup",
+        "description": "Mentimeters AI features komen met hun betaalde plannen. Deckyard laat je je eigen OpenAI, Anthropic, of Mistral API keys verbinden—je betaalt alleen wat je gebruikt, tegen provider tarieven."
+      },
+      "openSource": {
+        "title": "5. Open source transparantie",
+        "description": "Deckyards code is publiek onder MIT-licentie. Je kunt het auditen, aanpassen, eraan bijdragen. Geen black boxes, geen vendor lock-in, geen verrassende deprecaties."
+      }
+    },
+    "whenMentimeter": {
+      "title": "Wanneer bij Mentimeter blijven",
+      "lead": "We zijn eerlijk over trade-offs. Mentimeter kan beter zijn als:",
+      "turnkey": "Je turnkey eenvoud nodig hebt — Mentimeters SaaS model betekent nul setup. Als je geen technische resources hebt en niets wilt beheren, is dat waardevol.",
+      "soloPresenter": "Je een solo presentator bent — Voor individuen die af en toe presentaties geven, kan Mentimeters gratis tier (50 deelnemers) voldoende zijn.",
+      "integrations": "Je specifieke integraties nodig hebt — Mentimeter heeft meer ingebouwde third-party integraties. Deckyard haalt in, maar controleer of je specifieke tool ondersteund wordt."
+    },
+    "migration": {
+      "title": "Migratie is simpel",
+      "lead": "Overstappen van Mentimeter? Zo doe je het:",
+      "step1": "Exporteer je content — Download je Mentimeter presentaties als PDFs ter referentie",
+      "step2": "Herbouw in Deckyard — Gebruik onze AI generator om snel decks te herbouwen, of importeer content handmatig",
+      "step3": "Test met je publiek — Voer een pilot sessie uit om te zorgen dat alles werkt",
+      "step4": "Ga live — Deel je nieuwe Deckyard presentatie URL met deelnemers",
+      "needHelp": "Hulp nodig bij migreren?",
+      "contactUs": "Neem contact op"
+    },
+    "cta": {
+      "title": "Klaar om het open alternatief te proberen?",
+      "lead": "Bekijk hoe Deckyard je publieksinteractie behoeften afhandelt.",
+      "trySandbox": "Probeer de sandbox",
+      "selfHostingGuide": "Zelf-hosting handleiding"
+    }
+  },
+  "compareSlidescom": {
+    "meta": {
+      "title": "Deckyard vs Slides.com — Open Source Presentatietool",
+      "description": "Vergelijk Deckyard en Slides.com voor presentatiecreatie. Open source, zelf te hosten, met ingebouwde live publieksinteractie."
+    },
+    "hero": {
+      "title": "Deckyard vs Slides.com",
+      "lead": "Beide zijn moderne webgebaseerde presentatietools. Maar Deckyard voegt live publieksinteractie toe en laat je zelf hosten."
+    },
+    "comparison": {
+      "title": "Snelle vergelijking",
+      "openSource": "Open source",
+      "selfHosting": "Zelf hosten",
+      "webBasedEditor": "Webgebaseerde editor",
+      "livePollsQna": "Live polls & Q&A",
+      "wordClouds": "Woordwolken",
+      "audienceFeedback": "Publieksfeedback",
+      "aiGeneration": "AI generatie",
+      "revealjsExport": "Reveal.js export",
+      "customCssThemes": "Aangepaste CSS/thema's",
+      "euHosting": "EU hosting",
+      "pricing": "Prijzen"
+    },
+    "reasons": {
+      "title": "Waarom teams Deckyard kiezen boven Slides.com",
+      "audienceInteraction": {
+        "title": "1. Publieksinteractie is ingebouwd",
+        "description": "Slides.com maakt mooie presentaties, maar er is geen manier voor je publiek om deel te nemen. Deckyard bevat live polls, Q&A, woordwolken, Likert-schalen, en feedbackverzameling—alles in één tool."
+      },
+      "selfHost": {
+        "title": "2. Zelf hosten voor volledige controle",
+        "description": "Slides.com is alleen cloud. Als je presentaties moet draaien op interne netwerken, aan compliance vereisten moet voldoen, of simpelweg je infrastructuur wilt bezitten, maakt Deckyards Docker deployment het mogelijk."
+      },
+      "aiPowered": {
+        "title": "3. AI-aangedreven deck generatie",
+        "description": "Upload een document, krijg een presentatie. Deckyards AI features helpen je sneller decks te maken met je eigen API keys (OpenAI, Anthropic, Mistral). Slides.com heeft geen AI mogelijkheden."
+      },
+      "openSource": {
+        "title": "4. Open source = geen lock-in",
+        "description": "Als Slides.com prijzen verandert, features verwijdert, of stopt, verlies je toegang. Deckyards MIT-gelicenseerde code betekent dat je het altijd kunt forken, aanpassen, en zelf draaien."
+      },
+      "euData": {
+        "title": "5. EU dataresidentie",
+        "description": "Slides.com draait op Amerikaanse infrastructuur. Deckyards managed cloud is gehost in Frankrijk. Voor EU organisaties is dat een betekenisvol verschil voor GDPR compliance."
+      }
+    },
+    "whenSlidescom": {
+      "title": "Wanneer Slides.com zinvol is",
+      "lead": "Eerlijke vergelijkingen vereisen eerlijkheid. Slides.com kan beter zijn als:",
+      "revealjs": "Je van Reveal.js houdt en de volledige kracht wilt — Slides.com is direct gebouwd op Reveal.js met diepe integratie. Als je een Reveal.js power user bent, is hun editor er speciaal voor gebouwd.",
+      "staticOnly": "Je alleen statische presentaties nodig hebt — Als je nooit publieksinteractie nodig hebt, is Slides.com simpeler en meer gefocust.",
+      "collaboration": "Je volwassen samenwerkingsfeatures wilt — Slides.com heeft jaren gehad om teamsamenwerking te verfijnen. Deckyards samenwerkingsfeatures zijn nieuwer."
+    },
+    "migration": {
+      "title": "Overstappen van Slides.com",
+      "lead": "Beide tools kunnen exporteren naar standaardformaten, wat migratie eenvoudig maakt:",
+      "step1": "Exporteer van Slides.com — Download je presentaties als HTML of PDF",
+      "step2": "Importeer content naar Deckyard — Plak content of gebruik AI om slides te regenereren van je bronmateriaal",
+      "step3": "Voeg interactiviteit toe — Verrijk je statische slides met polls, Q&A, en publieksfeedback",
+      "step4": "Publiceer en deel — Je nieuwe Deckyard presentaties werken op elk apparaat"
+    },
+    "cta": {
+      "title": "Probeer Deckyard vandaag",
+      "lead": "Bekijk wat interactieve presentaties kunnen doen voor je publieksbetrokkenheid.",
+      "trySandbox": "Probeer de sandbox",
+      "viewSource": "Bekijk broncode"
+    }
+  }
+}
