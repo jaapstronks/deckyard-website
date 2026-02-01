@@ -112,6 +112,7 @@ export default defineConfig({
           items: [
             { label: 'Presenter Mode', link: '/docs/presenter/' },
             { label: 'Laser Pointer & Drawing', link: '/docs/presenter/highlighter/' },
+            { label: 'Slide Timing & Pacing', link: '/docs/presenter/slide-timing/' },
             // { label: 'Live Video Overlay', link: '/docs/presenter/live-video/' }, // TODO: create docs page
             { label: 'Audience Follow Mode', link: '/docs/presenter/follow-mode/' },
             { label: 'Speaker Notes View', link: '/docs/presenter/notes-view/' },

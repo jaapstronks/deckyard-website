@@ -20,6 +20,7 @@ Presenter mode provides you with tools and information to deliver your presentat
 - **Timer** - Track your presentation time
 - **Navigation Controls** - Move through slides easily
 - **Laser Pointer & Drawing** - Highlight content on your slides
+- **Slide Timing & Pacing** - Auto-advance or pacing timer with per-slide durations
 - **Audience View** - See what your audience sees
 - **Q&A Monitoring** - Watch for audience questions
 
@@ -138,6 +139,7 @@ Set a target duration:
 | `P` | Toggle persistent drawings |
 | `G` | Slide overview |
 | `B` | Black screen |
+| `A` | Pause/resume timer |
 | `N` | Notes toggle |
 | `Esc` | Disable highlighter / exit presenter mode |
 
@@ -176,6 +178,7 @@ For panels or co-presentations:
 ## Related
 
 - [Laser Pointer & Drawing](/docs/presenter/highlighter/)
+- [Slide Timing & Pacing](/docs/presenter/slide-timing/)
 - [Notes View](/docs/presenter/notes-view/)
 - [Follow Mode](/docs/presenter/follow-mode/)
 - [Presentation Locks](/docs/presenter/presentation-locks/)
