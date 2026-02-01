@@ -124,7 +124,20 @@ export default defineConfig({
           items: [
             { label: 'Publishing & Sharing', link: '/docs/publishing/' },
             { label: 'Embedding (SDK)', link: '/docs/publishing/embedding/' },
+            { label: 'RSS Feeds', link: '/docs/publishing/rss-feeds/' },
             { label: 'OpenGraph Images', link: '/docs/publishing/og-images/' }
+          ]
+        },
+        {
+          label: 'Export',
+          items: [
+            { label: 'Overview', link: '/docs/export/' },
+            { label: 'PDF Export', link: '/docs/export/pdf/' },
+            { label: 'PowerPoint Export', link: '/docs/export/pptx/' },
+            { label: 'Image Export', link: '/docs/export/images/' },
+            { label: 'Speaker Notes', link: '/docs/export/notes/' },
+            { label: 'Handoff Bundle', link: '/docs/export/handoff-bundle/' },
+            { label: 'Data Backup', link: '/docs/export/backup/' }
           ]
         },
         {
@@ -152,18 +165,8 @@ export default defineConfig({
           items: [
             { label: 'Overview', link: '/docs/themes/' },
             { label: 'Theme Editor', link: '/docs/themes/editor/' },
+            { label: 'Font Management', link: '/docs/themes/font-management/' },
             { label: 'Custom Slide Types', link: '/docs/customization/custom-slide-types/' }
-          ]
-        },
-        {
-          label: 'Export',
-          items: [
-            { label: 'Overview', link: '/docs/export/' },
-            { label: 'PDF Export', link: '/docs/export/pdf/' },
-            { label: 'PowerPoint Export', link: '/docs/export/pptx/' },
-            { label: 'Image Export', link: '/docs/export/images/' },
-            { label: 'Speaker Notes', link: '/docs/export/notes/' },
-            { label: 'Handoff Bundle', link: '/docs/export/handoff-bundle/' }
           ]
         },
         {

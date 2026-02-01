@@ -45,13 +45,14 @@ Note: Changing themes may affect the visual appearance of existing slides. Revie
 
 ## Built-in Themes
 
-Deckyard includes several built-in themes for different use cases:
+Deckyard includes several built-in themes:
 
-| Theme | Description |
-|-------|-------------|
-| `sandbox-minimal` | Clean, minimal design for demos |
-| `sandbox-night` | Dark theme for low-light presentations |
-| `sandbox-mist` | Soft, neutral colors |
+| Theme | Style | Heading Font | Body Font |
+|-------|-------|-------------|-----------|
+| Deckyard | Purple, rounded | Bricolage Grotesque | Inter |
+| Warm | Terracotta, earthy | Instrument Serif | DM Sans |
+| Sage | Green, elegant | Playfair Display | DM Sans |
+| Dark | Dark backgrounds | Space Grotesk | Inter |
 
 ## Creating Custom Themes
 
@@ -120,7 +121,9 @@ All theme CSS variables must start with `--t-`.
 
 ### Custom Fonts
 
-Embed custom fonts for consistent typography:
+Deckyard includes 40 curated Google Fonts that are available out of the box. You can also add custom fonts from uploads, Adobe Fonts, Monotype, and Google Fonts through the [Font Management](/docs/themes/font-management/) settings.
+
+For JSON-based themes, embed font files directly using the `embedFonts` array:
 
 ```json
 {
@@ -141,9 +144,24 @@ Embed custom fonts for consistent typography:
 }
 ```
 
+Then reference the font in your CSS variables:
+
+```json
+{
+  "cssVars": {
+    "--t-font-heading": "'Your Brand Font', sans-serif",
+    "--t-font-body": "'Your Brand Font', sans-serif",
+    "--t-heading-weight": "700"
+  }
+}
+```
+
 Embedded fonts are:
 - Loaded in the browser for editing and presenting
-- Included in PDF/HTML exports for offline viewing
+- Base64-embedded in HTML exports for offline viewing
+- Available in PDF and PNG exports
+
+See [Font Management](/docs/themes/font-management/) for the full guide on adding and managing fonts.
 
 ### Background Presets
 
@@ -274,6 +292,7 @@ custom-assets/
 
 ## Related
 
+- [Font Management](/docs/themes/font-management/)
 - [Theme Editor](/docs/themes/editor/)
 - [Custom Slide Types](/docs/customization/custom-slide-types/)
 - [Slide Types Overview](/docs/slide-types/)
