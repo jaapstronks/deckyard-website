@@ -1,72 +1,60 @@
-# Deckyard Website
+# Claude Code Briefing: Deckyard Website — Launch Sprint
 
-Marketing website and user documentation for Deckyard.
+## Context
+Launching Deckyard tomorrow (13 Feb 2026). The website needs final polish.
+Current branch: `feature/infrastructure-positioning` — has the infrastructure repositioning.
 
-## This Repository
+## What's already done
+- ✅ Homepage fully repositioned: "Presentation infrastructure you own"
+- ✅ MCP section on homepage (22 tools, 6 prompts, SSE transport)
+- ✅ AI section (type-aware, BYO LLM, iterative refinement)
+- ✅ i18n updated (en.json has correct tool counts: 22 tools, 38 types)
+- ✅ MCP server docs page (`src/content/docs/docs/developer/mcp-server.md`)
+- ✅ REST API docs page
+- ✅ Full SEO (sitemap, JSON-LD, OG tags, favicons)
+- ✅ 12 language translations
+- ✅ Pricing page with FAQ schema
+- ✅ 4 competitor comparison pages
 
-**Purpose:** Static marketing site + comprehensive docs (100+ pages)
+## What needs doing
 
-**Stack:** Astro 5, Starlight (docs theme), 12-language i18n
+### 1. Merge to main and deploy
+The `feature/infrastructure-positioning` branch has all the latest updates. Merge to main.
 
-**Output:** Static HTML deployed to Scaleway Object Storage + Cloudflare CDN
+### 2. Screenshot for hero
+The homepage hero references `/images/deckyard-editor-preview.png` — this needs to be an actual screenshot of the Deckyard editor. Take a screenshot of the editor with a nice presentation open, 1920x1080, and place it at that path.
 
-## Related Repositories
+### 3. Blog post page
+Launch materials exist in the main deckyard repo at `launch-materials/blog-post-personal.md`. Create a blog post page at `src/pages/[...locale]/blog/launch.astro` (or add it as a content collection entry). The blog index page already exists.
 
-| Repo | Path | Purpose |
-|------|------|---------|
-| **deckyard** | `../deckyard` | Core OSS - source of truth for features |
-| **deckyard-cloud** | `../deckyard-cloud` | Paid hosted version |
-| **presentation-system** | `../presentation-system` | Production fork for CIIIC client |
+### 4. Missing screenshots
+The cards on the homepage reference images that may not exist:
+- `/images/screenshots/chart-slide-editor.png` 
+- `/images/screenshots/slides-panel.png`
+- `/images/screenshots/image-picker.png`
+- `/images/marketing/poll-slide-marketing.png`
 
-## Key Directories
+Check which exist and take screenshots for missing ones. The cards will render without images but look better with them.
 
-- `src/pages/` - Marketing pages (Astro components)
-  - `[...locale]/` - i18n routing (en default, others prefixed)
-  - `features/`, `compare/`, `use-cases/` - Landing pages
-- `docs/` - Source documentation (markdown)
-- `src/content/docs/` - Docs copied here by sync script
-- `src/i18n/locales/` - Translation JSON files (12 languages)
-- `scripts/sync-docs.js` - Copies docs from `./docs/` to Starlight content
+### 5. Verify all links work
+- The sandbox link points to `https://sandbox.deckyard.eu` — verify this works
+- The GitHub link points to `https://github.com/jaapstronks/deckyard` — this needs to be public first
+- Internal doc links like `/docs/developer/mcp-server/` should work now
 
-## Documentation Structure
+### 6. Dutch translation sync (optional)
+The `nl.json` locale file may have stale content (still mentioning 20 tools). Low priority — English is the launch language.
 
-17 categories, 100+ pages:
-- User: creating, editing, organizing, slide-types, ai, interactions, presenting, publishing, collaboration, libraries, themes, export
-- Admin: admin, configuration, deployment, integrations, developer
-
-## Common Cross-Repo Tasks
-
-| Task | What to do |
-|------|------------|
-| New feature in core | Add/update docs in `./docs/` matching the feature |
-| API change in core | Update `./docs/developer/` and API reference |
-| New slide type | Add to `./docs/slide-types/` |
-| Pricing change | Update `./src/pages/[...locale]/pricing.astro` |
-
-## Keeping Docs in Sync
-
-Docs describe deckyard core features. When core changes:
-1. Check if docs need updating
-2. Edit markdown in `./docs/` (not `src/content/docs/`)
-3. `npm run dev` auto-syncs to Starlight
-
-## Running Locally
-
+## Build & test
 ```bash
 npm install
-npm run dev      # Syncs docs + starts dev server
-npm run build    # Production build to ./dist/
+npm run dev        # Astro dev server
+npm run build      # Production build
 ```
 
-## i18n
-
-- Default: English (no prefix)
-- Others: `/nl/`, `/de/`, `/fr/`, etc. (12 total)
-- Marketing pages: translated via `src/i18n/locales/*.json`
-- Docs: English only currently (in `./docs/`)
-
-## Key Files
-
-- `astro.config.mjs` - Starlight config, sidebar structure
-- `src/i18n/index.ts` - Translation helpers
-- `scripts/sync-docs.js` - Doc sync script
+## Key files
+- `src/pages/[...locale]/index.astro` — Homepage template
+- `src/i18n/locales/en.json` — All English copy
+- `src/content/docs/docs/developer/` — Developer docs (Starlight)
+- `astro.config.mjs` — Sidebar config, sitemap, site URL
+- `public/images/` — All images/screenshots
+- `src/layouts/BaseLayout.astro` — SEO meta, JSON-LD
