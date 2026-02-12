@@ -1,7 +1,7 @@
 {
   "site": {
     "name": "Deckyard",
-    "description": "Open source presentation infrastructure. Type-aware AI, MCP server, REST API. Self-host or use our EU cloud.",
+    "description": "Open source presentation infrastructure. 22 MCP tools, type-aware AI, REST API. Self-host or use our EU cloud.",
     "copyright": "© 2026 Deckyard. Open source under MIT license.",
     "location": "Rotterdam, Netherlands"
   },
@@ -51,12 +51,12 @@
   "home": {
     "meta": {
       "title": "Deckyard — Presentation infrastructure for AI agents and teams",
-      "description": "Open source presentation platform with MCP server, REST API, and type-aware AI. 36+ typed slide types, BYO LLM, self-hostable. The engine AI agents and tools use to build presentations."
+      "description": "Open source presentation platform with 22 MCP tools, REST API, and type-aware AI. 38 typed slide types, BYO LLM, self-hostable. The engine AI agents use to build presentations."
     },
     "hero": {
       "eyebrow": "Open Source · MCP Server · Type-Aware AI · Self-hostable",
       "title": "Presentation infrastructure you own",
-      "lead": "The open source engine for creating presentations—by humans, AI agents, or both. 36+ typed slide types with schemas, a full MCP server, REST API, and BYO LLM support. Self-host for free or use our EU cloud.",
+      "lead": "The open source engine for creating presentations—by humans, AI agents, or both. 38 typed slide types, 22 MCP tools, REST API, and BYO LLM support. Self-host for free or use our EU cloud.",
       "trySandbox": "Try the sandbox",
       "selfHostFree": "Self-host free",
       "viewOnGithub": "View on GitHub",
@@ -119,7 +119,7 @@
     },
     "ai": {
       "title": "Type-aware AI that understands slides",
-      "lead": "Not just \"add text to a template.\" Deckyard's intelligence layer knows about 36+ slide types, validates against schemas, and generates structured, theme-aware presentations. Use your own LLM—OpenAI, Claude, Mistral, or self-hosted.",
+      "lead": "Not just \"add text to a template.\" Deckyard's intelligence layer knows about 38 slide types, validates structure, and generates schema-compliant content. Three-phase pipeline: outline, refine, validate.",
       "byoKeys": {
         "title": "Bring your own LLM",
         "description": "Connect OpenAI, Anthropic, Mistral, DeepSeek, or any OpenAI-compatible model—including self-hosted via Ollama. Your API key, your choice, your costs. No markup, no credits, no limits."
@@ -163,14 +163,14 @@
     },
     "openPlatform": {
       "title": "Built for integration, not just interaction",
-      "lead": "REST API, MCP server with 20 tools and 6 prompts, SSE transport for remote access. Deckyard is presentation infrastructure that AI agents, CI/CD pipelines, and developer tools can build on.",
+      "lead": "REST API, MCP server with 22 tools and 6 prompts, SSE transport for remote access. Deckyard is presentation infrastructure you can build on, not just a product you use.",
       "opensource": {
         "title": "Fully open source",
         "description": "Every line of code on GitHub. MIT licensed, no hidden modules, no source-available tricks. Fork it, extend it, audit it."
       },
       "api": {
         "title": "REST API & MCP server",
-        "description": "Full REST API for programmatic access. MCP server with 20 tools and 6 prompts so AI agents can create, edit, and manage presentations natively. SSE transport with API key auth for remote access."
+        "description": "Full REST API for programmatic access. MCP server with 22 tools, 6 guided prompts, and both stdio and SSE transports. Generate presentations from URLs, iterate with natural language, export to PDF—all via API."
       },
       "community": {
         "title": "Community-driven",
@@ -205,10 +205,10 @@
     },
     "mcp": {
       "title": "First-class MCP support for AI agents",
-      "lead": "Deckyard ships with a full Model Context Protocol server—20 tools and 6 prompts that let AI agents create, edit, and manage presentations natively. Connect via stdio or SSE transport with API key authentication.",
+      "lead": "Deckyard ships with a full Model Context Protocol server—22 tools and 6 prompts that let AI agents create, edit, and manage presentations. Connect Claude Desktop, Cursor, OpenClaw, or any MCP client.",
       "tools": {
-        "title": "20 MCP tools",
-        "description": "Create presentations, add slides, edit content, manage themes, export to any format. Every operation available to AI agents through structured, typed interfaces."
+        "title": "22 MCP tools",
+        "description": "Create presentations, add slides, edit content, convert between types, iterate with natural language, generate from URLs, export to PDF. Every operation available as a typed, documented tool."
       },
       "prompts": {
         "title": "6 built-in prompts",
@@ -911,51 +911,186 @@
       "structure": "Structure"
     },
     "types": {
-      "chart": { "name": "Chart", "desc": "Bar, line, pie, and area charts for data visualization" },
-      "kpiMetrics": { "name": "KPI Metrics", "desc": "Highlight key numbers with large, prominent displays" },
-      "table": { "name": "Table", "desc": "Structured data in rows and columns" },
-      "funnel": { "name": "Funnel", "desc": "Visualize conversion stages or process flow" },
-      "pyramid": { "name": "Pyramid", "desc": "Hierarchical data with layered structure" },
-      "timeline": { "name": "Timeline", "desc": "Events and milestones in chronological order" },
-      "matrix": { "name": "Matrix", "desc": "2x2 or larger grids for comparisons (SWOT, etc.)" },
-      "agenda": { "name": "Agenda", "desc": "Meeting or presentation agenda with timing" },
-      "cycle": { "name": "Cycle", "desc": "PDCA, continuous improvement, or circular process diagrams" },
-      "poll": { "name": "Poll", "desc": "Multiple choice voting with live results" },
-      "likert": { "name": "Likert Scale", "desc": "Agreement scale from strongly disagree to strongly agree" },
-      "likertSlider": { "name": "Likert Slider", "desc": "Numeric rating on a 1-10 scale with slider input" },
-      "feedback": { "name": "Feedback", "desc": "Open text responses from your audience" },
-      "qna": { "name": "Q&A", "desc": "Collect and display audience questions with upvoting" },
-      "followInvite": { "name": "Follow Invite", "desc": "QR code for audience to join follow-along mode" },
-      "wordCloud": { "name": "Word Cloud", "desc": "Visualize audience responses as a dynamic word cloud" },
-      "quiz": { "name": "Quiz", "desc": "Multiple choice with correct answers and scoring" },
-      "cardStack": { "name": "Card Stack", "desc": "Multiple content cards in a flexible grid" },
-      "iconCards": { "name": "Icon Cards", "desc": "Features or benefits with icons and descriptions" },
-      "fourCards": { "name": "4 Cards", "desc": "Four content cards in a balanced grid layout" },
-      "teamOverview": { "name": "Team Overview", "desc": "Grid of team member cards with photos and roles" },
-      "teamCards": { "name": "Team Cards", "desc": "Individual team member spotlight" },
-      "logoWall": { "name": "Logo Wall", "desc": "Display client logos, partners, or technologies" },
-      "gallery": { "name": "Gallery", "desc": "Image gallery with captions" },
-      "partnerSplit": { "name": "Partner Split", "desc": "Side-by-side partner or team member presentation" },
-      "process": { "name": "Process", "desc": "Step-by-step process or workflow visualization" },
-      "comparison": { "name": "Comparison", "desc": "Side-by-side comparison of options or features" },
-      "image": { "name": "Image", "desc": "Full-bleed or contained image display" },
-      "imageText": { "name": "Image + Text", "desc": "Image with accompanying text content" },
-      "imageBlocks": { "name": "Image Blocks", "desc": "Multiple images with titles and captions" },
-      "video": { "name": "Video", "desc": "Embed YouTube, Vimeo, or self-hosted videos" },
-      "embed": { "name": "Embed", "desc": "iFrame embed for external content" },
-      "code": { "name": "Code", "desc": "Syntax-highlighted code snippets" },
-      "title": { "name": "Title", "desc": "Opening slide with title and subtitle" },
-      "chapter": { "name": "Chapter", "desc": "Section divider with chapter title" },
-      "sectionTitle": { "name": "Section Title", "desc": "Clean section header for organizing content" },
-      "section": { "name": "Section", "desc": "Sub-section header within a chapter" },
-      "content": { "name": "Content", "desc": "Standard text slide with title and body" },
-      "contentColumns": { "name": "Content Columns", "desc": "Multi-column layout for organized content" },
-      "textBlocks": { "name": "Text Blocks", "desc": "Multiple text sections with headings" },
-      "quote": { "name": "Quote", "desc": "Featured quote with attribution" },
-      "list": { "name": "List", "desc": "Bullet points or numbered list" },
-      "twoColumn": { "name": "Two Column", "desc": "Side-by-side content layout" },
-      "payoff": { "name": "Payoff", "desc": "Closing slide with call-to-action" },
-      "thankYou": { "name": "Thank You", "desc": "Closing slide with contact information" }
+      "chart": {
+        "name": "Chart",
+        "desc": "Bar, line, pie, and area charts for data visualization"
+      },
+      "kpiMetrics": {
+        "name": "KPI Metrics",
+        "desc": "Highlight key numbers with large, prominent displays"
+      },
+      "table": {
+        "name": "Table",
+        "desc": "Structured data in rows and columns"
+      },
+      "funnel": {
+        "name": "Funnel",
+        "desc": "Visualize conversion stages or process flow"
+      },
+      "pyramid": {
+        "name": "Pyramid",
+        "desc": "Hierarchical data with layered structure"
+      },
+      "timeline": {
+        "name": "Timeline",
+        "desc": "Events and milestones in chronological order"
+      },
+      "matrix": {
+        "name": "Matrix",
+        "desc": "2x2 or larger grids for comparisons (SWOT, etc.)"
+      },
+      "agenda": {
+        "name": "Agenda",
+        "desc": "Meeting or presentation agenda with timing"
+      },
+      "cycle": {
+        "name": "Cycle",
+        "desc": "PDCA, continuous improvement, or circular process diagrams"
+      },
+      "poll": {
+        "name": "Poll",
+        "desc": "Multiple choice voting with live results"
+      },
+      "likert": {
+        "name": "Likert Scale",
+        "desc": "Agreement scale from strongly disagree to strongly agree"
+      },
+      "likertSlider": {
+        "name": "Likert Slider",
+        "desc": "Numeric rating on a 1-10 scale with slider input"
+      },
+      "feedback": {
+        "name": "Feedback",
+        "desc": "Open text responses from your audience"
+      },
+      "qna": {
+        "name": "Q&A",
+        "desc": "Collect and display audience questions with upvoting"
+      },
+      "followInvite": {
+        "name": "Follow Invite",
+        "desc": "QR code for audience to join follow-along mode"
+      },
+      "wordCloud": {
+        "name": "Word Cloud",
+        "desc": "Visualize audience responses as a dynamic word cloud"
+      },
+      "quiz": {
+        "name": "Quiz",
+        "desc": "Multiple choice with correct answers and scoring"
+      },
+      "cardStack": {
+        "name": "Card Stack",
+        "desc": "Multiple content cards in a flexible grid"
+      },
+      "iconCards": {
+        "name": "Icon Cards",
+        "desc": "Features or benefits with icons and descriptions"
+      },
+      "fourCards": {
+        "name": "4 Cards",
+        "desc": "Four content cards in a balanced grid layout"
+      },
+      "teamOverview": {
+        "name": "Team Overview",
+        "desc": "Grid of team member cards with photos and roles"
+      },
+      "teamCards": {
+        "name": "Team Cards",
+        "desc": "Individual team member spotlight"
+      },
+      "logoWall": {
+        "name": "Logo Wall",
+        "desc": "Display client logos, partners, or technologies"
+      },
+      "gallery": {
+        "name": "Gallery",
+        "desc": "Image gallery with captions"
+      },
+      "partnerSplit": {
+        "name": "Partner Split",
+        "desc": "Side-by-side partner or team member presentation"
+      },
+      "process": {
+        "name": "Process",
+        "desc": "Step-by-step process or workflow visualization"
+      },
+      "comparison": {
+        "name": "Comparison",
+        "desc": "Side-by-side comparison of options or features"
+      },
+      "image": {
+        "name": "Image",
+        "desc": "Full-bleed or contained image display"
+      },
+      "imageText": {
+        "name": "Image + Text",
+        "desc": "Image with accompanying text content"
+      },
+      "imageBlocks": {
+        "name": "Image Blocks",
+        "desc": "Multiple images with titles and captions"
+      },
+      "video": {
+        "name": "Video",
+        "desc": "Embed YouTube, Vimeo, or self-hosted videos"
+      },
+      "embed": {
+        "name": "Embed",
+        "desc": "iFrame embed for external content"
+      },
+      "code": {
+        "name": "Code",
+        "desc": "Syntax-highlighted code snippets"
+      },
+      "title": {
+        "name": "Title",
+        "desc": "Opening slide with title and subtitle"
+      },
+      "chapter": {
+        "name": "Chapter",
+        "desc": "Section divider with chapter title"
+      },
+      "sectionTitle": {
+        "name": "Section Title",
+        "desc": "Clean section header for organizing content"
+      },
+      "section": {
+        "name": "Section",
+        "desc": "Sub-section header within a chapter"
+      },
+      "content": {
+        "name": "Content",
+        "desc": "Standard text slide with title and body"
+      },
+      "contentColumns": {
+        "name": "Content Columns",
+        "desc": "Multi-column layout for organized content"
+      },
+      "textBlocks": {
+        "name": "Text Blocks",
+        "desc": "Multiple text sections with headings"
+      },
+      "quote": {
+        "name": "Quote",
+        "desc": "Featured quote with attribution"
+      },
+      "list": {
+        "name": "List",
+        "desc": "Bullet points or numbered list"
+      },
+      "twoColumn": {
+        "name": "Two Column",
+        "desc": "Side-by-side content layout"
+      },
+      "payoff": {
+        "name": "Payoff",
+        "desc": "Closing slide with call-to-action"
+      },
+      "thankYou": {
+        "name": "Thank You",
+        "desc": "Closing slide with contact information"
+      }
     },
     "cta": {
       "title": "See them in action",
@@ -1202,8 +1337,12 @@
       "title": "No extra tools needed",
       "lead": "Compare to running Mentimeter alongside your slides.",
       "singleTool": "Single tool",
-      "deckyard": { "singleTool": "Everything in one place" },
-      "mentimeter": { "singleTool": "Switch between apps" },
+      "deckyard": {
+        "singleTool": "Everything in one place"
+      },
+      "mentimeter": {
+        "singleTool": "Switch between apps"
+      },
       "consistentDesign": "Consistent design",
       "deckyardDesign": "Interactions match your theme",
       "mentimeterDesign": "Different styling",
