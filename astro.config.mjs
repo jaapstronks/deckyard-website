@@ -33,7 +33,7 @@ export default defineConfig({
     }),
     starlight({
       title: 'Deckyard',
-      description: 'Open source, self-hosted presentation system.',
+      description: 'Open source presentation infrastructure with MCP server, REST API, and type-aware AI.',
       logo: {
         light: './src/assets/deckyard-mark.svg',
         dark: './src/assets/deckyard-mark-dark.svg',
@@ -214,6 +214,8 @@ export default defineConfig({
           label: 'Developer',
           items: [
             { label: 'Overview', link: '/docs/developer/' },
+            { label: 'REST API', link: '/docs/developer/api/' },
+            { label: 'MCP Server', link: '/docs/developer/mcp-server/' },
             { label: 'Sessions & Auth', link: '/docs/developer/sessions/' },
             { label: 'Rendering Pipeline', link: '/docs/developer/rendering/' }
           ]

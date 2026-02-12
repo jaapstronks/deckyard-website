@@ -34,6 +34,7 @@ function getLocalePath(path: string): string {
     <nav class="nav" aria-label="Primary">
       <div class="nav-quick">
         <a class="nav-link-inline" href={getLocalePath('/features')}>{t('nav.features')}</a>
+        <a class="nav-link-inline" href={getLocalePath('/features/ai')}>{t('nav.developers')}</a>
         <a class="nav-link-inline" href={getLocalePath('/pricing')}>{t('nav.pricing')}</a>
         <a class="nav-link-inline" href="/docs/">{t('nav.docs')}</a>
         <a class="nav-link-inline" href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noreferrer">{t('nav.github')}</a>
@@ -67,6 +68,7 @@ function getLocalePath(path: string): string {
           <a class="nav-link" href={getLocalePath('/features/slide-types')}>{t('footer.slideTypes')}</a>
           <a class="nav-link" href={getLocalePath('/features/ai')}>{t('footer.aiGeneration')}</a>
           <a class="nav-link" href={getLocalePath('/features/interactions')}>{t('footer.interactions')}</a>
+          <a class="nav-link" href={getLocalePath('/features/ai')}>{t('footer.api')}</a>
           <a class="nav-link" href={getLocalePath('/pricing')}>{t('footer.pricing')}</a>
         </div>
 
