@@ -129,9 +129,26 @@ S3_ACCESS_KEY=...
 S3_SECRET_KEY=...</code></pre>
       </div>
 
+      <h3>MCP Server & Agent Access</h3>
+      <p>The MCP server runs alongside Deckyard and lets AI agents create, edit, and manage presentations. Enable SSE transport for remote agent access.</p>
+      <div class="code-block">
+        <pre><code># MCP server (enabled by default)
+MCP_ENABLED=true
+
+# SSE transport for remote AI agents
+MCP_SSE_ENABLED=true
+
+# Create API keys in Settings > API Keys
+# Agents connect via: https://your-instance.com/mcp/sse
+# Auth: Bearer dk_live_your_api_key_here</code></pre>
+      </div>
+
       <p>
         <a class="btn btn-secondary" href="https://github.com/jaapstronks/deckyard/blob/main/.env.example" target="_blank" rel="noreferrer">
           {t('selfHosting.config.viewEnvExample')}
+        </a>
+        <a class="btn btn-secondary" href="/docs/developer/mcp-server/" style="margin-left: 8px;">
+          MCP documentation →
         </a>
       </p>
     </div>

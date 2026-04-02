@@ -1,7 +1,7 @@
 {
   "site": {
     "name": "Deckyard",
-    "description": "Open source, self-hosted presentation system.",
+    "description": "Open source presentation infrastructure. 22 MCP tools, type-aware AI, REST API. Self-host or use our EU cloud.",
     "copyright": "© 2026 Deckyard. Open source under MIT license.",
     "location": "Rotterdam, Netherlands"
   },
@@ -9,6 +9,7 @@
     "home": "Home",
     "features": "Features",
     "pricing": "Pricing",
+    "developers": "Developers",
     "euPrivacy": "EU & Privacy",
     "docs": "Docs",
     "selfHost": "Self-host",
@@ -39,7 +40,8 @@
     "github": "GitHub",
     "discussions": "Discussions",
     "issues": "Issues",
-    "tagline": "Open-source presentation platform. Self-hostable.",
+    "api": "API & MCP",
+    "tagline": "Open-source presentation infrastructure. Self-hostable. AI-native.",
     "mitLicensed": "MIT licensed. Made in Europe."
   },
   "languagePicker": {
@@ -48,13 +50,13 @@
   },
   "home": {
     "meta": {
-      "title": "Deckyard — Modern presentations, zero lock-in",
-      "description": "Turn-key presentation platform with 44 slide types, AI generation, and real-time collaboration. Open source, open API, portable formats. Self-host for free or use our EU cloud. MIT licensed."
+      "title": "Deckyard — Presentation infrastructure for AI agents and teams",
+      "description": "Open source presentation platform with 22 MCP tools, REST API, and type-aware AI. 38 typed slide types, BYO LLM, self-hostable. The engine AI agents use to build presentations."
     },
     "hero": {
-      "eyebrow": "Open Source · 44 Slide Types · AI Generation · Self-hostable",
-      "title": "Modern presentations, zero lock-in",
-      "lead": "A turn-key platform with 44 slide types, AI generation, and real-time collaboration. Built on open standards and portable formats, so you're never locked in. Self-host for free or let us run it for you.",
+      "eyebrow": "Open Source · MCP Server · Type-Aware AI · Self-hostable",
+      "title": "Presentation infrastructure you own",
+      "lead": "The open source engine for creating presentations—by humans, AI agents, or both. 38 typed slide types, 22 MCP tools, REST API, and BYO LLM support. Self-host for free or use our EU cloud.",
       "trySandbox": "Try the sandbox",
       "selfHostFree": "Self-host free",
       "viewOnGithub": "View on GitHub",
@@ -69,27 +71,27 @@
       "tryItYourself": "try it yourself"
     },
     "features": {
-      "title": "Everything you need to create professional presentations",
-      "lead": "44 slide types covering data visualizations, process diagrams, image galleries, and much more. Ready for your next presentation.",
+      "title": "A typed slide system, not a freeform canvas",
+      "lead": "36+ typed slide types—each with a schema, semantic meaning, and AI-ready structure. Data visualizations, process diagrams, interactive polls, and more. Every slide type is an API-addressable building block.",
       "data": {
         "title": "Data & Visualizations",
-        "description": "Charts, KPIs, tables, funnels, pyramids, SWOT matrices. Present your numbers with clarity."
+        "description": "Charts, KPIs, tables, funnels, pyramids, SWOT matrices. Typed schemas ensure AI generates valid, structured data slides—not text dumps."
       },
       "layouts": {
         "title": "Layouts & Structure",
-        "description": "Section titles, text slides, multi-column layouts, icon cards, timelines, roadmaps. Build narrative flow."
+        "description": "Section titles, text slides, multi-column layouts, icon cards, timelines, roadmaps. Each type has semantic meaning that guides both humans and AI."
       },
       "media": {
         "title": "Media & Embeds",
-        "description": "Images, galleries, video embeds, maps, forms. Rich media without friction."
+        "description": "Images, galleries, video embeds, maps, forms. Rich media with structured schemas for programmatic creation."
       },
       "export": {
         "title": "Import & Export",
-        "description": "Import from Markdown, PowerPoint, Notion, or JSON. Export to PDF, PPTX, HTML, images, or JSON. Your content, your format."
+        "description": "Import from Markdown, PowerPoint, Notion, or JSON. Export to PDF, PPTX, HTML, images, or JSON. Open formats, zero lock-in."
       },
       "interaction": {
         "title": "Audience Interaction",
-        "description": "Live polls, Q&A, Likert scales, and feedback forms built into your slides. Engage your audience in real-time."
+        "description": "Live polls, Q&A, Likert scales, and feedback forms built into your slides. Create interactive experiences via the editor, API, or AI."
       }
     },
     "interaction": {
@@ -116,19 +118,19 @@
       "compareToMentimeter": "See how we compare to Mentimeter →"
     },
     "ai": {
-      "title": "AI that works for you, not against your wallet",
-      "lead": "Generate entire presentations from a prompt. Use your own API keys—OpenAI, Anthropic, Mistral, DeepSeek, or any OpenAI-compatible model. No credits, no limits, no surprises on your bill.",
+      "title": "Type-aware AI that understands slides",
+      "lead": "Not just \"add text to a template.\" Deckyard's intelligence layer knows about 38 slide types, validates structure, and generates schema-compliant content. Three-phase pipeline: outline, refine, validate.",
       "byoKeys": {
-        "title": "Bring your own keys",
-        "description": "Connect your OpenAI, Anthropic, Mistral, DeepSeek, or self-hosted model. Pay your provider directly at their rates—or run local models for free. No markup, no credits to run out."
+        "title": "Bring your own LLM",
+        "description": "Connect OpenAI, Anthropic, Mistral, DeepSeek, or any OpenAI-compatible model—including self-hosted via Ollama. Your API key, your choice, your costs. No markup, no credits, no limits."
       },
       "fullDeck": {
-        "title": "Full deck generation",
-        "description": "Describe your presentation and let AI create a complete first draft with appropriate slide types, content, and structure."
+        "title": "Structured generation pipeline",
+        "description": "AI doesn't just generate text—it creates typed slides with validated schemas. A \"Chart\" slide gets proper data structures. A \"Timeline\" gets chronological entries. Every slide is semantically correct."
       },
       "control": {
-        "title": "You're in control",
-        "description": "AI assists—you decide. Every suggestion is reviewable. Nothing changes without your approval. DreamBot analyzes your slides and suggests improvements, but you make the call."
+        "title": "Iterative refinement",
+        "description": "Generate, validate, iterate. DreamBot analyzes your slides against type schemas and suggests improvements. Smart validation catches structural issues before they reach your audience."
       },
       "whyByo": {
         "title": "Why BYO API keys?",
@@ -160,15 +162,15 @@
       }
     },
     "openPlatform": {
-      "title": "Open source and built to extend",
-      "lead": "MIT licensed, fully transparent, designed to integrate. Your presentations live in open formats, accessible through a full API, extensible with custom themes and slide types.",
+      "title": "Built for integration, not just interaction",
+      "lead": "REST API, MCP server with 22 tools and 6 prompts, SSE transport for remote access. Deckyard is presentation infrastructure you can build on, not just a product you use.",
       "opensource": {
         "title": "Fully open source",
         "description": "Every line of code on GitHub. MIT licensed, no hidden modules, no source-available tricks. Fork it, extend it, audit it."
       },
       "api": {
-        "title": "REST API & MCP",
-        "description": "Programmatic access to everything. Automate workflows, build integrations, or let AI tools interact with your presentations via Model Context Protocol."
+        "title": "REST API & MCP server",
+        "description": "Full REST API for programmatic access. MCP server with 22 tools, 6 guided prompts, and both stdio and SSE transports. Generate presentations from URLs, iterate with natural language, export to PDF—all via API."
       },
       "community": {
         "title": "Community-driven",
@@ -176,20 +178,20 @@
       },
       "themes": {
         "title": "Custom themes & slide types",
-        "description": "Build your own themes, create custom slide types, extend the editor. Make it truly yours."
+        "description": "Build your own themes, create custom slide types, extend the editor. The type system is open—define new schemas and the AI will use them."
       },
       "viewOnGithub": "View on GitHub",
-      "apiDocs": "API docs →"
+      "apiDocs": "API & MCP docs →"
     },
     "sovereignty": {
-      "title": "Your infrastructure, or ours",
-      "lead": "Self-host on your own servers for free, or let us handle the infrastructure with our EU-managed cloud. Either way, your data stays where you decide.",
+      "title": "Your infrastructure, your LLM, your agents",
+      "lead": "Self-host on your own servers for free—with your own LLM, your own API keys, and your own AI agents connecting via MCP. Or let us handle the infrastructure with our EU-managed cloud.",
       "selfHost": {
         "title": "Self-host (always free)",
         "docker": "Docker Compose setup in minutes",
-        "fullControl": "Full control over data and infrastructure",
+        "fullControl": "Full control over data, LLMs, and agents",
         "noDeps": "No external dependencies required",
-        "scale": "Scale as needed, pay only for your servers",
+        "scale": "Connect your own AI agents via MCP or API",
         "cta": "Self-hosting guide →"
       },
       "cloud": {
@@ -201,9 +203,31 @@
         "cta": "View pricing →"
       }
     },
+    "mcp": {
+      "title": "First-class MCP support for AI agents",
+      "lead": "Deckyard ships with a full Model Context Protocol server—22 tools and 6 prompts that let AI agents create, edit, and manage presentations. Connect Claude Desktop, Cursor, OpenClaw, or any MCP client.",
+      "tools": {
+        "title": "22 MCP tools",
+        "description": "Create presentations, add slides, edit content, convert between types, iterate with natural language, generate from URLs, export to PDF. Every operation available as a typed, documented tool."
+      },
+      "prompts": {
+        "title": "6 built-in prompts",
+        "description": "Pre-built prompt templates for common workflows: generate a deck from a topic, improve existing slides, convert documents, and more."
+      },
+      "transport": {
+        "title": "SSE transport + API key auth",
+        "description": "Connect remotely via Server-Sent Events with API key authentication. Run the MCP server alongside your Deckyard instance and let any MCP-compatible client connect."
+      },
+      "typed": {
+        "title": "Type-aware operations",
+        "description": "Every tool understands the 36+ slide type schemas. When an agent creates a chart slide, the tool enforces the correct data structure. No invalid slides, no runtime errors."
+      },
+      "viewDocs": "MCP documentation →",
+      "viewOnGithub": "View on GitHub"
+    },
     "cta": {
-      "title": "Ready to build better presentations?",
-      "lead": "Try the sandbox with no signup, self-host for free, or let us run it for you.",
+      "title": "Ready to build on Deckyard?",
+      "lead": "Try the sandbox, explore the API, or self-host and connect your AI agents.",
       "trySandbox": "Try the sandbox",
       "readDocs": "Read the docs",
       "viewOnGithub": "View on GitHub"
@@ -211,12 +235,12 @@
   },
   "selfHosting": {
     "meta": {
-      "title": "Self-hosting Deckyard — Run on your own infrastructure",
-      "description": "Deploy Deckyard on your own servers with Docker. Complete data control, no external dependencies, 5 minute setup."
+      "title": "Self-hosting Deckyard — Your data, your LLM, your agents",
+      "description": "Deploy Deckyard on your own servers with Docker. Your data, your LLM, your API keys, your AI agents. Complete control over your presentation infrastructure."
     },
     "hero": {
-      "title": "Run Deckyard on your own infrastructure",
-      "lead": "Complete data control. No external dependencies. Deploy with Docker in 5 minutes."
+      "title": "Your data. Your LLM. Your agents.",
+      "lead": "Self-host Deckyard and control everything: your presentation data, your AI provider, your API keys, and your MCP-connected agents. Deploy with Docker in 5 minutes."
     },
     "quickstart": {
       "title": "Up and running in 5 minutes",
@@ -233,16 +257,16 @@
         "description": "Your presentation data never leaves your servers. No third-party access, no data mining, no surprises."
       },
       "compliance": {
-        "title": "Compliance requirements",
-        "description": "Healthcare, government, education, finance—many organizations require on-premise solutions."
+        "title": "Your LLM, your AI agents",
+        "description": "Connect your own AI provider—OpenAI, Claude, Mistral, or self-hosted models via Ollama. Attach MCP-compatible agents that create and manage presentations on your infrastructure."
       },
       "cost": {
-        "title": "Cost control at scale",
-        "description": "No per-seat pricing anxiety. One deployment serves your entire organization."
+        "title": "Your API keys, your costs",
+        "description": "No per-seat pricing, no AI credit packs. One deployment serves your entire organization. AI costs go directly to your provider at their rates."
       },
       "customization": {
-        "title": "Customization freedom",
-        "description": "Modify the source, add integrations, adjust the UI. MIT license means no restrictions."
+        "title": "Full API & MCP access",
+        "description": "REST API and MCP server included. Build automations, connect CI/CD pipelines, or let AI agents interact with presentations programmatically."
       }
     },
     "config": {
@@ -715,16 +739,16 @@
   "features": {
     "meta": {
       "title": "Features — Deckyard",
-      "description": "44 slide types, built-in polls and Q&A, AI generation with your own keys, export to any format. Everything for professional presentations."
+      "description": "36+ typed slide types with AI-ready schemas, MCP server with 20 tools, REST API, BYO LLM support. Presentation infrastructure for teams and AI agents."
     },
     "hero": {
       "backToHome": "← Back to home",
-      "title": "Everything for professional presentations",
-      "lead": "44 slide types, built-in audience interaction, AI-powered generation, and export to any format. All in one open-source platform."
+      "title": "Presentation infrastructure, not just another editor",
+      "lead": "36+ typed slide types with schemas, type-aware AI generation, MCP server, REST API, and built-in audience interaction. Open source platform that humans, agents, and automations can all build on."
     },
     "quickLinks": {
       "slideTypes": "Slide Types",
-      "aiGeneration": "AI Generation",
+      "aiGeneration": "AI & MCP",
       "liveInteractions": "Live Interactions"
     },
     "slideTypes": {
@@ -749,27 +773,27 @@
       }
     },
     "ai": {
-      "title": "AI that works for you, not your wallet",
-      "lead": "Generate entire presentations from a prompt. Use your own API keys—pay only what you use, at provider rates.",
+      "title": "Type-aware AI + MCP server",
+      "lead": "Not just prompts-to-text. A structured AI pipeline that understands 36+ slide types, validates output against schemas, and exposes everything via MCP for agent integration.",
       "fullDeck": {
-        "title": "Full deck generation",
-        "description": "Describe your presentation and let AI create a complete first draft with appropriate slide types, content, and structure."
+        "title": "Structured generation",
+        "description": "AI creates typed slides with validated schemas—not text dumps. A Chart slide gets proper data structures, a Timeline gets chronological entries."
       },
       "docConversion": {
-        "title": "Document conversion",
-        "description": "Upload a PDF, Word doc, or Notion export. AI extracts key points and structures them into presentation slides."
+        "title": "MCP server (20 tools, 6 prompts)",
+        "description": "Full Model Context Protocol server lets AI agents create, edit, and manage presentations natively. SSE transport with API key auth for remote access."
       },
       "byoKeys": {
-        "title": "Bring your own keys",
-        "description": "Connect your OpenAI, Anthropic, Mistral, DeepSeek, or self-hosted model. Pay your provider directly—or run local models for free. No markup, no credits to run out."
+        "title": "Bring your own LLM",
+        "description": "Connect OpenAI, Claude, Mistral, DeepSeek, or self-hosted models. Your provider, your rates, your data policy."
       },
       "typicalCosts": {
-        "title": "Typical costs",
-        "description": "With BYO API keys, generating a full deck costs approximately €0.02-0.05 depending on length and provider.",
+        "title": "Validation & iteration",
+        "description": "Smart validation catches schema violations. Iterative refinement improves content. Theme-aware generation ensures slides match your brand.",
         "compare": "Compare:",
-        "compareDesc": "Other tools charge $5-10 per month just for limited AI features, or sell \"AI credits\" at a markup."
+        "compareDesc": "Walled gardens like Gamma and Tome give you no API, no agent access, no self-hosting."
       },
-      "learnMore": "Learn about AI features →"
+      "learnMore": "Learn about AI & MCP →"
     },
     "interactions": {
       "title": "Engage your audience without switching tools",
@@ -887,51 +911,186 @@
       "structure": "Structure"
     },
     "types": {
-      "chart": { "name": "Chart", "desc": "Bar, line, pie, and area charts for data visualization" },
-      "kpiMetrics": { "name": "KPI Metrics", "desc": "Highlight key numbers with large, prominent displays" },
-      "table": { "name": "Table", "desc": "Structured data in rows and columns" },
-      "funnel": { "name": "Funnel", "desc": "Visualize conversion stages or process flow" },
-      "pyramid": { "name": "Pyramid", "desc": "Hierarchical data with layered structure" },
-      "timeline": { "name": "Timeline", "desc": "Events and milestones in chronological order" },
-      "matrix": { "name": "Matrix", "desc": "2x2 or larger grids for comparisons (SWOT, etc.)" },
-      "agenda": { "name": "Agenda", "desc": "Meeting or presentation agenda with timing" },
-      "cycle": { "name": "Cycle", "desc": "PDCA, continuous improvement, or circular process diagrams" },
-      "poll": { "name": "Poll", "desc": "Multiple choice voting with live results" },
-      "likert": { "name": "Likert Scale", "desc": "Agreement scale from strongly disagree to strongly agree" },
-      "likertSlider": { "name": "Likert Slider", "desc": "Numeric rating on a 1-10 scale with slider input" },
-      "feedback": { "name": "Feedback", "desc": "Open text responses from your audience" },
-      "qna": { "name": "Q&A", "desc": "Collect and display audience questions with upvoting" },
-      "followInvite": { "name": "Follow Invite", "desc": "QR code for audience to join follow-along mode" },
-      "wordCloud": { "name": "Word Cloud", "desc": "Visualize audience responses as a dynamic word cloud" },
-      "quiz": { "name": "Quiz", "desc": "Multiple choice with correct answers and scoring" },
-      "cardStack": { "name": "Card Stack", "desc": "Multiple content cards in a flexible grid" },
-      "iconCards": { "name": "Icon Cards", "desc": "Features or benefits with icons and descriptions" },
-      "fourCards": { "name": "4 Cards", "desc": "Four content cards in a balanced grid layout" },
-      "teamOverview": { "name": "Team Overview", "desc": "Grid of team member cards with photos and roles" },
-      "teamCards": { "name": "Team Cards", "desc": "Individual team member spotlight" },
-      "logoWall": { "name": "Logo Wall", "desc": "Display client logos, partners, or technologies" },
-      "gallery": { "name": "Gallery", "desc": "Image gallery with captions" },
-      "partnerSplit": { "name": "Partner Split", "desc": "Side-by-side partner or team member presentation" },
-      "process": { "name": "Process", "desc": "Step-by-step process or workflow visualization" },
-      "comparison": { "name": "Comparison", "desc": "Side-by-side comparison of options or features" },
-      "image": { "name": "Image", "desc": "Full-bleed or contained image display" },
-      "imageText": { "name": "Image + Text", "desc": "Image with accompanying text content" },
-      "imageBlocks": { "name": "Image Blocks", "desc": "Multiple images with titles and captions" },
-      "video": { "name": "Video", "desc": "Embed YouTube, Vimeo, or self-hosted videos" },
-      "embed": { "name": "Embed", "desc": "iFrame embed for external content" },
-      "code": { "name": "Code", "desc": "Syntax-highlighted code snippets" },
-      "title": { "name": "Title", "desc": "Opening slide with title and subtitle" },
-      "chapter": { "name": "Chapter", "desc": "Section divider with chapter title" },
-      "sectionTitle": { "name": "Section Title", "desc": "Clean section header for organizing content" },
-      "section": { "name": "Section", "desc": "Sub-section header within a chapter" },
-      "content": { "name": "Content", "desc": "Standard text slide with title and body" },
-      "contentColumns": { "name": "Content Columns", "desc": "Multi-column layout for organized content" },
-      "textBlocks": { "name": "Text Blocks", "desc": "Multiple text sections with headings" },
-      "quote": { "name": "Quote", "desc": "Featured quote with attribution" },
-      "list": { "name": "List", "desc": "Bullet points or numbered list" },
-      "twoColumn": { "name": "Two Column", "desc": "Side-by-side content layout" },
-      "payoff": { "name": "Payoff", "desc": "Closing slide with call-to-action" },
-      "thankYou": { "name": "Thank You", "desc": "Closing slide with contact information" }
+      "chart": {
+        "name": "Chart",
+        "desc": "Bar, line, pie, and area charts for data visualization"
+      },
+      "kpiMetrics": {
+        "name": "KPI Metrics",
+        "desc": "Highlight key numbers with large, prominent displays"
+      },
+      "table": {
+        "name": "Table",
+        "desc": "Structured data in rows and columns"
+      },
+      "funnel": {
+        "name": "Funnel",
+        "desc": "Visualize conversion stages or process flow"
+      },
+      "pyramid": {
+        "name": "Pyramid",
+        "desc": "Hierarchical data with layered structure"
+      },
+      "timeline": {
+        "name": "Timeline",
+        "desc": "Events and milestones in chronological order"
+      },
+      "matrix": {
+        "name": "Matrix",
+        "desc": "2x2 or larger grids for comparisons (SWOT, etc.)"
+      },
+      "agenda": {
+        "name": "Agenda",
+        "desc": "Meeting or presentation agenda with timing"
+      },
+      "cycle": {
+        "name": "Cycle",
+        "desc": "PDCA, continuous improvement, or circular process diagrams"
+      },
+      "poll": {
+        "name": "Poll",
+        "desc": "Multiple choice voting with live results"
+      },
+      "likert": {
+        "name": "Likert Scale",
+        "desc": "Agreement scale from strongly disagree to strongly agree"
+      },
+      "likertSlider": {
+        "name": "Likert Slider",
+        "desc": "Numeric rating on a 1-10 scale with slider input"
+      },
+      "feedback": {
+        "name": "Feedback",
+        "desc": "Open text responses from your audience"
+      },
+      "qna": {
+        "name": "Q&A",
+        "desc": "Collect and display audience questions with upvoting"
+      },
+      "followInvite": {
+        "name": "Follow Invite",
+        "desc": "QR code for audience to join follow-along mode"
+      },
+      "wordCloud": {
+        "name": "Word Cloud",
+        "desc": "Visualize audience responses as a dynamic word cloud"
+      },
+      "quiz": {
+        "name": "Quiz",
+        "desc": "Multiple choice with correct answers and scoring"
+      },
+      "cardStack": {
+        "name": "Card Stack",
+        "desc": "Multiple content cards in a flexible grid"
+      },
+      "iconCards": {
+        "name": "Icon Cards",
+        "desc": "Features or benefits with icons and descriptions"
+      },
+      "fourCards": {
+        "name": "4 Cards",
+        "desc": "Four content cards in a balanced grid layout"
+      },
+      "teamOverview": {
+        "name": "Team Overview",
+        "desc": "Grid of team member cards with photos and roles"
+      },
+      "teamCards": {
+        "name": "Team Cards",
+        "desc": "Individual team member spotlight"
+      },
+      "logoWall": {
+        "name": "Logo Wall",
+        "desc": "Display client logos, partners, or technologies"
+      },
+      "gallery": {
+        "name": "Gallery",
+        "desc": "Image gallery with captions"
+      },
+      "partnerSplit": {
+        "name": "Partner Split",
+        "desc": "Side-by-side partner or team member presentation"
+      },
+      "process": {
+        "name": "Process",
+        "desc": "Step-by-step process or workflow visualization"
+      },
+      "comparison": {
+        "name": "Comparison",
+        "desc": "Side-by-side comparison of options or features"
+      },
+      "image": {
+        "name": "Image",
+        "desc": "Full-bleed or contained image display"
+      },
+      "imageText": {
+        "name": "Image + Text",
+        "desc": "Image with accompanying text content"
+      },
+      "imageBlocks": {
+        "name": "Image Blocks",
+        "desc": "Multiple images with titles and captions"
+      },
+      "video": {
+        "name": "Video",
+        "desc": "Embed YouTube, Vimeo, or self-hosted videos"
+      },
+      "embed": {
+        "name": "Embed",
+        "desc": "iFrame embed for external content"
+      },
+      "code": {
+        "name": "Code",
+        "desc": "Syntax-highlighted code snippets"
+      },
+      "title": {
+        "name": "Title",
+        "desc": "Opening slide with title and subtitle"
+      },
+      "chapter": {
+        "name": "Chapter",
+        "desc": "Section divider with chapter title"
+      },
+      "sectionTitle": {
+        "name": "Section Title",
+        "desc": "Clean section header for organizing content"
+      },
+      "section": {
+        "name": "Section",
+        "desc": "Sub-section header within a chapter"
+      },
+      "content": {
+        "name": "Content",
+        "desc": "Standard text slide with title and body"
+      },
+      "contentColumns": {
+        "name": "Content Columns",
+        "desc": "Multi-column layout for organized content"
+      },
+      "textBlocks": {
+        "name": "Text Blocks",
+        "desc": "Multiple text sections with headings"
+      },
+      "quote": {
+        "name": "Quote",
+        "desc": "Featured quote with attribution"
+      },
+      "list": {
+        "name": "List",
+        "desc": "Bullet points or numbered list"
+      },
+      "twoColumn": {
+        "name": "Two Column",
+        "desc": "Side-by-side content layout"
+      },
+      "payoff": {
+        "name": "Payoff",
+        "desc": "Closing slide with call-to-action"
+      },
+      "thankYou": {
+        "name": "Thank You",
+        "desc": "Closing slide with contact information"
+      }
     },
     "cta": {
       "title": "See them in action",
@@ -942,48 +1101,48 @@
   },
   "featuresAi": {
     "meta": {
-      "title": "AI Generation — Deckyard",
-      "description": "Generate presentations with AI using your own API keys. Full deck generation, document conversion, no markup on costs. OpenAI, Anthropic, Mistral, DeepSeek, and any OpenAI-compatible model supported—including self-hosted via Ollama."
+      "title": "AI & MCP Server — Deckyard",
+      "description": "Type-aware AI generation with 36+ slide schemas, MCP server with 20 tools and 6 prompts, iterative refinement, smart validation. BYO LLM—OpenAI, Claude, Mistral, or self-hosted."
     },
     "hero": {
       "backToFeatures": "← Features",
-      "title": "AI that works for you, not against your wallet",
-      "lead": "Generate entire presentations from a prompt, convert documents to slides, and improve your content—all using your own API keys with no markup."
+      "title": "Type-aware AI and a full MCP server",
+      "lead": "Three layers of intelligence: a type system with 36+ slide schemas, an AI generation pipeline with validation and iteration, and an MCP server with 20 tools for agent integration. All powered by your own LLM."
     },
     "fullDeck": {
-      "title": "Full deck generation",
-      "lead": "Describe your presentation, and AI creates a complete first draft with appropriate slide types, content, and structure.",
+      "title": "Structured AI generation",
+      "lead": "Not text-on-a-template. Deckyard's AI understands 36+ slide types, generates structured data that validates against schemas, and produces theme-aware output.",
       "howItWorks": "How it works",
-      "step1": "Open the AI Wizard — Click the AI button in the editor toolbar",
-      "step2": "Describe your presentation — \"A 10-slide pitch deck for a B2B SaaS product targeting HR teams\"",
-      "step3": "Review and generate — AI suggests a structure, you approve, it generates",
-      "step4": "Edit as needed — Every slide is fully editable, add your own content",
-      "tipsTitle": "Tips for better results",
-      "tip1": "Be specific — Include audience, purpose, and desired length",
-      "tip2": "Mention slide types — \"Include a poll slide for audience engagement\"",
-      "tip3": "Provide context — \"For a technical audience familiar with cloud infrastructure\"",
+      "step1": "Describe your presentation — Via the editor, API, or MCP tool",
+      "step2": "AI selects typed slides — It picks from 36+ types based on your content (Chart for data, Timeline for history, etc.)",
+      "step3": "Validation against schemas — Each slide is validated against its type schema before output",
+      "step4": "Review and iterate — Edit in the UI, refine via API, or let agents improve it via MCP",
+      "tipsTitle": "The type system advantage",
+      "tip1": "Schema-validated output — Every slide field is checked against its type definition",
+      "tip2": "Semantic type selection — AI picks the right slide type based on content meaning, not keywords",
+      "tip3": "Theme-aware generation — Output respects your active theme's constraints and styling",
       "examplePrompts": "Example prompts",
       "example1": "\"Create a 15-slide presentation about our Q4 results for the board of directors. Include KPI metrics, charts for revenue and growth, and a timeline for next year's roadmap.\"",
       "example2": "\"Build a workshop introduction with an icebreaker poll, agenda, and section dividers for 4 topics: design thinking, user research, prototyping, and testing.\""
     },
-    "docConversion": {
-      "title": "Document conversion",
-      "lead": "Upload a document and AI extracts key points, structures them logically, and creates presentation slides.",
-      "pdf": {
-        "title": "PDF documents",
-        "description": "Upload reports, whitepapers, or proposals. AI extracts main points and creates structured slides."
+    "mcpServer": {
+      "title": "MCP server: 20 tools, 6 prompts",
+      "lead": "A full Model Context Protocol server that lets AI agents interact with Deckyard natively. Create presentations, manage slides, export—all through typed, structured tool interfaces.",
+      "tools": {
+        "title": "20 MCP tools",
+        "description": "Create and manage presentations, add and edit slides, apply themes, export to any format. Every operation is a typed MCP tool with schema validation."
       },
-      "word": {
-        "title": "Word documents",
-        "description": "Convert .docx files to presentations. Headings become slide titles, content gets restructured."
+      "prompts": {
+        "title": "6 built-in prompts",
+        "description": "Pre-built prompt templates for common agent workflows: generate a full deck, improve slides, convert content, translate presentations, and more."
       },
-      "markdown": {
-        "title": "Markdown/Notion exports",
-        "description": "Paste markdown content or Notion exports. Structure is preserved and enhanced."
+      "transport": {
+        "title": "SSE transport + API key auth",
+        "description": "Connect remotely via Server-Sent Events. API key authentication means agents can connect from anywhere—your CI/CD pipeline, your AI orchestrator, your custom tools."
       },
-      "text": {
-        "title": "Text content",
-        "description": "Paste any text content. AI analyzes structure and creates appropriate slides."
+      "local": {
+        "title": "Stdio transport for local agents",
+        "description": "For local development and desktop AI clients, connect via stdio. Works with Claude Desktop, Cursor, and any MCP-compatible client."
       }
     },
     "byoKeys": {
@@ -1037,7 +1196,7 @@
     },
     "privacy": {
       "title": "Privacy and your data",
-      "lead": "Your API keys and prompts stay between you and your provider.",
+      "lead": "Your API keys, prompts, and agent connections stay between you and your infrastructure.",
       "whatWeSend": "What we send to AI providers",
       "send1": "Your prompt (presentation description)",
       "send2": "Document content (if uploading)",
@@ -1047,12 +1206,12 @@
       "dontStore2": "Prompts are not stored after generation",
       "dontStore3": "We don't train on your content",
       "selfHosting": "Self-hosting for maximum control",
-      "selfHostingDesc": "If you self-host Deckyard, AI requests go directly from your server to your chosen provider. We never see your API key or content.",
+      "selfHostingDesc": "Self-host Deckyard and AI requests go directly from your server to your LLM. MCP connections stay on your network. We never see your API key, content, or agent traffic.",
       "selfHostingGuide": "Self-hosting guide →"
     },
     "cta": {
-      "title": "Ready to try AI generation?",
-      "lead": "The sandbox includes demo AI features. Add your own keys for full access.",
+      "title": "Ready to build with Deckyard?",
+      "lead": "Try the sandbox, explore the MCP server, or connect your own AI agents.",
       "trySandbox": "Try the sandbox",
       "readDocs": "Read the docs"
     }
@@ -1178,8 +1337,12 @@
       "title": "No extra tools needed",
       "lead": "Compare to running Mentimeter alongside your slides.",
       "singleTool": "Single tool",
-      "deckyard": { "singleTool": "Everything in one place" },
-      "mentimeter": { "singleTool": "Switch between apps" },
+      "deckyard": {
+        "singleTool": "Everything in one place"
+      },
+      "mentimeter": {
+        "singleTool": "Switch between apps"
+      },
       "consistentDesign": "Consistent design",
       "deckyardDesign": "Interactions match your theme",
       "mentimeterDesign": "Different styling",
@@ -1628,11 +1791,11 @@
     "recentlyShipped": {
       "title": "Recently shipped",
       "lead": "Features we've released in recent updates.",
+      "mcpServer": "MCP server — 20 tools and 6 prompts for AI agent integration, with SSE and stdio transport",
+      "typeSystem": "Type system — 36+ typed slide types with AI-ready schemas and validation",
+      "intelligenceLayer": "Intelligence layer — Type-aware AI generation, smart validation, iterative refinement",
       "aiGeneration": "AI deck generation — Generate full presentations from prompts using your own API keys",
-      "customThemes": "Custom themes — Brand your presentations with custom colors, fonts, and logos",
-      "wordClouds": "Word clouds — Visualize audience text responses as dynamic word clouds",
-      "pdfExport": "PDF export — High-quality PDF export for all presentations",
-      "followAlong": "Follow-along mode — Audience members can follow your presentation on their devices"
+      "customThemes": "Custom themes — Brand your presentations with custom colors, fonts, and logos"
     },
     "requestFeature": {
       "title": "Request a feature",

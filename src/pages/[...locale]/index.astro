@@ -242,8 +242,44 @@ function getLocalePath(path: string): string {
     </div>
   </section>
 
+  <!-- MCP & AGENT INTEGRATION -->
+  <section id="mcp" class="section section-alt">
+    <div class="container">
+      <h2>{t('home.mcp.title')}</h2>
+      <p class="section-lead">{t('home.mcp.lead')}</p>
+
+      <div class="grid cards">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-code"></use></svg></div>
+          <h3>{t('home.mcp.tools.title')}</h3>
+          <p>{t('home.mcp.tools.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-sparkle"></use></svg></div>
+          <h3>{t('home.mcp.prompts.title')}</h3>
+          <p>{t('home.mcp.prompts.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-globe"></use></svg></div>
+          <h3>{t('home.mcp.transport.title')}</h3>
+          <p>{t('home.mcp.transport.description')}</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"><svg class="icon"><use href="#icon-shield-check"></use></svg></div>
+          <h3>{t('home.mcp.typed.title')}</h3>
+          <p>{t('home.mcp.typed.description')}</p>
+        </article>
+      </div>
+
+      <div class="cta-row cta-center">
+        <a class="btn btn-secondary" href="/docs/developer/mcp-server/">{t('home.mcp.viewDocs')}</a>
+        <a class="btn btn-primary" href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noreferrer">{t('home.mcp.viewOnGithub')}</a>
+      </div>
+    </div>
+  </section>
+
   <!-- YOUR INFRASTRUCTURE OR OURS -->
-  <section id="sovereignty" class="section section-alt">
+  <section id="sovereignty" class="section">
     <div class="container">
       <h2>{t('home.sovereignty.title')}</h2>
       <p class="section-lead">{t('home.sovereignty.lead')}</p>
