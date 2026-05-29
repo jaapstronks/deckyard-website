@@ -16,7 +16,7 @@ Marketing website and user documentation for Deckyard.
 |------|------|---------|
 | **deckyard** | `../deckyard` | Core OSS - source of truth for features |
 | **deckyard-cloud** | `../deckyard-cloud` | Paid hosted version |
-| **presentation-system** | `../presentation-system` | Production fork for CIIIC client |
+| **ciiic-slides** | `../ciiic-slides` | Production fork for CIIIC client |
 
 ## Key Directories
 
