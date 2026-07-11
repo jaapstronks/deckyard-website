@@ -9,8 +9,12 @@
     "preview": "astro preview"
   },
   "dependencies": {
+    "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.0",
     "@astrojs/starlight": "^0.35.0",
+    "@fontsource-variable/bricolage-grotesque": "^5.2.10",
+    "@fontsource-variable/funnel-sans": "^5.2.8",
+    "@fontsource/space-mono": "^5.2.9",
     "astro": "^5.0.0"
   }
 }

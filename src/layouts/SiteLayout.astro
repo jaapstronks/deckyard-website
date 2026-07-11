@@ -1,0 +1,131 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/funnel-sans';
+import '@fontsource/space-mono';
+import '@fontsource/space-mono/700.css';
+import '../styles/site.css';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+}
+
+const {
+  title,
+  description,
+  ogImage = '/images/deckyard-editor-preview.png',
+  type = 'website',
+  publishedTime,
+} = Astro.props;
+
+const siteUrl = 'https://deckyard.eu';
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const ogImageUrl = new URL(ogImage, siteUrl).href;
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Deckyard',
+  url: siteUrl,
+  logo: `${siteUrl}/images/deckyard-logo.png`,
+  description:
+    'Open source presentation platform for European organizations that value digital sovereignty and brand consistency.',
+  sameAs: ['https://github.com/jaapstronks/deckyard', 'https://dreamkit.eu'],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Deckyard" />
+
+    <link rel="canonical" href={canonicalUrl} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#254d38" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content="Deckyard" />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Deckyard blog"
+      href={`${siteUrl}/rss.xml`}
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+
+    <ClientRouter />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <SiteHeader currentPath={Astro.url.pathname} />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <SiteFooter />
+
+    <script>
+      // Scroll reveals: IntersectionObserver, re-run after view transitions.
+      function initReveals() {
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const els = document.querySelectorAll<HTMLElement>('[data-reveal]:not(.is-revealed)');
+        if (reduce || !('IntersectionObserver' in window)) {
+          els.forEach((el) => el.classList.add('is-revealed'));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+        );
+        els.forEach((el) => {
+          const delay = el.getAttribute('data-reveal-delay');
+          if (delay) (el as HTMLElement).style.setProperty('--reveal-delay', `${delay}ms`);
+          io.observe(el);
+        });
+      }
+      initReveals();
+      document.addEventListener('astro:page-load', initReveals);
+    </script>
+  </body>
+</html>

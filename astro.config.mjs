@@ -4,33 +4,8 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://deckyard.eu',
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'nl', 'de', 'fr', 'es', 'pt', 'da', 'sv', 'no', 'it', 'pl', 'fi'],
-    routing: {
-      prefixDefaultLocale: false,
-    },
-  },
   integrations: [
-    sitemap({
-      i18n: {
-        defaultLocale: 'en',
-        locales: {
-          en: 'en',
-          nl: 'nl',
-          de: 'de',
-          fr: 'fr',
-          es: 'es',
-          pt: 'pt',
-          da: 'da',
-          sv: 'sv',
-          no: 'no',
-          it: 'it',
-          pl: 'pl',
-          fi: 'fi',
-        },
-      },
-    }),
+    sitemap(),
     starlight({
       title: 'Deckyard',
       description: 'Open source, self-hosted presentation system.',

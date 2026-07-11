@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+
+const posts = (
+  await getCollection('blog', ({ data }) => (import.meta.env.PROD ? !data.draft : true))
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const [lead, ...rest] = posts;
+---
+
+<SiteLayout
+  title="Blog — Deckyard"
+  description="Building Deckyard in the open: notes on open source presentations, digital sovereignty and brand systems for European organizations."
+>
+  <section class="section article-hero" style="padding-bottom: 0;">
+    <div class="container">
+      <div class="article-hero-inner">
+        <p class="kicker kicker--center">Building in public</p>
+        <h1>Notes from the yard</h1>
+        <p class="article-intro">
+          Progress reports, design decisions and detours while we build an open source
+          presentation platform for European organizations.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="post-grid">
+        {
+          lead && (
+            <BlogCard
+              id={lead.id}
+              title={lead.data.title}
+              intro={lead.data.intro}
+              pubDate={lead.data.pubDate}
+              category={lead.data.category}
+              heroImage={lead.data.heroImage}
+              heroImageAlt={lead.data.heroImageAlt}
+              featured
+            />
+          )
+        }
+        {
+          rest.map((post, index) => (
+            <BlogCard
+              id={post.id}
+              title={post.data.title}
+              intro={post.data.intro}
+              pubDate={post.data.pubDate}
+              category={post.data.category}
+              heroImage={post.data.heroImage}
+              heroImageAlt={post.data.heroImageAlt}
+              revealDelay={(index % 3) * 80}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</SiteLayout>

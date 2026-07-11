@@ -1,0 +1,52 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  intro: string;
+  pubDate: Date;
+  category: string;
+  heroImage?: string;
+  heroImageAlt?: string;
+  featured?: boolean;
+  revealDelay?: number;
+}
+
+const { id, title, intro, pubDate, category, heroImage, heroImageAlt, featured = false, revealDelay } =
+  Astro.props;
+
+const dateLabel = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+}).format(pubDate);
+---
+
+<article
+  class:list={['post-card', { 'post-card--featured': featured }]}
+  data-reveal
+  data-reveal-delay={revealDelay}
+>
+  {
+    heroImage && (
+      <div class="post-card-media">
+        <img
+          src={heroImage}
+          alt={heroImageAlt ?? ''}
+          loading="lazy"
+          transition:name={`post-hero-${id}`}
+        />
+      </div>
+    )
+  }
+  <div class="post-card-body">
+    <p class="post-meta">
+      <span>{category}</span>
+      <time datetime={pubDate.toISOString()}>{dateLabel}</time>
+    </p>
+    <h3 transition:name={`post-title-${id}`}>
+      <a href={`/blog/${id}/`}>{title}</a>
+    </h3>
+    <p>{intro}</p>
+    <span class="post-card-more" aria-hidden="true">Read the post →</span>
+  </div>
+</article>
