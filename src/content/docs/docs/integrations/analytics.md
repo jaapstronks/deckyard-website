@@ -12,6 +12,8 @@ This project supports external analytics providers for tracking visitor behavior
 
 Implementation lives in `server/analytics/head.js`.
 
+![External Analytics settings showing privacy-friendly providers (Umami, Plausible, Matomo) and consent-requiring providers (Google Analytics 4) with GDPR warnings](/images/screenshots/external-analytics-settings.png)
+
 ### Configuration methods
 
 You can configure analytics providers in two ways:

@@ -13,6 +13,8 @@ Deckyard can use AI vision capabilities to generate descriptive alt text for ima
 
 ## How It Works
 
+![Slide editor showing Image role toggle between Meaningful and Decorative, Alt text field with guidance, and expanded Accessibility section with title and summary fields](/images/screenshots/accessibility-alt-text-fields.png)
+
 AI analyzes images and generates appropriate descriptions for screen readers.
 
 ### The Process

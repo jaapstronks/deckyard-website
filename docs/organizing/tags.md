@@ -15,6 +15,8 @@ Tags help you:
 - Find presentations quickly by category
 - Create logical collections across different projects
 
+![Deck settings showing Tags field with input for adding tags and Description field for meta descriptions](/images/screenshots/deck-settings-tags-description.png)
+
 ## Creating Tags
 
 1. Open a presentation's settings or info panel

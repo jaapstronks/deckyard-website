@@ -16,6 +16,8 @@ Every presentation in Deckyard uses a theme. Themes define:
 - **Logos** - Organization logos for title slides
 - **Assets** - Background images and visual elements
 
+![Themes settings page showing custom theme management with Create Theme button](/images/screenshots/themes-settings-page.png)
+
 ## Theme Locations
 
 Deckyard supports two theme directories:

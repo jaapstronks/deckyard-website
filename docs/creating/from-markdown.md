@@ -9,6 +9,8 @@ Import a `.md` file and get a presentation directly — no AI, no API keys, no w
 
 This is ideal for developers, technical writers, and anyone who prefers writing slides in a text editor or version-controlling their decks in git.
 
+![Advanced import section showing Import JSON, Import Markdown, and Paste Markdown tabs](/images/screenshots/advanced-import-dialog.png)
+
 ## How It Works
 
 1. From the presentation list, click **New presentation**

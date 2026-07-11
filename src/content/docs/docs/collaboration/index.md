@@ -11,6 +11,8 @@ Deckyard provides powerful collaboration features for teams working together on 
 
 Whether you're working with a small team or a large organization, Deckyard's collaboration tools help you create better presentations together.
 
+![Slide comments with reply, resolve, and delete actions alongside the live preview](/images/screenshots/comments-expanded.png)
+
 ## Features
 
 - **[Sharing & Permissions](/docs/collaboration/sharing-permissions/)** - Control who can access and edit your presentations

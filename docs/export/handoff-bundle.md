@@ -11,6 +11,8 @@ Export a comprehensive ZIP bundle containing all formats for design handoff.
 
 The Handoff Bundle is a complete export package perfect for sharing presentations with stakeholders who may not have Deckyard access. It includes multiple formats so recipients can choose what works best for them.
 
+![Export dropdown showing all formats including PDF, PNG, PPTX, HTML, JSON, Notes, and Handoff ZIP for both languages](/images/screenshots/export-full-dropdown.png)
+
 ## What's Included
 
 ### HTML Presentation

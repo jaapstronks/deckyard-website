@@ -11,6 +11,8 @@ Translate your presentations to reach international audiences.
 
 Deckyard's AI-powered translation converts your presentation content to other languages while preserving formatting, structure, and meaning.
 
+![Editor showing Translate buttons on each field and the NL/EN language toggle in the toolbar](/images/screenshots/ai-translation-prompt.png)
+
 ## Full Presentation Translation
 
 Translate all slides to an alternate language with a single action.

@@ -15,6 +15,8 @@ The preview updates **live** as you type. Every change you make is immediately r
 
 The right column of the editor shows the current slide rendered exactly as it will appear in presentation mode.
 
+![Editor with the preview panel on the right showing the rendered slide, comment input, and presenter notes](/images/screenshots/editor-full-context.png)
+
 ## Lightbox View
 
 Click the **magnifying glass** icon (or click the preview thumbnail) to open the slide in a larger lightbox view. This is useful for:

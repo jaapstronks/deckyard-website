@@ -39,8 +39,10 @@ Add author information to your preview images for branding.
 
 ### Enable Author Overlay
 
+![Deck settings showing Show author on preview checkbox that displays your name and photo on the social media preview image](/images/screenshots/deck-settings-full.png)
+
 1. Open your presentation
-2. Go to **Settings** > **Sharing**
+2. Go to **Settings** (gear icon)
 3. Enable **Show author on preview**
 4. Save settings
 5. Republish the presentation

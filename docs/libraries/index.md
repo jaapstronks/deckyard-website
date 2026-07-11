@@ -11,6 +11,8 @@ Save and reuse slides and images across your presentations. Libraries help maint
 
 Deckyard's asset libraries provide a central repository for reusable content that can be shared across presentations and teams.
 
+![Slide library showing saved slides with Personal/Team tabs, language filter, search, and Use button](/images/screenshots/slide-library-overview.png)
+
 ### Available Libraries
 
 | Library | Purpose |

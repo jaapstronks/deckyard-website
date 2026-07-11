@@ -7,6 +7,8 @@ description: "Embed images, videos, and external content in your presentations"
 
 Enhance your presentations with rich media content including images, videos, and external embeds.
 
+![Image+text slide editor showing title, markdown body, image upload, caption, image role, and live preview](/images/screenshots/image-text-slide-editor.png)
+
 ## Image Slide
 
 Display full-screen images with multiple layout options.

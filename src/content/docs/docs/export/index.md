@@ -67,6 +67,15 @@ Design handoff package with assets.
 
 [Learn more about handoff bundles](/docs/export/handoff-bundle/)
 
+### Data Backup
+
+Full workspace backup as a ZIP archive.
+- All presentations as JSON
+- Referenced images (local and remote)
+- Optional: version history, image library, slide library, themes
+
+[Learn more about data backup](/docs/export/backup/)
+
 ## Getting Started
 
 ### Quick Export
@@ -131,3 +140,4 @@ Adjust output quality:
 - [Image Export](/docs/export/images/)
 - [Notes Export](/docs/export/notes/)
 - [Handoff Bundle](/docs/export/handoff-bundle/)
+- [Data Backup](/docs/export/backup/)

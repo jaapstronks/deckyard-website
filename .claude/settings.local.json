@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:slides.com)",
+      "WebFetch(domain:mentimeter.com)",
+      "WebFetch(domain:claper.co)",
+      "WebFetch(domain:www.beautiful.ai)",
+      "WebFetch(domain:gamma.app)",
+      "WebFetch(domain:www.gamma.app)",
+      "Bash(for lang in de fr es pt da sv no it pl fi)",
+      "Bash(do cp en.json $lang.json)",
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "mcp__plugin_playwright_playwright__browser_take_screenshot",
+      "mcp__plugin_playwright_playwright__browser_close",
+      "Bash(pkill:*)",
+      "WebFetch(domain:starlight.astro.build)",
+      "WebFetch(domain:github.com)",
+      "Bash(lsof:*)",
+      "Bash(git -C \"/Users/jstronks/Github NW/deckyard-website\" status --short src/content/docs/)",
+      "mcp__plugin_playwright_playwright__browser_console_messages",
+      "mcp__plugin_playwright_playwright__browser_click",
+      "Bash(git -C \"/Users/jstronks/Github NW/deckyard-website\" log --oneline)",
+      "Bash(git -C /Users/jstronks/Github NW/deckyard-cloud log --oneline -20)",
+      "Bash(git -C /Users/jstronks/Github NW/deckyard-cloud/core log --oneline -10)",
+      "Bash(tree:*)",
+      "mcp__plugin_playwright_playwright__browser_snapshot",
+      "mcp__plugin_playwright_playwright__browser_tabs",
+      "mcp__plugin_playwright_playwright__browser_run_code",
+      "mcp__plugin_playwright_playwright__browser_press_key",
+      "mcp__plugin_playwright_playwright__browser_handle_dialog",
+      "mcp__plugin_playwright_playwright__browser_type",
+      "mcp__plugin_playwright_playwright__browser_wait_for",
+      "mcp__plugin_playwright_playwright__browser_fill_form",
+      "Bash(git -C \"/Users/jstronks/Github NW/deckyard-website\" remote -v)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)"
+    ]
+  }
+}

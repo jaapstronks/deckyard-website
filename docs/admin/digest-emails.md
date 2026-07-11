@@ -11,6 +11,8 @@ Receive weekly summaries of engagement across your presentations.
 
 Deckyard can send weekly digest emails summarizing activity and engagement. These emails help you stay informed about how your presentations are performing without checking the dashboard daily.
 
+![Engagement Insights dashboard showing total views, unique viewers, average duration, completion rate, views over time chart, and top performing presentations](/images/screenshots/insights-dashboard.png)
+
 ## What's Included
 
 Each digest email contains:

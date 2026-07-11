@@ -21,6 +21,8 @@ The lead capture slide type lets you collect information from viewers, perfect f
 4. Add your value proposition
 5. Set up notifications
 
+![Lead Capture slide editor showing title, description, form field labels, submit button text, thank-you message, and live preview](/images/screenshots/lead-capture-editor.png)
+
 ### Slide Layout
 
 The lead capture slide includes:

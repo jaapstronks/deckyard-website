@@ -11,6 +11,8 @@ Provide feedback and collaborate through slide comments.
 
 Comments let team members discuss specific slides, suggest changes, and track decisions. Use comments to gather feedback without modifying the presentation content.
 
+![Slide comment thread with Reply, Resolve, and Delete actions alongside the live preview and presenter notes](/images/screenshots/comments-with-thread.png)
+
 ## Adding Comments
 
 ### On a Slide

@@ -10,6 +10,7 @@ This project intentionally stays dependency-free, so the server loads `.env` its
 
 - **PORT**: HTTP port (default `4177`)
 - **HOST**: bind address (default `127.0.0.1`)
+- **APP_URL**: public base URL of the instance (e.g. `https://slides.yourcompany.com`). Used for absolute links in emails and notifications. Falls back to `https://{DOMAIN}` if not set.
 
 ### Auth (recommended in production)
 

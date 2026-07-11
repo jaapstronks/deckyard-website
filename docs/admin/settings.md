@@ -17,6 +17,8 @@ Instance settings control behavior across your entire Deckyard installation. Set
 
 Access the settings panel from the admin menu. Here you can configure:
 
+![Admin settings showing language configuration, AI assistant identity, email sender, session duration, engagement insights, stock media, and supported themes](/images/screenshots/admin-settings-full.png)
+
 ### General Settings
 
 - **Organization name** - Your organization's display name

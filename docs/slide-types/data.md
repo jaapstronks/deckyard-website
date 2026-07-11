@@ -7,6 +7,8 @@ description: "Create charts, tables, KPIs, and data visualizations in Deckyard"
 
 Display your data effectively with Deckyard's visualization slide types.
 
+![Slide type picker showing Data category with Table, Chart, KPI, Comparison, Matrix, Funnel, Pyramid, and Cycle types](/images/screenshots/slide-types-data.png)
+
 ## Chart Slide
 
 Create bar, line, and pie charts from simple CSV/TSV data.

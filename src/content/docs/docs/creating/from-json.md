@@ -7,6 +7,8 @@ description: "Import presentations from Deckyard's JSON format"
 
 Restore presentations from Deckyard's portable JSON export format.
 
+![Advanced import section with Import JSON, Import Markdown, and Paste Markdown options](/images/screenshots/advanced-import-dialog.png)
+
 ## When to Use
 
 - **Restoring backups** - Recover presentations from JSON exports

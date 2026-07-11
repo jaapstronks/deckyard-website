@@ -9,6 +9,8 @@ Turn your Notion pages into presentations with a few clicks.
 
 ## How It Works
 
+![New presentation dialog with From content option selected, showing Paste text and Upload file tabs with theme and language selection](/images/screenshots/new-presentation-from-content.png)
+
 1. Open the **AI Wizard** from the presentation list
 2. Select **"From Notion Page"**
 3. Search for and select the Notion page you want to import

@@ -11,6 +11,8 @@ Edit presentations together with your team in real-time.
 
 Deckyard supports concurrent editing with automatic slide-level locking to prevent conflicts. Multiple users can work on the same presentation simultaneously while seeing each other's presence.
 
+![Editor showing the three-panel layout: slide navigator, edit fields, and live preview with comments](/images/screenshots/editor-three-panel.png)
+
 ## Slide Locks
 
 When you start editing a slide, it becomes locked to prevent others from making conflicting changes.

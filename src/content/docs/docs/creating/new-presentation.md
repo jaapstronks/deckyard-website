@@ -9,6 +9,8 @@ Start a fresh presentation and build it slide by slide.
 
 ## Creating a New Presentation
 
+![New presentation dialog with Start blank, From template, and From content options, theme selection, and language toggle](/images/screenshots/new-presentation-dialog.png)
+
 1. From the presentation list (`/app`), click **New Presentation**
 2. Enter a **title** for your presentation
 3. Select the **language** (NL or EN) - this sets the primary editing language

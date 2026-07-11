@@ -31,6 +31,8 @@ UNSPLASH_ACCESS_KEY=your-access-key-here
 
 Restart Deckyard to apply the changes.
 
+![Image library picker with categories, search, upload, and media grid](/images/screenshots/image-library-picker.png)
+
 ## Using Unsplash
 
 ### Access the Image Library

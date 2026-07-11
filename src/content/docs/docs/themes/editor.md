@@ -23,6 +23,8 @@ The Theme Editor allows you to:
 2. Click **Edit** on an existing theme, or
 3. Click **Create New Theme**
 
+![Theme Editor with name, logo, color pickers, font selectors, and live preview](/images/screenshots/theme-editor-full.png)
+
 ### Permissions
 
 Theme editing requires admin access. Regular users can select themes but cannot modify them.
@@ -56,29 +58,48 @@ Configure the predefined background options:
 
 ## Typography
 
-### Font Families
+### Font Picker
 
-Configure fonts for different text elements:
+The Theme Editor provides font picker dropdowns for heading and body fonts. Each picker shows:
 
-| Element | Usage |
-|---------|-------|
-| Heading Font | Titles, headers, emphasis |
-| Body Font | Paragraphs, lists, content |
+- **Curated fonts** — 40 pre-selected Google Fonts, grouped by category (sans-serif, serif, display, monospace). Available to all organizations.
+- **Custom fonts** — Organization-specific fonts added through [Font Management](/docs/themes/font-management/). Shown in a separate group at the top of the picker.
 
-### Custom Fonts
+Font previews load automatically so you can see each typeface before selecting it.
 
-To use custom fonts:
+### Heading and Body Fonts
 
-1. Click **Add Font**
-2. Upload your font files (.woff2 recommended)
-3. Specify font family name, weight, and style
-4. Assign to heading or body usage
+| Element | CSS Variable | Usage |
+|---------|-------------|-------|
+| Heading Font | `--t-font-heading` | Titles, section headers, emphasis text |
+| Body Font | `--t-font-body` | Paragraphs, lists, slide content |
+
+### Body Font Requirements
+
+Body fonts need both Regular (400) and Bold (700) weights to properly render slide content. The body font picker only shows fonts that meet this requirement:
+
+- **Uploaded custom fonts** must have both weight 400 and 700 variants
+- **Adobe, Monotype, and Google fonts** are always available (variants managed externally)
+- **Curated fonts** always qualify (pre-selected with appropriate weights)
+
+Heading fonts have no weight restriction — a single weight works fine for titles.
+
+### Heading Weight
+
+Use the heading weight setting to control how bold headings appear. This maps to `--t-heading-weight` in the theme configuration. Common values:
+
+| Weight | Style |
+|--------|-------|
+| 400 | Regular |
+| 600 | Semi-bold |
+| 700 | Bold |
 
 ### Font Recommendations
 
-- Use `.woff2` format for best compression
-- Include regular (400) and bold (700) weights at minimum
-- Test readability at various sizes
+- Limit to 2 font families (one heading, one body) for visual consistency
+- Pair a distinctive heading font with a readable body font
+- Test at various sizes — headings, body text, and captions
+- Verify fonts render correctly in exports (PDF, PNG, HTML)
 
 ## Logo and Assets
 
@@ -175,32 +196,46 @@ Import a theme from JSON:
 ### Color Variables
 
 ```css
---t-color-accent       /* Primary accent color */
---t-slide-bg-lime      /* Lime background */
---t-slide-bg-mist      /* Mist background */
---t-slide-bg-night     /* Night/dark background */
---t-text-color-light   /* Text on dark backgrounds */
---t-text-color-dark    /* Text on light backgrounds */
+--t-color-accent          /* Primary accent color */
+--t-color-background      /* Default slide background */
+--t-color-text            /* Primary text color */
+--t-color-text-muted      /* Secondary/muted text */
+--t-slide-bg-lime         /* Lime background variant */
+--t-slide-bg-mist         /* Mist background variant */
+--t-slide-bg-dark         /* Dark background variant */
+--t-quote-author-color    /* Quote attribution text */
+--t-quote-text-color      /* Quote body text */
 ```
 
 ### Chart Colors
 
 ```css
---t-chart-1  /* First series/slice color */
---t-chart-2  /* Second series/slice color */
---t-chart-3  /* Third series/slice color */
-/* ... up to --t-chart-8 */
+--t-chart-0 through --t-chart-7  /* 8 chart series colors */
 ```
 
-### Advanced Variables
-
-For fine-grained control:
+### Typography Variables
 
 ```css
---t-heading-font       /* Font family for headings */
---t-body-font          /* Font family for body text */
---t-border-radius      /* Border radius for elements */
---t-shadow             /* Box shadow for cards */
+--t-font-heading       /* Font family for headings */
+--t-font-body          /* Font family for body text */
+--t-font-caption       /* Font family for captions (defaults to body) */
+--t-font-mono          /* Font family for code blocks */
+--t-heading-weight     /* Font weight for headings (e.g. 600, 700) */
+--t-heading-transform  /* Text transform for headings (e.g. none, uppercase) */
+```
+
+### Layout Variables
+
+```css
+--t-radius             /* Default border radius */
+--t-radius-sm          /* Small border radius */
+--t-radius-lg          /* Large border radius */
+```
+
+### Asset Variables
+
+```css
+--t-logo-url           /* Logo as CSS url() for background-image use */
 ```
 
 ## Best Practices
@@ -232,5 +267,6 @@ For fine-grained control:
 ## Related
 
 - [Themes Overview](/docs/themes/)
+- [Font Management](/docs/themes/font-management/)
 - [Custom Slide Types](/docs/customization/custom-slide-types/)
 - [Export Formats](/docs/export/)

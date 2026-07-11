@@ -25,8 +25,10 @@ Export your speaker notes as standalone documents for printing or reference.
 
 ### From the Editor
 
+![Export dropdown menu showing PDF, PNG, PPTX, HTML, JSON, Print text, Notes, and Handoff ZIP options](/images/screenshots/export-dropdown-full.png)
+
 1. Open your presentation
-2. Click **File** > **Export** > **Notes**
+2. Click **Export** > **Notes**
 3. Select format (DOCX or Markdown)
 4. Configure options
 5. Click **Export**

@@ -10,6 +10,10 @@
   box-shadow: var(--shadow-sm);
   font-weight: 700;
   cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out),
+              filter var(--duration-fast) var(--ease-out);
 }
 
 .btn:hover {
@@ -17,9 +21,9 @@
 }
 
 .btn-lg {
-  padding: 12px 16px;
+  padding: 14px 24px;
   border-radius: 14px;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .btn-primary {
@@ -30,12 +34,20 @@
 }
 
 .btn-primary:hover {
-  filter: brightness(0.98);
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 36px rgba(37, 77, 56, 0.18), 0 4px 12px rgba(37, 77, 56, 0.08);
 }
 
 .btn-secondary {
   background: var(--white);
-  border-color: rgba(13, 78, 54, 0.18);
+  border-color: rgba(37, 77, 56, 0.18);
+}
+
+.btn-secondary:hover {
+  border-color: rgba(37, 77, 56, 0.32);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(37, 77, 56, 0.10);
 }
 
 .btn-ghost {
@@ -43,6 +55,10 @@
   border-color: transparent;
   box-shadow: none;
   color: var(--gray-900);
+}
+
+.btn-ghost:hover {
+  background: var(--gray-100);
 }
 
 .btn-icon {
@@ -53,8 +69,8 @@
 .cta-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin: 16px 0 10px;
+  gap: 14px;
+  margin: 20px 0 16px;
 }
 
 .cta-note {

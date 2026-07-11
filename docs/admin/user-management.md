@@ -17,6 +17,8 @@ Administrators can add new users, manage roles, and control access to the platfo
 
 ### Via Admin Panel
 
+![User management panel showing user list with email, role, status, and action buttons](/images/screenshots/user-management.png)
+
 1. Navigate to **Admin** > **Users**
 2. Click **Add User**
 3. Enter the user's email address

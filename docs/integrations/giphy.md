@@ -31,6 +31,8 @@ GIPHY_API_KEY=your-api-key-here
 
 Restart Deckyard to apply the changes.
 
+![Image library picker with categories, search, upload, and media grid](/images/screenshots/image-library-picker.png)
+
 ## Using Giphy
 
 ### Access the GIF Library

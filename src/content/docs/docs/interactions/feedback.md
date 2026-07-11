@@ -11,6 +11,8 @@ Gather audience feedback to improve your presentations.
 
 The feedback feature helps you understand how your presentation was received and what you can improve. Collect ratings, comments, and reactions from your audience.
 
+![Lead capture slide editor showing form fields for name, email, submit button, thank you message, and privacy consent](/images/screenshots/lead-capture-editor-full.png)
+
 ## Feedback Types
 
 ### Session Ratings

@@ -11,6 +11,8 @@ Collect and manage audience questions during your presentation.
 
 The Q&A feature allows audience members to submit questions that you can address during or after your presentation. With moderation and upvoting, you can focus on the most relevant questions.
 
+![Interaction slide types in the slide picker: Poll, Likert, Likert slider, Feedback, and Follow-along invite](/images/screenshots/slide-types-interaction.png)
+
 ## Features
 
 - **Question Submission** - Audience can submit questions via their devices

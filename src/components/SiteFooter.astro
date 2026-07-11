@@ -40,24 +40,14 @@ function getLocalePath(path: string): string {
         <a class="footer-link" href={getLocalePath('/features/ai')}>{t('footer.aiGeneration')}</a>
         <a class="footer-link" href={getLocalePath('/features/interactions')}>{t('footer.interactions')}</a>
         <a class="footer-link" href={getLocalePath('/pricing')}>{t('footer.pricing')}</a>
-      </div>
-
-      <div class="footer-col">
-        <h4>{t('footer.community')}</h4>
         <a class="footer-link" href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noreferrer">{t('footer.github')}</a>
-        <a class="footer-link" href="https://github.com/jaapstronks/deckyard/discussions" target="_blank" rel="noreferrer">{t('footer.discussions')}</a>
-        <a class="footer-link" href="https://github.com/jaapstronks/deckyard/issues" target="_blank" rel="noreferrer">{t('footer.issues')}</a>
+        <a class="footer-link" href="/docs/">{t('footer.documentation')}</a>
       </div>
 
       <div class="footer-col">
         <h4>{t('footer.resources')}</h4>
-        <a class="footer-link" href="/docs/">{t('footer.documentation')}</a>
         <a class="footer-link" href={getLocalePath('/self-hosting')}>{t('footer.selfHosting')}</a>
         <a class="footer-link" href={getLocalePath('/eu-privacy')}>{t('footer.euPrivacy')}</a>
-      </div>
-
-      <div class="footer-col">
-        <h4>{t('footer.compare')}</h4>
         <a class="footer-link" href={getLocalePath('/compare/mentimeter')}>{t('footer.vsMentimeter')}</a>
         <a class="footer-link" href={getLocalePath('/compare/slides-com')}>{t('footer.vsSlidescom')}</a>
         <a class="footer-link" href={getLocalePath('/compare/google-slides')}>{t('footer.vsGoogleSlides')}</a>

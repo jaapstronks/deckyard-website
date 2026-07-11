@@ -7,6 +7,8 @@ description: "Card-based layouts for team introductions, feature showcases, and 
 
 Organize your content with card-based layouts. These slide types present information in visually distinct blocks.
 
+![Slide type picker showing Layouts category with Content columns, Text blocks, 4 cards, Icon cards, and Freeform slide types](/images/screenshots/slide-types-layouts.png)
+
 ## Team Cards (Image Blocks)
 
 Display people, products, or any content with images and captions. Supports up to 12 cards per slide.

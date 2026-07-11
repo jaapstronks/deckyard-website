@@ -7,6 +7,8 @@ description: "Convert PowerPoint presentations to Deckyard"
 
 Import existing PowerPoint (.pptx) presentations into Deckyard.
 
+![Upload file dialog supporting .pptx, .pdf, .docx, .rtf, and .odt files with theme selection](/images/screenshots/new-upload-file-dialog.png)
+
 ## How It Works
 
 1. From the presentation list, select **Import**
@@ -34,6 +36,8 @@ Some PowerPoint features don't have direct equivalents:
 - Custom shapes may not convert perfectly
 - Embedded videos need to be re-added
 - SmartArt is converted to basic layouts
+
+![New presentation dialog with From content selected and AI-powered paste text or upload file options](/images/screenshots/new-from-content-dialog.png)
 
 ## After Import
 

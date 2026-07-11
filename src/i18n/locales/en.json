@@ -48,15 +48,14 @@
   },
   "home": {
     "meta": {
-      "title": "Deckyard — Modern presentations, zero lock-in",
-      "description": "Turn-key presentation platform with 44 slide types, AI generation, and real-time collaboration. Open source, open API, portable formats. Self-host for free or use our EU cloud. MIT licensed."
+      "title": "Deckyard — A presentation platform that’s actually yours",
+      "description": "Open source presentation platform with 44 structured slide types, AI generation, and real-time interactions. EU-hosted or self-hostable. MIT licensed. No lock-in, no platform risk."
     },
     "hero": {
-      "eyebrow": "Open Source · 44 Slide Types · AI Generation · Self-hostable",
-      "title": "Modern presentations, zero lock-in",
-      "lead": "A turn-key platform with 44 slide types, AI generation, and real-time collaboration. Built on open standards and portable formats, so you're never locked in. Self-host for free or let us run it for you.",
+      "eyebrow": "EU-hosted · Open Source · Self-hostable · MIT Licensed",
+      "title": "A presentation platform that's actually <span class=\"text-accent\">yours</span>",
+      "lead": "Built for how we work now. Structured slides that AI can understand. Open formats your tools can talk to. EU-hosted or on your servers. No lock-in, no platform risk.",
       "trySandbox": "Try the sandbox",
-      "selfHostFree": "Self-host free",
       "viewOnGithub": "View on GitHub",
       "badges": {
         "hostedInFrance": "Hosted in France",
@@ -64,149 +63,125 @@
         "selfHostable": "Self-hostable",
         "mitLicensed": "MIT licensed"
       },
-      "screenshotAlt": "Deckyard editor showing slide types, live preview, and presenter notes",
+      "screenshotAlt": "Deckyard editor showing structured slide types and live preview",
       "screenshotCaption": "The editor in action —",
       "tryItYourself": "try it yourself"
     },
-    "features": {
-      "title": "Everything you need to create professional presentations",
-      "lead": "44 slide types covering data visualizations, process diagrams, image galleries, and much more. Ready for your next presentation.",
-      "data": {
-        "title": "Data & Visualizations",
-        "description": "Charts, KPIs, tables, funnels, pyramids, SWOT matrices. Present your numbers with clarity."
+    "problem": {
+      "title": "Presentations are still broken",
+      "pain": "Every presentation tool hands you a blank canvas and says \"design whatever you want.\" That's the problem. People spend hours wrestling with layouts. Brand guidelines get ignored. Data goes stale in old decks. And AI can't help—there's nothing structured for it to work with.",
+      "solutionTitle": "A system, not a canvas",
+      "solution": "Deckyard works like a website, not a canvas. Designers create templates. Everyone else fills in content. The system enforces consistency. And because slides are structured, AI can generate, update, and translate them automatically.",
+      "video": {
+        "alt": "Demo: creating a presentation from a Notion page using AI",
+        "caption": "From prompt to presentation in 30 seconds"
       },
-      "layouts": {
-        "title": "Layouts & Structure",
-        "description": "Section titles, text slides, multi-column layouts, icon cards, timelines, roadmaps. Build narrative flow."
+      "roles": {
+        "title": "Roles that make sense",
+        "description": "Designers control templates and styling. Editors fill in content. No one drags text boxes around. Your brand stays intact."
       },
-      "media": {
-        "title": "Media & Embeds",
-        "description": "Images, galleries, video embeds, maps, forms. Rich media without friction."
+      "liveData": {
+        "title": "Always-current data",
+        "description": "Connect slides to Notion, Google Sheets, or your APIs. Numbers update automatically. No more stale quarterly decks."
       },
-      "export": {
-        "title": "Import & Export",
-        "description": "Import from Markdown, PowerPoint, Notion, or JSON. Export to PDF, PPTX, HTML, images, or JSON. Your content, your format."
-      },
-      "interaction": {
-        "title": "Audience Interaction",
-        "description": "Live polls, Q&A, Likert scales, and feedback forms built into your slides. Engage your audience in real-time."
+      "generation": {
+        "title": "AI that actually helps",
+        "description": "Generate decks from prompts or documents. Structured templates mean reliable output—not random layouts you have to fix."
       }
     },
-    "interaction": {
+    "showcase": {
+      "title": "Everything you need, nothing you don’t",
+      "lead": "44 slide types covering data, comparisons, narratives, and interactions. Each one encodes design best practices so your presentations always look professional."
+    },
+    "interactions": {
       "title": "Engage your audience without switching tools",
-      "lead": "Polls, Q&A, Likert scales, and feedback forms—built directly into your slides. No more juggling Mentimeter alongside your presentation.",
-      "realtime": {
-        "title": "Real-time audience interaction",
-        "livePolls": "Live polls",
-        "livePollsDesc": "Multiple choice with instant results display",
-        "likertScales": "Likert scales",
-        "likertScalesDesc": "Agree/disagree or 1-10 rating",
-        "openFeedback": "Open feedback",
-        "openFeedbackDesc": "Free-text responses from your audience",
-        "qna": "Q&A",
-        "qnaDesc": "Collect questions, display and answer live"
-      },
-      "participation": {
-        "title": "Simple audience participation",
-        "qrCode": "Audience joins via QR code or short link",
-        "noApp": "No app download required—works in any browser",
-        "followAlong": "Follow-along mode so attendees see current slide",
-        "resultsRealtime": "Results appear in real-time on your slides"
-      },
-      "compareToMentimeter": "See how we compare to Mentimeter →"
+      "lead": "Polls, Q&A, Likert scales, and feedback forms—built directly into your slides. No more juggling a separate tool alongside your presentation.",
+      "description": "Your audience joins via QR code or short link. No app download required—it works in any browser. Results appear on your slides in real-time.",
+      "polls": "Live polls",
+      "qna": "Q&A",
+      "feedback": "Open feedback",
+      "likert": "Likert scales",
+      "quizzes": "Follow-along mode"
     },
     "ai": {
-      "title": "AI that works for you, not against your wallet",
-      "lead": "Generate entire presentations from a prompt. Use your own API keys—OpenAI, Anthropic, Mistral, DeepSeek, or any OpenAI-compatible model. No credits, no limits, no surprises on your bill.",
+      "title": "AI that actually works—on your terms",
+      "lead": "Generate entire presentations from a prompt. Convert documents into structured decks. Translate slides into any language. Deckyard’s AI works reliably because the slide system was designed for it.",
+      "capabilities": {
+        "generate": "Generate from prompt",
+        "convert": "Convert documents",
+        "translate": "Translate to any language"
+      },
       "byoKeys": {
         "title": "Bring your own keys",
-        "description": "Connect your OpenAI, Anthropic, Mistral, DeepSeek, or self-hosted model. Pay your provider directly at their rates—or run local models for free. No markup, no credits to run out."
+        "description": "Connect OpenAI, Anthropic, Mistral, DeepSeek, or run local models. Pay your provider directly at their rates—no credits, no markup, no limits."
       },
-      "fullDeck": {
-        "title": "Full deck generation",
-        "description": "Describe your presentation and let AI create a complete first draft with appropriate slide types, content, and structure."
+      "reliable": {
+        "title": "Structured slides = reliable output",
+        "description": "AI can't reliably manipulate freeform canvases. But it can understand 'use the KPI slide for these numbers.' Opinionated templates make AI actually useful."
       },
       "control": {
-        "title": "You're in control",
-        "description": "AI assists—you decide. Every suggestion is reviewable. Nothing changes without your approval. DreamBot analyzes your slides and suggests improvements, but you make the call."
-      },
-      "whyByo": {
-        "title": "Why BYO API keys?",
-        "description": "Other tools charge \"AI credits\" on top of your subscription. Run out? Pay more. With Deckyard, you pay your AI provider directly at their rates.",
-        "noLimits": "No artificial limits",
-        "noMarkup": "No markup on API costs",
-        "chooseProvider": "Choose your provider",
-        "disableAi": "Or disable AI entirely"
+        "title": "You’re in control",
+        "description": "Choose your provider. Self-host to keep prompts on your infrastructure. Or disable AI entirely—Deckyard works great without it."
       }
-    },
-    "portability": {
-      "title": "Publish, share, translate",
-      "lead": "Open formats, any language, any platform. Your presentations go wherever you need them.",
-      "publish": {
-        "title": "Publish & embed",
-        "description": "Share via link, embed with the SDK, auto-generate OpenGraph previews."
-      },
-      "i18n": {
-        "title": "Built-in translation",
-        "description": "12 UI languages. AI-powered slide and deck translation to any language."
-      },
-      "formats": {
-        "title": "Portable by design",
-        "description": "Markdown in, JSON storage, PDF and PowerPoint out. Import from Notion, PowerPoint, or plain text."
-      },
-      "collaboration": {
-        "title": "Real-time collaboration",
-        "description": "Edit together, leave comments, track versions, manage sharing permissions."
-      }
-    },
-    "openPlatform": {
-      "title": "Open source and built to extend",
-      "lead": "MIT licensed, fully transparent, designed to integrate. Your presentations live in open formats, accessible through a full API, extensible with custom themes and slide types.",
-      "opensource": {
-        "title": "Fully open source",
-        "description": "Every line of code on GitHub. MIT licensed, no hidden modules, no source-available tricks. Fork it, extend it, audit it."
-      },
-      "api": {
-        "title": "REST API & MCP",
-        "description": "Programmatic access to everything. Automate workflows, build integrations, or let AI tools interact with your presentations via Model Context Protocol."
-      },
-      "community": {
-        "title": "Community-driven",
-        "description": "Report bugs, request features, contribute code. Development happens in the open — help shape the roadmap."
-      },
-      "themes": {
-        "title": "Custom themes & slide types",
-        "description": "Build your own themes, create custom slide types, extend the editor. Make it truly yours."
-      },
-      "viewOnGithub": "View on GitHub",
-      "apiDocs": "API docs →"
     },
     "sovereignty": {
       "title": "Your infrastructure, or ours",
-      "lead": "Self-host on your own servers for free, or let us handle the infrastructure with our EU-managed cloud. Either way, your data stays where you decide.",
-      "selfHost": {
-        "title": "Self-host (always free)",
-        "docker": "Docker Compose setup in minutes",
-        "fullControl": "Full control over data and infrastructure",
-        "noDeps": "No external dependencies required",
-        "scale": "Scale as needed, pay only for your servers",
-        "cta": "Self-hosting guide →"
-      },
+      "lead": "Self-host on your own servers for complete control, or use our EU cloud managed on French infrastructure. Either way—your data, your rules.",
       "cloud": {
         "title": "EU Managed Cloud",
-        "scaleway": "Hosted on Scaleway (France)",
-        "noUsTransfers": "No US data transfers",
-        "updates": "We handle updates, backups, and scaling",
+        "hosted": "Hosted on Scaleway, France",
+        "managed": "We handle updates, backups, scaling",
+        "free": "Free tier available",
         "gdpr": "GDPR compliant by design",
-        "cta": "View pricing →"
-      }
+        "cta": "View pricing"
+      },
+      "selfHost": {
+        "title": "Self-hosted",
+        "servers": "Run on your own servers",
+        "control": "Full control over data and infrastructure",
+        "docker": "Docker Compose in minutes",
+        "free": "Always free, MIT licensed",
+        "cta": "Self-hosting guide",
+        "command": "docker compose up -d"
+      },
+      "trust": "Netherlands company. French infrastructure. No US in the data chain."
+    },
+    "openPlatform": {
+      "title": "Open source and built to extend",
+      "lead": "MIT licensed. Every line on GitHub. Full API. MCP-ready. Your presentations live in open formats, accessible through code.",
+      "opensource": {
+        "title": "Fully open source",
+        "description": "Every line of code on GitHub. MIT licensed—fork it, extend it, audit it. No hidden modules, no source-available tricks."
+      },
+      "api": {
+        "title": "Full REST API",
+        "description": "Programmatic access to everything. Automate workflows, build integrations, connect your tools."
+      },
+      "mcp": {
+        "title": "MCP-ready",
+        "description": "Let AI tools interact with your presentations via Model Context Protocol. Your decks become part of your AI workflow."
+      },
+      "formats": {
+        "title": "Open formats",
+        "description": "Markdown in, JSON storage, PDF and PowerPoint out. No proprietary formats. Your content stays portable."
+      },
+      "viewOnGithub": "View on GitHub",
+      "apiDocs": "API docs"
+    },
+    "proof": {
+      "builtBy": "Built by",
+      "founderName": "Jaap Stronks",
+      "founderRole": "Solo founder · Rotterdam, Netherlands · 15 years in web development",
+      "origin": "Built for daily use at a European communications agency. Now open source and available to everyone.",
+      "mitLicense": "MIT licensed",
+      "madeIn": "Made in Europe"
     },
     "cta": {
-      "title": "Ready to build better presentations?",
-      "lead": "Try the sandbox with no signup, self-host for free, or let us run it for you.",
+      "title": "Ready to try it?",
+      "lead": "Start building presentations that are actually yours.",
       "trySandbox": "Try the sandbox",
-      "readDocs": "Read the docs",
-      "viewOnGithub": "View on GitHub"
+      "viewOnGithub": "View on GitHub",
+      "selfHost": "Self-hosting guide"
     }
   },
   "selfHosting": {
@@ -887,51 +862,186 @@
       "structure": "Structure"
     },
     "types": {
-      "chart": { "name": "Chart", "desc": "Bar, line, pie, and area charts for data visualization" },
-      "kpiMetrics": { "name": "KPI Metrics", "desc": "Highlight key numbers with large, prominent displays" },
-      "table": { "name": "Table", "desc": "Structured data in rows and columns" },
-      "funnel": { "name": "Funnel", "desc": "Visualize conversion stages or process flow" },
-      "pyramid": { "name": "Pyramid", "desc": "Hierarchical data with layered structure" },
-      "timeline": { "name": "Timeline", "desc": "Events and milestones in chronological order" },
-      "matrix": { "name": "Matrix", "desc": "2x2 or larger grids for comparisons (SWOT, etc.)" },
-      "agenda": { "name": "Agenda", "desc": "Meeting or presentation agenda with timing" },
-      "cycle": { "name": "Cycle", "desc": "PDCA, continuous improvement, or circular process diagrams" },
-      "poll": { "name": "Poll", "desc": "Multiple choice voting with live results" },
-      "likert": { "name": "Likert Scale", "desc": "Agreement scale from strongly disagree to strongly agree" },
-      "likertSlider": { "name": "Likert Slider", "desc": "Numeric rating on a 1-10 scale with slider input" },
-      "feedback": { "name": "Feedback", "desc": "Open text responses from your audience" },
-      "qna": { "name": "Q&A", "desc": "Collect and display audience questions with upvoting" },
-      "followInvite": { "name": "Follow Invite", "desc": "QR code for audience to join follow-along mode" },
-      "wordCloud": { "name": "Word Cloud", "desc": "Visualize audience responses as a dynamic word cloud" },
-      "quiz": { "name": "Quiz", "desc": "Multiple choice with correct answers and scoring" },
-      "cardStack": { "name": "Card Stack", "desc": "Multiple content cards in a flexible grid" },
-      "iconCards": { "name": "Icon Cards", "desc": "Features or benefits with icons and descriptions" },
-      "fourCards": { "name": "4 Cards", "desc": "Four content cards in a balanced grid layout" },
-      "teamOverview": { "name": "Team Overview", "desc": "Grid of team member cards with photos and roles" },
-      "teamCards": { "name": "Team Cards", "desc": "Individual team member spotlight" },
-      "logoWall": { "name": "Logo Wall", "desc": "Display client logos, partners, or technologies" },
-      "gallery": { "name": "Gallery", "desc": "Image gallery with captions" },
-      "partnerSplit": { "name": "Partner Split", "desc": "Side-by-side partner or team member presentation" },
-      "process": { "name": "Process", "desc": "Step-by-step process or workflow visualization" },
-      "comparison": { "name": "Comparison", "desc": "Side-by-side comparison of options or features" },
-      "image": { "name": "Image", "desc": "Full-bleed or contained image display" },
-      "imageText": { "name": "Image + Text", "desc": "Image with accompanying text content" },
-      "imageBlocks": { "name": "Image Blocks", "desc": "Multiple images with titles and captions" },
-      "video": { "name": "Video", "desc": "Embed YouTube, Vimeo, or self-hosted videos" },
-      "embed": { "name": "Embed", "desc": "iFrame embed for external content" },
-      "code": { "name": "Code", "desc": "Syntax-highlighted code snippets" },
-      "title": { "name": "Title", "desc": "Opening slide with title and subtitle" },
-      "chapter": { "name": "Chapter", "desc": "Section divider with chapter title" },
-      "sectionTitle": { "name": "Section Title", "desc": "Clean section header for organizing content" },
-      "section": { "name": "Section", "desc": "Sub-section header within a chapter" },
-      "content": { "name": "Content", "desc": "Standard text slide with title and body" },
-      "contentColumns": { "name": "Content Columns", "desc": "Multi-column layout for organized content" },
-      "textBlocks": { "name": "Text Blocks", "desc": "Multiple text sections with headings" },
-      "quote": { "name": "Quote", "desc": "Featured quote with attribution" },
-      "list": { "name": "List", "desc": "Bullet points or numbered list" },
-      "twoColumn": { "name": "Two Column", "desc": "Side-by-side content layout" },
-      "payoff": { "name": "Payoff", "desc": "Closing slide with call-to-action" },
-      "thankYou": { "name": "Thank You", "desc": "Closing slide with contact information" }
+      "chart": {
+        "name": "Chart",
+        "desc": "Bar, line, pie, and area charts for data visualization"
+      },
+      "kpiMetrics": {
+        "name": "KPI Metrics",
+        "desc": "Highlight key numbers with large, prominent displays"
+      },
+      "table": {
+        "name": "Table",
+        "desc": "Structured data in rows and columns"
+      },
+      "funnel": {
+        "name": "Funnel",
+        "desc": "Visualize conversion stages or process flow"
+      },
+      "pyramid": {
+        "name": "Pyramid",
+        "desc": "Hierarchical data with layered structure"
+      },
+      "timeline": {
+        "name": "Timeline",
+        "desc": "Events and milestones in chronological order"
+      },
+      "matrix": {
+        "name": "Matrix",
+        "desc": "2x2 or larger grids for comparisons (SWOT, etc.)"
+      },
+      "agenda": {
+        "name": "Agenda",
+        "desc": "Meeting or presentation agenda with timing"
+      },
+      "cycle": {
+        "name": "Cycle",
+        "desc": "PDCA, continuous improvement, or circular process diagrams"
+      },
+      "poll": {
+        "name": "Poll",
+        "desc": "Multiple choice voting with live results"
+      },
+      "likert": {
+        "name": "Likert Scale",
+        "desc": "Agreement scale from strongly disagree to strongly agree"
+      },
+      "likertSlider": {
+        "name": "Likert Slider",
+        "desc": "Numeric rating on a 1-10 scale with slider input"
+      },
+      "feedback": {
+        "name": "Feedback",
+        "desc": "Open text responses from your audience"
+      },
+      "qna": {
+        "name": "Q&A",
+        "desc": "Collect and display audience questions with upvoting"
+      },
+      "followInvite": {
+        "name": "Follow Invite",
+        "desc": "QR code for audience to join follow-along mode"
+      },
+      "wordCloud": {
+        "name": "Word Cloud",
+        "desc": "Visualize audience responses as a dynamic word cloud"
+      },
+      "quiz": {
+        "name": "Quiz",
+        "desc": "Multiple choice with correct answers and scoring"
+      },
+      "cardStack": {
+        "name": "Card Stack",
+        "desc": "Multiple content cards in a flexible grid"
+      },
+      "iconCards": {
+        "name": "Icon Cards",
+        "desc": "Features or benefits with icons and descriptions"
+      },
+      "fourCards": {
+        "name": "4 Cards",
+        "desc": "Four content cards in a balanced grid layout"
+      },
+      "teamOverview": {
+        "name": "Team Overview",
+        "desc": "Grid of team member cards with photos and roles"
+      },
+      "teamCards": {
+        "name": "Team Cards",
+        "desc": "Individual team member spotlight"
+      },
+      "logoWall": {
+        "name": "Logo Wall",
+        "desc": "Display client logos, partners, or technologies"
+      },
+      "gallery": {
+        "name": "Gallery",
+        "desc": "Image gallery with captions"
+      },
+      "partnerSplit": {
+        "name": "Partner Split",
+        "desc": "Side-by-side partner or team member presentation"
+      },
+      "process": {
+        "name": "Process",
+        "desc": "Step-by-step process or workflow visualization"
+      },
+      "comparison": {
+        "name": "Comparison",
+        "desc": "Side-by-side comparison of options or features"
+      },
+      "image": {
+        "name": "Image",
+        "desc": "Full-bleed or contained image display"
+      },
+      "imageText": {
+        "name": "Image + Text",
+        "desc": "Image with accompanying text content"
+      },
+      "imageBlocks": {
+        "name": "Image Blocks",
+        "desc": "Multiple images with titles and captions"
+      },
+      "video": {
+        "name": "Video",
+        "desc": "Embed YouTube, Vimeo, or self-hosted videos"
+      },
+      "embed": {
+        "name": "Embed",
+        "desc": "iFrame embed for external content"
+      },
+      "code": {
+        "name": "Code",
+        "desc": "Syntax-highlighted code snippets"
+      },
+      "title": {
+        "name": "Title",
+        "desc": "Opening slide with title and subtitle"
+      },
+      "chapter": {
+        "name": "Chapter",
+        "desc": "Section divider with chapter title"
+      },
+      "sectionTitle": {
+        "name": "Section Title",
+        "desc": "Clean section header for organizing content"
+      },
+      "section": {
+        "name": "Section",
+        "desc": "Sub-section header within a chapter"
+      },
+      "content": {
+        "name": "Content",
+        "desc": "Standard text slide with title and body"
+      },
+      "contentColumns": {
+        "name": "Content Columns",
+        "desc": "Multi-column layout for organized content"
+      },
+      "textBlocks": {
+        "name": "Text Blocks",
+        "desc": "Multiple text sections with headings"
+      },
+      "quote": {
+        "name": "Quote",
+        "desc": "Featured quote with attribution"
+      },
+      "list": {
+        "name": "List",
+        "desc": "Bullet points or numbered list"
+      },
+      "twoColumn": {
+        "name": "Two Column",
+        "desc": "Side-by-side content layout"
+      },
+      "payoff": {
+        "name": "Payoff",
+        "desc": "Closing slide with call-to-action"
+      },
+      "thankYou": {
+        "name": "Thank You",
+        "desc": "Closing slide with contact information"
+      }
     },
     "cta": {
       "title": "See them in action",
@@ -1178,8 +1288,12 @@
       "title": "No extra tools needed",
       "lead": "Compare to running Mentimeter alongside your slides.",
       "singleTool": "Single tool",
-      "deckyard": { "singleTool": "Everything in one place" },
-      "mentimeter": { "singleTool": "Switch between apps" },
+      "deckyard": {
+        "singleTool": "Everything in one place"
+      },
+      "mentimeter": {
+        "singleTool": "Switch between apps"
+      },
       "consistentDesign": "Consistent design",
       "deckyardDesign": "Interactions match your theme",
       "mentimeterDesign": "Different styling",

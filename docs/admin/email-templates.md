@@ -11,6 +11,8 @@ Customize the emails that Deckyard sends to users.
 
 Deckyard uses templates for all outgoing emails. You can customize these to match your brand and communication style.
 
+![Email settings page showing template editor with User Invitation selected, language tabs, and customizable Subject, Greeting, Body, Button Label, and Footer fields](/images/screenshots/email-templates-settings.png)
+
 ## Available Templates
 
 ### Authentication Templates
@@ -168,6 +170,8 @@ EMAIL_DEFAULT_LOCALE=en
 ```
 
 ## Editing Templates via Admin Panel
+
+![Email template editor with template selector, language tabs, and customizable subject, greeting, body, and button fields](/images/screenshots/email-settings.png)
 
 1. Go to **Admin** > **Email Templates**
 2. Select the template to edit

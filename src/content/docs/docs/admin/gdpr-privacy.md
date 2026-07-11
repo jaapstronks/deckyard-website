@@ -16,33 +16,36 @@ Manage user data, privacy settings, and comply with data protection regulations.
 - Lead data anonymization
 - Cookie consent management
 
+![Data Export settings page showing backup options for version history, image library, slide library, and custom themes with Start export button](/images/screenshots/data-export-settings.png)
+
 ## Data Export
 
-Users can export their own data for GDPR compliance (right of access).
+Users can export their own data for GDPR compliance (right of access) using the [Data Backup](/docs/export/backup/) feature.
 
 ### What's Included
 
 A data export contains:
-- User profile information
-- All presentations created by the user
-- Comments and activity history
-- Settings and preferences
-- Lead data associated with their presentations
+- All presentations created by the user (as JSON)
+- Referenced images (local uploads and remote URLs)
+- Optionally: version history, image library, slide library, themes
 
 ### Requesting an Export
 
 Users can request their data export:
 
-1. Go to **Settings** > **Privacy**
-2. Click **Export My Data**
-3. Receive a download link via email
+1. Go to **Settings** > **Data Export**
+2. Select which additional data to include
+3. Click **Start export**
+4. Download the ZIP when the export completes (in-app notification + optional email)
+
+The download link is available for 2 hours. See [Data Backup](/docs/export/backup/) for full details.
 
 ### Export Format
 
 Data is exported as:
-- JSON format for structured data
-- Original format for media files
-- ZIP archive for easy download
+- JSON format for presentations and structured data
+- Original format for images and media files
+- ZIP archive containing everything
 
 ### Admin Exports
 

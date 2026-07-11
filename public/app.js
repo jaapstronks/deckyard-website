@@ -148,9 +148,31 @@ function initHeroEmbed() {
   frame.setAttribute('src', src);
 }
 
+function initScrollAnimations() {
+  // Respect reduced-motion preference
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const targets = $all('[data-animate], [data-animate-stagger]');
+  if (targets.length === 0) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    },
+    { threshold: 0.15 }
+  );
+
+  for (const el of targets) {
+    observer.observe(el);
+  }
+}
+
 initMobileNav();
 initExportChips();
 initExportAccordion();
 initHeroEmbed();
-
-
+initScrollAnimations();

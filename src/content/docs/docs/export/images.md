@@ -11,8 +11,10 @@ Export individual slides or entire presentations as PNG images.
 
 ### Export All Slides
 
+![Export dropdown menu showing PDF, PNG, PPTX, HTML, JSON, Print text, Notes, and Handoff ZIP options](/images/screenshots/export-dropdown-full.png)
+
 1. Open your presentation
-2. Click **File** > **Export** > **Images**
+2. Click **Export** > **Images (PNG)**
 3. Configure export options
 4. Click **Export**
 5. Download the ZIP file containing all images

@@ -112,6 +112,8 @@ Check that email is configured correctly:
 - Check environment variables
 - Check app settings (they override env vars)
 
+![Email settings showing notification configuration and template editor with subject, greeting, body, and button fields](/images/screenshots/email-settings.png)
+
 ## Email Types
 
 ### Authentication Emails
@@ -135,6 +137,7 @@ Check that email is configured correctly:
 | Email | Purpose |
 |-------|---------|
 | **Lead Notification** | Alert when a lead is captured |
+| **Export Ready** | Sent when a [data backup](/docs/export/backup/) finishes |
 | **Weekly Digest** | Summary of engagement activity |
 
 ## Email Templates
@@ -148,6 +151,7 @@ Deckyard uses customizable HTML templates for all emails. See [Email Templates](
 | `BREVO_API_KEY` | Yes | Brevo API key for sending emails |
 | `BREVO_SENDER_EMAIL` | No | Sender email address |
 | `BREVO_SENDER_NAME` | No | Sender display name |
+| `APP_URL` | No | Public base URL for links in emails (e.g. `https://slides.yourcompany.com`) |
 
 ## Rate Limits
 

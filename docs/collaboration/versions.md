@@ -11,6 +11,8 @@ Keep track of changes and restore previous versions of your presentations.
 
 Deckyard automatically saves version history, allowing you to review changes and restore earlier versions when needed.
 
+![Version history dialog showing autosave snapshots with Preview, Compare, Export, and Restore actions](/images/screenshots/version-history-dialog.png)
+
 ## Viewing Version History
 
 Access the version history for any presentation:

@@ -11,6 +11,8 @@ Control who can access your presentations and what they can do.
 
 Deckyard's permission system lets you share presentations with team members while controlling their access level. Share with specific users via email or create public share links.
 
+![Share Links dialog showing workspace user invitations with permission levels and external guest link creation with expiration, label, and password options](/images/screenshots/share-links-full.png)
+
 ## Permission Levels
 
 ### View

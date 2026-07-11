@@ -11,6 +11,8 @@ Build custom slide types for specialized content.
 
 Deckyard's slide type system is extensible, allowing you to create custom slide types for your specific needs. Custom slide types live in the `/custom-slide-types/` directory and are automatically loaded at startup.
 
+![Slide Types settings showing Custom Slide Types section with Create Type button, and Slide Type Curation with toggles for each built-in type](/images/screenshots/slide-types-curation.png)
+
 ## File Structure
 
 ### Directory Location

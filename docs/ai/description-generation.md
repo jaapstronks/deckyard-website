@@ -31,6 +31,8 @@ AI reviews your slides and creates a concise, informative description.
 
 ## Generating Descriptions
 
+![Deck settings showing Tags input and Description textarea where AI-generated descriptions appear, with character counter](/images/screenshots/deck-settings-tags-description.png)
+
 ### Automatic Generation
 
 1. Open your presentation
@@ -45,6 +47,8 @@ When publishing, if no description exists:
 - AI suggests a description
 - Review before publishing
 - Or write your own
+
+![Publish dialog prompting for a two-sentence description with Generate with AI, Cancel, and Continue buttons](/images/screenshots/publish-description-dialog.png)
 
 ## Description Uses
 

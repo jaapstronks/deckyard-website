@@ -16,6 +16,8 @@ When presenting, you often need to highlight or point at specific content on you
 
 Both tools work directly in the browser—no additional software needed.
 
+![Presenter mode toolbar showing Laser, Draw, Tools, Edit, and Fullscreen buttons](/images/screenshots/presenter-mode-slide.png)
+
 ## Activating the Tools
 
 ### Toolbar Buttons

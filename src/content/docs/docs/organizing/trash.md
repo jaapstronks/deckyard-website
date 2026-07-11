@@ -20,7 +20,7 @@ When you delete a presentation, it moves to trash instead of being permanently d
 
 ## Viewing Trash
 
-![Trash view showing deleted presentations with restore options](/images/screenshots/trash-view.png)
+![Trash page showing deleted presentations with 30-day retention notice and restore options](/images/screenshots/trash-page.png)
 
 1. Go to the presentation list
 2. Click **Trash** in the sidebar or filter

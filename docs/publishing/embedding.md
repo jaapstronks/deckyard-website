@@ -11,6 +11,8 @@ Embed Deckyard presentations in external websites and applications.
 
 The Deckyard SDK allows you to embed interactive presentations in your own website or application. Viewers can navigate slides, interact with polls and Q&A, and enjoy the full presentation experience.
 
+![Published dialog with expanded Advanced section showing iframe embed code and SDK integration code for each language](/images/screenshots/published-embed-codes.png)
+
 ## Basic Embed
 
 ### Include the SDK

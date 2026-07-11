@@ -16,6 +16,8 @@ Each slide has a **Speaker Notes** field below the main content fields:
 3. Type your notes
 4. Notes save automatically
 
+![Editor showing the Presenter notes field at the bottom-right, below the slide preview](/images/screenshots/speaker-notes-in-context.png)
+
 ## Markdown Support
 
 Notes support Markdown formatting:

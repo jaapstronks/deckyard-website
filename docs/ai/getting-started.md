@@ -7,6 +7,8 @@ description: "Configure AI features and API keys in Deckyard"
 
 Get started with Deckyard's AI-powered features.
 
+![New presentation dialog showing the From content option with AI badge for generating slides from text or files](/images/screenshots/new-from-content-dialog.png)
+
 ## Overview
 
 Deckyard includes AI capabilities to help you create presentations faster and with better content. Features include:

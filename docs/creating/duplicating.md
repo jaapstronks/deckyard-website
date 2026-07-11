@@ -7,6 +7,8 @@ description: "Create copies of existing presentations"
 
 Create copies of presentations to use as templates or starting points.
 
+![Presentation context menu showing Duplicate and Move to trash options](/images/screenshots/presentation-context-menu.png)
+
 ## How to Duplicate
 
 1. From the presentation list, find the presentation you want to copy

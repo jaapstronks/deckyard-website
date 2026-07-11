@@ -11,6 +11,8 @@ Share your presentations with the world.
 
 Deckyard offers multiple ways to publish and share your presentations. From public links for wide distribution to private share links with access controls, you can control exactly who sees your content.
 
+![Published dialog showing public links and embed URLs for each language, with Copy and Open buttons](/images/screenshots/published-links-dialog.png)
+
 ## Publishing Options
 
 ### Public Links
@@ -134,6 +136,14 @@ Trigger external actions when presentations are published:
 
 See [Webhooks](/docs/admin/settings/#webhook-configuration) for configuration.
 
+## RSS Feeds
+
+Syndicate your published presentations via RSS, Atom, or JSON Feed. When enabled, feed readers, Slack channels, and automation tools can subscribe to your workspace's feed and receive updates whenever presentations are published or updated.
+
+Enable RSS feeds in **Settings** > **Integrations**. Individual presentations can opt out via the **Exclude from RSS feed** checkbox in Deck Settings.
+
+See [RSS Feeds](/docs/publishing/rss-feeds/) for setup and configuration.
+
 ## Best Practices
 
 ### Before Publishing
@@ -159,5 +169,6 @@ See [Webhooks](/docs/admin/settings/#webhook-configuration) for configuration.
 
 - [Embedding (SDK)](/docs/publishing/embedding/)
 - [OpenGraph Images](/docs/publishing/og-images/)
+- [RSS Feeds](/docs/publishing/rss-feeds/)
 - [Sharing & Permissions](/docs/collaboration/sharing-permissions/)
 - [Follow Mode](/docs/presenter/follow-mode/)

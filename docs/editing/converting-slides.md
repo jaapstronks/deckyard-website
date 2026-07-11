@@ -10,9 +10,12 @@ Change a slide's type without losing content.
 ## How to Convert
 
 1. Select the slide you want to convert
-2. Click the **slide type** indicator (shows current type)
-3. Choose a new slide type from the list
-4. Content is mapped to the new type's fields
+2. Click the **⋯** (More options) button in the edit panel header
+3. Hover over **Convert…** to see available target types
+4. Click the target slide type
+5. Content is mapped to the new type's fields
+
+![Edit panel showing the More options menu with Convert submenu expanded, revealing compatible slide type targets](/images/screenshots/convert-slide-menu.png)
 
 ## Content Mapping
 

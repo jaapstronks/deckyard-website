@@ -11,8 +11,10 @@ Export your presentations as PowerPoint files for use in Microsoft PowerPoint or
 
 ### From the Editor
 
+![Export dropdown menu showing PDF, PNG, PPTX, HTML, JSON, Print text, Notes, and Handoff ZIP options](/images/screenshots/export-dropdown-full.png)
+
 1. Open your presentation
-2. Click **File** > **Export** > **PowerPoint**
+2. Click **Export** > **PowerPoint**
 3. Configure export options
 4. Click **Export**
 5. Download the PPTX file

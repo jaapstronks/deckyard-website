@@ -11,6 +11,8 @@ Transfer ownership of a presentation to another team member.
 
 When you need to hand off a presentation to someone else, you can transfer ownership while optionally keeping access as a collaborator.
 
+![Share Links dialog showing current owner with Transfer button for ownership transfer](/images/screenshots/share-links-permissions-dialog.png)
+
 ## When to Transfer Ownership
 
 Common scenarios:

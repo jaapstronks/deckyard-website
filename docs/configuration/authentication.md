@@ -16,6 +16,8 @@ Authentication supports:
 - Magic link (passwordless) authentication via email
 - Development bypass mode for local testing
 
+![Account settings showing profile photo upload, display name field, and password change form](/images/screenshots/settings-account.png)
+
 ## AUTH_SECRET
 
 The secret key used for signing session tokens. This is **required** when authentication is enabled.

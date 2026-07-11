@@ -11,6 +11,8 @@ Get AI-powered feedback and improvement suggestions for your presentations.
 
 DreamBot can analyze your presentation and provide suggestions for improvement, delivered as comments on your slides. It's like having a presentation coach review your work.
 
+![AI Analysis dialog explaining that AI will review slides and suggest improvements for clarity, structure, and visual balance](/images/screenshots/ai-analysis-dialog.png)
+
 ## How It Works
 
 DreamBot reviews your presentation and generates actionable suggestions:

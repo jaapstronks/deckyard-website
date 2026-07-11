@@ -11,6 +11,8 @@ Coordinate access to presentations with advisory locks.
 
 Presentation-level locks provide an advisory system to prevent editing conflicts when multiple team members work on the same presentation. Unlike slide-level locks for real-time editing, presentation locks are for coordinating who is actively working on a presentation.
 
+![Editor showing a locked slide with lock icon on slide thumbnail, unlock button in the edit panel header, and the slide list with lock indicator](/images/screenshots/slide-lock-editor.png)
+
 ## How Locks Work
 
 ### Advisory Nature

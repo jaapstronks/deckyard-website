@@ -7,6 +7,8 @@ description: "Make your presentations accessible"
 
 Deckyard includes features to make presentations accessible to all audiences.
 
+![Editor showing the expanded Accessibility section at the bottom of the slide form with title and summary fields](/images/screenshots/accessibility-fields.png)
+
 ## A11y Title
 
 Each slide can have an **accessibility title** that's announced by screen readers when the slide becomes active.
