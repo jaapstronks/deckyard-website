@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img">
+  <defs>
+    <path id="star" d="M0,-17 L4.9,-5.4 L17,-5.3 L7.5,2.1 L11.2,13.7 L0,6.8 L-11.2,13.7 L-7.5,2.1 L-17,-5.3 L-4.9,-5.4 Z"/>
+  </defs>
+  <rect width="1200" height="800" fill="#f5f3ef"/>
+  <circle cx="600" cy="400" r="365" fill="#dfe8e0" opacity="0.55"/>
+
+  <!-- ring of 12 stars: your deck, at home in Europe -->
+  <g fill="#dba323">
+    <use href="#star" transform="translate(600 400) rotate(0) translate(0 -330)"/>
+    <use href="#star" transform="translate(600 400) rotate(30) translate(0 -330) rotate(-30)"/>
+    <use href="#star" transform="translate(600 400) rotate(60) translate(0 -330) rotate(-60)"/>
+    <use href="#star" transform="translate(600 400) rotate(90) translate(0 -330) rotate(-90)"/>
+    <use href="#star" transform="translate(600 400) rotate(120) translate(0 -330) rotate(-120)"/>
+    <use href="#star" transform="translate(600 400) rotate(150) translate(0 -330) rotate(-150)"/>
+    <use href="#star" transform="translate(600 400) rotate(180) translate(0 -330) rotate(-180)"/>
+    <use href="#star" transform="translate(600 400) rotate(210) translate(0 -330) rotate(-210)"/>
+    <use href="#star" transform="translate(600 400) rotate(240) translate(0 -330) rotate(-240)"/>
+    <use href="#star" transform="translate(600 400) rotate(270) translate(0 -330) rotate(-270)"/>
+    <use href="#star" transform="translate(600 400) rotate(300) translate(0 -330) rotate(-300)"/>
+    <use href="#star" transform="translate(600 400) rotate(330) translate(0 -330) rotate(-330)"/>
+  </g>
+
+  <!-- slide behind: the rest of the deck -->
+  <rect x="368" y="262" width="520" height="330" rx="24" fill="#e8e3d6"/>
+
+  <!-- the slide -->
+  <rect x="340" y="235" width="520" height="330" rx="24" fill="#254d38"/>
+  <rect x="388" y="285" width="110" height="14" rx="7" fill="#f0c84d"/>
+  <rect x="388" y="325" width="330" height="26" rx="13" fill="#f5f3ef"/>
+  <rect x="388" y="363" width="240" height="26" rx="13" fill="#f5f3ef" opacity="0.65"/>
+  <g fill="#f0c84d">
+    <rect x="388" y="450" width="44" height="70" rx="5" opacity="0.45"/>
+    <rect x="446" y="426" width="44" height="94" rx="5" opacity="0.6"/>
+    <rect x="504" y="462" width="44" height="58" rx="5" opacity="0.8"/>
+    <rect x="562" y="404" width="44" height="116" rx="5"/>
+  </g>
+</svg>
