@@ -1,227 +1,146 @@
 ---
-import { getCollection } from 'astro:content';
 import SiteLayout from '../layouts/SiteLayout.astro';
-import BrandCycler from '../components/BrandCycler.astro';
 import Waitlist from '../components/Waitlist.astro';
-import BlogCard from '../components/BlogCard.astro';
-
-const posts = (
-  await getCollection('blog', ({ data }) => (import.meta.env.PROD ? !data.draft : true))
-)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3);
 ---
 
 <SiteLayout
-  title="Deckyard — Presentations for organizations that own their story"
-  description="Deckyard is an upcoming open source presentation platform for European nonprofits, public institutions and cultural organizations. On brand by default, hosted on your terms. Coming soon."
+  title="Deckyard — Slides that stay on brand. Coming soon."
+  description="Deckyard is an upcoming open source presentation platform for European nonprofits, public institutions and cultural organizations. On brand by default, built for humans and AI agents, hosted on your terms. Coming soon."
 >
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="container hero-inner">
-      <div>
-        <p class="kicker" data-reveal>Coming soon · Open source · Made in Europe</p>
-        <h1 data-reveal data-reveal-delay="80">
-          Slides that stay on brand.<br />
-          <span class="accent">Data that stays yours.</span>
-        </h1>
-        <p class="lead" data-reveal data-reveal-delay="160">
-          Deckyard is an open source presentation platform for nonprofits, public institutions
-          and cultural organizations in Europe. Every deck your team makes looks like it came
-          from your design department, and lives on infrastructure you control.
-        </p>
-        <div data-reveal data-reveal-delay="240">
-          <Waitlist id="hero" />
-        </div>
-        <ul class="hero-meta" data-reveal data-reveal-delay="320">
-          <li>MIT licensed</li>
-          <li>Self-hostable</li>
-          <li>GDPR native</li>
-        </ul>
-      </div>
-
-      <div data-reveal data-reveal-delay="200">
-        <BrandCycler />
+      <p class="kicker kicker--center" data-reveal>Coming soon · Open source · Made in Europe</p>
+      <h1 data-reveal data-reveal-delay="80">
+        Slides that stay on brand.<br />
+        <span class="accent">Data that stays yours.</span>
+      </h1>
+      <p class="lead" data-reveal data-reveal-delay="160">
+        Deckyard is an open source presentation platform for nonprofits, public institutions
+        and cultural organizations in Europe. Every deck your team makes looks like it came
+        from your design department, lives on infrastructure you control, and can be built
+        by humans and AI agents alike.
+      </p>
+      <div data-reveal data-reveal-delay="240">
+        <Waitlist id="hero" />
       </div>
     </div>
   </section>
 
-  <!-- ============ WHO IT'S FOR ============ -->
+  <!-- ============ WHAT SHIPS ============ -->
   <section class="section section-tint">
     <div class="container">
       <div class="section-head section-head--center" data-reveal>
-        <p class="kicker kicker--center">Who it's for</p>
-        <h2>Built for institutions, not influencers</h2>
+        <p class="kicker kicker--center">Under the hood</p>
+        <h2>Coming soon, but already built</h2>
         <p class="lead">
-          Organizations that answer to boards, members, funders and citizens; that take their
-          brand seriously and their data obligations even more so.
+          This isn't a waitlist for an idea. Deckyard is a working platform in daily use;
+          we're polishing the edges before the source goes public. Here's what ships.
         </p>
       </div>
 
-      <div class="pillars">
+      <div class="pillars pillars--features">
         <div class="pillar" data-reveal>
           <div class="pillar-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-4.5-3.5-8-6.6-8-10.5A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 8 4.5c0 3.9-3.5 7-8 10.5Z"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
           </div>
-          <h3>Nonprofits &amp; advocacy</h3>
+          <h3>35+ slide types</h3>
           <p>
-            Donor reports, campaign decks and volunteer trainings that look professional without
-            a designer on call, and audience data that never leaves your control.
+            Charts, timelines, matrices, funnels, KPIs, galleries, quotes and more:
+            structured layouts that do the design, so your team only types content.
           </p>
         </div>
-        <div class="pillar" data-reveal data-reveal-delay="90">
+
+        <div class="pillar" data-reveal data-reveal-delay="60">
           <div class="pillar-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/><circle cx="12" cy="12" r="4"/></svg>
           </div>
-          <h3>Government &amp; public sector</h3>
+          <h3>Built for AI agents</h3>
           <p>
-            Public consultations and council presentations on software your procurement and
-            privacy teams can actually approve: open source, EU-hosted, auditable.
+            A full MCP server with 20+ tools. Point Claude or Cursor at your workspace and
+            it drafts, restructures and refines entire decks, always in your theme.
           </p>
         </div>
+
+        <div class="pillar" data-reveal data-reveal-delay="120">
+          <div class="pillar-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Real collaboration</h3>
+          <p>
+            Invite collaborators with granular permissions, comment on slides in real time,
+            edit together without conflicts, and roll back with version history.
+          </p>
+        </div>
+
         <div class="pillar" data-reveal data-reveal-delay="180">
           <div class="pillar-icon" aria-hidden="true">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10 12 4l10 6-10 6L2 10Z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3Z"/></svg>
           </div>
-          <h3>Culture &amp; education</h3>
+          <h3>Publish anywhere</h3>
           <p>
-            Museums, theaters and schools with a strong identity and a small team: define the
-            look once, and every lecture, tour and annual report carries it.
+            Put a deck on the web in one click, share it with a link, or embed it in your
+            own site with the JS SDK. Social preview images come free.
           </p>
         </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- ============ STORY: SOVEREIGNTY ============ -->
-  <section class="section">
-    <div class="container">
-      <div class="story-row">
-        <div class="story-copy" data-reveal>
-          <p class="kicker">Digital sovereignty</p>
-          <h2>Software you can actually own</h2>
-          <p class="lead">
-            Presentations carry your strategy, your numbers and your audience's responses. That
-            layer of your work shouldn't live in an American cloud on someone else's terms.
-          </p>
-          <ul>
-            <li>Open source under the MIT license; read it, fork it, audit it</li>
-            <li>Self-host it, or let us host it for you on European infrastructure</li>
-            <li>GDPR by design: no trackers, no data resale, full export at any time</li>
-            <li>No lock-in; your decks export to PDF, PowerPoint and open formats</li>
-          </ul>
-        </div>
-        <div class="story-media story-media--flat" data-reveal data-reveal-delay="120">
-          <img
-            src="/images/illustrations/sovereignty.svg"
-            alt="A slide deck encircled by twelve stars, the European flag motif"
-            loading="lazy"
-            width="1200"
-            height="800"
-          />
-        </div>
-      </div>
-
-      <!-- ============ STORY: BRAND SYSTEM ============ -->
-      <div class="story-row story-row--flip">
-        <div class="story-copy" data-reveal>
-          <p class="kicker">Turnkey brand identity</p>
-          <h2>On brand by default, not by discipline</h2>
-          <p class="lead">
-            A Deckyard theme is your brand identity as software: fonts, colors, logos and slide
-            layouts defined once, centrally. Editors fill in structured slide types; the theme
-            does the design.
-          </p>
-          <ul>
-            <li>Every deck compliant with your identity, from anyone on the team</li>
-            <li>Rebrand once, and existing decks follow automatically</li>
-            <li>Structured slide types: charts, timelines, polls, cards and more</li>
-            <li>Create, share and publish decks as easily as documents</li>
-          </ul>
-        </div>
-        <div class="story-media story-media--flat" data-reveal data-reveal-delay="120">
-          <img
-            src="/images/illustrations/brand-system.svg"
-            alt="A theme panel with colors, typography and a logo, connected by a dotted line to a slide deck styled with those tokens"
-            loading="lazy"
-            width="1200"
-            height="800"
-          />
-        </div>
-      </div>
-
-      <!-- ============ STORY: DREAMKIT ============ -->
-      <div class="story-row">
-        <div class="story-copy" data-reveal>
-          <p class="kicker">The road ahead</p>
-          <h2>First stop: Dreamkit</h2>
-          <p class="lead">
-            Deckyard launches as part of <a href="https://dreamkit.eu">Dreamkit</a>, our digital
-            sovereignty toolkit for campaigning organizations. Dreamkit clients get slides that
-            speak their brand from day one; Deckyard gets what young software needs most, real
-            organizations using it every week.
-          </p>
+        <div class="pillar" data-reveal data-reveal-delay="240">
+          <div class="pillar-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h4l3 8 4-16 3 8h4"/></svg>
+          </div>
+          <h3>Live audiences</h3>
           <p>
-            We're building the standalone product in the open along the way; follow the blog to
-            watch it happen.
+            Polls, Likert scales, moderated Q&amp;A, feedback and lead capture on the slides
+            themselves; per-slide analytics tell you afterwards what landed.
           </p>
         </div>
-        <div class="story-media" data-reveal data-reveal-delay="120">
-          <img
-            src="/blog/bundled-with-dreamkit/hero.svg"
-            alt="Dreamkit's print-style shapes connected to a Deckyard slide by a dotted line"
-            loading="lazy"
-            width="1200"
-            height="675"
-          />
+
+        <div class="pillar" data-reveal data-reveal-delay="300">
+          <div class="pillar-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="1"/><circle cx="17.5" cy="10.5" r="1"/><circle cx="8.5" cy="7.5" r="1"/><circle cx="6.5" cy="12.5" r="1"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.8-.7 1.8-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.9.7-1.7 1.7-1.7H17c2.8 0 5-2.2 5-5C22 6 17.5 2 12 2Z"/></svg>
+          </div>
+          <h3>Your brand as software</h3>
+          <p>
+            Fonts, colors, logos and layout rules defined once as a theme. Everyone is on
+            brand automatically; rebrand centrally and every deck follows.
+          </p>
+        </div>
+
+        <div class="pillar" data-reveal data-reveal-delay="360">
+          <div class="pillar-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          </div>
+          <h3>No lock-in</h3>
+          <p>
+            Export to PDF, PowerPoint, self-contained HTML, PNG or JSON at any time. Your
+            decks are documents you own, never records in someone else's cloud.
+          </p>
+        </div>
+
+        <div class="pillar" data-reveal data-reveal-delay="420">
+          <div class="pillar-icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="7" rx="2"/><rect x="2" y="14" width="20" height="7" rx="2"/><path d="M6 6.5h.01M6 17.5h.01"/></svg>
+          </div>
+          <h3>Self-host in an afternoon</h3>
+          <p>
+            One Docker Compose file, Node and Postgres. Run it on your own servers under
+            your own rules, or wait for our hosted version on European infrastructure.
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============ BLOG ============ -->
-  <section class="section section-tint">
-    <div class="container">
-      <div class="section-head section-head--center" data-reveal>
-        <p class="kicker kicker--center">Building in public</p>
-        <h2>Notes from the yard</h2>
-        <p class="lead">
-          Progress reports, design decisions and detours, straight from the workshop.
-        </p>
-      </div>
-
-      <div class="post-grid">
-        {
-          posts.map((post, index) => (
-            <BlogCard
-              id={post.id}
-              title={post.data.title}
-              intro={post.data.intro}
-              pubDate={post.data.pubDate}
-              category={post.data.category}
-              heroImage={post.data.heroImage}
-              heroImageAlt={post.data.heroImageAlt}
-              revealDelay={index * 90}
-            />
-          ))
-        }
-      </div>
-
-      <p class="section-more" data-reveal>
-        <a href="/blog/">All posts →</a>
-      </p>
-    </div>
-  </section>
-
-  <!-- ============ FINAL CTA ============ -->
+  <!-- ============ OPEN SOURCE RELEASE + CTA ============ -->
   <section class="section section-dark">
     <div class="container">
       <div class="section-head" data-reveal>
-        <p class="kicker">Get launch updates</p>
+        <p class="kicker">Open source, opening soon</p>
         <h2>Be there when the gates open</h2>
         <p class="lead">
-          A short email when there's something real to show: milestones, early access, and the
-          launch itself.
+          Deckyard is MIT licensed, GDPR native and built to be self-hosted. The repository
+          goes public once the docs and onboarding are worthy of it. Leave your address and
+          you'll hear the moment it does.
         </p>
       </div>
       <div data-reveal data-reveal-delay="120">

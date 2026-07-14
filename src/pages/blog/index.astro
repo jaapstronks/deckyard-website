@@ -29,6 +29,17 @@ const [lead, ...rest] = posts;
 
   <section class="section">
     <div class="container">
+      {
+        posts.length === 0 && (
+          <div class="blog-empty" data-reveal>
+            <p class="lead">
+              Nothing here yet. The first notes land once there's something real to show;
+              subscribe to the <a href="/rss.xml">RSS feed</a> or join the launch list on the
+              <a href="/">homepage</a> and you won't miss them.
+            </p>
+          </div>
+        )
+      }
       <div class="post-grid">
         {
           lead && (
