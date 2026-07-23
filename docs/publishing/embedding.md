@@ -11,6 +11,47 @@ The Deckyard SDK allows you to embed interactive presentations in your own websi
 
 ![Published dialog with expanded Advanced section showing iframe embed code and SDK integration code for each language](/images/screenshots/published-embed-codes.png)
 
+## Static embed (no instance needed)
+
+The SDK below embeds a presentation served by a **running** Deckyard instance
+(it resolves a `publishId` against an origin). If you just want to drop a deck
+onto a static site with no server, use the **standalone HTML export** instead.
+
+**Download → HTML** produces a single self-contained `.html` file: inline CSS,
+curated/uploaded fonts as base64, local images as data-URLs, and the full
+viewer runtime as an inline `<script>`. It runs from any static host, even
+`file://` - so embedding is just an `<iframe>` pointing at the local file:
+
+```html
+<iframe
+  src="/decks/my-deck.html"
+  title="My deck"
+  loading="lazy"
+  allow="fullscreen"
+  style="width:100%;aspect-ratio:16/9;border:0"
+></iframe>
+```
+
+The viewer runtime in the export handles navigation, keyboard, fullscreen and
+auto-advance itself; the iframe only needs a size and focus.
+
+### Caveats
+
+A deck is only 100% self-contained if you avoid the few things that reach back
+to a server or CDN:
+
+- **Avoid lead-capture slides.** They POST to `/api/leads` and are the only
+  hard server dependency; a deck with one is not standalone.
+- **Use uploaded images, not Unsplash/Giphy.** Remote stock images stay CDN
+  links; uploaded images are inlined as data-URLs.
+- **Externally managed fonts stay network-linked.** Adobe/Monotype/Google
+  fonts remain remote; curated/uploaded fonts are inlined.
+
+> On this site (deckyard.eu) the pattern is packaged as a reusable
+> `DeckEmbed.astro` component: drop the export in `public/decks/` and write
+> `<DeckEmbed src="/decks/my-deck.html" title="My deck" />`. See
+> `public/decks/README.md` in the website repo.
+
 ## Basic Embed
 
 ### Include the SDK
