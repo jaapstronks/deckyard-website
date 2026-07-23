@@ -3,8 +3,6 @@ title: "User Management"
 description: "Add, remove, and manage users in your instance"
 ---
 
-# User Management
-
 Manage users in your Deckyard instance.
 
 ## Overview

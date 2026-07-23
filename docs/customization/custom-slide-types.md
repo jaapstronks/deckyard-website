@@ -3,8 +3,6 @@ title: "Custom Slide Types"
 description: "Create your own slide types"
 ---
 
-# Custom Slide Types
-
 Build custom slide types for specialized content.
 
 ## Overview

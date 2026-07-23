@@ -37,10 +37,3 @@ Each webhook POST is JSON with:
 - [RSS Feeds](/docs/publishing/rss-feeds/) - Syndicate published presentations via RSS/Atom/JSON Feed
 - [Instance Settings](/docs/admin/settings/) - Configure webhooks and other integrations
 
-
-
-
-
-
-
-

@@ -3,8 +3,6 @@ title: "Database Configuration"
 description: "Configure database storage for Deckyard"
 ---
 
-# Database Configuration
-
 Deckyard supports multiple storage backends for your data.
 
 ## Storage Options

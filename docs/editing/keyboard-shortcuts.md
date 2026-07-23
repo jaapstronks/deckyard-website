@@ -3,8 +3,6 @@ title: "Keyboard Shortcuts"
 description: "Speed up editing with keyboard shortcuts"
 ---
 
-# Keyboard Shortcuts
-
 Navigate Deckyard efficiently with keyboard shortcuts.
 
 ## Editor Shortcuts

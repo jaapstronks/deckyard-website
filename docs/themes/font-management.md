@@ -3,8 +3,6 @@ title: "Font Management"
 description: "Add custom fonts from multiple sources and assign them to themes"
 ---
 
-# Font Management
-
 Deckyard includes a curated library of Google Fonts and lets you add custom fonts from multiple sources. Fonts are managed per organization and can be assigned to any theme.
 
 ## Curated Fonts

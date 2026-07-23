@@ -3,8 +3,6 @@ title: "Instance Settings"
 description: "Configure your Deckyard instance"
 ---
 
-# Instance Settings
-
 Configure global settings for your Deckyard instance.
 
 ## Overview

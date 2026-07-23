@@ -3,8 +3,6 @@ title: "From PowerPoint"
 description: "Convert PowerPoint presentations to Deckyard"
 ---
 
-# Create from PowerPoint
-
 Import existing PowerPoint (.pptx) presentations into Deckyard.
 
 ![Upload file dialog supporting .pptx, .pdf, .docx, .rtf, and .odt files with theme selection](/images/screenshots/new-upload-file-dialog.png)

@@ -3,8 +3,6 @@ title: "Email Configuration"
 description: "Set up email delivery for your instance"
 ---
 
-# Email Configuration
-
 Configure how Deckyard sends emails.
 
 ## Overview

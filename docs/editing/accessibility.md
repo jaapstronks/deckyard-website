@@ -3,8 +3,6 @@ title: "Accessibility"
 description: "Make your presentations accessible"
 ---
 
-# Accessibility
-
 Deckyard includes features to make presentations accessible to all audiences.
 
 ![Editor showing the expanded Accessibility section at the bottom of the slide form with title and summary fields](/images/screenshots/accessibility-fields.png)

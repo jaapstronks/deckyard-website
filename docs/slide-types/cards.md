@@ -3,8 +3,6 @@ title: "Content Cards"
 description: "Card-based layouts for team introductions, feature showcases, and structured content"
 ---
 
-# Content Cards
-
 Organize your content with card-based layouts. These slide types present information in visually distinct blocks.
 
 ![Slide type picker showing Layouts category with Content columns, Text blocks, 4 cards, Icon cards, and Freeform slide types](/images/screenshots/slide-types-layouts.png)

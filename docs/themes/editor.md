@@ -3,8 +3,6 @@ title: "Theme Editor"
 description: "Create and customize themes through the visual interface"
 ---
 
-# Theme Editor
-
 The Theme Editor provides a visual interface for creating and customizing themes without directly editing JSON files.
 
 ## Overview

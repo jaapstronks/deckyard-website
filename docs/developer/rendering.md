@@ -3,8 +3,6 @@ title: "Slide Rendering"
 description: "Server-side slide rendering and export APIs"
 ---
 
-# Slide Rendering
-
 Deckyard can render slides server-side for exports and previews.
 
 ## Overview

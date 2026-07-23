@@ -3,8 +3,6 @@ title: "Collaboration"
 description: "Work together on presentations with your team"
 ---
 
-# Collaboration
-
 Deckyard provides powerful collaboration features for teams working together on presentations.
 
 ## Overview

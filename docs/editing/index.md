@@ -3,8 +3,6 @@ title: "Editing Presentations"
 description: "Learn how to edit slides in Deckyard"
 ---
 
-# Editing Presentations
-
 The Deckyard editor is where you build and refine your presentations.
 
 ## Editor Layout

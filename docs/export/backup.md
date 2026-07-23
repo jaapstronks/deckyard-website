@@ -3,8 +3,6 @@ title: "Data Backup"
 description: "Export all your presentations and data as a ZIP archive"
 ---
 
-# Data Backup
-
 Export all your presentations and related data as a single ZIP archive for backup, migration, or compliance purposes.
 
 ## Overview

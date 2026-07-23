@@ -3,8 +3,6 @@ title: "Polls"
 description: "Create and manage audience polls in Deckyard"
 ---
 
-# Polls
-
 Engage your audience with real-time polling.
 
 ## Overview

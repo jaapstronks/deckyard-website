@@ -3,8 +3,6 @@ title: "Presentation Locks"
 description: "Advisory locks for coordinating access"
 ---
 
-# Presentation Locks
-
 Coordinate access to presentations with advisory locks.
 
 ## Overview

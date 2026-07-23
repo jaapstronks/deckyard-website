@@ -3,8 +3,6 @@ title: "Speaker Notes"
 description: "Add presenter notes to your slides"
 ---
 
-# Speaker Notes
-
 Speaker notes help you remember what to say during your presentation.
 
 ## Adding Notes

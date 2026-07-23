@@ -3,8 +3,6 @@ title: "Sharing & Permissions"
 description: "Control access to your presentations with permission levels"
 ---
 
-# Sharing & Permissions
-
 Control who can access your presentations and what they can do.
 
 ## Overview

@@ -3,8 +3,6 @@ title: "Version History"
 description: "Track changes and restore previous versions"
 ---
 
-# Version History
-
 Keep track of changes and restore previous versions of your presentations.
 
 ## Overview

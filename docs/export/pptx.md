@@ -3,8 +3,6 @@ title: "PowerPoint Export"
 description: "Export presentations as PowerPoint (PPTX) files"
 ---
 
-# PowerPoint Export
-
 Export your presentations as PowerPoint files for use in Microsoft PowerPoint or other compatible applications.
 
 ## How to Export

@@ -3,8 +3,6 @@ title: "Asset Libraries"
 description: "Reusable slides and images for your presentations"
 ---
 
-# Asset Libraries
-
 Save and reuse slides and images across your presentations. Libraries help maintain consistency and speed up presentation creation.
 
 ## Overview

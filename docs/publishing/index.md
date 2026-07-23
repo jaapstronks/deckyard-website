@@ -3,8 +3,6 @@ title: "Publishing & Embedding"
 description: "Share and embed your presentations"
 ---
 
-# Publishing & Embedding
-
 Share your presentations with the world.
 
 ## Overview

@@ -3,8 +3,6 @@ title: "Media Services"
 description: "Configure external media storage and CDN"
 ---
 
-# Media Services
-
 Configure external media storage for better performance and scalability.
 
 ## Overview

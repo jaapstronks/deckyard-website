@@ -3,8 +3,6 @@ title: "Creating Presentations"
 description: "Different ways to create new presentations in Deckyard"
 ---
 
-# Creating Presentations
-
 Deckyard offers multiple ways to create new presentations, from starting fresh to importing existing content.
 
 ![New presentation dialog showing creation options: start blank, from template, or from content with AI](/images/screenshots/new-presentation-dialog.png)

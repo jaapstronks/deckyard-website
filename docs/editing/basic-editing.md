@@ -3,8 +3,6 @@ title: "Basic Editing"
 description: "Common editing tasks across all slide types"
 ---
 
-# Basic Editing
-
 These editing patterns work across all slide types.
 
 ![Editor overview with slides panel, edit fields, and live preview](/images/screenshots/editor-overview.png)

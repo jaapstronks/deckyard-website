@@ -3,8 +3,6 @@ title: "Ownership Transfer"
 description: "Transfer presentation ownership to another team member"
 ---
 
-# Ownership Transfer
-
 Transfer ownership of a presentation to another team member.
 
 ## Overview

@@ -3,8 +3,6 @@ title: "Feedback"
 description: "Collect audience feedback on your presentations"
 ---
 
-# Feedback
-
 Gather audience feedback to improve your presentations.
 
 ## Overview

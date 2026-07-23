@@ -3,8 +3,6 @@ title: "Trash & Recovery"
 description: "Recover deleted presentations"
 ---
 
-# Trash & Recovery
-
 Recover accidentally deleted presentations from the trash.
 
 ## How Trash Works

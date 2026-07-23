@@ -3,8 +3,6 @@ title: "Interactive Slides"
 description: "Engage your audience with polls, Likert scales, and feedback during live presentations"
 ---
 
-# Interactive Slides
-
 Create engaging presentations with real-time audience participation. Interactive slides work during [Presenter Mode](/docs/presenter/) when audiences join via [Follow Mode](/docs/presenter/follow-mode/).
 
 ## Poll Slide

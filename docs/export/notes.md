@@ -3,8 +3,6 @@ title: "Notes Export"
 description: "Export speaker notes as documents"
 ---
 
-# Notes Export
-
 Export your speaker notes as standalone documents for printing or reference.
 
 ## Export Formats

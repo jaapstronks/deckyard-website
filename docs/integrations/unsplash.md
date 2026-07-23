@@ -3,8 +3,6 @@ title: "Unsplash Integration"
 description: "Add stock photos from Unsplash to your presentations"
 ---
 
-# Unsplash Integration
-
 Add professional stock photos from Unsplash directly to your presentations.
 
 ## Overview

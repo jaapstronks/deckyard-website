@@ -3,8 +3,6 @@ title: "AI Setup & API Keys"
 description: "Configure AI features and API keys in Deckyard"
 ---
 
-# AI Setup & API Keys
-
 Get started with Deckyard's AI-powered features.
 
 ![New presentation dialog showing the From content option with AI badge for generating slides from text or files](/images/screenshots/new-from-content-dialog.png)

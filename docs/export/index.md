@@ -3,8 +3,6 @@ title: "Export Formats"
 description: "Export your presentations in various formats"
 ---
 
-# Export Formats
-
 Export your presentations for different purposes.
 
 ## Overview

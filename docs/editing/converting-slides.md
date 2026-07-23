@@ -3,8 +3,6 @@ title: "Converting Slides"
 description: "Change a slide from one type to another"
 ---
 
-# Converting Slides
-
 Change a slide's type without losing content.
 
 ## How to Convert

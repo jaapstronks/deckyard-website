@@ -3,8 +3,6 @@ title: "From Markdown"
 description: "Import presentations from Markdown files with standard slide deck conventions"
 ---
 
-# Create from Markdown
-
 Import a `.md` file and get a presentation directly — no AI, no API keys, no waiting. Slides are mapped deterministically from your markdown structure.
 
 This is ideal for developers, technical writers, and anyone who prefers writing slides in a text editor or version-controlling their decks in git.

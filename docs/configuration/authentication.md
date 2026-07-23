@@ -3,8 +3,6 @@ title: "Authentication"
 description: "Configure authentication for your Deckyard instance"
 ---
 
-# Authentication
-
 Set up authentication for your Deckyard installation.
 
 ## Overview

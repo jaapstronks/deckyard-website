@@ -3,8 +3,6 @@ title: "Handoff Bundle"
 description: "Export a complete bundle for design handoff"
 ---
 
-# Handoff Bundle
-
 Export a comprehensive ZIP bundle containing all formats for design handoff.
 
 ## Overview

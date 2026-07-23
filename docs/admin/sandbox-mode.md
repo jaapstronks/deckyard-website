@@ -3,8 +3,6 @@ title: "Sandbox Mode"
 description: "Isolated demo environments for visitors"
 ---
 
-# Sandbox Mode
-
 Create isolated demo environments for visitors to explore Deckyard.
 
 ## Overview

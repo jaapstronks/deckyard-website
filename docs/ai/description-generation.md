@@ -3,8 +3,6 @@ title: "Description Generation"
 description: "Auto-generate presentation descriptions with AI"
 ---
 
-# Description Generation
-
 Let AI generate meta descriptions for your presentations.
 
 ## Overview

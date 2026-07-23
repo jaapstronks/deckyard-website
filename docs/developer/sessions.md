@@ -3,8 +3,6 @@ title: "Presentation Sessions"
 description: "Managing live presentation sessions"
 ---
 
-# Presentation Sessions
-
 Sessions enable real-time synchronization between presenters and audience members during live presentations.
 
 ## Overview

@@ -3,8 +3,6 @@ title: "Lead Capture"
 description: "Collect contact information from your audience"
 ---
 
-# Lead Capture
-
 Capture leads and contact information from your presentation audience.
 
 ## Overview

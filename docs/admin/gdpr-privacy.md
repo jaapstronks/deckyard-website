@@ -3,8 +3,6 @@ title: "GDPR & Privacy"
 description: "Privacy controls and GDPR compliance features"
 ---
 
-# GDPR & Privacy
-
 Deckyard includes features to help you comply with GDPR and privacy regulations.
 
 ## Overview

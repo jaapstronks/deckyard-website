@@ -3,8 +3,6 @@ title: "Real-Time Updates"
 description: "Server-Sent Events for live updates"
 ---
 
-# Real-Time Updates
-
 Deckyard uses Server-Sent Events (SSE) for real-time updates across the platform.
 
 ## Overview

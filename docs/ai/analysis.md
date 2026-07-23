@@ -3,8 +3,6 @@ title: "DreamBot Analysis"
 description: "AI-powered presentation review and suggestions"
 ---
 
-# DreamBot Analysis
-
 Get AI-powered feedback and improvement suggestions for your presentations.
 
 ## Overview

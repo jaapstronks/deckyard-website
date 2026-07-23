@@ -3,8 +3,6 @@ title: "Real-time Editing"
 description: "Work simultaneously with automatic conflict prevention"
 ---
 
-# Real-time Editing
-
 Edit presentations together with your team in real-time.
 
 ## Overview

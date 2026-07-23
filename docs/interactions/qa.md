@@ -3,8 +3,6 @@ title: "Q&A"
 description: "Manage audience questions during presentations"
 ---
 
-# Q&A (Questions & Answers)
-
 Collect and manage audience questions during your presentation.
 
 ## Overview

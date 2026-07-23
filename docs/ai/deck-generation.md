@@ -3,8 +3,6 @@ title: "AI Deck Generation"
 description: "Transform your content into presentations with AI"
 ---
 
-# AI Deck Generation
-
 Transform your notes, documents, and outlines into structured presentations using AI.
 
 ## Overview

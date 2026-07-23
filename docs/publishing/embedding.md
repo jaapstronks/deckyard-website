@@ -3,8 +3,6 @@ title: "Embedding (SDK)"
 description: "Embed presentations in your website"
 ---
 
-# Embedding (SDK)
-
 Embed Deckyard presentations in external websites and applications.
 
 ## Overview

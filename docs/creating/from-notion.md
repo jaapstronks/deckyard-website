@@ -3,8 +3,6 @@ title: "From Notion"
 description: "Import Notion pages as presentations"
 ---
 
-# Create from Notion
-
 Turn your Notion pages into presentations with a few clicks.
 
 ## How It Works

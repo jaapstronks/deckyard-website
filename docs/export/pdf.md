@@ -3,8 +3,6 @@ title: "PDF Export"
 description: "Export presentations as PDF documents"
 ---
 
-# PDF Export
-
 Export your presentations as PDF files for offline viewing and printing.
 
 ## How to Export

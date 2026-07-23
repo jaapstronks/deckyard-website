@@ -3,8 +3,6 @@ title: "Public API"
 description: "Programmatic access to Deckyard presentations"
 ---
 
-# Public API
-
 The Deckyard Public API lets you programmatically create, manage, and export presentations. Use it to build integrations, automate workflows, or connect Deckyard with other tools.
 
 ## Quick Start

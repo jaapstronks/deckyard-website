@@ -3,8 +3,6 @@ title: "Presenter Mode"
 description: "Control your presentation with presenter view"
 ---
 
-# Presenter Mode
-
 Take control of your presentations with the presenter view.
 
 ## Overview

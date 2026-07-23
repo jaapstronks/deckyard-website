@@ -3,8 +3,6 @@ title: "AI Translation"
 description: "Translate presentations to other languages"
 ---
 
-# AI Translation
-
 Translate your presentations to reach international audiences.
 
 ## Overview

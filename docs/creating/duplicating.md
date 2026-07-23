@@ -3,8 +3,6 @@ title: "Duplicating Presentations"
 description: "Create copies of existing presentations"
 ---
 
-# Duplicating Presentations
-
 Create copies of presentations to use as templates or starting points.
 
 ![Presentation context menu showing Duplicate and Move to trash options](/images/screenshots/presentation-context-menu.png)

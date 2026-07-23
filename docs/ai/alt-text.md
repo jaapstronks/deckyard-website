@@ -3,8 +3,6 @@ title: "Alt Text Generation"
 description: "AI-generated alt text for accessibility"
 ---
 
-# Alt Text Generation
-
 Automatically generate alt text for images to improve accessibility.
 
 ## Overview

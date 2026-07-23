@@ -3,8 +3,6 @@ title: "New Presentation"
 description: "Create a new presentation from scratch"
 ---
 
-# New Presentation
-
 Start a fresh presentation and build it slide by slide.
 
 ## Creating a New Presentation

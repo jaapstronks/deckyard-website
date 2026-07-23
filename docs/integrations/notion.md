@@ -3,8 +3,6 @@ title: "Notion"
 description: "Connect Deckyard to your Notion workspace"
 ---
 
-# Notion Integration
-
 Connect Deckyard to Notion to import content from your workspace.
 
 ## Setup

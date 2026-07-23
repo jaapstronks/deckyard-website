@@ -3,8 +3,6 @@ title: "Website Hosting"
 description: "Hosting options for the Deckyard documentation and marketing website"
 ---
 
-# Website Hosting
-
 This project’s public website is a static build (Astro) located in `website/`.
 
 ### EU-first hosting options
@@ -32,11 +30,4 @@ If you already deploy the app to an EU VPS, the lowest-complexity path is:
 
 For a static marketing/docs site (no user accounts, no tracking by default), a US vendor is often fine technically.
 But if your product messaging is explicitly EU/public-values aligned, hosting in the EU is a reasonable choice to avoid mixed signals.
-
-
-
-
-
-
-
 

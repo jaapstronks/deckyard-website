@@ -3,8 +3,6 @@ title: "RSS Feeds"
 description: "Publish an RSS, Atom, or JSON Feed of your presentations"
 ---
 
-# RSS Feeds
-
 Automatically syndicate your published presentations via RSS 2.0, Atom 1.0, and JSON Feed 1.1. Feed readers, Slack channels, Zapier workflows, and other tools can subscribe to stay updated whenever you publish or update a presentation.
 
 ## Overview

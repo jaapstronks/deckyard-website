@@ -3,8 +3,6 @@ title: "Structure Slides"
 description: "Organize your presentation with title slides, section breaks, and navigation elements"
 ---
 
-# Structure Slides
-
 Create clear presentation flow with organizational slides that define structure and navigation.
 
 ![Slide type picker showing Basic category with Title slide, Section title, Text slide, Quote, and List types](/images/screenshots/slide-type-picker-categories.png)

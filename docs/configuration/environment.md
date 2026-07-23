@@ -88,10 +88,3 @@ Escape hatch:
 - **ANALYTICS_HEAD_HTML**: raw HTML injected into `<head>`
 - **ANALYTICS_HEAD_HTML_B64**: base64 version (recommended to avoid quoting issues)
 
-
-
-
-
-
-
-

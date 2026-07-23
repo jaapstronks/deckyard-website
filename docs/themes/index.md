@@ -3,8 +3,6 @@ title: "Themes"
 description: "Customize the visual appearance of your presentations with themes"
 ---
 
-# Themes
-
 Themes control the visual identity of your presentations, including colors, fonts, logos, and slide styling.
 
 ## Overview

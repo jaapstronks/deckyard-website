@@ -3,8 +3,6 @@ title: "Rate Limiting"
 description: "Configure rate limiting for API endpoints"
 ---
 
-# Rate Limiting
-
 Deckyard includes built-in rate limiting to protect against abuse and ensure fair usage.
 
 ## Overview

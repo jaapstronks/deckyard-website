@@ -3,8 +3,6 @@ title: "Slide Types Overview"
 description: "Complete guide to all slide types available in Deckyard"
 ---
 
-# Slide Types
-
 Deckyard includes 36 built-in slide types organized into categories. Each slide type has specific fields, default values, and rendering behavior.
 
 ![Slide type picker showing available categories](/images/screenshots/slide-type-picker-new.png)

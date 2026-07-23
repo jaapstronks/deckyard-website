@@ -3,8 +3,6 @@ title: "Giphy Integration"
 description: "Add animated GIFs from Giphy to your presentations"
 ---
 
-# Giphy Integration
-
 Add animated GIFs from Giphy to make your presentations more engaging.
 
 ## Overview

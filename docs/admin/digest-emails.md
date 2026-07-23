@@ -3,8 +3,6 @@ title: "Digest Emails"
 description: "Weekly engagement summaries for your presentations"
 ---
 
-# Digest Emails
-
 Receive weekly summaries of engagement across your presentations.
 
 ## Overview

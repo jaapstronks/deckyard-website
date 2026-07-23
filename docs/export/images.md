@@ -3,8 +3,6 @@ title: "Image Export"
 description: "Export slides as PNG images"
 ---
 
-# Image Export
-
 Export individual slides or entire presentations as PNG images.
 
 ## How to Export

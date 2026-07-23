@@ -3,8 +3,6 @@ title: "Quickstart (Self-Host)"
 description: "Get Deckyard running locally in minutes"
 ---
 
-# Quickstart (Self-Host)
-
 Get Deckyard running on your machine quickly.
 
 ## What This Is

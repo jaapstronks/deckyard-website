@@ -3,8 +3,6 @@ title: "Image Library"
 description: "Manage and reuse uploaded images across presentations"
 ---
 
-# Image Library
-
 Organize and reuse your uploaded images across all presentations. The Image Library provides a central repository for your media assets.
 
 ![Image picker with library, search, and upload options](/images/screenshots/image-picker.png)

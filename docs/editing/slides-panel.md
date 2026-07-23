@@ -3,8 +3,6 @@ title: "Slides Panel"
 description: "Navigate and manage slides in the editor"
 ---
 
-# Slides Panel
-
 The slides panel on the left side of the editor is your command center for managing slides.
 
 ![Editor with slides panel showing thumbnails and navigation](/images/screenshots/slides-panel.png)

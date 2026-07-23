@@ -3,8 +3,6 @@ title: "Live Preview"
 description: "Preview slides while editing"
 ---
 
-# Live Preview
-
 The preview panel shows how your slide will look when presented.
 
 ## Real-Time Updates

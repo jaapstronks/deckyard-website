@@ -3,8 +3,6 @@ title: "Docker Deployment"
 description: "Deploy Deckyard using Docker"
 ---
 
-# Docker Deployment
-
 Deploy Deckyard using Docker and Docker Compose for easy setup and management.
 
 ## Prerequisites

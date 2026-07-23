@@ -3,8 +3,6 @@ title: "Admin & Self-Hosting"
 description: "Manage your Deckyard instance"
 ---
 
-# Admin & Self-Hosting
-
 Configure and manage your Deckyard installation.
 
 ## Overview

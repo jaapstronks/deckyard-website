@@ -3,8 +3,6 @@ title: "Developer Guide"
 description: "Technical documentation for developers"
 ---
 
-# Developer Guide
-
 Technical documentation for extending and integrating with Deckyard.
 
 ## Topics

@@ -3,8 +3,6 @@ title: "OpenGraph Images"
 description: "Social media preview images for shared presentations"
 ---
 
-# OpenGraph Images
-
 Customize how your presentations appear when shared on social media.
 
 ## Overview

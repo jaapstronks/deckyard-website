@@ -3,8 +3,6 @@ title: "Search"
 description: "Find presentations and content across your workspace"
 ---
 
-# Search
-
 Quickly find presentations using Deckyard's search features.
 
 ## Full-Text Search

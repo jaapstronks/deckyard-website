@@ -3,8 +3,6 @@ title: "Email Templates"
 description: "Customize the emails sent by Deckyard"
 ---
 
-# Email Templates
-
 Customize the emails that Deckyard sends to users.
 
 ## Overview

@@ -3,8 +3,6 @@ title: "Deployment"
 description: "Deploy Deckyard to production"
 ---
 
-# Deployment
-
 Learn how to deploy Deckyard to your own infrastructure.
 
 ## Getting Started

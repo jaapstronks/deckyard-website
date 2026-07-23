@@ -3,8 +3,6 @@ title: "Slide Timing & Pacing"
 description: "Control presentation pacing with auto-advance, per-slide durations, and a visual pacing timer"
 ---
 
-# Slide Timing & Pacing
-
 Control presentation pacing with timed slides, per-slide duration overrides, and a visual pacing timer.
 
 ## Overview

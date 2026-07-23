@@ -3,8 +3,6 @@ title: "Slide Library"
 description: "Save and reuse slides across presentations"
 ---
 
-# Slide Library
-
 Build a collection of reusable slides for your team. Save your best slides and insert them into any presentation.
 
 ![Slide library with personal and team slides](/images/screenshots/slide-library.png)

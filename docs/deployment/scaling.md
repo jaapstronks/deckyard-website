@@ -3,8 +3,6 @@ title: "Scaling"
 description: "Scale Deckyard for high traffic and multi-instance deployments"
 ---
 
-# Scaling
-
 Learn when and how to scale Deckyard for higher traffic, better performance, and multi-instance deployments.
 
 ## Do I Need to Scale?

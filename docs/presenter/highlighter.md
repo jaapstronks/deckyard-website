@@ -3,8 +3,6 @@ title: "Laser Pointer & Drawing"
 description: "Highlight parts of your slides with a laser pointer or freehand drawing"
 ---
 
-# Laser Pointer & Drawing
-
 Draw attention to specific parts of your slides using the built-in laser pointer and drawing tools.
 
 ## Overview

@@ -3,8 +3,6 @@ title: "From JSON"
 description: "Import presentations from Deckyard's JSON format"
 ---
 
-# Import from JSON
-
 Restore presentations from Deckyard's portable JSON export format.
 
 ![Advanced import section with Import JSON, Import Markdown, and Paste Markdown options](/images/screenshots/advanced-import-dialog.png)

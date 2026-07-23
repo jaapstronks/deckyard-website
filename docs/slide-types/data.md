@@ -3,8 +3,6 @@ title: "Data & Visualization Slides"
 description: "Create charts, tables, KPIs, and data visualizations in Deckyard"
 ---
 
-# Data & Visualization Slides
-
 Display your data effectively with Deckyard's visualization slide types.
 
 ![Slide type picker showing Data category with Table, Chart, KPI, Comparison, Matrix, Funnel, Pyramid, and Cycle types](/images/screenshots/slide-types-data.png)

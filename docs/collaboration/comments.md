@@ -3,8 +3,6 @@ title: "Comments"
 description: "Leave feedback and discuss changes on slides"
 ---
 
-# Comments
-
 Provide feedback and collaborate through slide comments.
 
 ## Overview

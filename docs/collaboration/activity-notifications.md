@@ -3,8 +3,6 @@ title: "Activity & Notifications"
 description: "Stay informed about changes and mentions"
 ---
 
-# Activity & Notifications
-
 Keep track of what's happening in your shared presentations.
 
 ## Overview

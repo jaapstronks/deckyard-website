@@ -3,8 +3,6 @@ title: "Audience Follow Mode"
 description: "Let your audience follow along on their devices"
 ---
 
-# Audience Follow Mode
-
 Enable your audience to follow your presentation on their own devices.
 
 ## Overview

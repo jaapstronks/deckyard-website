@@ -3,8 +3,6 @@ title: "From Text (AI Wizard)"
 description: "Generate presentations from pasted text using AI"
 ---
 
-# Create from Text
-
 Use the AI wizard to generate a presentation from raw text - perfect for turning documents, notes, or briefs into slides.
 
 ![From content dialog with AI-powered text paste and file upload options](/images/screenshots/new-from-content-dialog.png)

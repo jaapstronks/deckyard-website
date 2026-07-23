@@ -3,8 +3,6 @@ title: "Tags"
 description: "Organize presentations with tags"
 ---
 
-# Tags
-
 Organize your presentations using tags for easy categorization and discovery.
 
 ## What Tags Are For

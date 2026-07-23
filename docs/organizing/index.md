@@ -3,8 +3,6 @@ title: "Organizing Presentations"
 description: "Manage and find your presentations"
 ---
 
-# Organizing Presentations
-
 Keep your presentations organized and easy to find.
 
 ## In This Section

@@ -3,8 +3,6 @@ title: "Speaker Notes View"
 description: "View speaker notes on a separate device"
 ---
 
-# Speaker Notes View
-
 Access your speaker notes on a secondary device while presenting.
 
 ## Overview
