@@ -2,6 +2,14 @@
 import { ClientRouter } from 'astro:transitions';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import {
+  ui,
+  languages,
+  getLangFromUrl,
+  stripLangFromPath,
+  localizePath,
+  type Lang,
+} from '../i18n/ui';
 import '@fontsource-variable/bricolage-grotesque';
 import '@fontsource-variable/funnel-sans';
 import '@fontsource/space-mono';
@@ -24,9 +32,21 @@ const {
   publishedTime,
 } = Astro.props;
 
+const lang: Lang = getLangFromUrl(Astro.url);
+const t = ui[lang];
+const currentPath = Astro.url.pathname;
+
 const siteUrl = 'https://deckyard.eu';
-const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const canonicalUrl = new URL(currentPath, siteUrl).href;
 const ogImageUrl = new URL(ogImage, siteUrl).href;
+
+// hreflang alternates: same page in every locale, plus x-default -> EN.
+const { path: logicalPath } = stripLangFromPath(currentPath);
+const alternates = (Object.keys(languages) as Lang[]).map((l) => ({
+  hreflang: l,
+  href: new URL(localizePath(logicalPath, l), siteUrl).href,
+}));
+const xDefaultHref = new URL(localizePath(logicalPath, 'en'), siteUrl).href;
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -35,13 +55,13 @@ const organizationSchema = {
   url: siteUrl,
   logo: `${siteUrl}/images/deckyard-full-logo.svg`,
   description:
-    'Open source presentation platform for European organizations that value digital sovereignty and brand consistency.',
+    'Open source, self-hostable presentation platform for organizations that want to own their brand, data and infrastructure.',
   sameAs: ['https://dreamkit.eu'],
 };
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={t.htmlLang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -51,6 +71,8 @@ const organizationSchema = {
     <meta name="author" content="Deckyard" />
 
     <link rel="canonical" href={canonicalUrl} />
+    {alternates.map((alt) => <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />)}
+    <link rel="alternate" hreflang="x-default" href={xDefaultHref} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -65,6 +87,7 @@ const organizationSchema = {
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:site_name" content="Deckyard" />
+    <meta property="og:locale" content={t.ogLocale} />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
 
     <meta name="twitter:card" content="summary_large_image" />
@@ -93,15 +116,15 @@ const organizationSchema = {
       document.documentElement.classList.add('js');
     </script>
 
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main">{t.skipToContent}</a>
 
-    <SiteHeader currentPath={Astro.url.pathname} />
+    <SiteHeader currentPath={currentPath} lang={lang} />
 
     <main id="main">
       <slot />
     </main>
 
-    <SiteFooter />
+    <SiteFooter lang={lang} />
 
     <script>
       // Scroll reveals: IntersectionObserver, re-run after view transitions.

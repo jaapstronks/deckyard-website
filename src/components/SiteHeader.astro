@@ -1,25 +1,34 @@
 ---
 import DeckyardMark from './DeckyardMark.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { ui, localizePath, type Lang } from '../i18n/ui';
 
 interface Props {
   currentPath: string;
+  lang: Lang;
 }
-const { currentPath } = Astro.props;
-const isBlog = currentPath.startsWith('/blog');
+const { currentPath, lang } = Astro.props;
+const t = ui[lang];
+const isBlog = currentPath.includes('/blog');
+const homeHref = localizePath('/', lang);
+const blogHref = localizePath('/blog/', lang);
+// Docs are English-only; the link stays on the root docs regardless of locale.
+const docsHref = '/docs/creating/';
 ---
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="/" aria-label="Deckyard home">
+    <a class="brand" href={homeHref} aria-label={t.nav.homeAria}>
       <DeckyardMark size={30} />
       <span class="brand-name">Deckyard</span>
-      <span class="brand-badge">Beta</span>
+      <span class="brand-badge">{t.nav.badge}</span>
     </a>
 
     <nav class="site-nav" aria-label="Primary">
-      <a href="/blog/" aria-current={isBlog ? 'page' : undefined}>Blog</a>
-      <a href="/docs/creating/">Docs</a>
-      <a href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noopener">GitHub</a>
+      <a href={blogHref} aria-current={isBlog ? 'page' : undefined}>{t.nav.blog}</a>
+      <a href={docsHref}>{t.nav.docs}</a>
+      <a href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noopener">{t.nav.github}</a>
+      <LanguageSwitcher currentPath={currentPath} ariaLabel={t.nav.languageAria} />
     </nav>
   </div>
 </header>

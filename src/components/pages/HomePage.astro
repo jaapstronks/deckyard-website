@@ -1,0 +1,136 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Waitlist from '../Waitlist.astro';
+import InstallWidget from '../InstallWidget.astro';
+import { ui, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].home;
+
+// Pillar icons are fixed per feature; only the title/body come from the
+// translation dictionary. Order matches t.pillars.
+const icons = [
+  '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  '<path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/><circle cx="12" cy="12" r="4"/>',
+  '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+  '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3Z"/>',
+  '<path d="M3 11h4l3 8 4-16 3 8h4"/>',
+  '<circle cx="13.5" cy="6.5" r="1"/><circle cx="17.5" cy="10.5" r="1"/><circle cx="8.5" cy="7.5" r="1"/><circle cx="6.5" cy="12.5" r="1"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.8-.7 1.8-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.9.7-1.7 1.7-1.7H17c2.8 0 5-2.2 5-5C22 6 17.5 2 12 2Z"/>',
+  '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
+  '<rect x="2" y="3" width="20" height="7" rx="2"/><rect x="2" y="14" width="20" height="7" rx="2"/><path d="M6 6.5h.01M6 17.5h.01"/>',
+];
+const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? icons[0] }));
+---
+
+<SiteLayout title={t.metaTitle} description={t.metaDescription}>
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <p class="kicker kicker--center" data-reveal>{t.heroKicker}</p>
+      <h1 data-reveal data-reveal-delay="80">
+        {t.heroTitleMain} <span class="accent">{t.heroTitleHighlight}</span>
+      </h1>
+      <p class="hero-tagline" data-reveal data-reveal-delay="140">{t.heroTagline}</p>
+      <p class="lead" data-reveal data-reveal-delay="200">{t.heroLead}</p>
+      <div data-reveal data-reveal-delay="280">
+        <Waitlist id="hero" lang={lang} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHAT SHIPS ============ -->
+  <section class="section section-tint">
+    <div class="container">
+      <div class="section-head section-head--center" data-reveal>
+        <p class="kicker kicker--center">{t.featuresKicker}</p>
+        <h2>{t.featuresTitle}</h2>
+        <p class="lead">{t.featuresLead}</p>
+      </div>
+
+      <div class="pillars pillars--features">
+        {
+          pillars.map((pillar, i) => (
+            <div class="pillar" data-reveal data-reveal-delay={i === 0 ? undefined : i * 60}>
+              <div class="pillar-icon" aria-hidden="true">
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  set:html={pillar.icon}
+                />
+              </div>
+              <h3>{pillar.title}</h3>
+              <p>{pillar.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INSTALL ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center" data-reveal>
+        <p class="kicker kicker--center">{ui[lang].install.kicker}</p>
+        <h2>{ui[lang].install.title}</h2>
+        <p class="lead">{ui[lang].install.lead}</p>
+      </div>
+      <div data-reveal data-reveal-delay="80">
+        <InstallWidget lang={lang} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OPEN SOURCE RELEASE + CTA ============ -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <p class="kicker">{t.ctaKicker}</p>
+        <h2>{t.ctaTitle}</h2>
+        <p class="lead">{t.ctaLead}</p>
+      </div>
+      <div class="cta-actions" data-reveal data-reveal-delay="120">
+        <a
+          class="btn btn-ghost"
+          href="https://github.com/jaapstronks/deckyard"
+          target="_blank"
+          rel="noopener"
+        >
+          {t.ctaGithub}
+        </a>
+      </div>
+      <div data-reveal data-reveal-delay="180">
+        <Waitlist id="footer" lang={lang} buttonLabel={t.ctaWaitlistButton} />
+      </div>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .cta-actions {
+    margin-bottom: 1.75rem;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--brass-soft);
+    border: 1.5px solid var(--brass-soft);
+    box-shadow: none;
+  }
+  .btn-ghost:hover {
+    background: var(--brass-soft);
+    color: var(--green-deep);
+    translate: 0 -2px;
+  }
+  .btn-ghost:active {
+    translate: 0 0;
+  }
+</style>

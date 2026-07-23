@@ -1,0 +1,314 @@
+---
+import { ui, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].install;
+
+const oneLiner = 'curl -fsSL https://deckyard.eu/install.sh | bash';
+
+// Agent path: verbatim prompt block from the engine's docs/ops/agent-install.md.
+// Kept in English on purpose — it is pasted into a coding agent, not read as prose.
+const agentPrompt = `Install Deckyard for me and connect to it over MCP.
+
+Follow the procedure at:
+https://raw.githubusercontent.com/jaapstronks/deckyard/main/docs/ops/agent-install.md
+
+Do this:
+1. Clone https://github.com/jaapstronks/deckyard into ./deckyard (or update it
+   if it's already there).
+2. Configure it non-interactively with: npm run setup -- --yes
+   Ask me first whether I want to add an AI provider key or enable auth, and if
+   so pass the matching flags (see the doc). If I don't care, use the defaults.
+3. Start it (npm run start, or docker compose up -d --build if I have Docker).
+4. Add the MCP server to your own config so you can create presentations, then
+   confirm the connection by listing the available Deckyard tools.
+
+Tell me the URL to open and the edit/present links for anything you create.`;
+---
+
+<div class="install-widget" data-install-widget>
+  <div class="install-tabs" role="tablist" aria-label={t.title}>
+    <button
+      class="install-tab is-active"
+      role="tab"
+      id="install-tab-human"
+      aria-selected="true"
+      aria-controls="install-panel-human"
+      data-tab="human"
+      type="button"
+    >
+      {t.tabHuman}
+    </button>
+    <button
+      class="install-tab"
+      role="tab"
+      id="install-tab-agent"
+      aria-selected="false"
+      aria-controls="install-panel-agent"
+      data-tab="agent"
+      type="button"
+    >
+      {t.tabAgent}
+    </button>
+  </div>
+
+  <!-- Human one-liner -->
+  <div
+    class="install-panel"
+    role="tabpanel"
+    id="install-panel-human"
+    aria-labelledby="install-tab-human"
+    data-panel="human"
+  >
+    <div class="terminal">
+      <div class="terminal-bar" aria-hidden="true">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+      <div class="terminal-body">
+        <pre class="terminal-code"><code><span class="term-prompt">$</span> {oneLiner}</code></pre>
+        <button class="copy-btn" type="button" data-copy={oneLiner} data-label={t.copy} data-label-done={t.copied}>
+          {t.copy}
+        </button>
+      </div>
+    </div>
+    <p class="terminal-caption">{t.humanCaption}</p>
+  </div>
+
+  <!-- AI agent prompt -->
+  <div
+    class="install-panel"
+    role="tabpanel"
+    id="install-panel-agent"
+    aria-labelledby="install-tab-agent"
+    data-panel="agent"
+    hidden
+  >
+    <div class="terminal">
+      <div class="terminal-bar" aria-hidden="true">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      </div>
+      <div class="terminal-body terminal-body--block">
+        <pre class="terminal-code terminal-code--prompt"><code>{agentPrompt}</code></pre>
+        <button class="copy-btn copy-btn--float" type="button" data-copy={agentPrompt} data-label={t.copy} data-label-done={t.copied}>
+          {t.copy}
+        </button>
+      </div>
+    </div>
+    <p class="terminal-caption">{t.agentCaption}</p>
+  </div>
+
+  <p class="install-readfirst">
+    <a href="/install.sh">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+      </svg>
+      {t.readFirst}
+    </a>
+  </p>
+</div>
+
+<style>
+  .install-widget {
+    max-width: 720px;
+    margin-inline: auto;
+  }
+
+  .install-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .install-tab {
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 16px;
+    cursor: pointer;
+    transition: color var(--dur-micro) ease, border-color var(--dur-micro) ease, background var(--dur-micro) ease;
+  }
+  .install-tab:hover { color: var(--green); border-color: var(--brass-bright); }
+  .install-tab.is-active {
+    color: var(--paper);
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .terminal {
+    background: var(--green-deep, #14281b);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    text-align: left;
+  }
+  .terminal-bar {
+    display: flex;
+    gap: 7px;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .terminal-bar .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+  }
+  .terminal-bar .dot:nth-child(1) { background: #ff5f57; }
+  .terminal-bar .dot:nth-child(2) { background: #febc2e; }
+  .terminal-bar .dot:nth-child(3) { background: #28c840; }
+
+  .terminal-body {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 18px 18px 20px;
+  }
+  .terminal-body--block {
+    display: block;
+    position: relative;
+    padding-right: 18px;
+  }
+
+  .terminal-code {
+    margin: 0;
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--paper);
+  }
+  .terminal-code code { font-family: inherit; }
+  .terminal-code--prompt {
+    white-space: pre-wrap;
+    color: rgba(245, 243, 236, 0.9);
+    font-size: 0.84rem;
+  }
+  .term-prompt {
+    color: var(--brass-bright);
+    user-select: none;
+    margin-right: 8px;
+  }
+
+  .copy-btn {
+    flex: none;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--green-deep, #14281b);
+    background: var(--brass-soft);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: background var(--dur-micro) ease, transform var(--dur-micro) ease;
+  }
+  .copy-btn:hover { background: var(--brass-bright); }
+  .copy-btn:active { transform: translateY(1px); }
+  .copy-btn[data-copied] { background: #28c840; color: #06210f; }
+  .copy-btn--float {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+  }
+
+  .terminal-caption {
+    margin: 14px auto 0;
+    max-width: 40em;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  .install-readfirst {
+    margin: 18px 0 0;
+    text-align: center;
+    font-size: 0.86rem;
+  }
+  .install-readfirst a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .install-readfirst a:hover { color: var(--green); }
+  .install-readfirst svg { opacity: 0.7; }
+
+  @media (max-width: 560px) {
+    .terminal-body { flex-direction: column; align-items: stretch; }
+    .terminal-code { font-size: 0.8rem; }
+    .copy-btn { align-self: flex-end; }
+    .copy-btn--float { position: static; align-self: flex-end; margin-top: 12px; }
+  }
+</style>
+
+<script>
+  function initInstallWidget() {
+    document.querySelectorAll<HTMLElement>('[data-install-widget]').forEach((widget) => {
+      if (widget.dataset.bound) return;
+      widget.dataset.bound = 'true';
+
+      // Tabs
+      const tabs = widget.querySelectorAll<HTMLButtonElement>('[data-tab]');
+      const panels = widget.querySelectorAll<HTMLElement>('[data-panel]');
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const target = tab.dataset.tab;
+          tabs.forEach((t) => {
+            const on = t === tab;
+            t.classList.toggle('is-active', on);
+            t.setAttribute('aria-selected', on ? 'true' : 'false');
+          });
+          panels.forEach((p) => {
+            p.hidden = p.dataset.panel !== target;
+          });
+        });
+      });
+
+      // Copy buttons
+      widget.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const text = btn.dataset.copy ?? '';
+          try {
+            await navigator.clipboard.writeText(text);
+          } catch {
+            // Fallback for insecure contexts / older browsers
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+              document.execCommand('copy');
+            } catch {
+              /* give up silently */
+            }
+            ta.remove();
+          }
+          btn.dataset.copied = 'true';
+          btn.textContent = btn.dataset.labelDone ?? 'Copied';
+          window.setTimeout(() => {
+            delete btn.dataset.copied;
+            btn.textContent = btn.dataset.label ?? 'Copy';
+          }, 1800);
+        });
+      });
+    });
+  }
+  initInstallWidget();
+  document.addEventListener('astro:page-load', initInstallWidget);
+</script>

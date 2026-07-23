@@ -8,6 +8,7 @@ const blog = defineCollection({
   schema: z.object({
     title: z.string(),
     intro: z.string(),
+    lang: z.enum(['en', 'nl']).default('en'),
     pubDate: z.coerce.date(),
     category: z.string().default('Building in public'),
     tags: z.array(z.string()).default([]),

@@ -1,6 +1,9 @@
 ---
+import { ui, localizePath, defaultLang, type Lang } from '../i18n/ui';
+
 interface Props {
   id: string;
+  lang?: Lang;
   title: string;
   intro: string;
   pubDate: Date;
@@ -11,10 +14,22 @@ interface Props {
   revealDelay?: number;
 }
 
-const { id, title, intro, pubDate, category, heroImage, heroImageAlt, featured = false, revealDelay } =
-  Astro.props;
+const {
+  id,
+  lang = defaultLang,
+  title,
+  intro,
+  pubDate,
+  category,
+  heroImage,
+  heroImageAlt,
+  featured = false,
+  revealDelay,
+} = Astro.props;
 
-const dateLabel = new Intl.DateTimeFormat('en-GB', {
+const t = ui[lang].blogCard;
+const postHref = localizePath(`/blog/${id}/`, lang);
+const dateLabel = new Intl.DateTimeFormat(t.dateLocale, {
   day: 'numeric',
   month: 'short',
   year: 'numeric',
@@ -44,9 +59,9 @@ const dateLabel = new Intl.DateTimeFormat('en-GB', {
       <time datetime={pubDate.toISOString()}>{dateLabel}</time>
     </p>
     <h3 transition:name={`post-title-${id}`}>
-      <a href={`/blog/${id}/`}>{title}</a>
+      <a href={postHref}>{title}</a>
     </h3>
     <p>{intro}</p>
-    <span class="post-card-more" aria-hidden="true">Read the post →</span>
+    <span class="post-card-more" aria-hidden="true">{t.readMore}</span>
   </div>
 </article>

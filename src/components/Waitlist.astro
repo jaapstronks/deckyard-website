@@ -1,39 +1,48 @@
 ---
 // Email capture via self-hosted Listmonk (same instance as Dreamkit).
 // List: "Deckyard launch updates" (id 13, double opt-in) on listmonk.dreamkit.eu.
+import { ui, defaultLang, type Lang } from '../i18n/ui';
+
 const LISTMONK_URL = 'https://listmonk.dreamkit.eu/subscription/form';
 const LIST_UUID = '7c6489d5-d6a8-40c0-be60-bd0918cbdc06';
 
 interface Props {
   id: string;
+  lang?: Lang;
   buttonLabel?: string;
 }
-const { id, buttonLabel = 'Keep me posted' } = Astro.props;
+const { id, lang = defaultLang, buttonLabel } = Astro.props;
+const t = ui[lang].waitlist;
+const label = buttonLabel ?? t.button;
 ---
 
 <div class="waitlist" data-waitlist>
-  <form class="waitlist-form" method="post" action={LISTMONK_URL} data-waitlist-form>
+  <form
+    class="waitlist-form"
+    method="post"
+    action={LISTMONK_URL}
+    data-waitlist-form
+    data-status-ok={t.statusOk}
+    data-status-error={t.statusError}
+  >
     <input type="hidden" name="l" value={LIST_UUID} />
     <label class="wl-nonce" aria-hidden="true">
-      Leave this field empty
+      {t.honeypot}
       <input type="text" name="nonce" tabindex="-1" autocomplete="off" />
     </label>
-    <label class="wl-nonce" for={`${id}-email`}>Email address</label>
+    <label class="wl-nonce" for={`${id}-email`}>{t.emailLabel}</label>
     <input
       id={`${id}-email`}
       type="email"
       name="email"
       required
-      placeholder="you@organization.eu"
+      placeholder={t.placeholder}
       autocomplete="email"
     />
-    <button class="btn btn-primary" type="submit">{buttonLabel}</button>
+    <button class="btn btn-primary" type="submit">{label}</button>
   </form>
   <p class="waitlist-status" data-waitlist-status hidden aria-live="polite"></p>
-  <p class="waitlist-note">
-    Launch updates only, a few times a year. Double opt-in, no tracking pixels, stored on our own
-    European server. Unsubscribe with one click.
-  </p>
+  <p class="waitlist-note">{t.note}</p>
 </div>
 
 <script>
@@ -58,14 +67,16 @@ const { id, buttonLabel = 'Keep me posted' } = Astro.props;
           if (status) {
             status.hidden = false;
             status.dataset.state = 'ok';
-            status.textContent = 'Almost there: check your inbox to confirm your address.';
+            status.textContent =
+              form.dataset.statusOk ?? 'Almost there: check your inbox to confirm your address.';
           }
           form.reset();
         } catch {
           if (status) {
             status.hidden = false;
             status.dataset.state = 'error';
-            status.textContent = 'That did not work. Please try again in a moment.';
+            status.textContent =
+              form.dataset.statusError ?? 'That did not work. Please try again in a moment.';
           }
         } finally {
           if (button) button.disabled = false;
