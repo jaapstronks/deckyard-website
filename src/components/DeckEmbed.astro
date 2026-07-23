@@ -1,0 +1,71 @@
+---
+/**
+ * DeckEmbed - embeds a standalone Deckyard HTML export in an iframe.
+ *
+ * Unlike the SDK embed (src/content/docs/docs/publishing/embedding.md), this
+ * needs NO running Deckyard instance, no publishId and no external origin: it
+ * points at a self-contained `.html` file exported from Deckyard
+ * ("Download -> HTML") and dropped into `public/decks/`. See
+ * `public/decks/README.md` for the convention and caveats.
+ */
+interface Props {
+  /** Path to the exported .html deck, e.g. "/decks/my-deck.html". */
+  src: string;
+  /** Accessible iframe title. */
+  title?: string;
+  /** Aspect ratio as a CSS `aspect-ratio` value, e.g. "16 / 9" or "4 / 3". */
+  ratio?: string;
+  /** Max width of the embed; anything valid for CSS width. */
+  maxWidth?: string;
+}
+
+const {
+  src,
+  title = 'Deckyard presentation',
+  ratio = '16 / 9',
+  maxWidth = '100%',
+} = Astro.props;
+---
+
+<figure class="deck-embed" style={`--deck-ratio:${ratio};--deck-max-width:${maxWidth}`}>
+  <iframe
+    class="deck-embed__frame"
+    src={src}
+    title={title}
+    loading="lazy"
+    allow="fullscreen"
+    referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  <figcaption class="deck-embed__fallback">
+    <a href={src} target="_blank" rel="noopener">Open presentatie</a>
+  </figcaption>
+</figure>
+
+<style>
+  .deck-embed {
+    margin: 0;
+    width: 100%;
+    max-width: var(--deck-max-width);
+  }
+  .deck-embed__frame {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--deck-ratio);
+    max-width: 100%;
+    border: 0;
+    border-radius: 12px;
+    background: #000;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+  }
+  /* Fallback link is only useful without the iframe (no-JS / print); the
+     iframe itself carries the interactive deck. Keep it discreet. */
+  .deck-embed__fallback {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  @media print {
+    .deck-embed__frame {
+      display: none;
+    }
+  }
+</style>

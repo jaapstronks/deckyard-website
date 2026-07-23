@@ -1,0 +1,26 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import DeckEmbed from '../components/DeckEmbed.astro';
+---
+
+<SiteLayout
+  title="Static deck embed - Deckyard"
+  description="Embed a self-contained Deckyard HTML export with no running instance."
+>
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--center" data-reveal>
+        <p class="kicker kicker--center">Static embed</p>
+        <h2>A deck, embedded without a server</h2>
+        <p class="lead">
+          The presentation below is a single self-contained HTML file dropped in
+          <code>public/decks/</code> and embedded with <code>&lt;DeckEmbed&gt;</code>.
+          No running Deckyard instance, no external origin.
+        </p>
+      </div>
+      <div data-reveal data-reveal-delay="80">
+        <DeckEmbed src="/decks/example.html" title="Example deck" />
+      </div>
+    </div>
+  </section>
+</SiteLayout>
