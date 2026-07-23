@@ -160,7 +160,7 @@ export const ui: Record<Lang, Content> = {
       heroTitleHighlight: 'set free.',
       heroTagline: 'Open source, end to end, and yours to run.',
       heroLead:
-        'Deckyard is an open source presentation platform for nonprofits, public institutions and cultural organizations in Europe. Not just a slide builder: create, present, publish and collaborate in one web-based tool that runs on infrastructure you control. Every deck looks like it came from your design department, and stays yours from first draft to live audience.',
+        'Deckyard is an open source presentation platform for organizations that want to own their work. Not just a slide builder: create, present, publish and collaborate in one web-based tool that runs on infrastructure you control. Being open, flexible and self-hostable is exactly why nonprofits, public institutions and cultural organizations feel at home with it, and why it fits any team that cares about its brand and its data. Every deck looks like it came from your design department, and stays yours from first draft to live audience.',
       featuresKicker: 'Under the hood',
       featuresTitle: 'Already built, now in the open',
       featuresLead:
@@ -224,11 +224,11 @@ export const ui: Record<Lang, Content> = {
     blogIndex: {
       metaTitle: 'Blog — Deckyard',
       metaDescription:
-        'Building Deckyard in the open: notes on open source presentations, digital sovereignty and brand systems for European organizations.',
+        'Building Deckyard in the open: notes on open source presentations, digital sovereignty and brand systems for organizations that want to own their work.',
       kicker: 'Building in public',
       title: 'Notes from the yard',
       intro:
-        'Progress reports, design decisions and detours while we build an open source presentation platform for European organizations.',
+        'Progress reports, design decisions and detours while we build an open source presentation platform anyone can run.',
       empty:
         'Nothing here yet. The first notes land once there’s something real to show; subscribe to the <a href="/rss.xml">RSS feed</a> or join the launch list on the <a href="{home}">homepage</a> and you won’t miss them.',
     },
@@ -294,7 +294,7 @@ export const ui: Record<Lang, Content> = {
       heroTitleHighlight: 'bevrijd.',
       heroTagline: 'Open source, van begin tot eind, en van jou.',
       heroLead:
-        'Deckyard is een open source presentatieplatform voor maatschappelijke organisaties, overheden en culturele instellingen in Europa. Niet zomaar een slidebouwer: maken, presenteren, publiceren en samenwerken in één webtool die draait op infrastructuur die jij beheert. Elke deck ziet eruit alsof je designafdeling hem maakte, en blijft van jou; van eerste opzet tot live publiek.',
+        'Deckyard is een open source presentatieplatform voor elke organisatie die haar eigen werk in handen wil houden. Niet zomaar een slidebouwer: maken, presenteren, publiceren en samenwerken in één webtool die draait op infrastructuur die jij beheert. Juist omdat het open, flexibel en zelf te hosten is, voelen maatschappelijke organisaties, overheden en culturele instellingen zich er thuis; net als elk team dat om zijn merk en zijn data geeft. Elke deck ziet eruit alsof je designafdeling hem maakte, en blijft van jou; van eerste opzet tot live publiek.',
       featuresKicker: 'Onder de motorkap',
       featuresTitle: 'Al gebouwd, nu in de openbaarheid',
       featuresLead:
@@ -358,11 +358,11 @@ export const ui: Record<Lang, Content> = {
     blogIndex: {
       metaTitle: 'Blog - Deckyard',
       metaDescription:
-        'Deckyard bouwen in de openbaarheid: aantekeningen over open source presentaties, digitale soevereiniteit en merksystemen voor Europese organisaties.',
+        'Deckyard bouwen in de openbaarheid: aantekeningen over open source presentaties, digitale soevereiniteit en merksystemen voor organisaties die hun eigen werk in handen willen houden.',
       kicker: 'Bouwen in de openbaarheid',
       title: 'Aantekeningen van de werf',
       intro:
-        'Voortgang, ontwerpkeuzes en zijsporen terwijl we een open source presentatieplatform voor Europese organisaties bouwen.',
+        'Voortgang, ontwerpkeuzes en zijsporen terwijl we een open source presentatieplatform bouwen dat iedereen zelf kan draaien.',
       empty:
         'Hier staat nog niets. De eerste aantekeningen verschijnen zodra er iets echts te laten zien is; abonneer je op de <a href="/rss.xml">RSS-feed</a> of zet je op de lanceerlijst op de <a href="{home}">homepage</a>, dan mis je ze niet.',
     },
