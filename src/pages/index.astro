@@ -4,13 +4,13 @@ import Waitlist from '../components/Waitlist.astro';
 ---
 
 <SiteLayout
-  title="Deckyard — Slides that stay on brand. Coming soon."
-  description="Deckyard is an upcoming open source presentation platform for European nonprofits, public institutions and cultural organizations. On brand by default, built for humans and AI agents, hosted on your terms. Coming soon."
+  title="Deckyard — Slides that stay on brand. Data that stays yours."
+  description="Deckyard is an open source presentation platform for European nonprofits, public institutions and cultural organizations. On brand by default, built for humans and AI agents, hosted on your terms. The code is public on GitHub."
 >
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="container hero-inner">
-      <p class="kicker kicker--center" data-reveal>Coming soon · Open source · Made in Europe</p>
+      <p class="kicker kicker--center" data-reveal>Now open source · Self-hosted · Made in Europe</p>
       <h1 data-reveal data-reveal-delay="80">
         Slides that stay on brand.<br />
         <span class="accent">Data that stays yours.</span>
@@ -32,10 +32,10 @@ import Waitlist from '../components/Waitlist.astro';
     <div class="container">
       <div class="section-head section-head--center" data-reveal>
         <p class="kicker kicker--center">Under the hood</p>
-        <h2>Coming soon, but already built</h2>
+        <h2>Already built, now in the open</h2>
         <p class="lead">
-          This isn't a waitlist for an idea. Deckyard is a working platform in daily use;
-          we're polishing the edges before the source goes public. Here's what ships.
+          This isn't a waitlist for an idea. Deckyard is a working platform in daily use,
+          and the source is now public on GitHub. Here's what ships.
         </p>
       </div>
 
@@ -135,17 +135,47 @@ import Waitlist from '../components/Waitlist.astro';
   <section class="section section-dark">
     <div class="container">
       <div class="section-head" data-reveal>
-        <p class="kicker">Open source, opening soon</p>
-        <h2>Be there when the gates open</h2>
+        <p class="kicker">Open source, out now</p>
+        <h2>Explore the code, follow the launch</h2>
         <p class="lead">
-          Deckyard is MIT licensed, GDPR native and built to be self-hosted. The repository
-          goes public once the docs and onboarding are worthy of it. Leave your address and
-          you'll hear the moment it does.
+          Deckyard is MIT licensed, GDPR native and built to be self-hosted. The code is
+          public on GitHub today. Star it, run it, or leave your address for launch and
+          hosted-version updates.
         </p>
       </div>
-      <div data-reveal data-reveal-delay="120">
-        <Waitlist id="footer" buttonLabel="Join the waitlist" />
+      <div class="cta-actions" data-reveal data-reveal-delay="120">
+        <a
+          class="btn btn-ghost"
+          href="https://github.com/jaapstronks/deckyard"
+          target="_blank"
+          rel="noopener"
+        >
+          View on GitHub
+        </a>
+      </div>
+      <div data-reveal data-reveal-delay="180">
+        <Waitlist id="footer" buttonLabel="Join the launch list" />
       </div>
     </div>
   </section>
 </SiteLayout>
+
+<style>
+  .cta-actions {
+    margin-bottom: 1.75rem;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--brass-soft);
+    border: 1.5px solid var(--brass-soft);
+    box-shadow: none;
+  }
+  .btn-ghost:hover {
+    background: var(--brass-soft);
+    color: var(--green-deep);
+    translate: 0 -2px;
+  }
+  .btn-ghost:active {
+    translate: 0 0;
+  }
+</style>

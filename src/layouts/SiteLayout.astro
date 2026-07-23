@@ -33,7 +33,7 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'Deckyard',
   url: siteUrl,
-  logo: `${siteUrl}/images/deckyard-logo.png`,
+  logo: `${siteUrl}/images/deckyard-full-logo.svg`,
   description:
     'Open source presentation platform for European organizations that value digital sovereignty and brand consistency.',
   sameAs: ['https://dreamkit.eu'],
@@ -54,7 +54,9 @@ const organizationSchema = {
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#254d38" />
 
     <meta property="og:type" content={type} />
@@ -78,6 +80,9 @@ const organizationSchema = {
     />
 
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+
+    <!-- Privacy-friendly analytics (self-hosted Plausible, no cookies) -->
+    <script defer data-domain="deckyard.eu" src="https://analytics.dreamkit.eu/js/script.js"></script>
 
     <ClientRouter />
 

@@ -9,6 +9,31 @@ export default defineConfig({
     starlight({
       title: 'Deckyard',
       description: 'Open source, self-hosted presentation system.',
+      head: [
+        {
+          tag: 'script',
+          attrs: {
+            defer: true,
+            'data-domain': 'deckyard.eu',
+            src: 'https://analytics.dreamkit.eu/js/script.js',
+          },
+        },
+        // Default social-share image for docs pages (Starlight omits og:image otherwise)
+        {
+          tag: 'meta',
+          attrs: {
+            property: 'og:image',
+            content: 'https://deckyard.eu/images/deckyard-editor-preview.png',
+          },
+        },
+        {
+          tag: 'meta',
+          attrs: {
+            name: 'twitter:image',
+            content: 'https://deckyard.eu/images/deckyard-editor-preview.png',
+          },
+        },
+      ],
       logo: {
         light: './src/assets/deckyard-mark.svg',
         dark: './src/assets/deckyard-mark-dark.svg',
