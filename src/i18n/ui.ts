@@ -291,7 +291,7 @@ export const ui: Record<Lang, Content> = {
         'Deckyard is het open source presentatieplatform van begin tot eind: maken, presenteren, publiceren en samenwerken in één webtool die draait op infrastructuur die jij beheert. On brand vanaf het eerste moment, en van jou van eerste opzet tot live publiek. De code staat openbaar op GitHub.',
       heroKicker: 'Open source · Van begin tot eind · Made in Europe',
       heroTitleMain: 'Presenteren,',
-      heroTitleHighlight: 'bevrijd.',
+      heroTitleHighlight: 'eindelijk vrij.',
       heroTagline: 'Open source, van begin tot eind, en van jou.',
       heroLead:
         'Deckyard is een open source presentatieplatform voor elke organisatie die haar eigen werk in handen wil houden. Niet zomaar een slidebouwer: maken, presenteren, publiceren en samenwerken in één webtool die draait op infrastructuur die jij beheert. Elke deck ziet eruit alsof je designafdeling hem maakte, en blijft van jou; van eerste opzet tot live publiek.',
