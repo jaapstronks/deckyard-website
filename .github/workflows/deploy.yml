@@ -1,0 +1,80 @@
+name: Deploy Website
+
+# Deploys the static Astro site to Scaleway Object Storage (Bolster account)
+# on every push to main. One-time infra bootstrap (bucket, secrets, DNS,
+# Cloudflare) is documented in DEPLOYMENT-PLAN.md and handed to bolster-admin.
+#
+# Required GitHub secrets (Settings -> Secrets and variables -> Actions):
+#   SCW_ACCESS_KEY   Scaleway API access key (Bolster account)
+#   SCW_SECRET_KEY   Scaleway API secret key (Bolster account)
+# Optional (Cloudflare cache purge after deploy):
+#   CLOUDFLARE_API_TOKEN
+#   CLOUDFLARE_ZONE_ID
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-website
+  cancel-in-progress: true
+
+env:
+  BUCKET: deckyard-website
+  SCW_REGION: fr-par
+  SCW_ENDPOINT: https://s3.fr-par.scw.cloud
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Configure Scaleway credentials
+        run: |
+          aws configure set aws_access_key_id "${{ secrets.SCW_ACCESS_KEY }}"
+          aws configure set aws_secret_access_key "${{ secrets.SCW_SECRET_KEY }}"
+          aws configure set default.region "$SCW_REGION"
+
+      - name: Upload immutable assets (long cache)
+        run: |
+          aws s3 sync ./dist "s3://$BUCKET" \
+            --endpoint-url "$SCW_ENDPOINT" \
+            --acl public-read \
+            --delete \
+            --exclude "*.html" \
+            --exclude "*.xml" \
+            --cache-control "public, max-age=31536000, immutable"
+
+      - name: Upload HTML and sitemaps (short cache)
+        run: |
+          aws s3 sync ./dist "s3://$BUCKET" \
+            --endpoint-url "$SCW_ENDPOINT" \
+            --acl public-read \
+            --delete \
+            --exclude "*" \
+            --include "*.html" \
+            --include "*.xml" \
+            --cache-control "public, max-age=3600"
+
+      - name: Purge Cloudflare cache
+        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ZONE_ID != '' }}
+        run: |
+          curl -fsS -X POST \
+            "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}'
