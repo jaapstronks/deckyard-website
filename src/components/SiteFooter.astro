@@ -1,6 +1,15 @@
 ---
 import DeckyardMark from './DeckyardMark.astro';
+import { ui, localizePath, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].footer;
 const year = new Date().getFullYear();
+const blogHref = localizePath('/blog/', lang);
+const copyright = t.metaCopyright.replace('{year}', String(year));
 ---
 
 <footer class="site-footer">
@@ -8,34 +17,31 @@ const year = new Date().getFullYear();
     <div class="footer-inner">
       <div>
         <p class="footer-brand"><DeckyardMark size={26} /> Deckyard</p>
-        <p class="footer-tag">
-          An open source presentation platform for organizations that want to own their story:
-          their brand, their data, their infrastructure.
-        </p>
+        <p class="footer-tag">{t.tagline}</p>
       </div>
 
       <div class="footer-links">
         <div>
-          <h4>Follow along</h4>
+          <h4>{t.followHeading}</h4>
           <ul>
-            <li><a href="/blog/">Blog</a></li>
-            <li><a href="/rss.xml">RSS feed</a></li>
+            <li><a href={blogHref}>{t.followBlog}</a></li>
+            <li><a href="/rss.xml">{t.followRss}</a></li>
           </ul>
         </div>
         <div>
-          <h4>Product</h4>
+          <h4>{t.productHeading}</h4>
           <ul>
-            <li><a href="/docs/creating/">Documentation</a></li>
-            <li><a href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noreferrer">GitHub</a></li>
-            <li><a href="https://dreamkit.eu" target="_blank" rel="noreferrer">Dreamkit</a></li>
+            <li><a href="/docs/creating/">{t.productDocs}</a></li>
+            <li><a href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noreferrer">{t.productGithub}</a></li>
+            <li><a href="https://dreamkit.eu" target="_blank" rel="noreferrer">{t.productDreamkit}</a></li>
           </ul>
         </div>
       </div>
     </div>
 
     <div class="footer-meta">
-      <span>© {year} Deckyard · Bureau Bolster</span>
-      <span>Made in the Netherlands · Hosted in Europe · MIT licensed</span>
+      <span>{copyright}</span>
+      <span>{t.metaMade}</span>
     </div>
   </div>
 </footer>

@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import BlogCard from '../BlogCard.astro';
+import { ui, localizePath, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].blogIndex;
+
+const posts = (
+  await getCollection('blog', ({ data }) => {
+    const langMatch = (data.lang ?? 'en') === lang;
+    return langMatch && (import.meta.env.PROD ? !data.draft : true);
+  })
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const [lead, ...rest] = posts;
+const emptyHtml = t.empty.replace('{home}', localizePath('/', lang));
+---
+
+<SiteLayout title={t.metaTitle} description={t.metaDescription}>
+  <section class="section article-hero" style="padding-bottom: 0;">
+    <div class="container">
+      <div class="article-hero-inner">
+        <p class="kicker kicker--center">{t.kicker}</p>
+        <h1>{t.title}</h1>
+        <p class="article-intro">{t.intro}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      {
+        posts.length === 0 && (
+          <div class="blog-empty" data-reveal>
+            <p class="lead" set:html={emptyHtml} />
+          </div>
+        )
+      }
+      <div class="post-grid">
+        {
+          lead && (
+            <BlogCard
+              id={lead.id}
+              lang={lang}
+              title={lead.data.title}
+              intro={lead.data.intro}
+              pubDate={lead.data.pubDate}
+              category={lead.data.category}
+              heroImage={lead.data.heroImage}
+              heroImageAlt={lead.data.heroImageAlt}
+              featured
+            />
+          )
+        }
+        {
+          rest.map((post, index) => (
+            <BlogCard
+              id={post.id}
+              lang={lang}
+              title={post.data.title}
+              intro={post.data.intro}
+              pubDate={post.data.pubDate}
+              category={post.data.category}
+              heroImage={post.data.heroImage}
+              heroImageAlt={post.data.heroImageAlt}
+              revealDelay={(index % 3) * 80}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</SiteLayout>

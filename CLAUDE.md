@@ -6,9 +6,11 @@ Marketing website and user documentation for Deckyard.
 
 **Purpose:** Static marketing site + comprehensive docs (100+ pages)
 
-**Stack:** Astro 5, Starlight (docs theme), 12-language i18n
+**Stack:** Astro 5, Starlight (docs theme)
 
-**Output:** Static HTML deployed to Scaleway Object Storage + Cloudflare CDN
+**i18n:** Marketing pages are bilingual (EN default at root, NL under `/nl/`). Docs are English-only.
+
+**Output:** Static HTML deployed to a Hetzner box via rsync + Cloudflare CDN
 
 ## Related Repositories
 
@@ -21,11 +23,13 @@ Marketing website and user documentation for Deckyard.
 ## Key Directories
 
 - `src/pages/` - Marketing pages (Astro components)
-  - `[...locale]/` - i18n routing (en default, others prefixed)
-  - `features/`, `compare/`, `use-cases/` - Landing pages
+  - EN pages live at the root (`index.astro`, `blog/`)
+  - `src/pages/nl/` - NL versions, thin wrappers around shared components
+- `src/components/pages/` - Shared page bodies (`HomePage`, `BlogIndexPage`, `BlogPostPage`) driven by a `lang` prop, so markup lives once
+- `src/i18n/ui.ts` - Translation dictionary (EN/NL) + routing helpers (`getLangFromUrl`, `localizePath`, `stripLangFromPath`)
+- `src/components/LanguageSwitcher.astro` - EN/NL toggle in the header
 - `docs/` - Source documentation (markdown)
 - `src/content/docs/` - Docs copied here by sync script
-- `src/i18n/locales/` - Translation JSON files (12 languages)
 - `scripts/sync-docs.js` - Copies docs from `./docs/` to Starlight content
 
 ## Documentation Structure
@@ -60,10 +64,13 @@ npm run build    # Production build to ./dist/
 
 ## i18n
 
-- Default: English (no prefix)
-- Others: `/nl/`, `/de/`, `/fr/`, etc. (12 total)
-- Marketing pages: translated via `src/i18n/locales/*.json`
-- Docs: English only currently (in `./docs/`)
+- Marketing site is bilingual: **EN** (default, no prefix) and **NL** (`/nl/`).
+- Copy lives in `src/i18n/ui.ts` (`ui.en` / `ui.nl`); shared page components read it via a `lang` prop. Add a string to both locales, then use it in the component.
+- Routing is file-based (NOT Astro's global `i18n` config). Do **not** add an `i18n` block to `astro.config.mjs`: Starlight would inherit the `nl` locale and generate duplicate English-content `/nl/docs` pages.
+- Language switcher: `LanguageSwitcher.astro` maps the current path to its counterpart locale.
+- Blog posts carry a `lang` field (`en` default) in frontmatter; each locale's blog routes filter on it. `/rss.xml` is the EN feed only.
+- Docs (Starlight) are English-only, no switcher.
+- Dutch copy is outgoing editorial text: no em dashes (use ` - ` or `;`).
 
 ## Key Files
 

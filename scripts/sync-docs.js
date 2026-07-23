@@ -72,6 +72,51 @@ async function injectFrontmatterIfMissing(relPath, title) {
   await fs.writeFile(p, frontmatter(title) + raw, 'utf8');
 }
 
+// Serve the engine's installer at https://deckyard.eu/install.sh by copying it
+// into public/ (Astro serves public/* at the site root). Source of truth is the
+// deckyard engine repo, never a hand-maintained copy here. Prefer the local
+// sibling checkout (works offline, reflects local changes); fall back to raw
+// GitHub on main, which is the path CI takes where the sibling isn't present.
+async function syncInstallScript() {
+  const dest = path.join(websiteRoot, 'public', 'install.sh');
+  const localSrc = path.resolve(websiteRoot, '..', 'deckyard', 'scripts', 'install.sh');
+  const rawUrl =
+    'https://raw.githubusercontent.com/jaapstronks/deckyard/main/scripts/install.sh';
+
+  let script = null;
+  let source = '';
+  try {
+    script = await fs.readFile(localSrc, 'utf8');
+    source = 'local sibling ../deckyard/scripts/install.sh';
+  } catch {
+    try {
+      const res = await fetch(rawUrl);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      script = await res.text();
+      source = rawUrl;
+    } catch (err) {
+      // Never hard-fail the build: keep any existing copy, else warn loudly so a
+      // broken deckyard.eu/install.sh is visible in the build log.
+      try {
+        await fs.stat(dest);
+        console.warn(
+          `[website] install.sh sync skipped (${err.message}); keeping existing public/install.sh`
+        );
+      } catch {
+        console.warn(
+          `[website] install.sh sync FAILED (${err.message}) and no existing copy — deckyard.eu/install.sh will 404`
+        );
+      }
+      return;
+    }
+  }
+
+  await ensureDir(path.dirname(dest));
+  await fs.writeFile(dest, script, 'utf8');
+  // eslint-disable-next-line no-console
+  console.log(`[website] synced public/install.sh from ${source}`);
+}
+
 async function main() {
   // Start fresh to avoid stale removed files.
   // Clean the parent docs collection folder, not just the nested one
@@ -104,6 +149,9 @@ async function main() {
   await injectFrontmatterIfMissing('hosting/website-hosting.md', 'Website hosting');
   await injectFrontmatterIfMissing('integrations/analytics.md', 'Analytics');
   await injectFrontmatterIfMissing('integrations/webhooks.md', 'Webhooks');
+
+  // Publish the engine installer at deckyard.eu/install.sh.
+  await syncInstallScript();
 }
 
 main().catch((err) => {

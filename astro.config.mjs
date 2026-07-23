@@ -4,6 +4,11 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://deckyard.eu',
+  // Marketing pages are bilingual: EN at the root (no prefix), NL under /nl/,
+  // handled with file-based routing + helpers in src/i18n/ui.ts. We deliberately
+  // do NOT set Astro's global `i18n` config here: Starlight would inherit the
+  // `nl` locale and emit 97 duplicate English-content /nl/docs pages. Docs stay
+  // English-only, so locale routing lives entirely in the custom pages.
   integrations: [
     sitemap(),
     starlight({

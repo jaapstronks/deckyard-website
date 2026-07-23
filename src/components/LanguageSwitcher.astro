@@ -1,0 +1,114 @@
+---
+import { languages, stripLangFromPath, localizePath, type Lang } from '../i18n/ui';
+
+interface Props {
+  currentPath: string;
+  ariaLabel: string;
+}
+const { currentPath, ariaLabel } = Astro.props;
+
+// Resolve the logical (root-form) path once, then build the URL per locale so
+// the switcher lands on the same page in the other language.
+const { path, lang: active } = stripLangFromPath(currentPath);
+
+const entries = (Object.keys(languages) as Lang[]).map((lang) => ({
+  lang,
+  code: lang.toUpperCase(),
+  name: languages[lang],
+  href: localizePath(path, lang),
+  current: lang === active,
+}));
+---
+
+<details class="lang-switch" data-lang-switch>
+  <summary class="lang-switch-trigger" aria-label={ariaLabel}>
+    <svg
+      class="lang-switch-globe"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M3 12h18M12 3c2.4 2.6 3.7 5.7 3.7 9s-1.3 6.4-3.7 9c-2.4-2.6-3.7-5.7-3.7-9S9.6 5.6 12 3Z"></path>
+    </svg>
+    <span class="lang-switch-code">{active.toUpperCase()}</span>
+    <svg
+      class="lang-switch-caret"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </summary>
+
+  <ul class="lang-menu" role="list">
+    {
+      entries.map((entry) => (
+        <li>
+          <a
+            href={entry.href}
+            class:list={['lang-menu-item', { 'is-active': entry.current }]}
+            aria-current={entry.current ? 'true' : undefined}
+            lang={entry.lang}
+          >
+            <span class="lang-menu-code">{entry.code}</span>
+            <span class="lang-menu-name">{entry.name}</span>
+            {entry.current && (
+              <svg
+                class="lang-menu-check"
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            )}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</details>
+
+<script>
+  // Close the language dropdown on outside-click or Escape. Re-bind after each
+  // view transition so the behaviour survives client-side navigation.
+  function initLangSwitch() {
+    const details = document.querySelectorAll<HTMLDetailsElement>('[data-lang-switch]');
+    details.forEach((el) => {
+      if (el.dataset.bound) return;
+      el.dataset.bound = 'true';
+
+      document.addEventListener('click', (event) => {
+        if (el.open && !el.contains(event.target as Node)) el.open = false;
+      });
+      el.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          el.open = false;
+          el.querySelector<HTMLElement>('summary')?.focus();
+        }
+      });
+    });
+  }
+  initLangSwitch();
+  document.addEventListener('astro:page-load', initLangSwitch);
+</script>
