@@ -1,15 +1,13 @@
 name: Deploy Website
 
-# Deploys the static Astro site to Scaleway Object Storage (Bolster account)
-# on every push to main. One-time infra bootstrap (bucket, secrets, DNS,
-# Cloudflare) is documented in DEPLOYMENT-PLAN.md and handed to bolster-admin.
+# Builds the static Astro site and deploys it to the Hetzner box (Bolster)
+# that serves deckyard.eu via Caddy (automatic Let's Encrypt TLS). The one-time
+# infra bootstrap (server, DNS) is handled by bolster-admin.
 #
 # Required GitHub secrets (Settings -> Secrets and variables -> Actions):
-#   SCW_ACCESS_KEY   Scaleway API access key (Bolster account)
-#   SCW_SECRET_KEY   Scaleway API secret key (Bolster account)
-# Optional (Cloudflare cache purge after deploy):
-#   CLOUDFLARE_API_TOKEN
-#   CLOUDFLARE_ZONE_ID
+#   DEPLOY_SSH_KEY      Private SSH key for the `deploy` user on the box
+#   DEPLOY_HOST         Public IP / hostname of the box
+#   DEPLOY_KNOWN_HOSTS  ssh-keyscan output for the box (host-key pinning)
 
 on:
   push:
@@ -21,9 +19,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  BUCKET: deckyard-website
-  SCW_REGION: fr-par
-  SCW_ENDPOINT: https://s3.fr-par.scw.cloud
+  DEPLOY_USER: deploy
+  DEPLOY_PATH: /var/www/deckyard
 
 jobs:
   deploy:
@@ -43,42 +40,16 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Configure Scaleway credentials
+      - name: Set up SSH
         run: |
-          aws configure set aws_access_key_id "${{ secrets.SCW_ACCESS_KEY }}"
-          aws configure set aws_secret_access_key "${{ secrets.SCW_SECRET_KEY }}"
-          aws configure set default.region "$SCW_REGION"
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "${{ secrets.DEPLOY_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
 
-      - name: Upload immutable assets (long cache)
+      - name: Deploy via rsync
         run: |
-          aws s3 sync ./dist "s3://$BUCKET" \
-            --endpoint-url "$SCW_ENDPOINT" \
-            --acl public-read \
-            --delete \
-            --exclude "*.html" \
-            --exclude "*.xml" \
-            --cache-control "public, max-age=31536000, immutable"
-
-      - name: Upload HTML and sitemaps (short cache)
-        run: |
-          aws s3 sync ./dist "s3://$BUCKET" \
-            --endpoint-url "$SCW_ENDPOINT" \
-            --acl public-read \
-            --delete \
-            --exclude "*" \
-            --include "*.html" \
-            --include "*.xml" \
-            --cache-control "public, max-age=3600"
-
-      - name: Purge Cloudflare cache
-        # `secrets` is not allowed in a step-level `if:`; map to env first.
-        if: ${{ env.CF_TOKEN != '' && env.CF_ZONE != '' }}
-        env:
-          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CF_ZONE: ${{ secrets.CLOUDFLARE_ZONE_ID }}
-        run: |
-          curl -fsS -X POST \
-            "https://api.cloudflare.com/client/v4/zones/${CF_ZONE}/purge_cache" \
-            -H "Authorization: Bearer ${CF_TOKEN}" \
-            -H "Content-Type: application/json" \
-            --data '{"purge_everything":true}'
+          rsync -rltvz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes" \
+            ./dist/ \
+            "${DEPLOY_USER}@${{ secrets.DEPLOY_HOST }}:${DEPLOY_PATH}/"
