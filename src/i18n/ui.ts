@@ -160,7 +160,7 @@ export const ui: Record<Lang, Content> = {
       heroTitleHighlight: 'set free.',
       heroTagline: 'Open source, end to end, and yours to run.',
       heroLead:
-        'Deckyard is an open source presentation platform for organizations that want to own their work. Not just a slide builder: create, present, publish and collaborate in one web-based tool that runs on infrastructure you control. Being open, flexible and self-hostable is exactly why nonprofits, public institutions and cultural organizations feel at home with it, and why it fits any team that cares about its brand and its data. Every deck looks like it came from your design department, and stays yours from first draft to live audience.',
+        'Deckyard is an open source presentation platform for organizations that want to own their work. Not just a slide builder: create, present, publish and collaborate in one web-based tool that runs on infrastructure you control. Every deck looks like it came from your design department, and stays yours from first draft to live audience.',
       featuresKicker: 'Under the hood',
       featuresTitle: 'Already built, now in the open',
       featuresLead:
@@ -294,7 +294,7 @@ export const ui: Record<Lang, Content> = {
       heroTitleHighlight: 'bevrijd.',
       heroTagline: 'Open source, van begin tot eind, en van jou.',
       heroLead:
-        'Deckyard is een open source presentatieplatform voor elke organisatie die haar eigen werk in handen wil houden. Niet zomaar een slidebouwer: maken, presenteren, publiceren en samenwerken in één webtool die draait op infrastructuur die jij beheert. Juist omdat het open, flexibel en zelf te hosten is, voelen maatschappelijke organisaties, overheden en culturele instellingen zich er thuis; net als elk team dat om zijn merk en zijn data geeft. Elke deck ziet eruit alsof je designafdeling hem maakte, en blijft van jou; van eerste opzet tot live publiek.',
+        'Deckyard is een open source presentatieplatform voor elke organisatie die haar eigen werk in handen wil houden. Niet zomaar een slidebouwer: maken, presenteren, publiceren en samenwerken in één webtool die draait op infrastructuur die jij beheert. Elke deck ziet eruit alsof je designafdeling hem maakte, en blijft van jou; van eerste opzet tot live publiek.',
       featuresKicker: 'Onder de motorkap',
       featuresTitle: 'Al gebouwd, nu in de openbaarheid',
       featuresLead:
