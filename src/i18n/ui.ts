@@ -170,7 +170,7 @@ export const ui: Record<Lang, Content> = {
     home: {
       metaTitle: 'Deckyard — Open source, end-to-end presentation platform',
       metaDescription:
-        'Deckyard is the open source, end-to-end presentation platform: create, present, publish and collaborate in one web-based tool that runs on infrastructure you control. On brand by default, and yours from first draft to live audience. The code is public on GitHub.',
+        'The open source presentation platform you run yourself. Create, present, publish and collaborate in one tool - on brand by default, GDPR-native, no lock-in. MIT licensed, code on GitHub.',
       heroKicker: 'Open source · End-to-end · Made in Europe',
       heroTitleMain: 'Presentations,',
       heroTitleHighlight: 'set free.',
@@ -308,7 +308,7 @@ export const ui: Record<Lang, Content> = {
     home: {
       metaTitle: 'Deckyard - Open source presentatieplatform van begin tot eind',
       metaDescription:
-        'Deckyard is het open source presentatieplatform van begin tot eind: maken, presenteren, publiceren en samenwerken in één webtool die draait op infrastructuur die jij beheert. On brand vanaf het eerste moment, en van jou van eerste opzet tot live publiek. De code staat openbaar op GitHub.',
+        'Het open source presentatieplatform dat je zelf draait. Maken, presenteren, publiceren en samenwerken in één tool - on brand, GDPR-proof, geen lock-in. MIT-licentie, code op GitHub.',
       heroKicker: 'Open source · Van begin tot eind · Made in Europe',
       heroTitleMain: 'Presenteren,',
       heroTitleHighlight: 'eindelijk vrij.',
