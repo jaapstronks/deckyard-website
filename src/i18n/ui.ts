@@ -39,6 +39,7 @@ export interface Content {
   nav: {
     sandbox: string;
     blog: string;
+    changelog: string;
     docs: string;
     github: string;
     homeAria: string;
@@ -126,6 +127,17 @@ export interface Content {
     readMore: string;
     dateLocale: string;
   };
+
+  changelog: {
+    metaTitle: string;
+    metaDescription: string;
+    kicker: string;
+    title: string;
+    intro: string;
+    latestBadge: string;
+    githubCta: string;
+    dateLocale: string;
+  };
 }
 
 export const ui: Record<Lang, Content> = {
@@ -137,6 +149,7 @@ export const ui: Record<Lang, Content> = {
     nav: {
       sandbox: 'Try it',
       blog: 'Blog',
+      changelog: 'Changelog',
       docs: 'Docs',
       github: 'GitHub',
       homeAria: 'Deckyard home',
@@ -266,6 +279,19 @@ export const ui: Record<Lang, Content> = {
       readMore: 'Read the post →',
       dateLocale: 'en-GB',
     },
+
+    changelog: {
+      metaTitle: 'Changelog — Deckyard',
+      metaDescription:
+        "What's new in Deckyard, release by release: collaboration, editor, exports, themes, self-hosting and security, in plain language.",
+      kicker: "What's new",
+      title: 'Changelog',
+      intro:
+        'Every Deckyard release, in plain language. The commit-level detail lives on GitHub; here is what it means for the people using it.',
+      latestBadge: 'Latest',
+      githubCta: 'Releases on GitHub →',
+      dateLocale: 'en-GB',
+    },
   },
 
   nl: {
@@ -276,6 +302,7 @@ export const ui: Record<Lang, Content> = {
     nav: {
       sandbox: 'Probeer',
       blog: 'Blog',
+      changelog: 'Changelog',
       docs: 'Docs',
       github: 'GitHub',
       homeAria: 'Deckyard startpagina',
@@ -403,6 +430,19 @@ export const ui: Record<Lang, Content> = {
 
     blogCard: {
       readMore: 'Lees het bericht →',
+      dateLocale: 'nl-NL',
+    },
+
+    changelog: {
+      metaTitle: 'Changelog - Deckyard',
+      metaDescription:
+        'Wat er nieuw is in Deckyard, release voor release: samenwerken, editor, exports, thema’s, self-hosting en beveiliging, in gewone taal.',
+      kicker: 'Wat er nieuw is',
+      title: 'Changelog',
+      intro:
+        'Elke release van Deckyard, in gewone taal. De details op commit-niveau staan op GitHub; hier lees je wat het betekent voor wie ermee werkt.',
+      latestBadge: 'Nieuwste',
+      githubCta: 'Releases op GitHub →',
       dateLocale: 'nl-NL',
     },
   },

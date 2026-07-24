@@ -1,0 +1,263 @@
+---
+import { getCollection, render } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { ui, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].changelog;
+
+const releases = (
+  await getCollection('releases', ({ data }) => {
+    const langMatch = (data.lang ?? 'en') === lang;
+    return langMatch && (import.meta.env.PROD ? !data.draft : true);
+  })
+).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Pre-render each release body so the timeline can lay them out in order.
+const entries = await Promise.all(
+  releases.map(async (release) => ({
+    ...release,
+    Content: (await render(release)).Content,
+    anchor: `v${release.data.version.replace(/\./g, '-')}`,
+    dateLabel: new Intl.DateTimeFormat(t.dateLocale, {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).format(release.data.date),
+  }))
+);
+---
+
+<SiteLayout title={t.metaTitle} description={t.metaDescription}>
+  <section class="section article-hero" style="padding-bottom: 0;">
+    <div class="container">
+      <div class="article-hero-inner">
+        <p class="kicker kicker--center">{t.kicker}</p>
+        <h1>{t.title}</h1>
+        <p class="article-intro">{t.intro}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--narrow">
+      <ol class="changelog">
+        {
+          entries.map((release, index) => (
+            <li class="changelog-entry" id={release.anchor} data-reveal data-reveal-delay={Math.min(index, 2) * 80}>
+              <div class="changelog-rail" aria-hidden="true">
+                <span class="changelog-dot" />
+              </div>
+
+              <div class="changelog-content">
+                <header class="changelog-head">
+                  <a class="changelog-version" href={`#${release.anchor}`}>
+                    <span class="changelog-num">v{release.data.version}</span>
+                    {release.data.latest && <span class="changelog-latest">{t.latestBadge}</span>}
+                  </a>
+                  <p class="changelog-meta">
+                    {release.data.tag && <span class="changelog-tag">{release.data.tag}</span>}
+                    <time datetime={release.data.date.toISOString()}>{release.dateLabel}</time>
+                  </p>
+                </header>
+
+                <p class="changelog-summary">{release.data.summary}</p>
+
+                <div class="changelog-body">
+                  <release.Content />
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <p class="changelog-footer">
+        <a href="https://github.com/jaapstronks/deckyard/releases" target="_blank" rel="noopener">
+          {t.githubCta}
+        </a>
+      </p>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  .container--narrow {
+    max-width: 760px;
+  }
+
+  .changelog {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Each entry is a two-column grid: a thin timeline rail on the left, the
+     release content on the right. On narrow screens the rail collapses away. */
+  .changelog-entry {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 28px;
+    padding-bottom: 56px;
+  }
+  .changelog-entry:last-child {
+    padding-bottom: 0;
+  }
+
+  .changelog-rail {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+  /* The vertical line runs through the whole rail; the dot marks the release. */
+  .changelog-rail::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    bottom: -56px;
+    width: 2px;
+    background: var(--line);
+  }
+  .changelog-entry:last-child .changelog-rail::before {
+    bottom: auto;
+    height: 22px;
+  }
+  .changelog-dot {
+    position: relative;
+    z-index: 1;
+    width: 14px;
+    height: 14px;
+    margin-top: 4px;
+    border-radius: 50%;
+    background: var(--brass-bright);
+    box-shadow: 0 0 0 4px var(--paper);
+  }
+  .changelog-entry:first-child .changelog-dot {
+    background: var(--green);
+    box-shadow: 0 0 0 4px var(--paper), 0 0 0 6px var(--brass-soft);
+  }
+
+  .changelog-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+  }
+  .changelog-version {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .changelog-version:hover .changelog-num {
+    color: var(--green-bright);
+  }
+  .changelog-num {
+    font-family: var(--display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--green);
+    transition: color var(--dur-micro) ease;
+  }
+  .changelog-latest {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green-deep);
+    background: var(--brass-soft);
+    padding: 3px 8px;
+    border-radius: 999px;
+  }
+  .changelog-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--ink-mute);
+  }
+  .changelog-tag {
+    color: var(--brass);
+  }
+
+  .changelog-summary {
+    margin: 12px 0 0;
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+  }
+
+  /* Rendered markdown body. Group headings (###) become small brass labels; the
+     lists get compact brass markers so a release scans as a set of themes. */
+  .changelog-body {
+    margin-top: 24px;
+  }
+  .changelog-body :global(h3) {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 28px 0 10px;
+  }
+  .changelog-body :global(h3:first-child) {
+    margin-top: 0;
+  }
+  .changelog-body :global(p) {
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+  .changelog-body :global(ul) {
+    list-style: none;
+    margin: 0 0 4px;
+    padding: 0;
+  }
+  .changelog-body :global(li) {
+    position: relative;
+    padding-left: 22px;
+    margin-bottom: 8px;
+    color: var(--ink-soft);
+  }
+  .changelog-body :global(li)::before {
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 0.62em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--brass-bright);
+  }
+  .changelog-body :global(code) {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    background: var(--paper-warm);
+    padding: 1px 5px;
+    border-radius: var(--radius-sm);
+  }
+
+  .changelog-footer {
+    margin: 8px 0 0;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 600px) {
+    .changelog-entry {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .changelog-rail {
+      display: none;
+    }
+  }
+</style>

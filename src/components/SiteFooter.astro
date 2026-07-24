@@ -9,6 +9,7 @@ const { lang } = Astro.props;
 const t = ui[lang].footer;
 const year = new Date().getFullYear();
 const blogHref = localizePath('/blog/', lang);
+const changelogHref = localizePath('/changelog/', lang);
 const copyright = t.metaCopyright.replace('{year}', String(year));
 ---
 
@@ -25,6 +26,7 @@ const copyright = t.metaCopyright.replace('{year}', String(year));
           <h4>{t.followHeading}</h4>
           <ul>
             <li><a href={blogHref}>{t.followBlog}</a></li>
+            <li><a href={changelogHref}>{ui[lang].nav.changelog}</a></li>
             <li><a href="/rss.xml">{t.followRss}</a></li>
           </ul>
         </div>
