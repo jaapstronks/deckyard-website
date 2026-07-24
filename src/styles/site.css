@@ -232,6 +232,14 @@ img { max-width: 100%; height: auto; display: block; }
   translate: 0 -1px;
 }
 
+/* Right-hand cluster: the collapsible nav, the always-visible Probeer CTA, and
+   the hamburger (mobile only). */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 2.4vw, 22px);
+}
+
 .site-nav {
   display: flex;
   align-items: center;
@@ -246,6 +254,38 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .site-nav a:hover,
 .site-nav a[aria-current='page'] { color: var(--green); }
+
+/* Hamburger toggle: hidden on desktop, shown at the mobile breakpoint below. */
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm, 10px);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+.nav-toggle-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 18px;
+}
+.nav-toggle-bar {
+  height: 2px;
+  width: 100%;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform var(--dur-micro) ease, opacity var(--dur-micro) ease;
+}
+/* Morph the three bars into an X while the drawer is open. */
+.site-header.nav-open .nav-toggle-bar:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.site-header.nav-open .nav-toggle-bar:nth-child(2) { opacity: 0; }
+.site-header.nav-open .nav-toggle-bar:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
 /* Language switcher: a dropdown that scales to any number of locales. */
 .lang-switch {
@@ -333,12 +373,69 @@ img { max-width: 100%; height: auto; display: block; }
 .lang-menu-name { flex: 1; }
 .lang-menu-check { color: var(--green); flex: none; }
 
-/* Narrow screens: reclaim width by dropping the decorative Beta badge and
-   tightening the nav, so the language dropdown always fits. */
-@media (max-width: 560px) {
+/* Mobile: collapse the nav links + language switcher into a hamburger drawer.
+   Logo and the Probeer CTA stay visible in the bar. */
+@media (max-width: 700px) {
+  .nav-toggle { display: inline-flex; }
+
+  /* The nav becomes a drawer panel dropping from under the header. */
+  .site-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    padding: 8px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 12px 28px -12px color-mix(in srgb, var(--ink) 30%, transparent);
+
+    /* Hidden until opened. Collapse height + fade so it animates cleanly. */
+    display: flex;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: max-height var(--dur-micro) ease, opacity var(--dur-micro) ease;
+  }
+  .site-header.nav-open .site-nav {
+    max-height: 80vh;
+    opacity: 1;
+    pointer-events: auto;
+    overflow-y: auto; /* tall content (open language list) scrolls inside the drawer */
+  }
+
+  .site-nav a {
+    padding: 12px 14px;
+    border-radius: var(--radius-sm, 10px);
+    font-size: 1rem;
+  }
+  .site-nav a:hover { background: var(--green-wash); }
+
+  /* Language switcher sits in the drawer as a full-width row. */
+  .site-nav .lang-switch { width: 100%; }
+  .site-nav .lang-switch-trigger { width: 100%; justify-content: flex-start; }
+
+  /* Render the language options in-flow so they aren't clipped by the drawer's
+     overflow; the absolute dropdown only makes sense in the desktop bar. */
+  .site-nav .lang-menu {
+    position: static;
+    min-width: 0;
+    margin-top: 4px;
+    box-shadow: none;
+    border: none;
+    padding: 4px 0 0;
+    background: transparent;
+    animation: none;
+  }
+  .site-nav .lang-menu-item { padding: 12px 14px; }
+}
+
+/* Very narrow: drop the decorative Beta badge to protect the brand + CTA. */
+@media (max-width: 420px) {
   .brand-badge { display: none; }
-  .site-nav { gap: 13px; }
-  .site-nav a { font-size: 0.88rem; }
 }
 
 /* ---------- Buttons + form ---------- */

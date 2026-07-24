@@ -44,6 +44,7 @@ export interface Content {
     homeAria: string;
     badge: string;
     languageAria: string;
+    menuAria: string;
   };
 
   waitlist: {
@@ -141,6 +142,7 @@ export const ui: Record<Lang, Content> = {
       homeAria: 'Deckyard home',
       badge: 'Beta',
       languageAria: 'Language',
+      menuAria: 'Menu',
     },
 
     waitlist: {
@@ -279,6 +281,7 @@ export const ui: Record<Lang, Content> = {
       homeAria: 'Deckyard startpagina',
       badge: 'Beta',
       languageAria: 'Taal',
+      menuAria: 'Menu',
     },
 
     waitlist: {
