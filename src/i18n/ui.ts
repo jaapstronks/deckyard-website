@@ -106,6 +106,43 @@ export interface Content {
     readFirst: string;
   };
 
+  // Homepage "what a slide actually is" demo. The running example is a
+  // deliberately absurd one - a lemonade stand reported on in stiff corporate
+  // register - so nobody mistakes the demo content for a claim about Deckyard.
+  anatomy: {
+    kicker: string;
+    title: string;
+    lead: string;
+    // Window chrome for the source document. The filename is the joke and the
+    // point at once: this is the artefact people actually start from.
+    docFilename: string;
+    docWindowAria: string;
+    docHeading: string;
+    // Paragraphs of the source document, as HTML. Each passage a slide field
+    // is drawn from is wrapped in <span data-span="ID">; the IDs are structural
+    // and map to fields in SlideAnatomy.astro, so keep them when translating.
+    docParagraphs: string[];
+    sourceLabel: string;
+    recordLabel: string;
+    slideLabel: string;
+    typeLabel: string;
+    hint: string;
+    // One entry per slide type on show. The field vocabulary itself (keys,
+    // types, required flags, limits) is structural and lives in the component;
+    // only the human-readable values are translated here.
+    types: {
+      id: string;
+      label: string;
+      claim: string; // may contain <b>
+      eyebrow: string;
+      title: string;
+      items?: { date: string; title: string }[];
+      metrics?: { value: string; unit?: string; label: string }[];
+      bars?: { label: string; value: number }[];
+      quote?: { text: string; name: string; role: string };
+    }[];
+  };
+
   blogIndex: {
     metaTitle: string;
     metaDescription: string;
@@ -253,6 +290,81 @@ export const ui: Record<Lang, Content> = {
       copy: 'Copy',
       copied: 'Copied',
       readFirst: 'Read the script first',
+    },
+
+    anatomy: {
+      kicker: 'What a slide actually is',
+      title: 'Every slide knows what it is',
+      lead: 'Most decks begin life as a document like this one. Deckyard does not turn it into a drawing: it turns it into structured content, where a timeline is a sequence and a figure is a number. Pick a slide type and hover a field to see where it came from.',
+      docFilename: 'Lemonade-Stand-Q3-Review-FINAL-v2-reviewed_by_jane-REALFINAL(3).docx',
+      docWindowAria: 'Source document the slides were built from',
+      docHeading: 'Q3 Operational Review — Sunnyside Lemonade Stand',
+      docParagraphs: [
+        '<b data-span="h1">1. Background.</b> The Stand was <span data-span="n1">constituted by resolution of the household</span> in <span data-span="t1">2021</span>. Initial capitalisation comprised one folding table and a hand-lettered sign. In <span data-span="t2">2022</span> the Stand entered its <span data-span="n2">first strategic partnership, with the adjacent bake sale</span>. Operations were <span data-span="n3">suspended for reasons of weather</span> throughout <span data-span="t3">2024</span>. Trading <span data-span="n4">resumed under revised governance</span> in <span data-span="t4">2025</span>.',
+        '<b data-span="h2">2. Performance.</b> In the period under review the Stand dispensed <span data-span="k1v">412</span> <span data-span="k1l">cups</span>, an increase of 18 per cent on the comparable quarter. <span data-span="k2l">Gross margin</span> stood at <span data-span="k2v">61</span> per cent. <span data-span="k3l">Customer satisfaction</span>, measured informally by the proprietor, averaged <span data-span="k3v">9.4</span> out of ten.',
+        '<b data-span="h3">3. Volumes.</b> Cups dispensed per month: <span data-span="c1">June 96</span>, <span data-span="c2">July 141</span>, <span data-span="c3">August 175</span>. The Board notes that August benefited from unusually warm weather and one school holiday.',
+        '<b>4. Stakeholder feedback.</b> <span data-span="q2">Mrs. H. Albers</span>, <span data-span="q3">resident of number 14</span>, observed: <span data-span="q1">It is, on balance, quite good lemonade.</span> Mrs. Albers has been a customer since inception.',
+      ],
+      sourceLabel: 'Source document',
+      recordLabel: 'The slide as data',
+      slideLabel: 'The slide as shown',
+      typeLabel: 'Slide type',
+      hint: 'Hover a field to light up the sentence it came from.',
+      types: [
+        {
+          id: 'timeline-slide',
+          label: 'Timeline',
+          claim:
+            '<b>ordered: true</b> — the sequence is the meaning here, not a layout choice. So it projects to a numbered list for screen readers, and nothing downstream is allowed to reshuffle it.',
+          eyebrow: 'Background',
+          title: 'Historical development of the Stand',
+          items: [
+            { date: '2021', title: 'Constituted by resolution' },
+            { date: '2022', title: 'First strategic partnership' },
+            { date: '2024', title: 'Operations suspended' },
+            { date: '2025', title: 'Trading resumed' },
+          ],
+        },
+        {
+          id: 'kpi-metrics-slide',
+          label: 'Figures',
+          claim:
+            '<b>maxItems: 4</b> — the type declines a fifth figure. Four is what a room remembers, and that editorial judgement lives in the format rather than in a style guide nobody reads.',
+          eyebrow: 'Performance',
+          title: 'The quarter in figures',
+          metrics: [
+            { value: '412', label: 'Cups dispensed' },
+            { value: '61', unit: '%', label: 'Gross margin' },
+            { value: '9.4', label: 'Satisfaction' },
+          ],
+        },
+        {
+          id: 'chart-slide',
+          label: 'Chart',
+          claim:
+            '<b>data: csv (required)</b> — the figures live in the record as data, not as a picture of a chart. That is exactly why this field can be wired to a spreadsheet or a database later.',
+          eyebrow: 'Volumes',
+          title: 'Cups dispensed per month',
+          bars: [
+            { label: 'June', value: 96 },
+            { label: 'July', value: 141 },
+            { label: 'August', value: 175 },
+          ],
+        },
+        {
+          id: 'quote-slide',
+          label: 'Quote',
+          claim:
+            '<b>authorName is required</b> — an unattributed quote is not a valid slide in this format. The type holds a journalistic norm that otherwise depends on whoever happened to be in a hurry.',
+          eyebrow: 'Stakeholder feedback',
+          title: '',
+          quote: {
+            text: 'It is, on balance, quite good lemonade.',
+            name: 'Mrs. H. Albers',
+            role: 'Resident of number 14, customer since inception',
+          },
+        },
+      ],
     },
 
     blogIndex: {
@@ -406,6 +518,81 @@ export const ui: Record<Lang, Content> = {
       copy: 'Kopieer',
       copied: 'Gekopieerd',
       readFirst: 'Lees eerst het script',
+    },
+
+    anatomy: {
+      kicker: 'Wat een slide eigenlijk is',
+      title: 'Elke slide weet wat hij is',
+      lead: 'De meeste decks beginnen als een document zoals dit. Deckyard maakt er geen tekening van, maar gestructureerde inhoud: een tijdlijn is een reeks, een cijfer is een getal. Kies een slidetype en beweeg over een veld om te zien waar het vandaan komt.',
+      docFilename: 'Limonadekraam-Q3-DEF-v2-nagekeken_door_jantine-ECHTDEF(3).docx',
+      docWindowAria: 'Brondocument waaruit de slides zijn opgebouwd',
+      docHeading: 'Kwartaalrapportage Q3 - Limonadekraam De Zonnezijde',
+      docParagraphs: [
+        '<b data-span="h1">1. Achtergrond.</b> De Kraam is in <span data-span="t1">2021</span> <span data-span="n1">opgericht bij besluit van het huishouden</span>. Het startkapitaal bestond uit één klaptafel en een met de hand geletterd bord. In <span data-span="t2">2022</span> ging de Kraam haar <span data-span="n2">eerste strategische samenwerking</span> aan, met de naastgelegen taartverkoop. In <span data-span="t3">2024</span> zijn de werkzaamheden <span data-span="n3">opgeschort wegens weersomstandigheden</span>. In <span data-span="t4">2025</span> is de <span data-span="n4">exploitatie hervat onder herzien bestuur</span>.',
+        '<b data-span="h2">2. Prestaties.</b> In de verslagperiode zijn <span data-span="k1v">412</span> <span data-span="k1l">bekers</span> verstrekt, een toename van 18 procent ten opzichte van het vergelijkbare kwartaal. De <span data-span="k2l">brutomarge</span> bedroeg <span data-span="k2v">61</span> procent. De <span data-span="k3l">klanttevredenheid</span>, informeel gemeten door de exploitant, kwam gemiddeld uit op <span data-span="k3v">9,4</span> van de tien.',
+        '<b data-span="h3">3. Volumes.</b> Verstrekte bekers per maand: <span data-span="c1">juni 96</span>, <span data-span="c2">juli 141</span>, <span data-span="c3">augustus 175</span>. Het Bestuur tekent aan dat augustus profiteerde van uitzonderlijk warm weer en één schoolvakantie.',
+        '<b>4. Terugkoppeling belanghebbenden.</b> <span data-span="q2">Mevrouw H. Albers</span>, <span data-span="q3">woonachtig op nummer 14</span>, merkte op: <span data-span="q1">Het is, alles afwegend, best goede limonade.</span> Mevrouw Albers is klant sinds de oprichting.',
+      ],
+      sourceLabel: 'Brondocument',
+      recordLabel: 'De slide als data',
+      slideLabel: 'De slide zoals getoond',
+      typeLabel: 'Slidetype',
+      hint: 'Beweeg over een veld om de zin op te laten lichten waar het uit komt.',
+      types: [
+        {
+          id: 'timeline-slide',
+          label: 'Tijdlijn',
+          claim:
+            '<b>ordered: true</b> - de volgorde is hier de betekenis, geen opmaakkeuze. Daarom wordt dit voor een screenreader een genummerde lijst, en mag niets verderop de items herschikken.',
+          eyebrow: 'Achtergrond',
+          title: 'Historische ontwikkeling van de Kraam',
+          items: [
+            { date: '2021', title: 'Opgericht bij besluit' },
+            { date: '2022', title: 'Eerste samenwerking' },
+            { date: '2024', title: 'Werkzaamheden opgeschort' },
+            { date: '2025', title: 'Exploitatie hervat' },
+          ],
+        },
+        {
+          id: 'kpi-metrics-slide',
+          label: 'Cijfers',
+          claim:
+            '<b>maxItems: 4</b> - het type weigert een vijfde cijfer. Vier is wat een zaal onthoudt, en dat redactionele oordeel zit in het formaat in plaats van in een stijlgids die niemand leest.',
+          eyebrow: 'Prestaties',
+          title: 'Het kwartaal in cijfers',
+          metrics: [
+            { value: '412', label: 'Bekers verstrekt' },
+            { value: '61', unit: '%', label: 'Brutomarge' },
+            { value: '9,4', label: 'Tevredenheid' },
+          ],
+        },
+        {
+          id: 'chart-slide',
+          label: 'Grafiek',
+          claim:
+            '<b>data: csv (required)</b> - de cijfers staan als data in het record, niet als plaatje van een grafiek. Precies daarom kan dit veld later aan een spreadsheet of database gekoppeld worden.',
+          eyebrow: 'Volumes',
+          title: 'Verstrekte bekers per maand',
+          bars: [
+            { label: 'juni', value: 96 },
+            { label: 'juli', value: 141 },
+            { label: 'augustus', value: 175 },
+          ],
+        },
+        {
+          id: 'quote-slide',
+          label: 'Citaat',
+          claim:
+            '<b>authorName is required</b> - een citaat zonder bronvermelding is in dit formaat geen geldige slide. Het type houdt een journalistieke norm vast die anders afhangt van wie er toevallig haast had.',
+          eyebrow: 'Terugkoppeling belanghebbenden',
+          title: '',
+          quote: {
+            text: 'Het is, alles afwegend, best goede limonade.',
+            name: 'Mevrouw H. Albers',
+            role: 'Woonachtig op nummer 14, klant sinds de oprichting',
+          },
+        },
+      ],
     },
 
     blogIndex: {

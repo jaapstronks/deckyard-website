@@ -2,6 +2,7 @@
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import Waitlist from '../Waitlist.astro';
 import InstallWidget from '../InstallWidget.astro';
+import SlideAnatomy from '../SlideAnatomy.astro';
 import { ui, sandboxUrl, type Lang } from '../../i18n/ui';
 
 interface Props {
@@ -49,6 +50,9 @@ const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? ico
       </div>
     </div>
   </section>
+
+  <!-- ============ WHAT A SLIDE ACTUALLY IS ============ -->
+  <SlideAnatomy lang={lang} />
 
   <!-- ============ WHAT SHIPS ============ -->
   <section class="section section-tint">
