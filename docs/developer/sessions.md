@@ -52,7 +52,7 @@ Each session stores:
 ### API Endpoint
 
 ```
-POST /api/present/session
+POST /api/present-sessions
 Content-Type: application/json
 
 {
@@ -99,7 +99,7 @@ If an active session exists for the presentation, it's reused:
 When presenter navigates:
 
 ```
-PATCH /api/present/session/:sessionId/state
+POST /api/present-sessions/:sessionId/state
 Content-Type: application/json
 
 {
@@ -109,7 +109,7 @@ Content-Type: application/json
 }
 ```
 
-State is broadcast to all connected clients via SSE.
+The current state can be read back with `GET /api/present-sessions/:sessionId/state`. State is broadcast to all connected clients via SSE.
 
 ## Follow Codes
 
@@ -152,7 +152,7 @@ Clients connect to receive updates:
 
 ```javascript
 const eventSource = new EventSource(
-  '/api/present/session/ABC123/events'
+  '/api/present-sessions/ABC123/events'
 );
 ```
 
@@ -178,16 +178,14 @@ See [Real-Time Updates](/docs/integrations/real-time/) for details.
 
 ### Toggle Control
 
-Allow audience to self-navigate:
+Allow audience to self-navigate. Enable and disable are separate endpoints (no request body):
 
 ```
-PATCH /api/present/session/:sessionId/control
-Content-Type: application/json
-
-{
-  "enabled": true
-}
+POST /api/present-sessions/:sessionId/control/enable
+POST /api/present-sessions/:sessionId/control/disable
 ```
+
+(`POST /api/present-sessions/:sessionId/control` is a different endpoint: it sends a remote-navigation command, not the audience-control toggle.)
 
 ### Control State
 
@@ -219,13 +217,9 @@ Expired sessions are:
 - Cleaned from disk storage
 - Follow codes invalidated
 
-### Manual Close
+### Ending a Session
 
-Sessions can be explicitly closed:
-
-```
-DELETE /api/present/session/:sessionId
-```
+There is no explicit "close session" endpoint. A session ends by expiring after its inactivity window (see TTL below); stopping presenting simply lets it lapse.
 
 ## Persistence
 
@@ -295,41 +289,19 @@ For multiple servers:
 
 ## API Reference
 
-### Create Session
+All session endpoints are under the base path `/api/present-sessions`.
 
-```
-POST /api/present/session
-```
+| Purpose | Method | Path |
+|---------|--------|------|
+| Create (or reuse) a session | `POST` | `/api/present-sessions` |
+| Read current state | `GET` | `/api/present-sessions/:sessionId/state` |
+| Update state (navigate) | `POST` | `/api/present-sessions/:sessionId/state` |
+| Enable audience control | `POST` | `/api/present-sessions/:sessionId/control/enable` |
+| Disable audience control | `POST` | `/api/present-sessions/:sessionId/control/disable` |
+| Remote-navigation command | `POST` | `/api/present-sessions/:sessionId/control` |
+| SSE event stream | `GET` | `/api/present-sessions/:sessionId/events` |
 
-### Get Session
-
-```
-GET /api/present/session/:sessionId
-```
-
-### Update State
-
-```
-PATCH /api/present/session/:sessionId/state
-```
-
-### Toggle Control
-
-```
-PATCH /api/present/session/:sessionId/control
-```
-
-### Close Session
-
-```
-DELETE /api/present/session/:sessionId
-```
-
-### SSE Events
-
-```
-GET /api/present/session/:sessionId/events
-```
+There is no `DELETE` / close endpoint; sessions expire on inactivity.
 
 ## Troubleshooting
 
