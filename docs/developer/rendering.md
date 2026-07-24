@@ -157,28 +157,34 @@ The rendering system is used by:
 
 ### Endpoint Example
 
+There is one public rendering endpoint, used to render a single slide's HTML (primarily for custom slide types). It returns HTML, not an image:
+
 ```
-POST /api/presentations/:id/slides/:slideId/render
+POST /api/presentations/:id/render-slide
 Content-Type: application/json
 
 {
-  "scale": 2,
-  "format": "png"
+  "slide": { /* slide object */ },
+  "mode": "preview"
 }
 
-Response: PNG binary
+Response: { "html": "<div class=\"ps-theme\">…</div>" }
 ```
+
+PNG and PDF output are produced by the export endpoints, not here - see [PNG Export](/docs/export/images/) and [PDF Export](/docs/export/pdf/). The functions below (`renderSlideToPngBuffer`, `generateOgPreview`) are the internal building blocks those endpoints call.
 
 ## Puppeteer Configuration
 
 ### Environment Variables
 
 ```bash
-# Path to Chromium binary
+# Path to the Chrome/Chromium binary. Falls back to CHROME_BIN, then to
+# auto-detection of a system browser.
 PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
-# Disable sandbox (Docker)
-PUPPETEER_NO_SANDBOX=true
+# The sandbox is OFF by default (it runs with --no-sandbox). Set this to true
+# to ENABLE the Chromium sandbox for defense-in-depth where your host supports it.
+PUPPETEER_SANDBOX=true
 ```
 
 ### Docker Setup
@@ -197,20 +203,22 @@ RUN apk add --no-cache \
 
 ### Browser Pool
 
-A single browser instance is shared:
+A single browser instance is shared, launched via `puppeteer-core` (Deckyard does not bundle its own Chromium) and cached in a promise:
 
 ```javascript
-let browser = null;
+let browserPromise = null;
 
-async function getPuppeteerBrowser() {
-  if (!browser) {
-    browser = await puppeteer.launch({
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
-      headless: 'new',
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+async function getPuppeteerBrowser({ featureName }) {
+  if (!browserPromise) {
+    const puppeteer = await import('puppeteer-core');
+    browserPromise = puppeteer.launch({
+      executablePath, // PUPPETEER_EXECUTABLE_PATH || CHROME_BIN || auto-detected
+      headless: true,
+      args: ['--disable-dev-shm-usage', '--no-sandbox', '--disable-setuid-sandbox']
+      // ('--no-sandbox' is dropped when PUPPETEER_SANDBOX=true)
     });
   }
-  return browser;
+  return browserPromise;
 }
 ```
 
@@ -269,9 +277,7 @@ Each render temporarily uses:
 
 ### Timeout
 
-Default timeout: 30 seconds per render
-
-Long renders may indicate:
+Each render waits for slide resources (images, fonts) to settle before capturing. Long renders may indicate:
 - Large/complex slides
 - Missing resources
 - Network issues
