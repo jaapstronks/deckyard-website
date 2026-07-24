@@ -10,6 +10,9 @@ interface Props {
 const { lang } = Astro.props;
 const t = ui[lang].home;
 
+// Locale-specific social card (NL homepage gets the Dutch OG image).
+const ogImage = lang === 'nl' ? '/images/og/deckyard-og-nl.png' : '/images/og/deckyard-og.png';
+
 // Pillar icons are fixed per feature; only the title/body come from the
 // translation dictionary. Order matches t.pillars.
 const icons = [
@@ -25,7 +28,7 @@ const icons = [
 const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? icons[0] }));
 ---
 
-<SiteLayout title={t.metaTitle} description={t.metaDescription}>
+<SiteLayout title={t.metaTitle} description={t.metaDescription} ogImage={ogImage}>
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="container hero-inner">
