@@ -247,7 +247,7 @@
         "server/routes/api/questions.js",
         "server/routes/api/follow.js"
       ],
-      "sourceHash": "f6550bcfcc611877",
+      "sourceHash": "059ddd90f038f869",
       "lang": "en"
     },
     {
@@ -340,7 +340,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "69780a7eee64f618",
+      "sourceHash": "107fd7b44f33527d",
       "lang": "en"
     },
     {
@@ -557,7 +557,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "69780a7eee64f618",
+      "sourceHash": "107fd7b44f33527d",
       "lang": "en",
       "capturedAt": "2026-01-30",
       "recipe": null
@@ -792,8 +792,12 @@
       ],
       "sourceHash": "d966388962f02eec",
       "lang": "en",
-      "capturedAt": "2026-01-30",
-      "recipe": null
+      "capturedAt": "2026-07-24",
+      "recipe": {
+        "id": "editor-full",
+        "module": "../deckyard/capture/recipes/editor-full.js",
+        "hash": "575372a2227df504"
+      }
     },
     {
       "id": "shot-editor-overview",
@@ -961,7 +965,7 @@
         "server/routes/api/questions.js",
         "server/routes/api/follow.js"
       ],
-      "sourceHash": "f6550bcfcc611877",
+      "sourceHash": "059ddd90f038f869",
       "lang": "en",
       "capturedAt": "2026-01-30",
       "recipe": null
@@ -1055,7 +1059,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "69780a7eee64f618",
+      "sourceHash": "107fd7b44f33527d",
       "lang": "en",
       "capturedAt": "2026-07-23",
       "recipe": null
@@ -1132,7 +1136,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "69780a7eee64f618",
+      "sourceHash": "107fd7b44f33527d",
       "lang": "en",
       "capturedAt": "2026-01-30",
       "recipe": null
@@ -1150,7 +1154,7 @@
         "server/routes/api/questions.js",
         "server/routes/api/follow.js"
       ],
-      "sourceHash": "f6550bcfcc611877",
+      "sourceHash": "059ddd90f038f869",
       "lang": "en",
       "capturedAt": "2026-07-23",
       "recipe": null
@@ -1168,7 +1172,7 @@
         "server/routes/api/questions.js",
         "server/routes/api/follow.js"
       ],
-      "sourceHash": "f6550bcfcc611877",
+      "sourceHash": "059ddd90f038f869",
       "lang": "en",
       "capturedAt": "2026-07-23",
       "recipe": null
@@ -1189,7 +1193,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "69780a7eee64f618",
+      "sourceHash": "107fd7b44f33527d",
       "lang": "en",
       "capturedAt": "2026-01-30",
       "recipe": null
@@ -1302,7 +1306,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "69780a7eee64f618",
+      "sourceHash": "107fd7b44f33527d",
       "lang": "en",
       "capturedAt": "2026-07-23",
       "recipe": null
@@ -1390,7 +1394,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "69780a7eee64f618",
+      "sourceHash": "107fd7b44f33527d",
       "lang": "en",
       "capturedAt": "2026-01-30",
       "recipe": null
@@ -1642,7 +1646,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "69780a7eee64f618",
+      "sourceHash": "107fd7b44f33527d",
       "lang": "en",
       "capturedAt": "2026-07-23",
       "recipe": null
@@ -1664,10 +1668,14 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "69780a7eee64f618",
+      "sourceHash": "107fd7b44f33527d",
       "lang": "en",
-      "capturedAt": "2026-01-30",
-      "recipe": null
+      "capturedAt": "2026-07-24",
+      "recipe": {
+        "id": "slide-type-picker-new",
+        "module": "../deckyard/capture/recipes/slide-type-picker-new.js",
+        "hash": "b6a249bc21fd58d9"
+      }
     },
     {
       "id": "shot-slide-types-curation",
@@ -1704,7 +1712,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "69780a7eee64f618",
+      "sourceHash": "107fd7b44f33527d",
       "lang": "en",
       "capturedAt": "2026-07-23",
       "recipe": null
@@ -1722,7 +1730,7 @@
         "server/routes/api/questions.js",
         "server/routes/api/follow.js"
       ],
-      "sourceHash": "f6550bcfcc611877",
+      "sourceHash": "059ddd90f038f869",
       "lang": "en",
       "capturedAt": "2026-07-23",
       "recipe": null
@@ -1743,7 +1751,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "69780a7eee64f618",
+      "sourceHash": "107fd7b44f33527d",
       "lang": "en",
       "capturedAt": "2026-07-23",
       "recipe": null
@@ -1804,7 +1812,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "69780a7eee64f618",
+      "sourceHash": "107fd7b44f33527d",
       "lang": "en",
       "capturedAt": "2026-01-30",
       "recipe": null
@@ -1825,8 +1833,12 @@
       ],
       "sourceHash": "583435b00591a1a6",
       "lang": "en",
-      "capturedAt": "2026-07-23",
-      "recipe": null
+      "capturedAt": "2026-07-24",
+      "recipe": {
+        "id": "theme-editor-full",
+        "module": "../deckyard/capture/recipes/theme-editor-full.js",
+        "hash": "2da93939a472ccd3"
+      }
     },
     {
       "id": "shot-themes-settings-page",

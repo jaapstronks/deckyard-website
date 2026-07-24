@@ -9,15 +9,13 @@ HIGH = 10+ commits, MED = 3-9, LOW = 1-2. Re-capture top-down.
 | tier | commits since capture | last core change | captured | screenshot | doc page(s) |
 |---|--:|---|---|---|---|
 | HIGH | 80 | 2026-07-24 | 2026-01-30 | `deck-settings.png` | editing/index.md |
-| HIGH | 80 | 2026-07-24 | 2026-01-30 | `editor-full.png` | editing/index.md |
 | HIGH | 80 | 2026-07-24 | 2026-01-30 | `editor-overview.png` | editing/basic-editing.md |
 | HIGH | 80 | 2026-07-24 | 2026-01-30 | `slides-panel.png` | editing/slides-panel.md |
-| HIGH | 62 | 2026-07-24 | 2026-01-30 | `chart-slide-editor.png` | slide-types/data.md |
-| HIGH | 62 | 2026-07-24 | 2026-01-30 | `kpi-slide-editor.png` | slide-types/data.md |
-| HIGH | 62 | 2026-07-24 | 2026-01-30 | `likert-slide-editor.png` | slide-types/interactive.md |
-| HIGH | 62 | 2026-07-24 | 2026-01-30 | `process-slide-editor.png` | slide-types/structure.md |
-| HIGH | 62 | 2026-07-24 | 2026-01-30 | `slide-type-picker-new.png` | slide-types/index.md<br>creating/new-presentation.md |
-| HIGH | 62 | 2026-07-24 | 2026-01-30 | `table-slide-editor.png` | slide-types/data.md |
+| HIGH | 63 | 2026-07-24 | 2026-01-30 | `chart-slide-editor.png` | slide-types/data.md |
+| HIGH | 63 | 2026-07-24 | 2026-01-30 | `kpi-slide-editor.png` | slide-types/data.md |
+| HIGH | 63 | 2026-07-24 | 2026-01-30 | `likert-slide-editor.png` | slide-types/interactive.md |
+| HIGH | 63 | 2026-07-24 | 2026-01-30 | `process-slide-editor.png` | slide-types/structure.md |
+| HIGH | 63 | 2026-07-24 | 2026-01-30 | `table-slide-editor.png` | slide-types/data.md |
 | HIGH | 33 | 2026-07-24 | 2026-01-30 | `dashboard-home-new.png` | organizing/index.md |
 | HIGH | 33 | 2026-07-24 | 2026-01-30 | `search-results.png` | organizing/search.md |
 | HIGH | 23 | 2026-07-24 | 2026-01-30 | `export-menu.png` | export/index.md |
@@ -31,27 +29,28 @@ HIGH = 10+ commits, MED = 3-9, LOW = 1-2. Re-capture top-down.
 | HIGH | 15 | 2026-07-24 | 2026-07-23 | `trash-page.png` | organizing/trash.md |
 | HIGH | 14 | 2026-07-24 | 2026-01-30 | `image-picker.png` | libraries/image-library.md |
 | HIGH | 14 | 2026-07-24 | 2026-01-30 | `slide-library.png` | libraries/slide-library.md |
-| HIGH | 11 | 2026-07-24 | 2026-01-30 | `feedback-slide-editor.png` | interactions/feedback.md |
+| HIGH | 12 | 2026-07-24 | 2026-01-30 | `feedback-slide-editor.png` | interactions/feedback.md |
 | HIGH | 11 | 2026-07-24 | 2026-01-30 | `follow-invite-slide.png` | presenter/follow-mode.md |
 | HIGH | 11 | 2026-07-24 | 2026-01-30 | `notes-companion-qr.png` | presenter/notes-view.md |
 | HIGH | 11 | 2026-07-24 | 2026-01-30 | `presenter-mode.png` | presenter/index.md |
+| MED | 7 | 2026-07-24 | 2026-07-23 | `image-text-slide-editor.png` | slide-types/media.md |
+| MED | 7 | 2026-07-24 | 2026-07-23 | `lead-capture-editor-full.png` | interactions/feedback.md |
+| MED | 7 | 2026-07-24 | 2026-07-23 | `lead-capture-editor.png` | interactions/lead-capture.md |
+| MED | 7 | 2026-07-24 | 2026-07-23 | `poll-slide-editor.png` | slide-types/interactive.md<br>interactions/polls.md |
+| MED | 7 | 2026-07-24 | 2026-07-23 | `slide-type-picker-categories.png` | slide-types/structure.md |
+| MED | 7 | 2026-07-24 | 2026-07-23 | `slide-types-data.png` | slide-types/data.md |
+| MED | 7 | 2026-07-24 | 2026-07-23 | `slide-types-interaction.png` | interactions/qa.md |
+| MED | 7 | 2026-07-24 | 2026-07-23 | `slide-types-layouts.png` | slide-types/cards.md |
+| MED | 7 | 2026-07-24 | 2026-07-24 | `slide-type-picker-new.png` | slide-types/index.md<br>creating/new-presentation.md |
 | MED | 6 | 2026-07-24 | 2026-07-23 | `accessibility-alt-text-fields.png` | ai/alt-text.md |
 | MED | 6 | 2026-07-24 | 2026-07-23 | `accessibility-fields.png` | editing/accessibility.md |
 | MED | 6 | 2026-07-24 | 2026-07-23 | `ai-analysis-dialog.png` | ai/analysis.md |
 | MED | 6 | 2026-07-24 | 2026-07-23 | `ai-translation-prompt.png` | ai/translation.md |
 | MED | 6 | 2026-07-24 | 2026-07-23 | `convert-slide-menu.png` | editing/converting-slides.md |
 | MED | 6 | 2026-07-24 | 2026-07-23 | `editor-full-context.png` | editing/preview.md |
-| MED | 6 | 2026-07-24 | 2026-07-23 | `image-text-slide-editor.png` | slide-types/media.md |
-| MED | 6 | 2026-07-24 | 2026-07-23 | `lead-capture-editor-full.png` | interactions/feedback.md |
-| MED | 6 | 2026-07-24 | 2026-07-23 | `lead-capture-editor.png` | interactions/lead-capture.md |
-| MED | 6 | 2026-07-24 | 2026-07-23 | `poll-slide-editor.png` | slide-types/interactive.md<br>interactions/polls.md |
 | MED | 6 | 2026-07-24 | 2026-07-23 | `preferences-settings.png` | configuration/i18n.md |
 | MED | 6 | 2026-07-24 | 2026-07-23 | `publish-description-dialog.png` | ai/description-generation.md |
 | MED | 6 | 2026-07-24 | 2026-07-23 | `settings-account.png` | configuration/authentication.md |
-| MED | 6 | 2026-07-24 | 2026-07-23 | `slide-type-picker-categories.png` | slide-types/structure.md |
-| MED | 6 | 2026-07-24 | 2026-07-23 | `slide-types-data.png` | slide-types/data.md |
-| MED | 6 | 2026-07-24 | 2026-07-23 | `slide-types-interaction.png` | interactions/qa.md |
-| MED | 6 | 2026-07-24 | 2026-07-23 | `slide-types-layouts.png` | slide-types/cards.md |
 | MED | 6 | 2026-07-24 | 2026-07-23 | `speaker-notes-in-context.png` | editing/speaker-notes.md |
 | MED | 5 | 2026-07-24 | 2026-07-23 | `export-dropdown-full.png` | export/images.md<br>export/pptx.md<br>export/pdf.md<br>export/notes.md |
 | MED | 5 | 2026-07-24 | 2026-07-23 | `export-full-dropdown.png` | export/handoff-bundle.md |
@@ -65,6 +64,7 @@ HIGH = 10+ commits, MED = 3-9, LOW = 1-2. Re-capture top-down.
 | MED | 4 | 2026-07-24 | 2026-07-23 | `presenter-mode-slide.png` | presenter/highlighter.md |
 | MED | 4 | 2026-07-24 | 2026-07-23 | `slide-lock-editor.png` | presenter/presentation-locks.md |
 | MED | 4 | 2026-07-24 | 2026-07-23 | `user-management.png` | admin/user-management.md |
+| MED | 4 | 2026-07-24 | 2026-07-24 | `editor-full.png` | editing/index.md |
 | MED | 3 | 2026-07-23 | 2026-07-23 | `advanced-import-dialog.png` | creating/from-json.md<br>creating/from-markdown.md |
 | MED | 3 | 2026-07-24 | 2026-07-23 | `deck-settings-full.png` | publishing/og-images.md |
 | MED | 3 | 2026-07-24 | 2026-07-23 | `external-analytics-settings.png` | integrations/analytics.md |
@@ -84,9 +84,9 @@ HIGH = 10+ commits, MED = 3-9, LOW = 1-2. Re-capture top-down.
 | LOW | 2 | 2026-07-24 | 2026-07-23 | `font-management.png` | themes/font-management.md |
 | LOW | 2 | 2026-07-24 | 2026-07-23 | `share-links-full.png` | collaboration/sharing-permissions.md |
 | LOW | 2 | 2026-07-24 | 2026-07-23 | `share-links-permissions-dialog.png` | collaboration/ownership-transfer.md |
-| LOW | 2 | 2026-07-24 | 2026-07-23 | `theme-editor-full.png` | themes/editor.md |
 | LOW | 2 | 2026-07-24 | 2026-07-23 | `themes-settings-page.png` | themes/index.md |
 | LOW | 2 | 2026-07-24 | 2026-07-23 | `version-history-dialog.png` | collaboration/versions.md |
+| LOW | 2 | 2026-07-24 | 2026-07-24 | `theme-editor-full.png` | themes/editor.md |
 | LOW | 1 | 2026-07-24 | 2026-07-23 | `slide-types-curation.png` | customization/custom-slide-types.md |
 
 ## Current screenshots (no source change since capture)
