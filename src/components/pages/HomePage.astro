@@ -36,7 +36,7 @@ const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? ico
       <p class="hero-tagline" data-reveal data-reveal-delay="140">{t.heroTagline}</p>
       <p class="lead" data-reveal data-reveal-delay="200">{t.heroLead}</p>
       <div class="hero-sandbox" data-reveal data-reveal-delay="260">
-        <a class="btn btn-primary" href={sandboxUrl} target="_blank" rel="noopener">
+        <a class="btn btn-primary" href={sandboxUrl(lang)} target="_blank" rel="noopener">
           {t.sandboxButton}
         </a>
         <p class="hero-sandbox-note">{t.sandboxNote}</p>
@@ -105,7 +105,7 @@ const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? ico
         <p class="lead">{t.ctaLead}</p>
       </div>
       <div class="cta-actions" data-reveal data-reveal-delay="120">
-        <a class="btn btn-primary" href={sandboxUrl} target="_blank" rel="noopener">
+        <a class="btn btn-primary" href={sandboxUrl(lang)} target="_blank" rel="noopener">
           {t.ctaSandboxButton}
         </a>
         <a

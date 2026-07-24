@@ -16,8 +16,15 @@ export type Lang = keyof typeof languages;
 export const defaultLang: Lang = 'en';
 
 // Live hosted playground: a full Deckyard anyone can try without installing.
-// Same URL in every locale (the sandbox app handles its own language).
-export const sandboxUrl = 'https://sandbox.deckyard.eu';
+export const sandboxBaseUrl = 'https://sandbox.deckyard.eu';
+
+// Open the sandbox in the same language as the site the visitor came from.
+// The sandbox reads `?lang=` (validated against its locale manifest) and sets
+// the anonymous session locale, precedence URL-param > localStorage > default.
+// See deckyard#317. Our lang codes (en/nl) match the sandbox's manifest tags.
+export function sandboxUrl(lang: Lang): string {
+  return `${sandboxBaseUrl}/?lang=${lang}`;
+}
 
 export interface Pillar {
   title: string;
