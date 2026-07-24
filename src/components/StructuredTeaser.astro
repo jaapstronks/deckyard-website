@@ -1,0 +1,298 @@
+---
+// Homepage teaser for the "how it works" explainer: the idea in one static
+// picture - a document turning into a slide that knows what it is - plus a way
+// through to the full page. No interactivity here on purpose; the explainer is
+// where things move.
+import { ui, localizePath, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].structured;
+const href = localizePath('/structured-slides', lang);
+
+const MOMENTS = [
+  { date: '2021', title: 'Constituted' },
+  { date: '2023', title: 'Partnership' },
+  { date: '2025', title: 'Resumed' },
+];
+---
+
+<section class="section teaser">
+  <div class="container teaser-grid">
+    <div class="teaser-copy" data-reveal>
+      <p class="kicker">{t.teaserKicker}</p>
+      <h2>{t.teaserTitle}</h2>
+      <p class="lead">{t.teaserBody}</p>
+      <a class="btn btn-primary" href={href}>{t.teaserCta}</a>
+    </div>
+
+    <div class="teaser-art" data-reveal data-reveal-delay="120" aria-hidden="true">
+      <div class="art-col art-col--from">
+        <p class="art-label">{t.teaserFrom}</p>
+        <div class="art-doc">
+          <span class="art-doc-bar"></span>
+          <span class="art-line art-line--head"></span>
+          <span class="art-line"></span>
+          <span class="art-line art-line--mark"></span>
+          <span class="art-line"></span>
+          <span class="art-line art-line--short"></span>
+        </div>
+      </div>
+
+      <span class="art-arrow"></span>
+
+      <div class="art-col art-col--to">
+        <p class="art-label">{t.teaserTo}</p>
+        <div class="art-slide">
+          <span class="art-eyebrow"></span>
+          <span class="art-title"></span>
+          <ol class="art-tl">
+            {
+              MOMENTS.map((m) => (
+                <li>
+                  <span class="art-date">{m.date}</span>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+        <ul class="art-fields">
+          <li><b>title</b><span>string</span></li>
+          <li><b>items</b><span>required · ordered</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .teaser-grid {
+    display: grid;
+    gap: 2.2rem;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .teaser-grid {
+      grid-template-columns: 1fr 1.05fr;
+      gap: 3.5rem;
+    }
+  }
+  .teaser-copy h2 {
+    margin-bottom: 0.6rem;
+  }
+  .teaser-copy .lead {
+    margin-bottom: 1.6rem;
+  }
+
+  /* ---------- the illustration ---------- */
+  .teaser-art {
+    display: grid;
+    grid-template-columns: 1fr auto 1.25fr;
+    gap: 0.9rem;
+    /* Labels line up across the two columns; only the arrow centres. */
+    align-items: start;
+  }
+  @media (max-width: 480px) {
+    .teaser-art {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+  }
+  .art-label {
+    font-family: var(--mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 0.5rem;
+  }
+  .art-col--from .art-label {
+    color: var(--brass);
+  }
+  .art-col--to .art-label {
+    color: var(--green-bright);
+  }
+
+  /* the document you start with, at a slight angle */
+  .art-doc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.65rem 0.7rem 0.9rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    rotate: -2deg;
+  }
+  .art-doc-bar {
+    height: 6px;
+    width: 55%;
+    border-radius: 3px;
+    background: var(--paper-warm);
+    margin-bottom: 0.25rem;
+  }
+  .art-line {
+    height: 5px;
+    border-radius: 3px;
+    background: var(--sage);
+  }
+  .art-line--head {
+    height: 8px;
+    width: 78%;
+    background: var(--ink-mute);
+    opacity: 0.35;
+  }
+  .art-line--short {
+    width: 46%;
+  }
+  /* the passage that becomes a field */
+  .art-line--mark {
+    width: 88%;
+    background: var(--brass-soft);
+    box-shadow: inset 0 -1px 0 var(--brass);
+  }
+
+  .art-arrow {
+    width: 1.6rem;
+    height: 1px;
+    background: var(--line);
+    position: relative;
+    justify-self: center;
+    align-self: center;
+  }
+  .art-arrow::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    translate: 0 -50%;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 7px solid var(--green-bright);
+  }
+  @media (max-width: 480px) {
+    .art-arrow {
+      width: 1px;
+      height: 1.4rem;
+      justify-self: start;
+      margin-left: 1.2rem;
+    }
+    .art-arrow::after {
+      right: auto;
+      top: auto;
+      bottom: 0;
+      left: 50%;
+      translate: -50% 0;
+      border: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 7px solid var(--green-bright);
+    }
+  }
+
+  /* the slide it becomes */
+  .art-slide {
+    aspect-ratio: 16 / 9;
+    container-type: inline-size;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    padding: 6cqi;
+    display: flex;
+    flex-direction: column;
+  }
+  .art-eyebrow {
+    height: 4px;
+    width: 22%;
+    border-radius: 2px;
+    background: var(--green-bright);
+  }
+  .art-title {
+    height: 11px;
+    width: 68%;
+    border-radius: 3px;
+    background: var(--ink);
+    opacity: 0.82;
+    margin-top: 3cqi;
+  }
+  .art-tl {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    margin: auto 0 0;
+    padding: 2.5cqi 0 0;
+    position: relative;
+  }
+  .art-tl::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(3.2cqi - 1px);
+    height: 2px;
+    background: var(--sage);
+  }
+  .art-tl li {
+    position: relative;
+    padding-right: 2cqi;
+  }
+  .art-tl li::before {
+    content: '';
+    position: absolute;
+    top: 2.5cqi;
+    left: 0;
+    width: 1.6cqi;
+    height: 1.6cqi;
+    border-radius: 50%;
+    background: var(--green-bright);
+    box-shadow: 0 0 0 0.8cqi var(--card);
+  }
+  .art-date {
+    display: block;
+    margin-top: 6cqi;
+    font-family: var(--mono);
+    font-size: 3.6cqi;
+    color: var(--green-bright);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .art-fields {
+    list-style: none;
+    margin: 0.55rem 0 0;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    overflow: hidden;
+  }
+  .art-fields li {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.7rem;
+    padding: 0.38rem 0.6rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.6rem;
+  }
+  .art-fields li:last-child {
+    border-bottom: 0;
+  }
+  .art-fields b {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .art-fields span {
+    color: var(--ink-mute);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .art-doc {
+      rotate: none;
+    }
+  }
+</style>

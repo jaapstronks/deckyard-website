@@ -106,18 +106,52 @@ export interface Content {
     readFirst: string;
   };
 
-  // "How raw material becomes an on-brand slide" explainer. Three zones: the
-  // pile of stuff you start with, the three routes that structure it, and the
-  // slide itself with its two independent controls (type and house style).
+  // The dedicated explainer page that wraps the anatomy component in prose,
+  // plus the homepage teaser that links to it.
+  structured: {
+    metaTitle: string;
+    metaDescription: string;
+    kicker: string;
+    title: string;
+    dek: string;
+    stats: { value: string; label: string }[];
+    s1Title: string;
+    s1Body: string[];
+    s2Title: string;
+    s2Body: string[];
+    pull: string;
+    s3Title: string;
+    s3Body: string[];
+    chainTitle: string;
+    chainLead: string;
+    chain: { because: string; claim: string; body: string }[];
+    compareTitle: string;
+    compareLead: string;
+    compareAspect: string;
+    compareCanvas: string;
+    compareRecord: string;
+    compareRows: { aspect: string; canvas: string; record: string }[];
+    ctaTitle: string;
+    ctaBody: string;
+    ctaSandbox: string;
+    ctaDocs: string;
+    // Homepage teaser that links here.
+    teaserKicker: string;
+    teaserTitle: string;
+    teaserBody: string;
+    teaserCta: string;
+    teaserFrom: string;
+    teaserTo: string;
+  };
+
+  // "How raw material becomes an on-brand slide". Three zones: the pile of
+  // stuff you start with, the three routes that structure it, and the slide
+  // itself with its two independent controls (type and house style).
   //
   // The running example is a deliberately absurd one - a lemonade stand
   // reported on in stiff corporate register - so nobody mistakes the demo
   // content for a claim about Deckyard.
   anatomy: {
-    kicker: string;
-    title: string;
-    lead: string;
-
     // --- zone 1: the raw material ---
     sourcesLabel: string;
     sourcesNote: string;
@@ -313,11 +347,120 @@ export const ui: Record<Lang, Content> = {
       readFirst: 'Read the script first',
     },
 
-    anatomy: {
-      kicker: 'From raw material to an on-brand slide',
-      title: 'Structure is where the control is',
-      lead: 'A deck starts as a pile of things from everywhere: a document, a spreadsheet, a note on your phone, a photo library. Something has to turn that into slides. You can do it by hand, have a script do it, or let an agent do it - but you want the result on brand and you want a say in how the data lands. That is what slide types are for.',
+    structured: {
+      metaTitle: 'How it works — structured slides, not drawings — Deckyard',
+      metaDescription:
+        'A Deckyard slide is a record with a type, not a canvas you drop shapes onto. That one decision is where the accessibility, the integrations and the house style all come from.',
+      kicker: 'How it works',
+      title: 'A slide that knows what it is',
+      dek: 'Most tools treat a slide as a canvas: a rectangle you drop boxes onto, wherever they look right. Deckyard treats it as a record with a type. It sounds like a technical detail. It is the reason everything else on this site is possible.',
+      stats: [
+        { value: '38', label: 'slide types, each with its own fields' },
+        { value: '1', label: 'published schema, generated from the code' },
+        { value: '0', label: 'colours or fonts stored in your content' },
+      ],
 
+      s1Title: 'Where a deck actually starts',
+      s1Body: [
+        'Nobody starts a presentation in a presentation tool. They start with a report somebody else wrote, a spreadsheet holding the real numbers, a note on a phone from a conversation last Tuesday, and a folder of photos nobody has named properly.',
+        'That is the raw material, and it has three awkward properties: it is scattered across four places, it is in four different formats, and the interesting parts are buried inside sentences. Every deck begins with somebody quietly doing the work of getting it out.',
+      ],
+
+      s2Title: 'Somebody has to turn that into slides',
+      s2Body: [
+        'Traditionally that somebody is you, at eleven at night, copying figures out of a spreadsheet and into text boxes. The figures now live in two places, and one of them started going out of date the moment you pasted it.',
+        'It does not have to work that way. But the alternative is not "let a robot do it" - that just moves the problem and adds a new worry. The alternative is that the slide has a declared shape, so that anything filling it can be checked against that shape first. You, a script, or an agent: same shape, same check.',
+      ],
+
+      pull: 'Control does not come from doing it by hand. It comes from the type.',
+
+      s3Title: 'What a slide type actually is',
+      s3Body: [
+        'A slide type is a small, opinionated contract. A timeline declares that it holds a sequence of moments, each with a date and a title, at least two and at most ten, and that the order carries meaning. A quote declares that it needs somebody to attribute it to, and refuses to be saved without one.',
+        'None of those declarations mention a colour, a font or a position. That is the second half of the idea: the content carries the meaning, the theme carries the appearance, and the two never touch. Which is why the same slide can be correct for a city council and for a design studio without a single word changing.',
+      ],
+
+      chainTitle: 'What follows from it',
+      chainLead:
+        'The useful thing about this decision is not that it is elegant. It is that four separate promises turn out to be the same promise, stated four times.',
+      chain: [
+        {
+          because: 'Because the fields have a type',
+          claim: 'a slide can be read out loud properly.',
+          body: 'A timeline projects to a numbered list, a table keeps its header row, an image says whether it is decorative or meaningful. Accessibility stops being a checklist somebody runs at the end and becomes a property of the format.',
+        },
+        {
+          because: 'Because the fields have a type',
+          claim: 'anything can fill them.',
+          body: 'A field with a declared shape is a socket. Your data warehouse, your image library, a script or an agent can all fill it, and all of them are checked the same way. Nobody retypes a table, and the figure on the slide matches the figure at the source.',
+        },
+        {
+          because: 'Because the styling lives elsewhere',
+          claim: 'the organisation owns the look.',
+          body: 'Brand lives in theme tokens, not in the deck. A deck cannot drift off-brand, because it is not carrying any brand with it. Lock the background and the logo and even an old deck renders inside the current house style.',
+        },
+        {
+          because: 'Because all of it is one schema',
+          claim: 'the format outlives the application.',
+          body: 'The JSON Schema is generated from the same field definitions the editor and the validator read, so it cannot drift from the implementation. Somebody else can write a reader, a converter or a renderer without asking us. That is what open actually means here.',
+        },
+      ],
+
+      compareTitle: 'The same deck, two ways of storing it',
+      compareLead:
+        'None of this is an argument that canvases are badly made. It is that a drawing cannot answer questions about itself, and a record can.',
+      compareAspect: '',
+      compareCanvas: 'Slide as a canvas',
+      compareRecord: 'Slide as a record',
+      compareRows: [
+        {
+          aspect: 'What a slide is',
+          canvas: 'Shapes at coordinates',
+          record: 'Named fields with a type',
+        },
+        {
+          aspect: 'Read aloud by a screen reader',
+          canvas: 'Guesswork, in drawing order',
+          record: 'Real headings, lists and tables',
+        },
+        {
+          aspect: 'Opened on a phone',
+          canvas: 'Shrinks until it is unreadable',
+          record: 'Reflows as a document',
+        },
+        {
+          aspect: 'Filled from another system',
+          canvas: 'Place a text box and hope',
+          record: 'Fill the fields, get validated',
+        },
+        {
+          aspect: 'Changing the house style',
+          canvas: 'Restyle every slide by hand',
+          record: 'Swap the theme, content untouched',
+        },
+        {
+          aspect: 'Ten years from now',
+          canvas: 'Hope the application still opens it',
+          record: 'Documented JSON against a public schema',
+        },
+      ],
+
+      ctaTitle: 'Easier to see than to read about',
+      ctaBody:
+        'The sandbox is a full Deckyard in your browser, with no install and no account. Make a timeline, switch the theme, look at what you built.',
+      ctaSandbox: 'Try the live sandbox',
+      ctaDocs: 'Read the slide type reference',
+
+      teaserKicker: 'The idea underneath',
+      teaserTitle: 'Every slide knows what it is',
+      teaserBody:
+        'A Deckyard slide is not a canvas with boxes on it. It is a record with a type: a timeline knows it holds a sequence, a quote knows it needs attribution, and neither of them carries a single colour. That is where the accessibility, the integrations and the unbreakable house style all come from.',
+      teaserCta: 'How it works',
+      teaserFrom: 'What you start with',
+      teaserTo: 'What it becomes',
+    },
+
+    anatomy: {
       sourcesLabel: 'What you start with',
       sourcesNote:
         'Pick a slide type below and the source it draws on comes forward. Different material, different slide, same pile.',
@@ -612,11 +755,120 @@ export const ui: Record<Lang, Content> = {
       readFirst: 'Lees eerst het script',
     },
 
-    anatomy: {
-      kicker: 'Van ruw materiaal naar een slide in je huisstijl',
-      title: 'Structuur is waar de controle zit',
-      lead: 'Een deck begint als een stapel dingen van overal: een document, een spreadsheet, een notitie op je telefoon, een beeldbibliotheek. Iets moet daar slides van maken. Dat kan met de hand, door een script, of door een agent - maar je wilt het resultaat wel in je huisstijl, en je wilt zeggenschap over hoe die data in je slides landt. Daar zijn slidetypes voor.',
+    structured: {
+      metaTitle: 'Hoe het werkt - gestructureerde slides, geen tekeningen - Deckyard',
+      metaDescription:
+        'Een slide in Deckyard is een record met een type, geen canvas waar je vormen op sleept. Uit die ene keuze komen de toegankelijkheid, de koppelingen en de huisstijl voort.',
+      kicker: 'Hoe het werkt',
+      title: 'Een slide die weet wat hij is',
+      dek: 'De meeste programma’s behandelen een slide als een canvas: een rechthoek waar je vakjes op legt, daar waar het goed uitkomt. Deckyard behandelt hem als een record met een type. Het klinkt als een technisch detail. Het is de reden dat al het andere op deze site kan bestaan.',
+      stats: [
+        { value: '38', label: 'slidetypes, elk met eigen velden' },
+        { value: '1', label: 'gepubliceerd schema, uit de code gegenereerd' },
+        { value: '0', label: 'kleuren of lettertypen in je inhoud' },
+      ],
 
+      s1Title: 'Waar een deck echt begint',
+      s1Body: [
+        'Niemand begint een presentatie in een presentatieprogramma. Je begint met een rapport dat iemand anders schreef, een spreadsheet met de echte cijfers, een notitie op je telefoon van een gesprek van dinsdag, en een map foto’s die niemand fatsoenlijk heeft benoemd.',
+        'Dat is het ruwe materiaal, en het heeft drie vervelende eigenschappen: het ligt op vier plekken, het staat in vier formaten, en de interessante delen zitten verstopt in zinnen. Elk deck begint ermee dat iemand dat er stilletjes uit zit te halen.',
+      ],
+
+      s2Title: 'Iemand moet daar slides van maken',
+      s2Body: [
+        'Van oudsher ben jij die iemand, om elf uur ’s avonds, cijfers overtikkend uit een spreadsheet in tekstvakken. Die cijfers staan nu op twee plekken, en één ervan begon te verouderen op het moment dat je plakte.',
+        'Het hoeft niet zo te werken. Maar het alternatief is niet "laat een robot het doen" - dat verplaatst het probleem alleen en voegt een zorg toe. Het alternatief is dat de slide een vastgelegde vorm heeft, zodat alles wat hem vult eerst tegen die vorm gecontroleerd kan worden. Jij, een script of een agent: dezelfde vorm, dezelfde controle.',
+      ],
+
+      pull: 'Controle komt niet voort uit het handmatig doen. Die komt uit het type.',
+
+      s3Title: 'Wat een slidetype precies is',
+      s3Body: [
+        'Een slidetype is een klein, uitgesproken contract. Een tijdlijn verklaart dat hij een reeks momenten bevat, elk met een datum en een titel, minstens twee en hoogstens tien, en dat de volgorde betekenis draagt. Een citaat verklaart dat het iemand nodig heeft om aan toe te schrijven, en weigert zonder.',
+        'In geen van die verklaringen komt een kleur, een lettertype of een positie voor. Dat is de tweede helft van het idee: de inhoud draagt de betekenis, het thema draagt het uiterlijk, en die twee raken elkaar nooit. Daarom kan dezelfde slide kloppen voor een gemeente én voor een designstudio, zonder dat er één woord verandert.',
+      ],
+
+      chainTitle: 'Wat daaruit volgt',
+      chainLead:
+        'Het bruikbare aan deze keuze is niet dat hij elegant is. Het is dat vier losse beloftes dezelfde belofte blijken te zijn, vier keer uitgesproken.',
+      chain: [
+        {
+          because: 'Omdat de velden een type hebben',
+          claim: 'kan een slide fatsoenlijk worden voorgelezen.',
+          body: 'Een tijdlijn wordt een genummerde lijst, een tabel houdt zijn koprij, een afbeelding zegt of hij decoratief of betekenisvol is. Toegankelijkheid is geen lijstje meer dat iemand achteraf afvinkt, maar een eigenschap van het formaat.',
+        },
+        {
+          because: 'Omdat de velden een type hebben',
+          claim: 'kan alles ze vullen.',
+          body: 'Een veld met een vastgelegde vorm is een aansluiting. Je datawarehouse, je beeldbibliotheek, een script of een agent kunnen hem vullen, en ze worden allemaal op dezelfde manier gecontroleerd. Niemand tikt een tabel over, en het cijfer op de slide klopt met het cijfer bij de bron.',
+        },
+        {
+          because: 'Omdat de vormgeving elders woont',
+          claim: 'bezit de organisatie het uiterlijk.',
+          body: 'De huisstijl zit in themetokens, niet in het deck. Een deck kan niet off-brand raken, want hij draagt geen huisstijl bij zich. Zet de achtergrond en het logo vast en zelfs een oud deck rendert binnen de huidige stijl.',
+        },
+        {
+          because: 'Omdat het allemaal één schema is',
+          claim: 'overleeft het formaat de applicatie.',
+          body: 'Het JSON Schema wordt gegenereerd uit dezelfde velddefinities die de editor en de validatie lezen, dus het kán niet afdrijven van de implementatie. Iemand anders kan een lezer, een converter of een renderer bouwen zonder het ons te vragen. Dát betekent open hier.',
+        },
+      ],
+
+      compareTitle: 'Hetzelfde deck, twee manieren om het te bewaren',
+      compareLead:
+        'Dit is geen betoog dat canvassen slecht gemaakt zijn. Het is dat een tekening geen vragen over zichzelf kan beantwoorden, en een record wel.',
+      compareAspect: '',
+      compareCanvas: 'Slide als canvas',
+      compareRecord: 'Slide als record',
+      compareRows: [
+        {
+          aspect: 'Wat een slide is',
+          canvas: 'Vormen op coördinaten',
+          record: 'Benoemde velden met een type',
+        },
+        {
+          aspect: 'Voorgelezen door een screenreader',
+          canvas: 'Gokwerk, op tekenvolgorde',
+          record: 'Echte koppen, lijsten en tabellen',
+        },
+        {
+          aspect: 'Geopend op een telefoon',
+          canvas: 'Krimpt tot het onleesbaar is',
+          record: 'Herschikt als document',
+        },
+        {
+          aspect: 'Gevuld vanuit een ander systeem',
+          canvas: 'Zet een tekstvak neer en hoop',
+          record: 'Vul de velden, word gevalideerd',
+        },
+        {
+          aspect: 'Huisstijl wijzigen',
+          canvas: 'Elke slide met de hand opnieuw',
+          record: 'Wissel het thema, inhoud blijft',
+        },
+        {
+          aspect: 'Over tien jaar',
+          canvas: 'Hopen dat het programma hem nog opent',
+          record: 'Gedocumenteerde JSON tegen een publiek schema',
+        },
+      ],
+
+      ctaTitle: 'Makkelijker te zien dan te lezen',
+      ctaBody:
+        'De sandbox is een volledige Deckyard in je browser, zonder installatie en zonder account. Maak een tijdlijn, wissel het thema, kijk wat je gebouwd hebt.',
+      ctaSandbox: 'Probeer de sandbox',
+      ctaDocs: 'Lees de slidetype-referentie',
+
+      teaserKicker: 'Het idee eronder',
+      teaserTitle: 'Elke slide weet wat hij is',
+      teaserBody:
+        'Een Deckyard-slide is geen canvas met vakjes erop. Het is een record met een type: een tijdlijn weet dat hij een reeks bevat, een citaat weet dat het bronvermelding nodig heeft, en geen van beide draagt ook maar één kleur bij zich. Daar komen de toegankelijkheid, de koppelingen en de onbreekbare huisstijl allemaal uit voort.',
+      teaserCta: 'Hoe het werkt',
+      teaserFrom: 'Waar je mee begint',
+      teaserTo: 'Wat het wordt',
+    },
+
+    anatomy: {
       sourcesLabel: 'Waar je mee begint',
       sourcesNote:
         'Kies hieronder een slidetype en de bron waar het uit put komt naar voren. Ander materiaal, andere slide, dezelfde stapel.',

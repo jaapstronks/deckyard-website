@@ -92,14 +92,8 @@ const TILES = [
 ];
 ---
 
-<section class="section anatomy">
-  <div class="container">
-    <div class="section-head section-head--center" data-reveal>
-      <p class="kicker kicker--center">{t.kicker}</p>
-      <h2>{t.title}</h2>
-      <p class="lead">{t.lead}</p>
-    </div>
-
+<div class="anatomy">
+  <div class="anatomy-inner">
     <!-- ================= 1. raw input ================= -->
     <div class="zone" data-reveal>
       <p class="zone-label"><span class="zone-n">1</span>{t.sourcesLabel}</p>
@@ -174,6 +168,7 @@ const TILES = [
       <p class="zone-note">{t.sourcesNote}</p>
     </div>
 
+    <slot name="after-sources" />
     <p class="flow" aria-hidden="true"><span class="flow-arrow"></span></p>
 
     <!-- ================= 2. structuring ================= -->
@@ -220,6 +215,7 @@ const TILES = [
       </p>
     </div>
 
+    <slot name="after-routes" />
     <p class="flow" aria-hidden="true"><span class="flow-arrow"></span></p>
 
     <!-- ================= 3. the slide ================= -->
@@ -387,8 +383,10 @@ const TILES = [
         </div>
       </div>
     </div>
+
+    <slot name="after-slide" />
   </div>
-</section>
+</div>
 
 <script>
   const root = document.querySelector<HTMLElement>('.anatomy');
