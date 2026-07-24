@@ -1,14 +1,19 @@
 ---
-// Homepage demo: what a Deckyard slide actually is.
+// Explainer: how raw material becomes an on-brand slide, and why the slide type
+// is the control point rather than an inconvenience.
 //
-// Three panels along one axis: the document people really start from (left),
-// the slide as data (fields), and the slide as shown. Switching slide type
-// changes the whole field vocabulary, not just the values - that is the point.
-// Hovering a field lights up both the region of the slide it drives and the
-// sentence in the source document it came from.
+// Three zones stacked full width:
+//   1. Raw input      - a pile of things from different places (doc, sheet,
+//                       note, image library). The one feeding the current slide
+//                       type comes forward.
+//   2. Structuring    - by hand, via the API, or via MCP. Three routes, one
+//                       gate: all of them validate against the same type.
+//   3. The slide      - two independent controls on one slide: the type (what
+//                       it means) and the house style (how it looks). Changing
+//                       one never touches the other; that is the whole thesis.
 //
 // The demo content is a lemonade stand reported on in stiff corporate register,
-// deliberately absurd so nobody reads it as a claim about Deckyard itself.
+// deliberately absurd so nobody reads the example as a claim about Deckyard.
 import { ui, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -26,14 +31,15 @@ interface FieldDef {
   max?: number;
   maxLen?: number;
   sub?: string;
-  /** Passages in the source document this field was drawn from. Empty means
-   *  the field is an authoring choice, not something the document contains. */
+  /** Passages in the source material this field was drawn from. Empty means the
+   *  field is an authoring decision, not something the source contains. */
   spans: string[];
 }
 
-// Field vocabulary per slide type. Structural, so it is not translated: the
-// keys, types, required flags and limits mirror the real definitions in the
-// engine (shared/slide-types/types/*.js).
+// Field vocabulary per slide type. Structural, so not translated: the keys,
+// types, required flags and limits mirror the real definitions in the engine
+// (shared/slide-types/types/*.js). Note that image-slide's `alt` is genuinely
+// optional there - `imageRole` is what carries the accessibility decision.
 const FIELDS: Record<string, FieldDef[]> = {
   'timeline-slide': [
     { key: 'title', type: 'string', maxLen: 120, spans: ['h1'] },
@@ -48,19 +54,8 @@ const FIELDS: Record<string, FieldDef[]> = {
       spans: ['t1', 'n1', 't2', 'n2', 't3', 'n3', 't4', 'n4'],
     },
   ],
-  'kpi-metrics-slide': [
-    { key: 'title', type: 'string', maxLen: 120, spans: ['h2'] },
-    {
-      key: 'metrics',
-      type: 'items',
-      min: 1,
-      max: 4,
-      sub: 'value · unit · label · note',
-      spans: ['k1v', 'k1l', 'k2v', 'k2l', 'k3v', 'k3l'],
-    },
-  ],
   'chart-slide': [
-    { key: 'title', type: 'string', required: true, maxLen: 120, spans: ['h3'] },
+    { key: 'title', type: 'string', required: true, maxLen: 120, spans: ['sh'] },
     { key: 'chartType', type: 'enum', required: true, sub: 'bar · line · pie', spans: [] },
     { key: 'data', type: 'csv', required: true, spans: ['c1', 'c2', 'c3'] },
   ],
@@ -69,7 +64,32 @@ const FIELDS: Record<string, FieldDef[]> = {
     { key: 'authorName', type: 'string', required: true, maxLen: 80, spans: ['q2'] },
     { key: 'authorTitle', type: 'string', required: true, maxLen: 120, spans: ['q3'] },
   ],
+  'image-slide': [
+    { key: 'image', type: 'image', spans: ['i1'] },
+    { key: 'alt', type: 'string', maxLen: 180, spans: ['i2'] },
+    { key: 'imageRole', type: 'enum', sub: 'content · decorative', spans: [] },
+    { key: 'caption', type: 'string', maxLen: 160, spans: [] },
+  ],
 };
+
+// Which raw source each slide type draws on. Drives which card comes forward.
+const SOURCE_OF: Record<string, string> = {
+  'timeline-slide': 'doc',
+  'chart-slide': 'sheet',
+  'quote-slide': 'note',
+  'image-slide': 'library',
+};
+
+// Abstract tiles standing in for an image library. Deliberately schematic: this
+// is a diagram of a picker, not a photo montage.
+const TILES = [
+  'linear-gradient(150deg,#f4c04e,#d98a1f 55%,#7a4a10)',
+  'linear-gradient(150deg,#a8c8e8,#4a76a8 55%,#1f3b5c)',
+  'linear-gradient(150deg,#c9d8a8,#6f9448 55%,#2f4520)',
+  'linear-gradient(150deg,#e8b9a0,#b8663c 55%,#5c2f18)',
+  'linear-gradient(150deg,#cfd6d9,#7d8f97 55%,#39464c)',
+  'linear-gradient(150deg,#d8c4e0,#8a63a8 55%,#42284f)',
+];
 ---
 
 <section class="section anatomy">
@@ -80,56 +100,185 @@ const FIELDS: Record<string, FieldDef[]> = {
       <p class="lead">{t.lead}</p>
     </div>
 
-    <div class="anatomy-grid" data-reveal data-reveal-delay="80">
-      <!-- ---------- the document people actually start from ---------- -->
-      <figure class="docwin" aria-label={t.docWindowAria}>
-        <figcaption class="docwin-bar">
-          <span class="docwin-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-          <span class="docwin-name" title={t.docFilename}>{t.docFilename}</span>
-        </figcaption>
-        <div class="docwin-rule" aria-hidden="true">
-          <span></span><span></span><span></span><span></span>
-        </div>
-        <div class="docwin-page">
-          <h3 class="docwin-title">{t.docHeading}</h3>
-          {t.docParagraphs.map((p) => <p set:html={p} />)}
-        </div>
-      </figure>
+    <!-- ================= 1. raw input ================= -->
+    <div class="zone" data-reveal>
+      <p class="zone-label"><span class="zone-n">1</span>{t.sourcesLabel}</p>
+      <div class="sources" id="sources">
+        {
+          t.sources.map((src) => (
+            <article class="src" data-src={src.id}>
+              <header class="src-bar">
+                <span class="src-dots" aria-hidden="true">
+                  <i /><i /><i />
+                </span>
+                <span class="src-name">{src.name}</span>
+              </header>
 
-      <!-- ---------- the same content, typed ---------- -->
-      <div class="anatomy-right">
-        <p class="anatomy-tablabel">{t.typeLabel}</p>
-        <div class="anatomy-tabs" role="tablist" aria-label={t.typeLabel}>
+              {src.kind === 'doc' && (
+                <div class="src-doc">
+                  <h4>{src.heading}</h4>
+                  {(src.paragraphs ?? []).map((p) => (
+                    <p set:html={p} />
+                  ))}
+                </div>
+              )}
+
+              {src.kind === 'sheet' && (
+                <div class="src-sheet">
+                  <table>
+                    <tbody>
+                      {(src.rows ?? []).map((row, r) => (
+                        <tr class={r === 0 ? 'is-head' : ''}>
+                          <th scope="row">{r + 1}</th>
+                          {row.map((cell) => (
+                            <td set:html={cell} />
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {src.kind === 'note' && (
+                <div class="src-note">
+                  {(src.paragraphs ?? []).map((p) => (
+                    <p set:html={p} />
+                  ))}
+                </div>
+              )}
+
+              {src.kind === 'library' && (
+                <div class="src-library">
+                  <div class="tiles">
+                    {TILES.map((g, i) => (
+                      <span
+                        class={i === 0 ? 'tile is-picked' : 'tile'}
+                        style={`background:${g}`}
+                        data-span={i === 0 ? 'i1' : undefined}
+                      />
+                    ))}
+                  </div>
+                  <p class="tile-meta">
+                    <b>{src.assetFile}</b>
+                    <span data-span="i2">{src.assetAlt}</span>
+                  </p>
+                </div>
+              )}
+
+              <footer class="src-caption">{src.caption}</footer>
+            </article>
+          ))
+        }
+      </div>
+      <p class="zone-note">{t.sourcesNote}</p>
+    </div>
+
+    <p class="flow" aria-hidden="true"><span class="flow-arrow"></span></p>
+
+    <!-- ================= 2. structuring ================= -->
+    <div class="zone" data-reveal>
+      <p class="zone-label"><span class="zone-n">2</span>{t.routesLabel}</p>
+      <p class="zone-lead">{t.routesLead}</p>
+
+      <div class="routes" role="tablist" aria-label={t.routesLabel}>
+        {
+          t.routes.map((r, i) => (
+            <button
+              type="button"
+              role="tab"
+              class="route"
+              data-route={r.id}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`route-body-${r.id}`}
+              id={`route-tab-${r.id}`}
+            >
+              <span class="route-label">{r.label}</span>
+              <span class="route-blurb">{r.blurb}</span>
+            </button>
+          ))
+        }
+      </div>
+
+      {
+        t.routes.map((r, i) => (
+          <pre
+            class="route-body"
+            id={`route-body-${r.id}`}
+            role="tabpanel"
+            aria-labelledby={`route-tab-${r.id}`}
+            data-route-body={r.id}
+            hidden={i !== 0}
+            set:html={r.snippet}
+          />
+        ))
+      }
+
+      <p class="gate">
+        <span class="gate-mark" aria-hidden="true"></span>
+        <span set:html={t.gateText} />
+      </p>
+    </div>
+
+    <p class="flow" aria-hidden="true"><span class="flow-arrow"></span></p>
+
+    <!-- ================= 3. the slide ================= -->
+    <div class="zone" data-reveal>
+      <p class="zone-label"><span class="zone-n">3</span>{t.recordLabel}</p>
+
+      <div class="controls">
+        <div class="ctl">
+          <p class="ctl-label">{t.typeLabel}</p>
+          <div class="seg" role="tablist" aria-label={t.typeLabel}>
+            {
+              t.types.map((type, i) => (
+                <button
+                  type="button"
+                  role="tab"
+                  data-type={type.id}
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  aria-controls={`pane-${type.id}`}
+                  id={`tab-${type.id}`}
+                >
+                  {type.label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+        <div class="ctl">
+          <p class="ctl-label">{t.themeLabel}</p>
+          <div class="seg seg--theme" role="tablist" aria-label={t.themeLabel}>
+            {
+              t.themes.map((theme, i) => (
+                <button
+                  type="button"
+                  role="tab"
+                  data-theme={theme.id}
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                >
+                  <span class="sw" style={`background:${theme.swatch}`} aria-hidden="true" />
+                  {theme.label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-slide">
           {
             t.types.map((type, i) => (
-              <button
-                type="button"
-                role="tab"
-                id={`anatomy-tab-${type.id}`}
-                aria-controls={`anatomy-pane-${type.id}`}
-                aria-selected={i === 0 ? 'true' : 'false'}
-                data-type={type.id}
-              >
-                {type.label}
-              </button>
-            ))
-          }
-        </div>
-
-        {
-          t.types.map((type, i) => {
-            const barMax = Math.max(1, ...(type.bars ?? []).map((b) => b.value));
-            return (
               <div
-                class="anatomy-pane"
-                id={`anatomy-pane-${type.id}`}
+                class="pane"
+                id={`pane-${type.id}`}
                 role="tabpanel"
-                aria-labelledby={`anatomy-tab-${type.id}`}
+                aria-labelledby={`tab-${type.id}`}
                 data-pane={type.id}
                 hidden={i !== 0}
               >
-                <p class="anatomy-panellabel">{t.slideLabel}</p>
-                <div class="slide">
+                <div class="slide" data-slide>
                   {type.eyebrow && <p class="slide-eyebrow">{type.eyebrow}</p>}
 
                   {type.items && (
@@ -148,41 +297,25 @@ const FIELDS: Record<string, FieldDef[]> = {
                     </>
                   )}
 
-                  {type.metrics && (
-                    <>
-                      <h4 class="slide-title" data-region="title">
-                        {type.title}
-                      </h4>
-                      <div class="slide-kpi" data-region="metrics">
-                        {type.metrics.map((m) => (
-                          <div>
-                            <span class="kpi-v">
-                              {m.value}
-                              {m.unit && <span class="kpi-u">{m.unit}</span>}
-                            </span>
-                            <span class="kpi-l">{m.label}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </>
-                  )}
-
                   {type.bars && (
                     <>
                       <h4 class="slide-title" data-region="title">
                         {type.title}
                       </h4>
                       <div class="slide-chart" data-region="data">
-                        {type.bars.map((b) => (
-                          <div class="bar">
-                            <span class="bar-v">{b.value}</span>
-                            <span
-                              class="bar-fill"
-                              style={`height:${Math.round((b.value / barMax) * 100)}%`}
-                            />
-                            <span class="bar-l">{b.label}</span>
-                          </div>
-                        ))}
+                        {type.bars.map((b) => {
+                          const max = Math.max(1, ...type.bars!.map((x) => x.value));
+                          return (
+                            <div class="bar">
+                              <span class="bar-v">{b.value}</span>
+                              <span
+                                class="bar-fill"
+                                style={`height:${Math.round((b.value / max) * 100)}%`}
+                              />
+                              <span class="bar-l">{b.label}</span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </>
                   )}
@@ -200,20 +333,39 @@ const FIELDS: Record<string, FieldDef[]> = {
                       </footer>
                     </blockquote>
                   )}
-                </div>
 
-                <p class="anatomy-panellabel anatomy-panellabel--fields">
-                  {t.recordLabel}
-                  <span class="anatomy-typeid">{type.id}</span>
+                  {type.image && (
+                    <>
+                      <h4 class="slide-title slide-title--sm" data-region="title">
+                        {type.title}
+                      </h4>
+                      <figure class="slide-img">
+                        <span
+                          class="slide-img-frame"
+                          data-region="image"
+                          style={`background:${TILES[0]}`}
+                        />
+                        <figcaption data-region="caption">{type.image.caption}</figcaption>
+                      </figure>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="stage-side">
+          {
+            t.types.map((type, i) => (
+              <div class="side" data-side={type.id} hidden={i !== 0}>
+                <p class="ctl-label ctl-label--fields">
+                  {t.fieldsLabel}
+                  <span class="typeid">{type.id}</span>
                 </p>
                 <ul class="fieldlist">
                   {(FIELDS[type.id] ?? []).map((f) => (
-                    <li
-                      class="field"
-                      data-field={f.key}
-                      data-spans={f.spans.join(',')}
-                      tabindex="0"
-                    >
+                    <li class="field" data-field={f.key} data-spans={f.spans.join(',')} tabindex="0">
                       <span class="field-key">{f.key}</span>
                       <span class="field-type">{f.type}</span>
                       <span class="field-cons">
@@ -227,77 +379,176 @@ const FIELDS: Record<string, FieldDef[]> = {
                     </li>
                   ))}
                 </ul>
-
-                <p class="anatomy-claim" set:html={type.claim} />
+                <p class="claim" set:html={type.claim} />
               </div>
-            );
-          })
-        }
-
-        <p class="anatomy-hint">{t.hint}</p>
+            ))
+          }
+          <p class="hint">{t.hint}</p>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
 <script>
-  // Tab switching plus two-way highlighting between a field, the region of the
-  // slide it drives, and the sentence in the source document it came from.
   const root = document.querySelector<HTMLElement>('.anatomy');
   if (root) {
-    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('.anatomy-tabs button'));
-    const panes = Array.from(root.querySelectorAll<HTMLElement>('.anatomy-pane'));
-    const docSpans = Array.from(root.querySelectorAll<HTMLElement>('.docwin-page [data-span]'));
+    const typeTabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-type]'));
+    const themeTabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-theme]'));
+    const routeTabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-route]'));
+    const panes = Array.from(root.querySelectorAll<HTMLElement>('[data-pane]'));
+    const sides = Array.from(root.querySelectorAll<HTMLElement>('[data-side]'));
+    const routeBodies = Array.from(root.querySelectorAll<HTMLElement>('[data-route-body]'));
+    const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-src]'));
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-slide]'));
 
-    function show(typeId: string) {
-      tabs.forEach((tab) => tab.setAttribute('aria-selected', String(tab.dataset.type === typeId)));
-      panes.forEach((pane) => {
-        pane.hidden = pane.dataset.pane !== typeId;
+    // Which raw source each slide type draws on. Mirrors SOURCE_OF above.
+    const SOURCE_OF: Record<string, string> = {
+      'timeline-slide': 'doc',
+      'chart-slide': 'sheet',
+      'quote-slide': 'note',
+      'image-slide': 'library',
+    };
+
+    // Theme tokens. Only the alternates need declaring; the Deckyard theme is
+    // the stylesheet default, so switching back just clears the overrides.
+    const THEME_KEYS = [
+      '--t-bg',
+      '--t-ink',
+      '--t-accent',
+      '--t-head',
+      '--t-muted',
+      '--t-rule',
+      '--t-radius',
+      '--t-font-head',
+      '--t-font-body',
+      '--t-font-eye',
+      '--t-eye-ls',
+      '--t-node',
+      '--t-border',
+    ];
+    const THEMES: Record<string, Record<string, string>> = {
+      deckyard: {},
+      council: {
+        '--t-bg': '#ffffff',
+        '--t-ink': '#12233a',
+        '--t-accent': '#1f5fa8',
+        '--t-head': '#0d2a4d',
+        '--t-muted': '#5a6b7d',
+        '--t-rule': '#ccd8e4',
+        '--t-radius': '2px',
+        '--t-font-head': 'Arial, Helvetica, sans-serif',
+        '--t-font-body': 'Arial, Helvetica, sans-serif',
+        '--t-font-eye': 'Arial, Helvetica, sans-serif',
+        '--t-eye-ls': '0.2em',
+        '--t-node': '2px',
+        '--t-border': '1px solid #dee6ee',
+      },
+      editorial: {
+        '--t-bg': '#f8f2e7',
+        '--t-ink': '#241f18',
+        '--t-accent': '#9a3412',
+        '--t-head': '#1c1712',
+        '--t-muted': '#6b5f4c',
+        '--t-rule': '#dbcbad',
+        '--t-radius': '2px',
+        '--t-font-head': 'Georgia, "Times New Roman", serif',
+        '--t-font-body': 'Georgia, "Times New Roman", serif',
+        '--t-font-eye': 'var(--mono)',
+        '--t-eye-ls': '0.22em',
+        '--t-node': '50%',
+        '--t-border': '1px solid #e5d8bd',
+      },
+      studio: {
+        '--t-bg': '#111018',
+        '--t-ink': '#f3effa',
+        '--t-accent': '#57e0c8',
+        '--t-head': '#ffffff',
+        '--t-muted': '#9a91ad',
+        '--t-rule': '#2f2b3d',
+        '--t-radius': '12px',
+        '--t-font-eye': 'var(--mono)',
+        '--t-eye-ls': '0.18em',
+        '--t-node': '50%',
+        '--t-border': '1px solid #262336',
+      },
+    };
+
+    function select(list: HTMLButtonElement[], attr: string, value: string) {
+      list.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset[attr] === value)));
+    }
+
+    function showType(typeId: string) {
+      select(typeTabs, 'type', typeId);
+      panes.forEach((p) => {
+        p.hidden = p.dataset.pane !== typeId;
       });
-      clear();
+      sides.forEach((s) => {
+        s.hidden = s.dataset.side !== typeId;
+      });
+      // Bring the source this type draws on forward, and mark its passages.
+      const srcId = SOURCE_OF[typeId];
+      cards.forEach((c) => c.classList.toggle('is-active', c.dataset.src === srcId));
       markUsed(typeId);
     }
 
-    // Passages this slide type actually draws on stay softly marked, so
-    // switching type visibly re-lights a different part of the same document.
     function markUsed(typeId: string) {
-      const pane = panes.find((p) => p.dataset.pane === typeId);
+      const side = sides.find((s) => s.dataset.side === typeId);
       const used = new Set<string>();
-      pane?.querySelectorAll<HTMLElement>('.field').forEach((field) => {
-        (field.dataset.spans || '')
+      side?.querySelectorAll<HTMLElement>('.field').forEach((f) => {
+        (f.dataset.spans || '')
           .split(',')
           .filter(Boolean)
           .forEach((id) => used.add(id));
       });
-      docSpans.forEach((span) => {
-        span.classList.toggle('is-used', used.has(span.dataset.span || ''));
+      root!.querySelectorAll<HTMLElement>('[data-span]').forEach((s) => {
+        s.classList.toggle('is-used', used.has(s.dataset.span || ''));
       });
     }
 
-    function clear() {
-      root!.querySelectorAll('.is-lit').forEach((el) => el.classList.remove('is-lit'));
-      root!.querySelectorAll('.is-probing').forEach((el) => el.classList.remove('is-probing'));
+    function applyTheme(themeId: string) {
+      select(themeTabs, 'theme', themeId);
+      const vars = THEMES[themeId] || {};
+      slides.forEach((slide) => {
+        THEME_KEYS.forEach((k) => slide.style.removeProperty(k));
+        Object.entries(vars).forEach(([k, v]) => slide.style.setProperty(k, v));
+      });
+    }
+
+    function showRoute(routeId: string) {
+      select(routeTabs, 'route', routeId);
+      routeBodies.forEach((b) => {
+        b.hidden = b.dataset.routeBody !== routeId;
+      });
     }
 
     function light(field: HTMLElement, on: boolean) {
-      const pane = field.closest<HTMLElement>('.anatomy-pane');
-      const slide = pane?.querySelector<HTMLElement>('.slide');
       const key = field.dataset.field;
       const ids = (field.dataset.spans || '').split(',').filter(Boolean);
+      const pane = panes.find((p) => !p.hidden);
 
       field.classList.toggle('is-lit', on);
-      slide?.classList.toggle('is-probing', on);
-      slide?.querySelectorAll<HTMLElement>('[data-region]').forEach((region) => {
-        region.classList.toggle('is-lit', on && region.dataset.region === key);
+      // Some fields (alt, imageRole) drive no visible region: they exist for
+      // screen readers or for the renderer. Dimming the slide for those would
+      // just look broken, so only probe when there is something to point at.
+      const regions = Array.from(pane?.querySelectorAll<HTMLElement>('[data-region]') ?? []);
+      const hasRegion = regions.some((r) => r.dataset.region === key);
+      pane?.querySelector('.slide')?.classList.toggle('is-probing', on && hasRegion);
+      regions.forEach((r) => {
+        r.classList.toggle('is-lit', on && r.dataset.region === key);
       });
-      docSpans.forEach((span) => {
-        span.classList.toggle('is-lit', on && ids.includes(span.dataset.span || ''));
+      root!.querySelectorAll<HTMLElement>('[data-span]').forEach((s) => {
+        s.classList.toggle('is-lit', on && ids.includes(s.dataset.span || ''));
       });
     }
 
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => show(tab.dataset.type || ''));
-    });
+    typeTabs.forEach((tab) => tab.addEventListener('click', () => showType(tab.dataset.type || '')));
+    themeTabs.forEach((tab) =>
+      tab.addEventListener('click', () => applyTheme(tab.dataset.theme || ''))
+    );
+    routeTabs.forEach((tab) =>
+      tab.addEventListener('click', () => showRoute(tab.dataset.route || ''))
+    );
 
     root.querySelectorAll<HTMLElement>('.field').forEach((field) => {
       field.addEventListener('mouseenter', () => light(field, true));
@@ -306,117 +557,271 @@ const FIELDS: Record<string, FieldDef[]> = {
       field.addEventListener('blur', () => light(field, false));
     });
 
-    // The reverse direction: hovering a sentence points back at its field.
-    docSpans.forEach((span) => {
-      span.addEventListener('mouseenter', () => {
-        const id = span.dataset.span || '';
-        const pane = panes.find((p) => !p.hidden);
-        pane?.querySelectorAll<HTMLElement>('.field').forEach((field) => {
-          const owns = (field.dataset.spans || '').split(',').includes(id);
-          if (owns) light(field, true);
-        });
-      });
-      span.addEventListener('mouseleave', () => clear());
-    });
-
-    markUsed(tabs[0]?.dataset.type || '');
+    showType(typeTabs[0]?.dataset.type || '');
   }
 </script>
 
 <style>
-  .anatomy-grid {
-    display: grid;
-    gap: 1.5rem;
+  /* ---------- zones ---------- */
+  .zone {
     margin-top: 2.5rem;
+  }
+  .zone-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 0.9rem;
+  }
+  .zone-n {
+    display: grid;
+    place-items: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 50%;
+    background: var(--green);
+    color: var(--paper);
+    font-size: 0.62rem;
+    letter-spacing: 0;
+    flex: none;
+  }
+  .zone-lead {
+    max-width: 62ch;
+    margin: 0 0 1.2rem;
+    color: var(--ink-soft);
+  }
+  .zone-note {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    color: var(--ink-mute);
+    margin: 1rem 0 0;
+  }
+
+  /* the step between zones */
+  .flow {
+    display: flex;
+    justify-content: center;
+    margin: 1.6rem 0 0;
+  }
+  .flow-arrow {
+    width: 1px;
+    height: 2.4rem;
+    background: linear-gradient(to bottom, transparent, var(--line) 30%, var(--green-bright));
+    position: relative;
+  }
+  .flow-arrow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    translate: -50% 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid var(--green-bright);
+  }
+
+  /* ---------- 1. raw sources ---------- */
+  .sources {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
     align-items: start;
   }
-  @media (min-width: 900px) {
-    .anatomy-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+  @media (max-width: 899px) {
+    .sources {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.7rem;
+    }
+  }
+  @media (max-width: 520px) {
+    .sources {
+      grid-template-columns: 1fr;
     }
   }
 
-  /* ---------- source document window ---------- */
-  .docwin {
-    margin: 0;
+  /* A pile of things on a desk: each card sits at a slight angle and settles
+     upright when it is the one feeding the current slide type. */
+  .src {
     border: 1px solid var(--line);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-sm);
     background: var(--card);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm);
     overflow: hidden;
+    opacity: 0.55;
+    filter: saturate(0.5);
+    transition:
+      opacity var(--dur-component) var(--ease-out-quint),
+      rotate var(--dur-component) var(--ease-out-quint),
+      translate var(--dur-component) var(--ease-out-quint),
+      box-shadow var(--dur-component) var(--ease-out-quint),
+      filter var(--dur-component) var(--ease-out-quint);
   }
-  .docwin-bar {
+  .src:nth-child(1) { rotate: -1.4deg; }
+  .src:nth-child(2) { rotate: 0.9deg; }
+  .src:nth-child(3) { rotate: -0.6deg; }
+  .src:nth-child(4) { rotate: 1.6deg; }
+  .src.is-active {
+    opacity: 1;
+    rotate: 0deg;
+    translate: 0 -5px;
+    filter: none;
+    box-shadow: var(--shadow-md);
+    border-color: var(--brass);
+  }
+
+  .src-bar {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
-    padding: 0.6rem 0.85rem;
+    gap: 0.45rem;
+    padding: 0.4rem 0.55rem;
     background: var(--paper-warm);
     border-bottom: 1px solid var(--line);
     min-width: 0;
   }
-  .docwin-dots {
+  .src-dots {
     display: flex;
-    gap: 0.3rem;
+    gap: 0.16rem;
     flex: none;
   }
-  .docwin-dots i {
-    width: 9px;
-    height: 9px;
+  .src-dots i {
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
     background: var(--line);
   }
-  /* The filename is half the joke, so it has to fit whole: shrink rather than
-     truncate, and only fall back to an ellipsis on very narrow screens. */
-  .docwin-name {
+  .src-name {
     font-family: var(--mono);
-    font-size: clamp(0.5rem, 1.15vw, 0.62rem);
+    font-size: 0.53rem;
     color: var(--ink-mute);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     min-width: 0;
   }
-  /* A hint of a toolbar: enough to read as a word processor, no more. */
-  .docwin-rule {
-    display: flex;
-    gap: 0.45rem;
-    padding: 0.45rem 0.85rem;
-    border-bottom: 1px solid var(--line);
-    background: var(--card);
-  }
-  .docwin-rule span {
-    height: 5px;
-    border-radius: 3px;
+  .src-caption {
+    padding: 0.4rem 0.6rem;
+    border-top: 1px solid var(--line);
     background: var(--paper-warm);
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
   }
-  .docwin-rule span:nth-child(1) { width: 34px; }
-  .docwin-rule span:nth-child(2) { width: 18px; }
-  .docwin-rule span:nth-child(3) { width: 26px; }
-  .docwin-rule span:nth-child(4) { width: 14px; }
 
-  .docwin-page {
-    padding: 1.4rem 1.5rem 1.6rem;
+  /* word processor */
+  .src-doc {
+    padding: 0.75rem 0.8rem;
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 0.87rem;
-    line-height: 1.72;
+    font-size: 0.66rem;
+    line-height: 1.6;
     color: var(--ink-soft);
+    max-height: 11.5rem;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 76%, transparent);
+    mask-image: linear-gradient(to bottom, #000 76%, transparent);
   }
-  .docwin-title {
+  .src-doc h4 {
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 1rem;
+    font-size: 0.72rem;
     font-weight: 700;
     color: var(--ink);
-    margin: 0 0 1rem;
-    line-height: 1.35;
+    margin: 0 0 0.5rem;
+    line-height: 1.3;
   }
-  .docwin-page p {
-    margin: 0 0 0.85em;
+  .src-doc p {
+    margin: 0 0 0.55em;
   }
-  .docwin-page p:last-child {
+
+  /* spreadsheet */
+  .src-sheet {
+    padding: 0.5rem 0.4rem 0.7rem;
+  }
+  .src-sheet table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+  }
+  .src-sheet th {
+    width: 1.1rem;
+    color: var(--ink-mute);
+    font-weight: 400;
+    font-size: 0.52rem;
+    text-align: center;
+    background: var(--paper-warm);
+    border: 1px solid var(--line);
+  }
+  .src-sheet td {
+    padding: 0.22rem 0.35rem;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+  .src-sheet td:nth-child(3) {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .src-sheet tr.is-head td {
+    background: var(--paper-warm);
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* a loose note */
+  .src-note {
+    padding: 0.8rem 0.85rem;
+    background: #fdf6dc;
+    font-size: 0.7rem;
+    line-height: 1.62;
+    color: #4a4023;
+    min-height: 7rem;
+  }
+  .src-note p {
+    margin: 0 0 0.55em;
+  }
+  .src-note p:last-child {
     margin-bottom: 0;
   }
-  .docwin-page :global([data-span]) {
+
+  /* image library */
+  .src-library {
+    padding: 0.6rem;
+  }
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem;
+  }
+  .tile {
+    aspect-ratio: 4 / 3;
+    border-radius: 3px;
+    display: block;
+  }
+  .tile.is-picked {
+    outline: 2px solid var(--brass);
+    outline-offset: 1px;
+  }
+  .tile-meta {
+    margin: 0.55rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.53rem;
+    line-height: 1.5;
+    color: var(--ink-mute);
+  }
+  .tile-meta b {
+    display: block;
+    color: var(--ink-soft);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* passages that feed a field */
+  .anatomy :global([data-span]) {
     border-radius: 3px;
     padding: 0 1px;
     transition:
@@ -424,91 +829,234 @@ const FIELDS: Record<string, FieldDef[]> = {
       box-shadow var(--dur-micro) ease,
       color var(--dur-micro) ease;
   }
-  /* Softly marked: this type draws on this passage. Kept to a rule only - a
-     wash as well turns a whole paragraph into a highlighter accident. */
-  .docwin-page :global([data-span].is-used) {
-    box-shadow: inset 0 -1.5px 0 rgba(184, 134, 15, 0.5);
-    cursor: help;
+  .anatomy :global([data-span].is-used) {
+    box-shadow: inset 0 -1.5px 0 rgba(184, 134, 15, 0.55);
   }
-  /* Lit: this passage feeds the field you are pointing at. */
-  .docwin-page :global([data-span].is-lit) {
+  .anatomy :global([data-span].is-lit) {
     background: var(--brass);
     color: var(--green-deep);
     box-shadow: none;
   }
+  .tile.is-picked:global(.is-lit) {
+    background: none;
+    outline-color: var(--green-bright);
+    outline-width: 3px;
+  }
 
-  /* ---------- right column ---------- */
-  .anatomy-tablabel,
-  .anatomy-panellabel {
+  /* ---------- 2. structuring ---------- */
+  .routes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem;
+  }
+  @media (max-width: 700px) {
+    .routes {
+      grid-template-columns: 1fr;
+    }
+  }
+  .route {
+    text-align: left;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+    transition:
+      border-color var(--dur-micro) ease,
+      background var(--dur-micro) ease;
+  }
+  .route:hover {
+    border-color: var(--green-bright);
+  }
+  .route[aria-selected='true'] {
+    border-color: var(--green);
+    background: var(--green-wash);
+  }
+  .route-label {
+    font-family: var(--display);
+    font-variation-settings: 'wght' 620;
+    font-size: 0.98rem;
+    color: var(--ink);
+  }
+  .route-blurb {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  .route-body {
+    margin: 0.7rem 0 0;
+    padding: 0.85rem 1rem;
+    background: var(--green-deep);
+    color: #d8e5dc;
+    border-radius: var(--radius-sm);
     font-family: var(--mono);
-    font-size: 0.6rem;
+    font-size: 0.7rem;
+    line-height: 1.65;
+    overflow-x: auto;
+  }
+  .route-body :global(.k) { color: var(--brass-soft); }
+  .route-body :global(.s) { color: #9fd6b4; }
+  .route-body :global(.c) { color: #7d8f85; font-style: italic; }
+
+  .gate {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    margin: 0.9rem 0 0;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--green);
+    border-radius: var(--radius-sm);
+    background: var(--green-wash);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .gate :global(b) {
+    color: var(--green);
+    font-family: var(--mono);
+    font-size: 0.85em;
+  }
+  .gate-mark {
+    flex: none;
+    width: 0.7rem;
+    height: 0.7rem;
+    margin-top: 0.35rem;
+    border-radius: 2px;
+    background: var(--green);
+    rotate: 45deg;
+  }
+
+  /* ---------- 3. the slide ---------- */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem 2rem;
+    margin-bottom: 1.2rem;
+  }
+  .ctl-label {
+    font-family: var(--mono);
+    font-size: 0.58rem;
     letter-spacing: 0.13em;
     text-transform: uppercase;
     color: var(--ink-mute);
-    margin: 0 0 0.55rem;
+    margin: 0 0 0.45rem;
   }
-  .anatomy-panellabel--fields {
+  .ctl-label--fields {
     display: flex;
     align-items: baseline;
-    gap: 0.6rem;
+    gap: 0.55rem;
     flex-wrap: wrap;
-    margin-top: 1.1rem;
   }
-  .anatomy-typeid {
+  .typeid {
     font-family: var(--mono);
     font-size: 0.62rem;
     letter-spacing: 0;
     text-transform: none;
     color: var(--green-bright);
   }
-
-  .anatomy-tabs {
+  .seg {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.3rem;
-    padding: 0.25rem;
+    gap: 0.28rem;
+    padding: 0.24rem;
     background: var(--paper-warm);
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
     width: fit-content;
     max-width: 100%;
-    margin-bottom: 1.1rem;
   }
-  .anatomy-tabs button {
+  .seg button {
     font-family: var(--body);
     font-size: 0.85rem;
     font-weight: 500;
-    padding: 0.42rem 0.8rem;
+    padding: 0.4rem 0.78rem;
     border: 0;
     border-radius: 6px;
     background: transparent;
     color: var(--ink-soft);
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
     transition:
       background var(--dur-micro) ease,
       color var(--dur-micro) ease;
   }
-  .anatomy-tabs button:hover {
+  .seg button:hover {
     background: var(--sage);
     color: var(--ink);
   }
-  .anatomy-tabs button[aria-selected='true'] {
+  .seg button[aria-selected='true'] {
     background: var(--green);
     color: var(--paper);
   }
+  .seg--theme button[aria-selected='true'] {
+    background: var(--ink);
+  }
+  .sw {
+    width: 11px;
+    height: 11px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    flex: none;
+  }
 
-  /* ---------- the rendered slide ---------- */
+  .stage {
+    display: grid;
+    gap: 1.4rem;
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .stage {
+      grid-template-columns: 1.55fr 1fr;
+      gap: 1.8rem;
+    }
+  }
+
+  /* The pane is the query container, not the slide. An element cannot query its
+     own container-type, so `cqi` in the slide's own declarations (its padding)
+     would otherwise resolve against the viewport instead of the slide width. */
+  .pane {
+    container-type: inline-size;
+  }
+
+  /* The slide carries its own palette, independent of the page: that is the
+     point of the house-style control. Tokens default to Deckyard's own. */
   .slide {
+    --t-bg: var(--card);
+    --t-ink: var(--ink);
+    --t-accent: var(--green-bright);
+    --t-head: var(--ink);
+    --t-muted: var(--ink-mute);
+    --t-rule: var(--sage);
+    --t-radius: var(--radius-sm);
+    --t-font-head: var(--display);
+    --t-font-body: var(--body);
+    --t-font-eye: var(--mono);
+    --t-eye-ls: 0.14em;
+    --t-node: 50%;
+    --t-border: 1px solid var(--line);
+
     aspect-ratio: 16 / 9;
     container-type: inline-size;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-sm);
+    background: var(--t-bg);
+    color: var(--t-ink);
+    font-family: var(--t-font-body);
+    border: var(--t-border);
+    border-radius: var(--t-radius);
+    box-shadow: var(--shadow-md);
     padding: 5cqi;
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    transition:
+      background var(--dur-component) ease,
+      color var(--dur-component) ease,
+      border-radius var(--dur-component) ease;
   }
   .slide [data-region] {
     border-radius: 4px;
@@ -521,27 +1069,30 @@ const FIELDS: Record<string, FieldDef[]> = {
   }
   .slide.is-probing [data-region].is-lit {
     opacity: 1;
-    box-shadow: 0 0 0 2px var(--green-bright);
+    box-shadow: 0 0 0 2px var(--t-accent);
   }
   .slide-eyebrow {
-    font-family: var(--mono);
-    font-size: 2cqi;
-    letter-spacing: 0.14em;
+    font-family: var(--t-font-eye);
+    font-size: 1.9cqi;
+    letter-spacing: var(--t-eye-ls);
     text-transform: uppercase;
-    color: var(--green-bright);
+    color: var(--t-accent);
     margin: 0;
   }
   .slide-title {
-    font-family: var(--display);
-    font-size: 5cqi;
+    font-family: var(--t-font-head);
+    font-size: 5.2cqi;
     font-variation-settings: 'wght' 620;
+    font-weight: 700;
     line-height: 1.06;
     letter-spacing: -0.025em;
-    color: var(--ink);
+    color: var(--t-head);
     margin: 0.3em 0 0;
   }
+  .slide-title--sm {
+    font-size: 3.6cqi;
+  }
 
-  /* timeline */
   .slide-tl {
     list-style: none;
     display: grid;
@@ -558,7 +1109,7 @@ const FIELDS: Record<string, FieldDef[]> = {
     right: 0;
     top: calc(2.7cqi - 1px);
     height: 2px;
-    background: var(--sage);
+    background: var(--t-rule);
   }
   .slide-tl li {
     position: relative;
@@ -571,57 +1122,29 @@ const FIELDS: Record<string, FieldDef[]> = {
     left: 0;
     width: 1.4cqi;
     height: 1.4cqi;
-    border-radius: 50%;
-    background: var(--green-bright);
-    box-shadow: 0 0 0 0.7cqi var(--card);
+    border-radius: var(--t-node);
+    background: var(--t-accent);
+    box-shadow: 0 0 0 0.7cqi var(--t-bg);
   }
   .tl-date {
     display: block;
     margin-top: 3.4cqi;
-    font-family: var(--mono);
-    font-size: 2.3cqi;
-    color: var(--green-bright);
+    font-family: var(--t-font-eye);
+    font-size: 2.2cqi;
+    color: var(--t-accent);
     font-variant-numeric: tabular-nums;
   }
   .tl-title {
     display: block;
     margin-top: 0.5cqi;
-    font-family: var(--display);
+    font-family: var(--t-font-head);
     font-variation-settings: 'wght' 600;
-    font-size: 2.2cqi;
+    font-weight: 700;
+    font-size: 2.1cqi;
     line-height: 1.15;
-    color: var(--ink);
+    color: var(--t-head);
   }
 
-  /* kpi */
-  .slide-kpi {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3cqi;
-    margin-top: auto;
-  }
-  .kpi-v {
-    display: block;
-    font-family: var(--display);
-    font-variation-settings: 'wght' 680;
-    font-size: 8.5cqi;
-    line-height: 0.9;
-    letter-spacing: -0.035em;
-    color: var(--green);
-    font-variant-numeric: tabular-nums;
-  }
-  .kpi-u {
-    font-size: 0.48em;
-    color: var(--brass);
-  }
-  .kpi-l {
-    display: block;
-    margin-top: 1.1cqi;
-    font-size: 2cqi;
-    color: var(--ink-soft);
-  }
-
-  /* chart */
   .slide-chart {
     display: grid;
     grid-auto-flow: column;
@@ -630,8 +1153,8 @@ const FIELDS: Record<string, FieldDef[]> = {
     margin-top: auto;
     height: 58%;
   }
-  /* Grid, not flex: the bar height percentage has to resolve against a track
-     that excludes the value and label, or the proportions get distorted. */
+  /* Grid, not flex: the bar height percentage must resolve against a track that
+     excludes the value and the label, or the proportions get distorted. */
   .bar {
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -640,56 +1163,76 @@ const FIELDS: Record<string, FieldDef[]> = {
   .bar-v {
     text-align: center;
     padding-bottom: 0.8cqi;
-    font-family: var(--display);
+    font-family: var(--t-font-head);
     font-variation-settings: 'wght' 620;
-    font-size: 2.2cqi;
-    color: var(--ink);
+    font-weight: 700;
+    font-size: 2.1cqi;
+    color: var(--t-head);
     font-variant-numeric: tabular-nums;
   }
   .bar-fill {
     align-self: end;
     width: 100%;
-    background: var(--green);
+    background: var(--t-accent);
     border-radius: 3px 3px 0 0;
   }
   .bar-l {
     text-align: center;
     padding-top: 1cqi;
-    font-family: var(--mono);
-    font-size: 1.8cqi;
-    color: var(--ink-mute);
-    border-top: 1px solid var(--sage);
+    font-family: var(--t-font-eye);
+    font-size: 1.7cqi;
+    color: var(--t-muted);
+    border-top: 1px solid var(--t-rule);
   }
 
-  /* quote */
   .slide-quote {
     margin: auto 0;
     padding: 0;
   }
   .slide-quote p {
-    font-family: var(--display);
+    font-family: var(--t-font-head);
     font-variation-settings: 'wght' 600;
-    font-size: 5.6cqi;
+    font-weight: 700;
+    font-size: 5.4cqi;
     line-height: 1.18;
     letter-spacing: -0.022em;
-    color: var(--ink);
+    color: var(--t-head);
     margin: 0;
-    max-width: 86%;
+    max-width: 88%;
   }
   .slide-quote p::before { content: '\201C'; }
   .slide-quote p::after { content: '\201D'; }
   .slide-quote footer {
     margin-top: 3cqi;
-    font-size: 2cqi;
+    font-size: 1.9cqi;
   }
   .q-name {
     display: block;
     font-weight: 600;
-    color: var(--ink);
+    color: var(--t-ink);
   }
   .q-role {
     display: block;
-    color: var(--ink-mute);
+    color: var(--t-muted);
+  }
+
+  .slide-img {
+    margin: 2cqi 0 0;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+  .slide-img-frame {
+    flex: 1;
+    border-radius: calc(var(--t-radius) / 2);
+    min-height: 0;
+  }
+  .slide-img figcaption {
+    margin-top: 1.4cqi;
+    font-size: 1.7cqi;
+    color: var(--t-muted);
+    font-family: var(--t-font-eye);
   }
 
   /* ---------- field list ---------- */
@@ -754,44 +1297,34 @@ const FIELDS: Record<string, FieldDef[]> = {
     font-weight: 700;
   }
 
-  .anatomy-claim {
+  .claim {
     margin: 0.9rem 0 0;
     padding: 0.8rem 0.95rem;
     background: var(--green-wash);
     border-radius: var(--radius-sm);
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     line-height: 1.55;
     color: var(--ink-soft);
   }
-  .anatomy-claim :global(b) {
+  .claim :global(b) {
     font-family: var(--mono);
     font-size: 0.85em;
     color: var(--green);
   }
-  .anatomy-hint {
+  .hint {
     margin: 0.9rem 0 0;
     font-family: var(--mono);
-    font-size: 0.66rem;
+    font-size: 0.64rem;
     color: var(--ink-mute);
   }
 
-  /* On narrow screens there is no hover, so the document is illustration
-     rather than interaction: fade it out after a screenful instead of pushing
-     the slide and its fields a page and a half down. */
-  @media (max-width: 899px) {
-    .docwin-page {
-      max-height: 15rem;
-      overflow: hidden;
-      -webkit-mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
-      mask-image: linear-gradient(to bottom, #000 68%, transparent 100%);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .docwin-page :global([data-span]),
+    .src,
+    .slide,
     .slide [data-region],
-    .anatomy-tabs button,
-    .field {
+    .seg button,
+    .field,
+    .anatomy :global([data-span]) {
       transition: none;
     }
   }

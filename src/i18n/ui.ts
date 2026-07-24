@@ -106,30 +106,50 @@ export interface Content {
     readFirst: string;
   };
 
-  // Homepage "what a slide actually is" demo. The running example is a
-  // deliberately absurd one - a lemonade stand reported on in stiff corporate
-  // register - so nobody mistakes the demo content for a claim about Deckyard.
+  // "How raw material becomes an on-brand slide" explainer. Three zones: the
+  // pile of stuff you start with, the three routes that structure it, and the
+  // slide itself with its two independent controls (type and house style).
+  //
+  // The running example is a deliberately absurd one - a lemonade stand
+  // reported on in stiff corporate register - so nobody mistakes the demo
+  // content for a claim about Deckyard.
   anatomy: {
     kicker: string;
     title: string;
     lead: string;
-    // Window chrome for the source document. The filename is the joke and the
-    // point at once: this is the artefact people actually start from.
-    docFilename: string;
-    docWindowAria: string;
-    docHeading: string;
-    // Paragraphs of the source document, as HTML. Each passage a slide field
-    // is drawn from is wrapped in <span data-span="ID">; the IDs are structural
-    // and map to fields in SlideAnatomy.astro, so keep them when translating.
-    docParagraphs: string[];
-    sourceLabel: string;
+
+    // --- zone 1: the raw material ---
+    sourcesLabel: string;
+    sourcesNote: string;
+    // Passages a slide field is drawn from are wrapped in
+    // <span data-span="ID">. Those IDs are structural and map to fields in
+    // SlideAnatomy.astro, so keep them when translating.
+    sources: {
+      id: string;
+      kind: 'doc' | 'sheet' | 'note' | 'library';
+      name: string; // filename in the window chrome
+      caption: string; // what kind of thing this is
+      heading?: string;
+      paragraphs?: string[]; // doc + note, as HTML
+      rows?: string[][]; // sheet cells, as HTML
+      assetFile?: string;
+      assetAlt?: string;
+    }[];
+
+    // --- zone 2: structuring it ---
+    routesLabel: string;
+    routesLead: string;
+    routes: { id: string; label: string; blurb: string; snippet: string }[];
+    gateText: string; // may contain <b>
+
+    // --- zone 3: the slide ---
     recordLabel: string;
-    slideLabel: string;
     typeLabel: string;
+    themeLabel: string;
+    fieldsLabel: string;
     hint: string;
-    // One entry per slide type on show. The field vocabulary itself (keys,
-    // types, required flags, limits) is structural and lives in the component;
-    // only the human-readable values are translated here.
+    // The field vocabulary itself (keys, types, required flags, limits) is
+    // structural and lives in the component; only the values are translated.
     types: {
       id: string;
       label: string;
@@ -137,10 +157,11 @@ export interface Content {
       eyebrow: string;
       title: string;
       items?: { date: string; title: string }[];
-      metrics?: { value: string; unit?: string; label: string }[];
       bars?: { label: string; value: number }[];
       quote?: { text: string; name: string; role: string };
+      image?: { caption: string };
     }[];
+    themes: { id: string; label: string; swatch: string }[];
   };
 
   blogIndex: {
@@ -293,23 +314,92 @@ export const ui: Record<Lang, Content> = {
     },
 
     anatomy: {
-      kicker: 'What a slide actually is',
-      title: 'Every slide knows what it is',
-      lead: 'Most decks begin life as a document like this one. Deckyard does not turn it into a drawing: it turns it into structured content, where a timeline is a sequence and a figure is a number. Pick a slide type and hover a field to see where it came from.',
-      docFilename: 'Lemonade-Stand-Q3-Review-FINAL-v2-reviewed_by_jane-REALFINAL(3).docx',
-      docWindowAria: 'Source document the slides were built from',
-      docHeading: 'Q3 Operational Review — Sunnyside Lemonade Stand',
-      docParagraphs: [
-        '<b data-span="h1">1. Background.</b> The Stand was <span data-span="n1">constituted by resolution of the household</span> in <span data-span="t1">2021</span>. Initial capitalisation comprised one folding table and a hand-lettered sign. In <span data-span="t2">2022</span> the Stand entered its <span data-span="n2">first strategic partnership, with the adjacent bake sale</span>. Operations were <span data-span="n3">suspended for reasons of weather</span> throughout <span data-span="t3">2024</span>. Trading <span data-span="n4">resumed under revised governance</span> in <span data-span="t4">2025</span>.',
-        '<b data-span="h2">2. Performance.</b> In the period under review the Stand dispensed <span data-span="k1v">412</span> <span data-span="k1l">cups</span>, an increase of 18 per cent on the comparable quarter. <span data-span="k2l">Gross margin</span> stood at <span data-span="k2v">61</span> per cent. <span data-span="k3l">Customer satisfaction</span>, measured informally by the proprietor, averaged <span data-span="k3v">9.4</span> out of ten.',
-        '<b data-span="h3">3. Volumes.</b> Cups dispensed per month: <span data-span="c1">June 96</span>, <span data-span="c2">July 141</span>, <span data-span="c3">August 175</span>. The Board notes that August benefited from unusually warm weather and one school holiday.',
-        '<b>4. Stakeholder feedback.</b> <span data-span="q2">Mrs. H. Albers</span>, <span data-span="q3">resident of number 14</span>, observed: <span data-span="q1">It is, on balance, quite good lemonade.</span> Mrs. Albers has been a customer since inception.',
+      kicker: 'From raw material to an on-brand slide',
+      title: 'Structure is where the control is',
+      lead: 'A deck starts as a pile of things from everywhere: a document, a spreadsheet, a note on your phone, a photo library. Something has to turn that into slides. You can do it by hand, have a script do it, or let an agent do it - but you want the result on brand and you want a say in how the data lands. That is what slide types are for.',
+
+      sourcesLabel: 'What you start with',
+      sourcesNote:
+        'Pick a slide type below and the source it draws on comes forward. Different material, different slide, same pile.',
+      sources: [
+        {
+          id: 'doc',
+          kind: 'doc',
+          name: 'Lemonade-Stand-Q3-Review-FINAL-v2-reviewed_by_jane-REALFINAL(3).docx',
+          caption: 'Word processor',
+          heading: 'Q3 Operational Review — Sunnyside Lemonade Stand',
+          paragraphs: [
+            '<b data-span="h1">1. Background.</b> The Stand was <span data-span="n1">constituted by resolution of the household</span> in <span data-span="t1">2021</span>. In <span data-span="t2">2022</span> it entered its <span data-span="n2">first strategic partnership</span>, with the adjacent bake sale. Operations were <span data-span="n3">suspended for reasons of weather</span> throughout <span data-span="t3">2024</span>. Trading <span data-span="n4">resumed under revised governance</span> in <span data-span="t4">2025</span>.',
+            '<b>2. Performance.</b> In the period under review the Stand dispensed 412 cups, an increase of 18 per cent on the comparable quarter.',
+          ],
+        },
+        {
+          id: 'sheet',
+          kind: 'sheet',
+          name: 'cups_Q3_final_v4_USE_THIS_ONE.xlsx',
+          caption: 'Spreadsheet',
+          rows: [
+            ['Month', '<span data-span="sh">Cups</span>'],
+            ['June', '<span data-span="c1">96</span>'],
+            ['July', '<span data-span="c2">141</span>'],
+            ['August', '<span data-span="c3">175</span>'],
+          ],
+        },
+        {
+          id: 'note',
+          kind: 'note',
+          name: 'Untitled note',
+          caption: 'Note on a phone',
+          paragraphs: [
+            'for the annual review, do not forget',
+            '<span data-span="q2">mrs albers</span> <span data-span="q3">from no. 14</span> said on saturday it is <span data-span="q1">on balance, quite good lemonade</span>',
+            'nice line?? put it on a slide',
+          ],
+        },
+        {
+          id: 'library',
+          kind: 'library',
+          name: 'Image library · 412 assets',
+          caption: 'Asset library',
+          assetFile: 'stand-saturday-morning.jpg',
+          assetAlt: 'A folding table with a jug of lemonade and a hand-lettered sign',
+        },
       ],
-      sourceLabel: 'Source document',
-      recordLabel: 'The slide as data',
-      slideLabel: 'The slide as shown',
-      typeLabel: 'Slide type',
-      hint: 'Hover a field to light up the sentence it came from.',
+
+      routesLabel: 'Turning it into structure',
+      routesLead:
+        'This is the step everyone skips over. It can happen three ways, and the point is not which one you pick: it is that all three end up in the same place.',
+      routes: [
+        {
+          id: 'hand',
+          label: 'By hand',
+          blurb: 'Someone reads the document and fills the fields in the editor.',
+          snippet:
+            '<span class="c">// the editor writes exactly the same record</span>\n{\n  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,\n  <span class="k">"content"</span>: { <span class="k">"items"</span>: [ … ] }\n}',
+        },
+        {
+          id: 'api',
+          label: 'Through the API',
+          blurb: 'A script or a business system posts the slide. No one retypes a table.',
+          snippet:
+            '<span class="c">POST /api/presentations/:id/slides</span>\n{\n  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,\n  <span class="k">"content"</span>: { <span class="k">"items"</span>: [ … ] }\n}',
+        },
+        {
+          id: 'mcp',
+          label: 'Through MCP',
+          blurb: 'An agent asks which types exist, then fills one. It has to ask first.',
+          snippet:
+            '<span class="c">→ get_slide_types()</span>\n<span class="c">←</span> timeline-slide: items[] <span class="c">(date, title, text)</span>\n<span class="c">→ add_slide(</span>{ <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>, … }<span class="c">)</span>',
+        },
+      ],
+      gateText:
+        'All three arrive at the same gate: the record is checked against its slide type. What a person may not save, an integration may not save either, and the other way round. <b>That is where the control lives</b> - not in doing it by hand.',
+
+      recordLabel: 'The slide itself',
+      typeLabel: 'What it means',
+      themeLabel: 'How it looks',
+      fieldsLabel: 'The slide as data',
+      hint: 'Hover a field to light up the material it came from.',
       types: [
         {
           id: 'timeline-slide',
@@ -326,23 +416,10 @@ export const ui: Record<Lang, Content> = {
           ],
         },
         {
-          id: 'kpi-metrics-slide',
-          label: 'Figures',
-          claim:
-            '<b>maxItems: 4</b> — the type declines a fifth figure. Four is what a room remembers, and that editorial judgement lives in the format rather than in a style guide nobody reads.',
-          eyebrow: 'Performance',
-          title: 'The quarter in figures',
-          metrics: [
-            { value: '412', label: 'Cups dispensed' },
-            { value: '61', unit: '%', label: 'Gross margin' },
-            { value: '9.4', label: 'Satisfaction' },
-          ],
-        },
-        {
           id: 'chart-slide',
           label: 'Chart',
           claim:
-            '<b>data: csv (required)</b> — the figures live in the record as data, not as a picture of a chart. That is exactly why this field can be wired to a spreadsheet or a database later.',
+            '<b>data: csv (required)</b> — the figures live in the record as data, not as a picture of a chart. That is why this field can stay wired to the spreadsheet instead of being copied out of it.',
           eyebrow: 'Volumes',
           title: 'Cups dispensed per month',
           bars: [
@@ -364,6 +441,21 @@ export const ui: Record<Lang, Content> = {
             role: 'Resident of number 14, customer since inception',
           },
         },
+        {
+          id: 'image-slide',
+          label: 'Image',
+          claim:
+            '<b>imageRole: content | decorative</b> — the format asks what the image is <em>for</em>. Call it decorative and screen readers skip it; call it meaningful and it wants alt text. A canvas cannot ask that question, because there an image is only pixels at coordinates.',
+          eyebrow: 'Operations',
+          title: 'The Stand in operation',
+          image: { caption: 'The Stand, Saturday morning.' },
+        },
+      ],
+      themes: [
+        { id: 'deckyard', label: 'This one', swatch: '#2d6b4a' },
+        { id: 'council', label: 'Public body', swatch: '#1f5fa8' },
+        { id: 'editorial', label: 'Editorial', swatch: '#9a3412' },
+        { id: 'studio', label: 'Studio', swatch: '#57e0c8' },
       ],
     },
 
@@ -521,23 +613,92 @@ export const ui: Record<Lang, Content> = {
     },
 
     anatomy: {
-      kicker: 'Wat een slide eigenlijk is',
-      title: 'Elke slide weet wat hij is',
-      lead: 'De meeste decks beginnen als een document zoals dit. Deckyard maakt er geen tekening van, maar gestructureerde inhoud: een tijdlijn is een reeks, een cijfer is een getal. Kies een slidetype en beweeg over een veld om te zien waar het vandaan komt.',
-      docFilename: 'Limonadekraam-Q3-DEF-v2-nagekeken_door_jantine-ECHTDEF(3).docx',
-      docWindowAria: 'Brondocument waaruit de slides zijn opgebouwd',
-      docHeading: 'Kwartaalrapportage Q3 - Limonadekraam De Zonnezijde',
-      docParagraphs: [
-        '<b data-span="h1">1. Achtergrond.</b> De Kraam is in <span data-span="t1">2021</span> <span data-span="n1">opgericht bij besluit van het huishouden</span>. Het startkapitaal bestond uit één klaptafel en een met de hand geletterd bord. In <span data-span="t2">2022</span> ging de Kraam haar <span data-span="n2">eerste strategische samenwerking</span> aan, met de naastgelegen taartverkoop. In <span data-span="t3">2024</span> zijn de werkzaamheden <span data-span="n3">opgeschort wegens weersomstandigheden</span>. In <span data-span="t4">2025</span> is de <span data-span="n4">exploitatie hervat onder herzien bestuur</span>.',
-        '<b data-span="h2">2. Prestaties.</b> In de verslagperiode zijn <span data-span="k1v">412</span> <span data-span="k1l">bekers</span> verstrekt, een toename van 18 procent ten opzichte van het vergelijkbare kwartaal. De <span data-span="k2l">brutomarge</span> bedroeg <span data-span="k2v">61</span> procent. De <span data-span="k3l">klanttevredenheid</span>, informeel gemeten door de exploitant, kwam gemiddeld uit op <span data-span="k3v">9,4</span> van de tien.',
-        '<b data-span="h3">3. Volumes.</b> Verstrekte bekers per maand: <span data-span="c1">juni 96</span>, <span data-span="c2">juli 141</span>, <span data-span="c3">augustus 175</span>. Het Bestuur tekent aan dat augustus profiteerde van uitzonderlijk warm weer en één schoolvakantie.',
-        '<b>4. Terugkoppeling belanghebbenden.</b> <span data-span="q2">Mevrouw H. Albers</span>, <span data-span="q3">woonachtig op nummer 14</span>, merkte op: <span data-span="q1">Het is, alles afwegend, best goede limonade.</span> Mevrouw Albers is klant sinds de oprichting.',
+      kicker: 'Van ruw materiaal naar een slide in je huisstijl',
+      title: 'Structuur is waar de controle zit',
+      lead: 'Een deck begint als een stapel dingen van overal: een document, een spreadsheet, een notitie op je telefoon, een beeldbibliotheek. Iets moet daar slides van maken. Dat kan met de hand, door een script, of door een agent - maar je wilt het resultaat wel in je huisstijl, en je wilt zeggenschap over hoe die data in je slides landt. Daar zijn slidetypes voor.',
+
+      sourcesLabel: 'Waar je mee begint',
+      sourcesNote:
+        'Kies hieronder een slidetype en de bron waar het uit put komt naar voren. Ander materiaal, andere slide, dezelfde stapel.',
+      sources: [
+        {
+          id: 'doc',
+          kind: 'doc',
+          name: 'Limonadekraam-Q3-DEF-v2-nagekeken_door_jantine-ECHTDEF(3).docx',
+          caption: 'Tekstverwerker',
+          heading: 'Kwartaalrapportage Q3 - Limonadekraam De Zonnezijde',
+          paragraphs: [
+            '<b data-span="h1">1. Achtergrond.</b> De Kraam is in <span data-span="t1">2021</span> <span data-span="n1">opgericht bij besluit van het huishouden</span>. In <span data-span="t2">2022</span> ging zij haar <span data-span="n2">eerste strategische samenwerking</span> aan, met de naastgelegen taartverkoop. In <span data-span="t3">2024</span> zijn de werkzaamheden <span data-span="n3">opgeschort wegens weersomstandigheden</span>. In <span data-span="t4">2025</span> is de <span data-span="n4">exploitatie hervat onder herzien bestuur</span>.',
+            '<b>2. Prestaties.</b> In de verslagperiode zijn 412 bekers verstrekt, een toename van 18 procent ten opzichte van het vergelijkbare kwartaal.',
+          ],
+        },
+        {
+          id: 'sheet',
+          kind: 'sheet',
+          name: 'bekers_Q3_definitief_v4_DEZE_GEBRUIKEN.xlsx',
+          caption: 'Spreadsheet',
+          rows: [
+            ['Maand', '<span data-span="sh">Bekers</span>'],
+            ['juni', '<span data-span="c1">96</span>'],
+            ['juli', '<span data-span="c2">141</span>'],
+            ['augustus', '<span data-span="c3">175</span>'],
+          ],
+        },
+        {
+          id: 'note',
+          kind: 'note',
+          name: 'Naamloze notitie',
+          caption: 'Notitie op een telefoon',
+          paragraphs: [
+            'voor het jaarbericht, niet vergeten',
+            '<span data-span="q2">mw albers</span> <span data-span="q3">van nr 14</span> zei zaterdag dat het <span data-span="q1">alles afwegend, best goede limonade</span> is',
+            'mooi citaat?? op een slide zetten',
+          ],
+        },
+        {
+          id: 'library',
+          kind: 'library',
+          name: 'Beeldbibliotheek · 412 assets',
+          caption: 'Beeldbibliotheek',
+          assetFile: 'kraam-zaterdagochtend.jpg',
+          assetAlt: 'Een klaptafel met een kan limonade en een met de hand geletterd bord',
+        },
       ],
-      sourceLabel: 'Brondocument',
-      recordLabel: 'De slide als data',
-      slideLabel: 'De slide zoals getoond',
-      typeLabel: 'Slidetype',
-      hint: 'Beweeg over een veld om de zin op te laten lichten waar het uit komt.',
+
+      routesLabel: 'Er structuur van maken',
+      routesLead:
+        'Dit is de stap waar iedereen overheen leest. Het kan op drie manieren, en het punt is niet welke je kiest: het is dat alle drie op dezelfde plek uitkomen.',
+      routes: [
+        {
+          id: 'hand',
+          label: 'Met de hand',
+          blurb: 'Iemand leest het document en vult de velden in de editor.',
+          snippet:
+            '<span class="c">// de editor schrijft precies hetzelfde record</span>\n{\n  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,\n  <span class="k">"content"</span>: { <span class="k">"items"</span>: [ … ] }\n}',
+        },
+        {
+          id: 'api',
+          label: 'Via de API',
+          blurb: 'Een script of bedrijfssysteem stuurt de slide. Niemand tikt een tabel over.',
+          snippet:
+            '<span class="c">POST /api/presentations/:id/slides</span>\n{\n  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,\n  <span class="k">"content"</span>: { <span class="k">"items"</span>: [ … ] }\n}',
+        },
+        {
+          id: 'mcp',
+          label: 'Via MCP',
+          blurb: 'Een agent vraagt eerst welke types er zijn en vult er daarna één. Vragen moet.',
+          snippet:
+            '<span class="c">→ get_slide_types()</span>\n<span class="c">←</span> timeline-slide: items[] <span class="c">(date, title, text)</span>\n<span class="c">→ add_slide(</span>{ <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>, … }<span class="c">)</span>',
+        },
+      ],
+      gateText:
+        'Alle drie komen ze bij dezelfde poort: het record wordt gecontroleerd tegen zijn slidetype. Wat een mens niet mag opslaan, mag een integratie ook niet, en andersom. <b>Daar zit de controle</b> - niet in het handmatig doen.',
+
+      recordLabel: 'De slide zelf',
+      typeLabel: 'Wat het betekent',
+      themeLabel: 'Hoe het eruitziet',
+      fieldsLabel: 'De slide als data',
+      hint: 'Beweeg over een veld om het materiaal op te laten lichten waar het uit komt.',
       types: [
         {
           id: 'timeline-slide',
@@ -554,23 +715,10 @@ export const ui: Record<Lang, Content> = {
           ],
         },
         {
-          id: 'kpi-metrics-slide',
-          label: 'Cijfers',
-          claim:
-            '<b>maxItems: 4</b> - het type weigert een vijfde cijfer. Vier is wat een zaal onthoudt, en dat redactionele oordeel zit in het formaat in plaats van in een stijlgids die niemand leest.',
-          eyebrow: 'Prestaties',
-          title: 'Het kwartaal in cijfers',
-          metrics: [
-            { value: '412', label: 'Bekers verstrekt' },
-            { value: '61', unit: '%', label: 'Brutomarge' },
-            { value: '9,4', label: 'Tevredenheid' },
-          ],
-        },
-        {
           id: 'chart-slide',
           label: 'Grafiek',
           claim:
-            '<b>data: csv (required)</b> - de cijfers staan als data in het record, niet als plaatje van een grafiek. Precies daarom kan dit veld later aan een spreadsheet of database gekoppeld worden.',
+            '<b>data: csv (required)</b> - de cijfers staan als data in het record, niet als plaatje van een grafiek. Daarom kan dit veld aan de spreadsheet gekoppeld blijven in plaats van eruit gekopieerd te zijn.',
           eyebrow: 'Volumes',
           title: 'Verstrekte bekers per maand',
           bars: [
@@ -592,6 +740,21 @@ export const ui: Record<Lang, Content> = {
             role: 'Woonachtig op nummer 14, klant sinds de oprichting',
           },
         },
+        {
+          id: 'image-slide',
+          label: 'Beeld',
+          claim:
+            '<b>imageRole: content | decorative</b> - het formaat vraagt waar het beeld <em>voor</em> is. Noem het decoratief en screenreaders slaan het over; noem het betekenisvol en het vraagt om alt-tekst. Een canvas kan die vraag niet stellen, want daar is een afbeelding alleen pixels op een coördinaat.',
+          eyebrow: 'Bedrijfsvoering',
+          title: 'De Kraam in bedrijf',
+          image: { caption: 'De Kraam, zaterdagochtend.' },
+        },
+      ],
+      themes: [
+        { id: 'deckyard', label: 'Deze', swatch: '#2d6b4a' },
+        { id: 'council', label: 'Publieke instelling', swatch: '#1f5fa8' },
+        { id: 'editorial', label: 'Redactie', swatch: '#9a3412' },
+        { id: 'studio', label: 'Studio', swatch: '#57e0c8' },
       ],
     },
 
