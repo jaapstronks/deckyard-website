@@ -16,7 +16,7 @@ const blogHref = localizePath('/blog/', lang);
 const docsHref = '/docs/creating/';
 ---
 
-<header class="site-header">
+<header class="site-header" data-site-header>
   <div class="container header-inner">
     <a class="brand" href={homeHref} aria-label={t.nav.homeAria}>
       <DeckyardMark size={30} />
@@ -24,27 +24,92 @@ const docsHref = '/docs/creating/';
       <span class="brand-badge">{t.nav.badge}</span>
     </a>
 
-    <nav class="site-nav" aria-label="Primary">
-      <a href={blogHref} aria-current={isBlog ? 'page' : undefined}>{t.nav.blog}</a>
-      <a href={docsHref}>{t.nav.docs}</a>
-      <a href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noopener">{t.nav.github}</a>
+    <div class="header-actions">
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a href={blogHref} aria-current={isBlog ? 'page' : undefined}>{t.nav.blog}</a>
+        <a href={docsHref}>{t.nav.docs}</a>
+        <a href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noopener">{t.nav.github}</a>
+        <LanguageSwitcher currentPath={currentPath} ariaLabel={t.nav.languageAria} />
+      </nav>
+
       <a class="nav-cta" href={sandboxUrl(lang)} target="_blank" rel="noopener">{t.nav.sandbox}</a>
-      <LanguageSwitcher currentPath={currentPath} ariaLabel={t.nav.languageAria} />
-    </nav>
+
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-label={t.nav.menuAria}
+        aria-controls="site-nav"
+        aria-expanded="false"
+        data-nav-toggle
+      >
+        <span class="nav-toggle-box" aria-hidden="true">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </span>
+      </button>
+    </div>
   </div>
 </header>
 
+<script>
+  // Mobile nav drawer: the hamburger toggles the collapsed .site-nav. On desktop
+  // the nav is inline and the toggle is hidden, so this is a no-op there.
+  // Re-bind after each view transition so it survives client-side navigation.
+  function initNavToggle() {
+    const header = document.querySelector<HTMLElement>('[data-site-header]');
+    const toggle = header?.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+    const nav = header?.querySelector<HTMLElement>('#site-nav');
+    if (!header || !toggle || !nav || toggle.dataset.bound) return;
+    toggle.dataset.bound = 'true';
+
+    const setOpen = (open: boolean) => {
+      header.classList.toggle('nav-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+
+    toggle.addEventListener('click', () => setOpen(!header.classList.contains('nav-open')));
+
+    // Close when a link inside the drawer is followed.
+    nav.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    // Close on outside-click and Escape.
+    document.addEventListener('click', (event) => {
+      if (header.classList.contains('nav-open') && !header.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && header.classList.contains('nav-open')) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+  }
+  initNavToggle();
+  document.addEventListener('astro:page-load', initNavToggle);
+</script>
+
 <style>
   /* Sandbox link doubles as a lightweight CTA: a brass pill that reads as an
-     action next to the plain nav links, without the weight of a full button. */
-  .site-nav a.nav-cta {
+     action next to the plain nav links, without the weight of a full button.
+     It lives outside .site-nav so it stays visible when the nav collapses into
+     the mobile drawer. */
+  .nav-cta {
+    font-family: var(--body);
+    font-weight: 550;
+    font-size: 0.95rem;
+    text-decoration: none;
+    white-space: nowrap;
     padding: 6px 14px;
     border: 1.5px solid var(--brass-bright);
     border-radius: 999px;
     color: var(--brass);
     transition: background-color var(--dur-micro) ease, color var(--dur-micro) ease;
   }
-  .site-nav a.nav-cta:hover {
+  .nav-cta:hover {
     background: var(--brass-bright);
     color: var(--green-deep);
   }
