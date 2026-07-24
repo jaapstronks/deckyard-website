@@ -1,0 +1,1908 @@
+{
+  "$schema": "./registry.schema.json",
+  "coreRepo": "../deckyard",
+  "note": "Hand-maintained. See README.md. Bootstrapped by seed-registry.mjs; run check-staleness.mjs --update to set baseline hashes.",
+  "artifacts": [
+    {
+      "id": "doc-admin",
+      "type": "doc",
+      "docPages": [
+        "docs/admin/digest-emails.md",
+        "docs/admin/email-configuration.md",
+        "docs/admin/email-templates.md",
+        "docs/admin/gdpr-privacy.md",
+        "docs/admin/index.md",
+        "docs/admin/sandbox-mode.md",
+        "docs/admin/settings.md",
+        "docs/admin/user-management.md"
+      ],
+      "sources": [
+        "server/routes/api/admin-users.js",
+        "server/routes/api/organizations.js",
+        "server/routes/api/organization-members.js",
+        "client/views/settings/admin-users/",
+        "server/auth/"
+      ],
+      "sourceHash": "1781886bafb99947",
+      "lang": "en"
+    },
+    {
+      "id": "doc-ai",
+      "type": "doc",
+      "docPages": [
+        "docs/ai/alt-text.md",
+        "docs/ai/analysis.md",
+        "docs/ai/deck-generation.md",
+        "docs/ai/description-generation.md",
+        "docs/ai/getting-started.md",
+        "docs/ai/translation.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/",
+        "server/utils/llm/",
+        "server/utils/ai/",
+        "client/views/editor/ai-append.js",
+        "client/views/editor/ai-review-annotations.js",
+        "shared/llm-vendors.js"
+      ],
+      "sourceHash": "215f3c1279a90c3a",
+      "lang": "en"
+    },
+    {
+      "id": "doc-collaboration",
+      "type": "doc",
+      "docPages": [
+        "docs/collaboration/activity-notifications.md",
+        "docs/collaboration/comments.md",
+        "docs/collaboration/index.md",
+        "docs/collaboration/ownership-transfer.md",
+        "docs/collaboration/realtime-editing.md",
+        "docs/collaboration/sharing-permissions.md",
+        "docs/collaboration/versions.md"
+      ],
+      "sources": [
+        "server/collab/",
+        "client/lib/collab/",
+        "client/views/editor/comments-panel.js",
+        "client/views/editor/comments-panel-sse.js",
+        "client/views/editor/comment-markers.js",
+        "client/views/editor/comments-api.js",
+        "client/lib/comments/",
+        "server/routes/api/collaborators.js"
+      ],
+      "sourceHash": "8bc5127c02e9c729",
+      "lang": "en"
+    },
+    {
+      "id": "doc-configuration",
+      "type": "doc",
+      "docPages": [
+        "docs/configuration/authentication.md",
+        "docs/configuration/database.md",
+        "docs/configuration/environment.md",
+        "docs/configuration/i18n.md",
+        "docs/configuration/rate-limiting.md"
+      ],
+      "sources": [
+        ".env.example",
+        "server/config/",
+        "server/db/"
+      ],
+      "sourceHash": "6733f3503f3f005a",
+      "lang": "en"
+    },
+    {
+      "id": "doc-creating",
+      "type": "doc",
+      "docPages": [
+        "docs/creating/duplicating.md",
+        "docs/creating/from-json.md",
+        "docs/creating/from-markdown.md",
+        "docs/creating/from-notion.md",
+        "docs/creating/from-pptx.md",
+        "docs/creating/from-text.md",
+        "docs/creating/index.md",
+        "docs/creating/new-presentation.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/wizard.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/list/onboarding-checklist.js",
+        "shared/slide-types/presentation.js"
+      ],
+      "sourceHash": "867aa6dd9c5e7e12",
+      "lang": "en"
+    },
+    {
+      "id": "doc-customization",
+      "type": "doc",
+      "docPages": [
+        "docs/customization/custom-slide-types.md"
+      ],
+      "sources": [
+        "custom/",
+        "themes/",
+        "shared/slide-types/custom-loader.js",
+        "server/routes/api/custom-slide-types.js",
+        "client/views/settings/slide-type-editor/"
+      ],
+      "sourceHash": "a45539f794278d66",
+      "lang": "en"
+    },
+    {
+      "id": "doc-deployment",
+      "type": "doc",
+      "docPages": [
+        "docs/deployment/docker.md",
+        "docs/deployment/index.md",
+        "docs/deployment/quickstart.md",
+        "docs/deployment/scaling.md",
+        "docs/deployment/website-hosting.md"
+      ],
+      "sources": [
+        "Dockerfile",
+        "scripts/vps-deploy.sh",
+        "scripts/vps-bootstrap.sh",
+        "scripts/setup.js",
+        "Caddyfile"
+      ],
+      "sourceHash": "3b4d4cf7285ce94e",
+      "lang": "en"
+    },
+    {
+      "id": "doc-developer",
+      "type": "doc",
+      "docPages": [
+        "docs/developer/api.md",
+        "docs/developer/index.md",
+        "docs/developer/rendering.md",
+        "docs/developer/sessions.md"
+      ],
+      "sources": [
+        "server/mcp/",
+        "client/embed-sdk.js",
+        "server/routes/api/",
+        "server/routes/public-api/"
+      ],
+      "sourceHash": "915286006ea2d984",
+      "lang": "en"
+    },
+    {
+      "id": "doc-editing",
+      "type": "doc",
+      "docPages": [
+        "docs/editing/accessibility.md",
+        "docs/editing/basic-editing.md",
+        "docs/editing/converting-slides.md",
+        "docs/editing/index.md",
+        "docs/editing/keyboard-shortcuts.md",
+        "docs/editing/preview.md",
+        "docs/editing/slides-panel.md",
+        "docs/editing/speaker-notes.md"
+      ],
+      "sources": [
+        "client/views/editor/inspector-panes.js",
+        "client/views/editor/inspector-resize.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "client/views/editor/editor-controller.js",
+        "client/views/editor/slide-list.js"
+      ],
+      "sourceHash": "d966388962f02eec",
+      "lang": "en"
+    },
+    {
+      "id": "doc-export",
+      "type": "doc",
+      "docPages": [
+        "docs/export/backup.md",
+        "docs/export/handoff-bundle.md",
+        "docs/export/images.md",
+        "docs/export/index.md",
+        "docs/export/notes.md",
+        "docs/export/pdf.md",
+        "docs/export/pptx.md"
+      ],
+      "sources": [
+        "server/export/",
+        "client/views/editor/export-modal.js",
+        "client/views/editor/export-dropdown.js"
+      ],
+      "sourceHash": "724e5baee5b71271",
+      "lang": "en"
+    },
+    {
+      "id": "doc-integrations",
+      "type": "doc",
+      "docPages": [
+        "docs/integrations/analytics.md",
+        "docs/integrations/giphy.md",
+        "docs/integrations/media-services.md",
+        "docs/integrations/notion.md",
+        "docs/integrations/real-time.md",
+        "docs/integrations/unsplash.md",
+        "docs/integrations/webhooks.md"
+      ],
+      "sources": [
+        "server/integrations/",
+        "server/routes/api/notion/",
+        "server/routes/api/notion.js",
+        "server/routes/api/stock-media.js"
+      ],
+      "sourceHash": "8f071f5edd9d78d4",
+      "lang": "en"
+    },
+    {
+      "id": "doc-interactions",
+      "type": "doc",
+      "docPages": [
+        "docs/interactions/feedback.md",
+        "docs/interactions/lead-capture.md",
+        "docs/interactions/polls.md",
+        "docs/interactions/qa.md"
+      ],
+      "sources": [
+        "client/lib/slide-runtime/",
+        "client/views/follow/",
+        "server/routes/api/questions.js",
+        "server/routes/api/follow.js"
+      ],
+      "sourceHash": "f6550bcfcc611877",
+      "lang": "en"
+    },
+    {
+      "id": "doc-libraries",
+      "type": "doc",
+      "docPages": [
+        "docs/libraries/image-library.md",
+        "docs/libraries/index.md",
+        "docs/libraries/slide-library.md"
+      ],
+      "sources": [
+        "client/lib/slide-library/",
+        "client/lib/slide-collections/",
+        "client/views/editor/image-library/",
+        "server/routes/api/slide-library.js",
+        "server/routes/api/image-library.js"
+      ],
+      "sourceHash": "3a1b1f31e9675087",
+      "lang": "en"
+    },
+    {
+      "id": "doc-organizing",
+      "type": "doc",
+      "docPages": [
+        "docs/organizing/index.md",
+        "docs/organizing/search.md",
+        "docs/organizing/tags.md",
+        "docs/organizing/trash.md"
+      ],
+      "sources": [
+        "client/views/list/",
+        "server/routes/api/tags.js"
+      ],
+      "sourceHash": "41aff7024d6d5b85",
+      "lang": "en"
+    },
+    {
+      "id": "doc-presenter",
+      "type": "doc",
+      "docPages": [
+        "docs/presenter/follow-mode.md",
+        "docs/presenter/highlighter.md",
+        "docs/presenter/index.md",
+        "docs/presenter/notes-view.md",
+        "docs/presenter/presentation-locks.md",
+        "docs/presenter/slide-timing.md"
+      ],
+      "sources": [
+        "client/views/presenter/",
+        "server/routes/api/present-sessions.js"
+      ],
+      "sourceHash": "0968f4c546ecc0f6",
+      "lang": "en"
+    },
+    {
+      "id": "doc-publishing",
+      "type": "doc",
+      "docPages": [
+        "docs/publishing/embedding.md",
+        "docs/publishing/index.md",
+        "docs/publishing/og-images.md",
+        "docs/publishing/rss-feeds.md"
+      ],
+      "sources": [
+        "server/routes/api/publish.js",
+        "server/routes/api/share-links.js",
+        "client/views/editor/publish-export/",
+        "client/views/share-viewer/"
+      ],
+      "sourceHash": "7eeb68b8ac706af3",
+      "lang": "en"
+    },
+    {
+      "id": "doc-slide-types",
+      "type": "doc",
+      "docPages": [
+        "docs/slide-types/cards.md",
+        "docs/slide-types/data.md",
+        "docs/slide-types/index.md",
+        "docs/slide-types/interactive.md",
+        "docs/slide-types/media.md",
+        "docs/slide-types/structure.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "shared/slide-types/convert.js",
+        "shared/slide-types/json-schema.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/editor/convert-slide-action.js",
+        "client/views/editor/slide-type-schematics.js"
+      ],
+      "sourceHash": "69780a7eee64f618",
+      "lang": "en"
+    },
+    {
+      "id": "doc-themes",
+      "type": "doc",
+      "docPages": [
+        "docs/themes/editor.md",
+        "docs/themes/font-management.md",
+        "docs/themes/index.md"
+      ],
+      "sources": [
+        "client/lib/theme/",
+        "client/views/settings/theme-editor/",
+        "shared/theme-config-schema.js",
+        "shared/theme-normalize.js",
+        "shared/theme-fonts.js"
+      ],
+      "sourceHash": "583435b00591a1a6",
+      "lang": "en"
+    },
+    {
+      "id": "shot-accessibility-alt-text-fields",
+      "type": "screenshot",
+      "path": "public/images/screenshots/accessibility-alt-text-fields.png",
+      "docPages": [
+        "docs/ai/alt-text.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/",
+        "server/utils/llm/",
+        "server/utils/ai/",
+        "client/views/editor/ai-append.js",
+        "client/views/editor/ai-review-annotations.js",
+        "shared/llm-vendors.js"
+      ],
+      "sourceHash": "215f3c1279a90c3a",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-accessibility-fields",
+      "type": "screenshot",
+      "path": "public/images/screenshots/accessibility-fields.png",
+      "docPages": [
+        "docs/editing/accessibility.md"
+      ],
+      "sources": [
+        "client/views/editor/inspector-panes.js",
+        "client/views/editor/inspector-resize.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "client/views/editor/editor-controller.js",
+        "client/views/editor/slide-list.js"
+      ],
+      "sourceHash": "d966388962f02eec",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-activity-panel",
+      "type": "screenshot",
+      "path": "public/images/screenshots/activity-panel.png",
+      "docPages": [
+        "docs/collaboration/activity-notifications.md"
+      ],
+      "sources": [
+        "server/collab/",
+        "client/lib/collab/",
+        "client/views/editor/comments-panel.js",
+        "client/views/editor/comments-panel-sse.js",
+        "client/views/editor/comment-markers.js",
+        "client/views/editor/comments-api.js",
+        "client/lib/comments/",
+        "server/routes/api/collaborators.js"
+      ],
+      "sourceHash": "8bc5127c02e9c729",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-admin-settings-full",
+      "type": "screenshot",
+      "path": "public/images/screenshots/admin-settings-full.png",
+      "docPages": [
+        "docs/admin/settings.md"
+      ],
+      "sources": [
+        "server/routes/api/admin-users.js",
+        "server/routes/api/organizations.js",
+        "server/routes/api/organization-members.js",
+        "client/views/settings/admin-users/",
+        "server/auth/"
+      ],
+      "sourceHash": "1781886bafb99947",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-advanced-import-dialog",
+      "type": "screenshot",
+      "path": "public/images/screenshots/advanced-import-dialog.png",
+      "docPages": [
+        "docs/creating/from-json.md",
+        "docs/creating/from-markdown.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/wizard.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/list/onboarding-checklist.js",
+        "shared/slide-types/presentation.js"
+      ],
+      "sourceHash": "867aa6dd9c5e7e12",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-ai-analysis-dialog",
+      "type": "screenshot",
+      "path": "public/images/screenshots/ai-analysis-dialog.png",
+      "docPages": [
+        "docs/ai/analysis.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/",
+        "server/utils/llm/",
+        "server/utils/ai/",
+        "client/views/editor/ai-append.js",
+        "client/views/editor/ai-review-annotations.js",
+        "shared/llm-vendors.js"
+      ],
+      "sourceHash": "215f3c1279a90c3a",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-ai-dreambot-dialog",
+      "type": "screenshot",
+      "path": "public/images/screenshots/ai-dreambot-dialog.png",
+      "docPages": [
+        "docs/ai/analysis.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/",
+        "server/utils/llm/",
+        "server/utils/ai/",
+        "client/views/editor/ai-append.js",
+        "client/views/editor/ai-review-annotations.js",
+        "shared/llm-vendors.js"
+      ],
+      "sourceHash": "215f3c1279a90c3a",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-ai-slide-wizard",
+      "type": "screenshot",
+      "path": "public/images/screenshots/ai-slide-wizard.png",
+      "docPages": [
+        "docs/ai/deck-generation.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/",
+        "server/utils/llm/",
+        "server/utils/ai/",
+        "client/views/editor/ai-append.js",
+        "client/views/editor/ai-review-annotations.js",
+        "shared/llm-vendors.js"
+      ],
+      "sourceHash": "215f3c1279a90c3a",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-ai-translation-prompt",
+      "type": "screenshot",
+      "path": "public/images/screenshots/ai-translation-prompt.png",
+      "docPages": [
+        "docs/ai/translation.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/",
+        "server/utils/llm/",
+        "server/utils/ai/",
+        "client/views/editor/ai-append.js",
+        "client/views/editor/ai-review-annotations.js",
+        "shared/llm-vendors.js"
+      ],
+      "sourceHash": "215f3c1279a90c3a",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-chart-slide-editor",
+      "type": "screenshot",
+      "path": "public/images/screenshots/chart-slide-editor.png",
+      "docPages": [
+        "docs/slide-types/data.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "shared/slide-types/convert.js",
+        "shared/slide-types/json-schema.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/editor/convert-slide-action.js",
+        "client/views/editor/slide-type-schematics.js"
+      ],
+      "sourceHash": "69780a7eee64f618",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-comments-expanded",
+      "type": "screenshot",
+      "path": "public/images/screenshots/comments-expanded.png",
+      "docPages": [
+        "docs/collaboration/index.md"
+      ],
+      "sources": [
+        "server/collab/",
+        "client/lib/collab/",
+        "client/views/editor/comments-panel.js",
+        "client/views/editor/comments-panel-sse.js",
+        "client/views/editor/comment-markers.js",
+        "client/views/editor/comments-api.js",
+        "client/lib/comments/",
+        "server/routes/api/collaborators.js"
+      ],
+      "sourceHash": "8bc5127c02e9c729",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-comments-panel-new",
+      "type": "screenshot",
+      "path": "public/images/screenshots/comments-panel-new.png",
+      "docPages": [
+        "docs/collaboration/comments.md"
+      ],
+      "sources": [
+        "server/collab/",
+        "client/lib/collab/",
+        "client/views/editor/comments-panel.js",
+        "client/views/editor/comments-panel-sse.js",
+        "client/views/editor/comment-markers.js",
+        "client/views/editor/comments-api.js",
+        "client/lib/comments/",
+        "server/routes/api/collaborators.js"
+      ],
+      "sourceHash": "8bc5127c02e9c729",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-comments-with-thread",
+      "type": "screenshot",
+      "path": "public/images/screenshots/comments-with-thread.png",
+      "docPages": [
+        "docs/collaboration/comments.md"
+      ],
+      "sources": [
+        "server/collab/",
+        "client/lib/collab/",
+        "client/views/editor/comments-panel.js",
+        "client/views/editor/comments-panel-sse.js",
+        "client/views/editor/comment-markers.js",
+        "client/views/editor/comments-api.js",
+        "client/lib/comments/",
+        "server/routes/api/collaborators.js"
+      ],
+      "sourceHash": "8bc5127c02e9c729",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-convert-slide-menu",
+      "type": "screenshot",
+      "path": "public/images/screenshots/convert-slide-menu.png",
+      "docPages": [
+        "docs/editing/converting-slides.md"
+      ],
+      "sources": [
+        "client/views/editor/inspector-panes.js",
+        "client/views/editor/inspector-resize.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "client/views/editor/editor-controller.js",
+        "client/views/editor/slide-list.js"
+      ],
+      "sourceHash": "d966388962f02eec",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-dashboard-home-new",
+      "type": "screenshot",
+      "path": "public/images/screenshots/dashboard-home-new.png",
+      "docPages": [
+        "docs/organizing/index.md"
+      ],
+      "sources": [
+        "client/views/list/",
+        "server/routes/api/tags.js"
+      ],
+      "sourceHash": "41aff7024d6d5b85",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-data-export-settings",
+      "type": "screenshot",
+      "path": "public/images/screenshots/data-export-settings.png",
+      "docPages": [
+        "docs/admin/gdpr-privacy.md",
+        "docs/export/backup.md"
+      ],
+      "sources": [
+        "server/routes/api/admin-users.js",
+        "server/routes/api/organizations.js",
+        "server/routes/api/organization-members.js",
+        "client/views/settings/admin-users/",
+        "server/auth/"
+      ],
+      "sourceHash": "1781886bafb99947",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-deck-settings-dialog",
+      "type": "screenshot",
+      "path": "public/images/screenshots/deck-settings-dialog.png",
+      "docPages": [
+        "docs/presenter/slide-timing.md"
+      ],
+      "sources": [
+        "client/views/presenter/",
+        "server/routes/api/present-sessions.js"
+      ],
+      "sourceHash": "0968f4c546ecc0f6",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-deck-settings-full",
+      "type": "screenshot",
+      "path": "public/images/screenshots/deck-settings-full.png",
+      "docPages": [
+        "docs/publishing/og-images.md"
+      ],
+      "sources": [
+        "server/routes/api/publish.js",
+        "server/routes/api/share-links.js",
+        "client/views/editor/publish-export/",
+        "client/views/share-viewer/"
+      ],
+      "sourceHash": "7eeb68b8ac706af3",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-deck-settings-tags-description",
+      "type": "screenshot",
+      "path": "public/images/screenshots/deck-settings-tags-description.png",
+      "docPages": [
+        "docs/organizing/tags.md",
+        "docs/ai/description-generation.md"
+      ],
+      "sources": [
+        "client/views/list/",
+        "server/routes/api/tags.js"
+      ],
+      "sourceHash": "41aff7024d6d5b85",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-deck-settings",
+      "type": "screenshot",
+      "path": "public/images/screenshots/deck-settings.png",
+      "docPages": [
+        "docs/editing/index.md"
+      ],
+      "sources": [
+        "client/views/editor/inspector-panes.js",
+        "client/views/editor/inspector-resize.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "client/views/editor/editor-controller.js",
+        "client/views/editor/slide-list.js"
+      ],
+      "sourceHash": "d966388962f02eec",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-editor-full-context",
+      "type": "screenshot",
+      "path": "public/images/screenshots/editor-full-context.png",
+      "docPages": [
+        "docs/editing/preview.md"
+      ],
+      "sources": [
+        "client/views/editor/inspector-panes.js",
+        "client/views/editor/inspector-resize.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "client/views/editor/editor-controller.js",
+        "client/views/editor/slide-list.js"
+      ],
+      "sourceHash": "d966388962f02eec",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-editor-full",
+      "type": "screenshot",
+      "path": "public/images/screenshots/editor-full.png",
+      "docPages": [
+        "docs/editing/index.md"
+      ],
+      "sources": [
+        "client/views/editor/inspector-panes.js",
+        "client/views/editor/inspector-resize.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "client/views/editor/editor-controller.js",
+        "client/views/editor/slide-list.js"
+      ],
+      "sourceHash": "d966388962f02eec",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-editor-overview",
+      "type": "screenshot",
+      "path": "public/images/screenshots/editor-overview.png",
+      "docPages": [
+        "docs/editing/basic-editing.md"
+      ],
+      "sources": [
+        "client/views/editor/inspector-panes.js",
+        "client/views/editor/inspector-resize.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "client/views/editor/editor-controller.js",
+        "client/views/editor/slide-list.js"
+      ],
+      "sourceHash": "d966388962f02eec",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-editor-three-panel",
+      "type": "screenshot",
+      "path": "public/images/screenshots/editor-three-panel.png",
+      "docPages": [
+        "docs/collaboration/realtime-editing.md"
+      ],
+      "sources": [
+        "server/collab/",
+        "client/lib/collab/",
+        "client/views/editor/comments-panel.js",
+        "client/views/editor/comments-panel-sse.js",
+        "client/views/editor/comment-markers.js",
+        "client/views/editor/comments-api.js",
+        "client/lib/comments/",
+        "server/routes/api/collaborators.js"
+      ],
+      "sourceHash": "8bc5127c02e9c729",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-email-settings",
+      "type": "screenshot",
+      "path": "public/images/screenshots/email-settings.png",
+      "docPages": [
+        "docs/admin/email-configuration.md",
+        "docs/admin/email-templates.md"
+      ],
+      "sources": [
+        "server/routes/api/admin-users.js",
+        "server/routes/api/organizations.js",
+        "server/routes/api/organization-members.js",
+        "client/views/settings/admin-users/",
+        "server/auth/"
+      ],
+      "sourceHash": "1781886bafb99947",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-email-templates-settings",
+      "type": "screenshot",
+      "path": "public/images/screenshots/email-templates-settings.png",
+      "docPages": [
+        "docs/admin/email-templates.md"
+      ],
+      "sources": [
+        "server/routes/api/admin-users.js",
+        "server/routes/api/organizations.js",
+        "server/routes/api/organization-members.js",
+        "client/views/settings/admin-users/",
+        "server/auth/"
+      ],
+      "sourceHash": "1781886bafb99947",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-export-dropdown-full",
+      "type": "screenshot",
+      "path": "public/images/screenshots/export-dropdown-full.png",
+      "docPages": [
+        "docs/export/images.md",
+        "docs/export/pptx.md",
+        "docs/export/pdf.md",
+        "docs/export/notes.md"
+      ],
+      "sources": [
+        "server/export/",
+        "client/views/editor/export-modal.js",
+        "client/views/editor/export-dropdown.js"
+      ],
+      "sourceHash": "724e5baee5b71271",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-export-full-dropdown",
+      "type": "screenshot",
+      "path": "public/images/screenshots/export-full-dropdown.png",
+      "docPages": [
+        "docs/export/handoff-bundle.md"
+      ],
+      "sources": [
+        "server/export/",
+        "client/views/editor/export-modal.js",
+        "client/views/editor/export-dropdown.js"
+      ],
+      "sourceHash": "724e5baee5b71271",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-export-menu",
+      "type": "screenshot",
+      "path": "public/images/screenshots/export-menu.png",
+      "docPages": [
+        "docs/export/index.md"
+      ],
+      "sources": [
+        "server/export/",
+        "client/views/editor/export-modal.js",
+        "client/views/editor/export-dropdown.js"
+      ],
+      "sourceHash": "724e5baee5b71271",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-external-analytics-settings",
+      "type": "screenshot",
+      "path": "public/images/screenshots/external-analytics-settings.png",
+      "docPages": [
+        "docs/integrations/analytics.md"
+      ],
+      "sources": [
+        "server/integrations/",
+        "server/routes/api/notion/",
+        "server/routes/api/notion.js",
+        "server/routes/api/stock-media.js"
+      ],
+      "sourceHash": "8f071f5edd9d78d4",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-feedback-slide-editor",
+      "type": "screenshot",
+      "path": "public/images/screenshots/feedback-slide-editor.png",
+      "docPages": [
+        "docs/interactions/feedback.md"
+      ],
+      "sources": [
+        "client/lib/slide-runtime/",
+        "client/views/follow/",
+        "server/routes/api/questions.js",
+        "server/routes/api/follow.js"
+      ],
+      "sourceHash": "f6550bcfcc611877",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-follow-invite-slide",
+      "type": "screenshot",
+      "path": "public/images/screenshots/follow-invite-slide.png",
+      "docPages": [
+        "docs/presenter/follow-mode.md"
+      ],
+      "sources": [
+        "client/views/presenter/",
+        "server/routes/api/present-sessions.js"
+      ],
+      "sourceHash": "0968f4c546ecc0f6",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-font-management",
+      "type": "screenshot",
+      "path": "public/images/screenshots/font-management.png",
+      "docPages": [
+        "docs/themes/font-management.md"
+      ],
+      "sources": [
+        "client/lib/theme/",
+        "client/views/settings/theme-editor/",
+        "shared/theme-config-schema.js",
+        "shared/theme-normalize.js",
+        "shared/theme-fonts.js"
+      ],
+      "sourceHash": "583435b00591a1a6",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-image-library-picker",
+      "type": "screenshot",
+      "path": "public/images/screenshots/image-library-picker.png",
+      "docPages": [
+        "docs/integrations/giphy.md",
+        "docs/integrations/unsplash.md"
+      ],
+      "sources": [
+        "server/integrations/",
+        "server/routes/api/notion/",
+        "server/routes/api/notion.js",
+        "server/routes/api/stock-media.js"
+      ],
+      "sourceHash": "8f071f5edd9d78d4",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-image-picker",
+      "type": "screenshot",
+      "path": "public/images/screenshots/image-picker.png",
+      "docPages": [
+        "docs/libraries/image-library.md"
+      ],
+      "sources": [
+        "client/lib/slide-library/",
+        "client/lib/slide-collections/",
+        "client/views/editor/image-library/",
+        "server/routes/api/slide-library.js",
+        "server/routes/api/image-library.js"
+      ],
+      "sourceHash": "3a1b1f31e9675087",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-image-text-slide-editor",
+      "type": "screenshot",
+      "path": "public/images/screenshots/image-text-slide-editor.png",
+      "docPages": [
+        "docs/slide-types/media.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "shared/slide-types/convert.js",
+        "shared/slide-types/json-schema.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/editor/convert-slide-action.js",
+        "client/views/editor/slide-type-schematics.js"
+      ],
+      "sourceHash": "69780a7eee64f618",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-insights-dashboard",
+      "type": "screenshot",
+      "path": "public/images/screenshots/insights-dashboard.png",
+      "docPages": [
+        "docs/admin/digest-emails.md"
+      ],
+      "sources": [
+        "server/routes/api/admin-users.js",
+        "server/routes/api/organizations.js",
+        "server/routes/api/organization-members.js",
+        "client/views/settings/admin-users/",
+        "server/auth/"
+      ],
+      "sourceHash": "1781886bafb99947",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-integrations-webhooks-rss",
+      "type": "screenshot",
+      "path": "public/images/screenshots/integrations-webhooks-rss.png",
+      "docPages": [
+        "docs/publishing/rss-feeds.md"
+      ],
+      "sources": [
+        "server/routes/api/publish.js",
+        "server/routes/api/share-links.js",
+        "client/views/editor/publish-export/",
+        "client/views/share-viewer/"
+      ],
+      "sourceHash": "7eeb68b8ac706af3",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-integrations-webhooks",
+      "type": "screenshot",
+      "path": "public/images/screenshots/integrations-webhooks.png",
+      "docPages": [
+        "docs/publishing/rss-feeds.md",
+        "docs/integrations/webhooks.md"
+      ],
+      "sources": [
+        "server/routes/api/publish.js",
+        "server/routes/api/share-links.js",
+        "client/views/editor/publish-export/",
+        "client/views/share-viewer/"
+      ],
+      "sourceHash": "7eeb68b8ac706af3",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-kpi-slide-editor",
+      "type": "screenshot",
+      "path": "public/images/screenshots/kpi-slide-editor.png",
+      "docPages": [
+        "docs/slide-types/data.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "shared/slide-types/convert.js",
+        "shared/slide-types/json-schema.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/editor/convert-slide-action.js",
+        "client/views/editor/slide-type-schematics.js"
+      ],
+      "sourceHash": "69780a7eee64f618",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-lead-capture-editor-full",
+      "type": "screenshot",
+      "path": "public/images/screenshots/lead-capture-editor-full.png",
+      "docPages": [
+        "docs/interactions/feedback.md"
+      ],
+      "sources": [
+        "client/lib/slide-runtime/",
+        "client/views/follow/",
+        "server/routes/api/questions.js",
+        "server/routes/api/follow.js"
+      ],
+      "sourceHash": "f6550bcfcc611877",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-lead-capture-editor",
+      "type": "screenshot",
+      "path": "public/images/screenshots/lead-capture-editor.png",
+      "docPages": [
+        "docs/interactions/lead-capture.md"
+      ],
+      "sources": [
+        "client/lib/slide-runtime/",
+        "client/views/follow/",
+        "server/routes/api/questions.js",
+        "server/routes/api/follow.js"
+      ],
+      "sourceHash": "f6550bcfcc611877",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-likert-slide-editor",
+      "type": "screenshot",
+      "path": "public/images/screenshots/likert-slide-editor.png",
+      "docPages": [
+        "docs/slide-types/interactive.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "shared/slide-types/convert.js",
+        "shared/slide-types/json-schema.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/editor/convert-slide-action.js",
+        "client/views/editor/slide-type-schematics.js"
+      ],
+      "sourceHash": "69780a7eee64f618",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-new-from-content-dialog",
+      "type": "screenshot",
+      "path": "public/images/screenshots/new-from-content-dialog.png",
+      "docPages": [
+        "docs/creating/from-text.md",
+        "docs/creating/from-pptx.md",
+        "docs/ai/getting-started.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/wizard.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/list/onboarding-checklist.js",
+        "shared/slide-types/presentation.js"
+      ],
+      "sourceHash": "867aa6dd9c5e7e12",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-new-presentation-dialog",
+      "type": "screenshot",
+      "path": "public/images/screenshots/new-presentation-dialog.png",
+      "docPages": [
+        "docs/creating/new-presentation.md",
+        "docs/creating/index.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/wizard.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/list/onboarding-checklist.js",
+        "shared/slide-types/presentation.js"
+      ],
+      "sourceHash": "867aa6dd9c5e7e12",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-new-presentation-from-content",
+      "type": "screenshot",
+      "path": "public/images/screenshots/new-presentation-from-content.png",
+      "docPages": [
+        "docs/creating/from-notion.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/wizard.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/list/onboarding-checklist.js",
+        "shared/slide-types/presentation.js"
+      ],
+      "sourceHash": "867aa6dd9c5e7e12",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-new-upload-file-dialog",
+      "type": "screenshot",
+      "path": "public/images/screenshots/new-upload-file-dialog.png",
+      "docPages": [
+        "docs/creating/from-pptx.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/wizard.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/list/onboarding-checklist.js",
+        "shared/slide-types/presentation.js"
+      ],
+      "sourceHash": "867aa6dd9c5e7e12",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-notes-companion-qr",
+      "type": "screenshot",
+      "path": "public/images/screenshots/notes-companion-qr.png",
+      "docPages": [
+        "docs/presenter/notes-view.md"
+      ],
+      "sources": [
+        "client/views/presenter/",
+        "server/routes/api/present-sessions.js"
+      ],
+      "sourceHash": "0968f4c546ecc0f6",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-poll-slide-editor",
+      "type": "screenshot",
+      "path": "public/images/screenshots/poll-slide-editor.png",
+      "docPages": [
+        "docs/slide-types/interactive.md",
+        "docs/interactions/polls.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "shared/slide-types/convert.js",
+        "shared/slide-types/json-schema.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/editor/convert-slide-action.js",
+        "client/views/editor/slide-type-schematics.js"
+      ],
+      "sourceHash": "69780a7eee64f618",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-preferences-settings",
+      "type": "screenshot",
+      "path": "public/images/screenshots/preferences-settings.png",
+      "docPages": [
+        "docs/configuration/i18n.md"
+      ],
+      "sources": [
+        ".env.example",
+        "server/config/",
+        "server/db/"
+      ],
+      "sourceHash": "6733f3503f3f005a",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-presentation-context-menu",
+      "type": "screenshot",
+      "path": "public/images/screenshots/presentation-context-menu.png",
+      "docPages": [
+        "docs/creating/duplicating.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/wizard.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/list/onboarding-checklist.js",
+        "shared/slide-types/presentation.js"
+      ],
+      "sourceHash": "867aa6dd9c5e7e12",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-presenter-mode-slide",
+      "type": "screenshot",
+      "path": "public/images/screenshots/presenter-mode-slide.png",
+      "docPages": [
+        "docs/presenter/highlighter.md"
+      ],
+      "sources": [
+        "client/views/presenter/",
+        "server/routes/api/present-sessions.js"
+      ],
+      "sourceHash": "0968f4c546ecc0f6",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-presenter-mode",
+      "type": "screenshot",
+      "path": "public/images/screenshots/presenter-mode.png",
+      "docPages": [
+        "docs/presenter/index.md"
+      ],
+      "sources": [
+        "client/views/presenter/",
+        "server/routes/api/present-sessions.js"
+      ],
+      "sourceHash": "0968f4c546ecc0f6",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-process-slide-editor",
+      "type": "screenshot",
+      "path": "public/images/screenshots/process-slide-editor.png",
+      "docPages": [
+        "docs/slide-types/structure.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "shared/slide-types/convert.js",
+        "shared/slide-types/json-schema.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/editor/convert-slide-action.js",
+        "client/views/editor/slide-type-schematics.js"
+      ],
+      "sourceHash": "69780a7eee64f618",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-publish-description-dialog",
+      "type": "screenshot",
+      "path": "public/images/screenshots/publish-description-dialog.png",
+      "docPages": [
+        "docs/ai/description-generation.md"
+      ],
+      "sources": [
+        "server/routes/api/ai/",
+        "server/utils/llm/",
+        "server/utils/ai/",
+        "client/views/editor/ai-append.js",
+        "client/views/editor/ai-review-annotations.js",
+        "shared/llm-vendors.js"
+      ],
+      "sourceHash": "215f3c1279a90c3a",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-published-embed-codes",
+      "type": "screenshot",
+      "path": "public/images/screenshots/published-embed-codes.png",
+      "docPages": [
+        "docs/publishing/embedding.md"
+      ],
+      "sources": [
+        "server/routes/api/publish.js",
+        "server/routes/api/share-links.js",
+        "client/views/editor/publish-export/",
+        "client/views/share-viewer/"
+      ],
+      "sourceHash": "7eeb68b8ac706af3",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-published-links-dialog",
+      "type": "screenshot",
+      "path": "public/images/screenshots/published-links-dialog.png",
+      "docPages": [
+        "docs/publishing/index.md"
+      ],
+      "sources": [
+        "server/routes/api/publish.js",
+        "server/routes/api/share-links.js",
+        "client/views/editor/publish-export/",
+        "client/views/share-viewer/"
+      ],
+      "sourceHash": "7eeb68b8ac706af3",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-search-results",
+      "type": "screenshot",
+      "path": "public/images/screenshots/search-results.png",
+      "docPages": [
+        "docs/organizing/search.md"
+      ],
+      "sources": [
+        "client/views/list/",
+        "server/routes/api/tags.js"
+      ],
+      "sourceHash": "41aff7024d6d5b85",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-settings-account",
+      "type": "screenshot",
+      "path": "public/images/screenshots/settings-account.png",
+      "docPages": [
+        "docs/configuration/authentication.md"
+      ],
+      "sources": [
+        ".env.example",
+        "server/config/",
+        "server/db/"
+      ],
+      "sourceHash": "6733f3503f3f005a",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-share-links-full",
+      "type": "screenshot",
+      "path": "public/images/screenshots/share-links-full.png",
+      "docPages": [
+        "docs/collaboration/sharing-permissions.md"
+      ],
+      "sources": [
+        "server/collab/",
+        "client/lib/collab/",
+        "client/views/editor/comments-panel.js",
+        "client/views/editor/comments-panel-sse.js",
+        "client/views/editor/comment-markers.js",
+        "client/views/editor/comments-api.js",
+        "client/lib/comments/",
+        "server/routes/api/collaborators.js"
+      ],
+      "sourceHash": "8bc5127c02e9c729",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-share-links-modal",
+      "type": "screenshot",
+      "path": "public/images/screenshots/share-links-modal.png",
+      "docPages": [
+        "docs/collaboration/sharing-permissions.md"
+      ],
+      "sources": [
+        "server/collab/",
+        "client/lib/collab/",
+        "client/views/editor/comments-panel.js",
+        "client/views/editor/comments-panel-sse.js",
+        "client/views/editor/comment-markers.js",
+        "client/views/editor/comments-api.js",
+        "client/lib/comments/",
+        "server/routes/api/collaborators.js"
+      ],
+      "sourceHash": "8bc5127c02e9c729",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-share-links-permissions-dialog",
+      "type": "screenshot",
+      "path": "public/images/screenshots/share-links-permissions-dialog.png",
+      "docPages": [
+        "docs/collaboration/ownership-transfer.md"
+      ],
+      "sources": [
+        "server/collab/",
+        "client/lib/collab/",
+        "client/views/editor/comments-panel.js",
+        "client/views/editor/comments-panel-sse.js",
+        "client/views/editor/comment-markers.js",
+        "client/views/editor/comments-api.js",
+        "client/lib/comments/",
+        "server/routes/api/collaborators.js"
+      ],
+      "sourceHash": "8bc5127c02e9c729",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-share-menu",
+      "type": "screenshot",
+      "path": "public/images/screenshots/share-menu.png",
+      "docPages": [
+        "docs/collaboration/sharing-permissions.md"
+      ],
+      "sources": [
+        "server/collab/",
+        "client/lib/collab/",
+        "client/views/editor/comments-panel.js",
+        "client/views/editor/comments-panel-sse.js",
+        "client/views/editor/comment-markers.js",
+        "client/views/editor/comments-api.js",
+        "client/lib/comments/",
+        "server/routes/api/collaborators.js"
+      ],
+      "sourceHash": "8bc5127c02e9c729",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-slide-library-overview",
+      "type": "screenshot",
+      "path": "public/images/screenshots/slide-library-overview.png",
+      "docPages": [
+        "docs/libraries/index.md"
+      ],
+      "sources": [
+        "client/lib/slide-library/",
+        "client/lib/slide-collections/",
+        "client/views/editor/image-library/",
+        "server/routes/api/slide-library.js",
+        "server/routes/api/image-library.js"
+      ],
+      "sourceHash": "3a1b1f31e9675087",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-slide-library",
+      "type": "screenshot",
+      "path": "public/images/screenshots/slide-library.png",
+      "docPages": [
+        "docs/libraries/slide-library.md"
+      ],
+      "sources": [
+        "client/lib/slide-library/",
+        "client/lib/slide-collections/",
+        "client/views/editor/image-library/",
+        "server/routes/api/slide-library.js",
+        "server/routes/api/image-library.js"
+      ],
+      "sourceHash": "3a1b1f31e9675087",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-slide-lock-editor",
+      "type": "screenshot",
+      "path": "public/images/screenshots/slide-lock-editor.png",
+      "docPages": [
+        "docs/presenter/presentation-locks.md"
+      ],
+      "sources": [
+        "client/views/presenter/",
+        "server/routes/api/present-sessions.js"
+      ],
+      "sourceHash": "0968f4c546ecc0f6",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-slide-type-picker-categories",
+      "type": "screenshot",
+      "path": "public/images/screenshots/slide-type-picker-categories.png",
+      "docPages": [
+        "docs/slide-types/structure.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "shared/slide-types/convert.js",
+        "shared/slide-types/json-schema.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/editor/convert-slide-action.js",
+        "client/views/editor/slide-type-schematics.js"
+      ],
+      "sourceHash": "69780a7eee64f618",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-slide-type-picker-new",
+      "type": "screenshot",
+      "path": "public/images/screenshots/slide-type-picker-new.png",
+      "docPages": [
+        "docs/slide-types/index.md",
+        "docs/creating/new-presentation.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "shared/slide-types/convert.js",
+        "shared/slide-types/json-schema.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/editor/convert-slide-action.js",
+        "client/views/editor/slide-type-schematics.js"
+      ],
+      "sourceHash": "69780a7eee64f618",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-slide-types-curation",
+      "type": "screenshot",
+      "path": "public/images/screenshots/slide-types-curation.png",
+      "docPages": [
+        "docs/customization/custom-slide-types.md"
+      ],
+      "sources": [
+        "custom/",
+        "themes/",
+        "shared/slide-types/custom-loader.js",
+        "server/routes/api/custom-slide-types.js",
+        "client/views/settings/slide-type-editor/"
+      ],
+      "sourceHash": "a45539f794278d66",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-slide-types-data",
+      "type": "screenshot",
+      "path": "public/images/screenshots/slide-types-data.png",
+      "docPages": [
+        "docs/slide-types/data.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "shared/slide-types/convert.js",
+        "shared/slide-types/json-schema.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/editor/convert-slide-action.js",
+        "client/views/editor/slide-type-schematics.js"
+      ],
+      "sourceHash": "69780a7eee64f618",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-slide-types-interaction",
+      "type": "screenshot",
+      "path": "public/images/screenshots/slide-types-interaction.png",
+      "docPages": [
+        "docs/interactions/qa.md"
+      ],
+      "sources": [
+        "client/lib/slide-runtime/",
+        "client/views/follow/",
+        "server/routes/api/questions.js",
+        "server/routes/api/follow.js"
+      ],
+      "sourceHash": "f6550bcfcc611877",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-slide-types-layouts",
+      "type": "screenshot",
+      "path": "public/images/screenshots/slide-types-layouts.png",
+      "docPages": [
+        "docs/slide-types/cards.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "shared/slide-types/convert.js",
+        "shared/slide-types/json-schema.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/editor/convert-slide-action.js",
+        "client/views/editor/slide-type-schematics.js"
+      ],
+      "sourceHash": "69780a7eee64f618",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-slides-panel",
+      "type": "screenshot",
+      "path": "public/images/screenshots/slides-panel.png",
+      "docPages": [
+        "docs/editing/slides-panel.md"
+      ],
+      "sources": [
+        "client/views/editor/inspector-panes.js",
+        "client/views/editor/inspector-resize.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "client/views/editor/editor-controller.js",
+        "client/views/editor/slide-list.js"
+      ],
+      "sourceHash": "d966388962f02eec",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-speaker-notes-in-context",
+      "type": "screenshot",
+      "path": "public/images/screenshots/speaker-notes-in-context.png",
+      "docPages": [
+        "docs/editing/speaker-notes.md"
+      ],
+      "sources": [
+        "client/views/editor/inspector-panes.js",
+        "client/views/editor/inspector-resize.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "client/views/editor/editor-controller.js",
+        "client/views/editor/slide-list.js"
+      ],
+      "sourceHash": "d966388962f02eec",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-table-slide-editor",
+      "type": "screenshot",
+      "path": "public/images/screenshots/table-slide-editor.png",
+      "docPages": [
+        "docs/slide-types/data.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "shared/slide-types/convert.js",
+        "shared/slide-types/json-schema.js",
+        "client/views/editor/slide-type-picker.js",
+        "client/views/editor/convert-slide-action.js",
+        "client/views/editor/slide-type-schematics.js"
+      ],
+      "sourceHash": "69780a7eee64f618",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-theme-editor-full",
+      "type": "screenshot",
+      "path": "public/images/screenshots/theme-editor-full.png",
+      "docPages": [
+        "docs/themes/editor.md"
+      ],
+      "sources": [
+        "client/lib/theme/",
+        "client/views/settings/theme-editor/",
+        "shared/theme-config-schema.js",
+        "shared/theme-normalize.js",
+        "shared/theme-fonts.js"
+      ],
+      "sourceHash": "583435b00591a1a6",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-themes-settings-page",
+      "type": "screenshot",
+      "path": "public/images/screenshots/themes-settings-page.png",
+      "docPages": [
+        "docs/themes/index.md"
+      ],
+      "sources": [
+        "client/lib/theme/",
+        "client/views/settings/theme-editor/",
+        "shared/theme-config-schema.js",
+        "shared/theme-normalize.js",
+        "shared/theme-fonts.js"
+      ],
+      "sourceHash": "583435b00591a1a6",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-trash-page",
+      "type": "screenshot",
+      "path": "public/images/screenshots/trash-page.png",
+      "docPages": [
+        "docs/organizing/trash.md"
+      ],
+      "sources": [
+        "client/views/list/",
+        "server/routes/api/tags.js"
+      ],
+      "sourceHash": "41aff7024d6d5b85",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-user-management",
+      "type": "screenshot",
+      "path": "public/images/screenshots/user-management.png",
+      "docPages": [
+        "docs/admin/user-management.md"
+      ],
+      "sources": [
+        "server/routes/api/admin-users.js",
+        "server/routes/api/organizations.js",
+        "server/routes/api/organization-members.js",
+        "client/views/settings/admin-users/",
+        "server/auth/"
+      ],
+      "sourceHash": "1781886bafb99947",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    },
+    {
+      "id": "shot-version-history-dialog",
+      "type": "screenshot",
+      "path": "public/images/screenshots/version-history-dialog.png",
+      "docPages": [
+        "docs/collaboration/versions.md"
+      ],
+      "sources": [
+        "server/collab/",
+        "client/lib/collab/",
+        "client/views/editor/comments-panel.js",
+        "client/views/editor/comments-panel-sse.js",
+        "client/views/editor/comment-markers.js",
+        "client/views/editor/comments-api.js",
+        "client/lib/comments/",
+        "server/routes/api/collaborators.js"
+      ],
+      "sourceHash": "8bc5127c02e9c729",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
+    }
+  ]
+}
