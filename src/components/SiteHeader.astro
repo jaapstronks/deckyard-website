@@ -1,7 +1,7 @@
 ---
 import DeckyardMark from './DeckyardMark.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
-import { ui, localizePath, type Lang } from '../i18n/ui';
+import { ui, localizePath, sandboxUrl, type Lang } from '../i18n/ui';
 
 interface Props {
   currentPath: string;
@@ -28,7 +28,24 @@ const docsHref = '/docs/creating/';
       <a href={blogHref} aria-current={isBlog ? 'page' : undefined}>{t.nav.blog}</a>
       <a href={docsHref}>{t.nav.docs}</a>
       <a href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noopener">{t.nav.github}</a>
+      <a class="nav-cta" href={sandboxUrl} target="_blank" rel="noopener">{t.nav.sandbox}</a>
       <LanguageSwitcher currentPath={currentPath} ariaLabel={t.nav.languageAria} />
     </nav>
   </div>
 </header>
+
+<style>
+  /* Sandbox link doubles as a lightweight CTA: a brass pill that reads as an
+     action next to the plain nav links, without the weight of a full button. */
+  .site-nav a.nav-cta {
+    padding: 6px 14px;
+    border: 1.5px solid var(--brass-bright);
+    border-radius: 999px;
+    color: var(--brass);
+    transition: background-color var(--dur-micro) ease, color var(--dur-micro) ease;
+  }
+  .site-nav a.nav-cta:hover {
+    background: var(--brass-bright);
+    color: var(--green-deep);
+  }
+</style>

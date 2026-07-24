@@ -15,6 +15,10 @@ export type Lang = keyof typeof languages;
 
 export const defaultLang: Lang = 'en';
 
+// Live hosted playground: a full Deckyard anyone can try without installing.
+// Same URL in every locale (the sandbox app handles its own language).
+export const sandboxUrl = 'https://sandbox.deckyard.eu';
+
 export interface Pillar {
   title: string;
   body: string;
@@ -26,6 +30,7 @@ export interface Content {
   skipToContent: string;
 
   nav: {
+    sandbox: string;
     blog: string;
     docs: string;
     github: string;
@@ -74,6 +79,9 @@ export interface Content {
     ctaLead: string;
     ctaGithub: string;
     ctaWaitlistButton: string;
+    sandboxButton: string;
+    sandboxNote: string;
+    ctaSandboxButton: string;
   };
 
   install: {
@@ -119,6 +127,7 @@ export const ui: Record<Lang, Content> = {
     skipToContent: 'Skip to content',
 
     nav: {
+      sandbox: 'Try it',
       blog: 'Blog',
       docs: 'Docs',
       github: 'GitHub',
@@ -205,6 +214,9 @@ export const ui: Record<Lang, Content> = {
         'Deckyard is MIT licensed, GDPR native and built to be self-hosted. The code is public on GitHub today. Star it, run it, or leave your address for launch and hosted-version updates.',
       ctaGithub: 'View on GitHub',
       ctaWaitlistButton: 'Join the launch list',
+      sandboxButton: 'Try the live sandbox',
+      sandboxNote: 'No install, no signup: a full Deckyard, running in your browser.',
+      ctaSandboxButton: 'Open the sandbox',
     },
 
     install: {
@@ -253,6 +265,7 @@ export const ui: Record<Lang, Content> = {
     skipToContent: 'Naar inhoud',
 
     nav: {
+      sandbox: 'Probeer',
       blog: 'Blog',
       docs: 'Docs',
       github: 'GitHub',
@@ -339,6 +352,9 @@ export const ui: Record<Lang, Content> = {
         'Deckyard is MIT-gelicenseerd, GDPR-native en gebouwd om zelf te hosten. De code staat vandaag openbaar op GitHub. Geef ’m een ster, draai ’m, of laat je adres achter voor updates over de lancering en de gehoste versie.',
       ctaGithub: 'Bekijk op GitHub',
       ctaWaitlistButton: 'Zet me op de lanceerlijst',
+      sandboxButton: 'Probeer de live sandbox',
+      sandboxNote: 'Geen installatie, geen aanmelding: een volledige Deckyard, in je browser.',
+      ctaSandboxButton: 'Open de sandbox',
     },
 
     install: {
