@@ -135,13 +135,14 @@ export interface Content {
     ctaBody: string;
     ctaSandbox: string;
     ctaDocs: string;
-    // Homepage teaser that links here.
+    // Homepage teaser that links here. The illustration is one annotated
+    // slide - its content is borrowed from `anatomy.types` so the teaser shows
+    // literally the slide you meet again on the explainer page.
     teaserKicker: string;
     teaserTitle: string;
     teaserBody: string;
     teaserCta: string;
-    teaserFrom: string;
-    teaserTo: string;
+    teaserFoot: string;
   };
 
   // "How raw material becomes an on-brand slide". Three zones: the pile of
@@ -171,9 +172,30 @@ export interface Content {
     }[];
 
     // --- zone 2: structuring it ---
-    routesLabel: string;
-    routesLead: string;
-    routes: { id: string; label: string; blurb: string; snippet: string }[];
+    //
+    // Every route has the same two-column shape: on the left the world of
+    // whoever is acting, on the right the mechanism they reach for. The record
+    // they all produce is deliberately NOT in here - it sits below the tabs and
+    // never changes, because that sameness is the entire argument. Showing a
+    // different JSON blob per tab used to read as "by hand means typing JSON".
+    routes: {
+      id: string;
+      label: string;
+      blurb: string;
+      leftLabel: string;
+      rightLabel: string;
+      note: string; // one line under the panel; may contain <b>
+      // left column - exactly one of these
+      picker?: { title: string; options: string[]; chosen: number }; // hand
+      system?: { name: string; lines: string[] }; // api
+      chat?: { who: string; text: string; self?: boolean }[]; // mcp
+      // right column - exactly one of these
+      form?: { title: string; fields: { key: string; value: string }[]; more: string }; // hand
+      code?: string; // api; HTML with .k/.s/.c spans
+      wire?: { dir: string; text: string }[]; // mcp; text may contain <b>
+    }[];
+    recordCaption: string;
+    recordNote: string;
     gateText: string; // may contain <b>
 
     // --- zone 3: the slide ---
@@ -456,8 +478,7 @@ export const ui: Record<Lang, Content> = {
       teaserBody:
         'A Deckyard slide is not a canvas with boxes on it. It is a record with a type: a timeline knows it holds a sequence, a quote knows it needs attribution, and neither of them carries a single colour. That is where the accessibility, the integrations and the unbreakable house style all come from.',
       teaserCta: 'How it works',
-      teaserFrom: 'What you start with',
-      teaserTo: 'What it becomes',
+      teaserFoot: 'Two fields, and not one colour',
     },
 
     anatomy: {
@@ -511,30 +532,74 @@ export const ui: Record<Lang, Content> = {
 
       routesLabel: 'Turning it into structure',
       routesLead:
-        'This is the step everyone skips over. It can happen three ways, and the point is not which one you pick: it is that all three end up in the same place.',
+        'This is the step everyone skips over. It can happen three ways, and the point is not which one you pick: it is that all three have to arrive at the same record.',
       routes: [
         {
           id: 'hand',
           label: 'By hand',
-          blurb: 'Someone reads the document and fills the fields in the editor.',
-          snippet:
-            '<span class="c">// the editor writes exactly the same record</span>\n{\n  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,\n  <span class="k">"content"</span>: { <span class="k">"items"</span>: [ … ] }\n}',
+          blurb: 'Someone opens the editor, picks a type and fills in the fields.',
+          leftLabel: 'Add a slide',
+          rightLabel: 'Fill in the fields',
+          picker: {
+            title: 'New slide',
+            options: ['Title', 'Timeline', 'Chart', 'Quote', 'Image'],
+            chosen: 1,
+          },
+          form: {
+            title: 'Timeline · moment 1 of 4',
+            fields: [
+              { key: 'date', value: '2021' },
+              { key: 'title', value: 'Constituted by resolution' },
+              { key: 'text', value: 'By resolution of the household.' },
+            ],
+            more: '+ add moment',
+          },
+          note: 'No JSON, no drawing on a canvas. The form <b>is</b> the slide type, and the editor writes the record underneath.',
         },
         {
           id: 'api',
           label: 'Through the API',
           blurb: 'A script or a business system posts the slide. No one retypes a table.',
-          snippet:
-            '<span class="c">POST /api/presentations/:id/slides</span>\n{\n  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,\n  <span class="k">"content"</span>: { <span class="k">"items"</span>: [ … ] }\n}',
+          leftLabel: 'What is running',
+          rightLabel: 'What it sends',
+          system: {
+            name: 'reporting-service',
+            lines: ['every monday, 06:00', 'four rows from the register', 'no human in the loop'],
+          },
+          code: '<span class="c">POST /api/presentations/:id/slides</span>\n{\n  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,\n  <span class="k">"content"</span>: { <span class="k">"items"</span>: [ … ] }\n}',
+          note: 'A slide the system may not save is a slide a person may not save either. <b>Same check, same rules.</b>',
         },
         {
           id: 'mcp',
           label: 'Through MCP',
-          blurb: 'An agent asks which types exist, then fills one. It has to ask first.',
-          snippet:
-            '<span class="c">→ get_slide_types()</span>\n<span class="c">←</span> timeline-slide: items[] <span class="c">(date, title, text)</span>\n<span class="c">→ add_slide(</span>{ <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>, … }<span class="c">)</span>',
+          blurb: 'An agent has to ask which types exist before it can fill one in.',
+          leftLabel: 'What the person asks',
+          rightLabel: 'What the agent has to ask first',
+          chat: [
+            {
+              who: 'You',
+              self: true,
+              text: 'Put this on a slide: 2021 constituted, 2022 partnership with the bake sale, 2024 suspended, 2025 resumed.',
+            },
+            {
+              who: 'Assistant',
+              text: 'Added a timeline slide with those four moments, in that order.',
+            },
+          ],
+          wire: [
+            { dir: '→', text: 'get_slide_types()' },
+            {
+              dir: '←',
+              text: '<b>timeline-slide</b> - for a sequence of moments. items[] of (date, title, text), 2 to 10, order carries meaning.',
+            },
+            { dir: '→', text: 'add_slide({ type: "timeline-slide", … })' },
+          ],
+          note: 'The agent cannot invent a layout, because there is no layout to invent. It can only ask what exists and fill it in.',
         },
       ],
+      recordCaption: 'And in all three cases, this is what gets stored',
+      recordNote:
+        'The same record, byte for byte. Which route it came in through leaves no trace in it.',
       gateText:
         'All three arrive at the same gate: the record is checked against its slide type. What a person may not save, an integration may not save either, and the other way round. <b>That is where the control lives</b> - not in doing it by hand.',
 
@@ -864,8 +929,7 @@ export const ui: Record<Lang, Content> = {
       teaserBody:
         'Een Deckyard-slide is geen canvas met vakjes erop. Het is een record met een type: een tijdlijn weet dat hij een reeks bevat, een citaat weet dat het bronvermelding nodig heeft, en geen van beide draagt ook maar één kleur bij zich. Daar komen de toegankelijkheid, de koppelingen en de onbreekbare huisstijl allemaal uit voort.',
       teaserCta: 'Hoe het werkt',
-      teaserFrom: 'Waar je mee begint',
-      teaserTo: 'Wat het wordt',
+      teaserFoot: 'Twee velden, en geen enkele kleur',
     },
 
     anatomy: {
@@ -919,30 +983,74 @@ export const ui: Record<Lang, Content> = {
 
       routesLabel: 'Er structuur van maken',
       routesLead:
-        'Dit is de stap waar iedereen overheen leest. Het kan op drie manieren, en het punt is niet welke je kiest: het is dat alle drie op dezelfde plek uitkomen.',
+        'Dit is de stap waar iedereen overheen leest. Het kan op drie manieren, en het punt is niet welke je kiest: het is dat alle drie bij hetzelfde record moeten uitkomen.',
       routes: [
         {
           id: 'hand',
           label: 'Met de hand',
-          blurb: 'Iemand leest het document en vult de velden in de editor.',
-          snippet:
-            '<span class="c">// de editor schrijft precies hetzelfde record</span>\n{\n  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,\n  <span class="k">"content"</span>: { <span class="k">"items"</span>: [ … ] }\n}',
+          blurb: 'Iemand opent de editor, kiest een type en vult de velden in.',
+          leftLabel: 'Slide toevoegen',
+          rightLabel: 'De velden invullen',
+          picker: {
+            title: 'Nieuwe slide',
+            options: ['Titel', 'Tijdlijn', 'Grafiek', 'Citaat', 'Beeld'],
+            chosen: 1,
+          },
+          form: {
+            title: 'Tijdlijn · moment 1 van 4',
+            fields: [
+              { key: 'date', value: '2021' },
+              { key: 'title', value: 'Opgericht bij besluit' },
+              { key: 'text', value: 'Bij besluit van het huishouden.' },
+            ],
+            more: '+ moment toevoegen',
+          },
+          note: 'Geen JSON, geen tekenen op een canvas. Het formulier <b>is</b> het slidetype, en de editor schrijft er het record onder.',
         },
         {
           id: 'api',
           label: 'Via de API',
           blurb: 'Een script of bedrijfssysteem stuurt de slide. Niemand tikt een tabel over.',
-          snippet:
-            '<span class="c">POST /api/presentations/:id/slides</span>\n{\n  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,\n  <span class="k">"content"</span>: { <span class="k">"items"</span>: [ … ] }\n}',
+          leftLabel: 'Wat er draait',
+          rightLabel: 'Wat het stuurt',
+          system: {
+            name: 'reporting-service',
+            lines: ['elke maandag, 06:00', 'vier regels uit het register', 'geen mens in de lus'],
+          },
+          code: '<span class="c">POST /api/presentations/:id/slides</span>\n{\n  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,\n  <span class="k">"content"</span>: { <span class="k">"items"</span>: [ … ] }\n}',
+          note: 'Een slide die het systeem niet mag opslaan, mag een mens ook niet opslaan. <b>Dezelfde controle, dezelfde regels.</b>',
         },
         {
           id: 'mcp',
           label: 'Via MCP',
-          blurb: 'Een agent vraagt eerst welke types er zijn en vult er daarna één. Vragen moet.',
-          snippet:
-            '<span class="c">→ get_slide_types()</span>\n<span class="c">←</span> timeline-slide: items[] <span class="c">(date, title, text)</span>\n<span class="c">→ add_slide(</span>{ <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>, … }<span class="c">)</span>',
+          blurb: 'Een agent moet eerst vragen welke types er zijn voordat hij er één kan vullen.',
+          leftLabel: 'Wat de mens vraagt',
+          rightLabel: 'Wat de agent eerst moet vragen',
+          chat: [
+            {
+              who: 'Jij',
+              self: true,
+              text: 'Zet dit op een slide: 2021 opgericht, 2022 samenwerking met de taartverkoop, 2024 opgeschort, 2025 hervat.',
+            },
+            {
+              who: 'Assistent',
+              text: 'Een tijdlijnslide toegevoegd met die vier momenten, in die volgorde.',
+            },
+          ],
+          wire: [
+            { dir: '→', text: 'get_slide_types()' },
+            {
+              dir: '←',
+              text: '<b>timeline-slide</b> - voor een reeks momenten. items[] van (date, title, text), 2 tot 10, de volgorde draagt betekenis.',
+            },
+            { dir: '→', text: 'add_slide({ type: "timeline-slide", … })' },
+          ],
+          note: 'De agent kan geen opmaak verzinnen, want er valt geen opmaak te verzinnen. Hij kan alleen vragen wat er bestaat en dat invullen.',
         },
       ],
+      recordCaption: 'En in alle drie de gevallen wordt dit opgeslagen',
+      recordNote:
+        'Hetzelfde record, byte voor byte. Via welke route het binnenkwam, is er niet aan te zien.',
       gateText:
         'Alle drie komen ze bij dezelfde poort: het record wordt gecontroleerd tegen zijn slidetype. Wat een mens niet mag opslaan, mag een integratie ook niet, en andersom. <b>Daar zit de controle</b> - niet in het handmatig doen.',
 

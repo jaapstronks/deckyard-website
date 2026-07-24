@@ -1,8 +1,14 @@
 ---
-// Homepage teaser for the "how it works" explainer: the idea in one static
-// picture - a document turning into a slide that knows what it is - plus a way
-// through to the full page. No interactivity here on purpose; the explainer is
-// where things move.
+// Homepage teaser for the "how it works" explainer. One picture, one claim:
+// the slide you are looking at is made of named fields, so it knows what it is.
+//
+// Deliberately not a before/after. The document-becomes-a-slide story needs the
+// full width of /structured-slides to be legible; squeezed into half a homepage
+// section it reads as two grey rectangles with an arrow between them. Here the
+// slide carries real content and the field names point at the regions they own.
+//
+// The content is borrowed from the anatomy dictionary, so this is literally the
+// slide you meet again on the explainer page.
 import { ui, localizePath, type Lang } from '../i18n/ui';
 
 interface Props {
@@ -12,10 +18,19 @@ const { lang } = Astro.props;
 const t = ui[lang].structured;
 const href = localizePath('/structured-slides', lang);
 
-const MOMENTS = [
-  { date: '2021', title: 'Constituted' },
-  { date: '2023', title: 'Partnership' },
-  { date: '2025', title: 'Resumed' },
+const timeline = ui[lang].anatomy.types.find((x) => x.id === 'timeline-slide');
+// Three moments rather than four: at this size the columns need the room, and
+// ending on "resumed" beats ending on "suspended".
+const MOMENTS = [0, 1, 3].map((i) => timeline?.items?.[i]).filter(Boolean) as {
+  date: string;
+  title: string;
+}[];
+
+// Where each callout attaches, as a share of the slide's height. The slide has
+// a fixed aspect ratio, so these stay put at every width.
+const NOTES = [
+  { key: 'title', at: '27%', cons: ['string · max 120'] },
+  { key: 'items', at: '76%', cons: ['required · ordered', 'date · title · text'] },
 ];
 ---
 
@@ -28,42 +43,44 @@ const MOMENTS = [
       <a class="btn btn-primary" href={href}>{t.teaserCta}</a>
     </div>
 
-    <div class="teaser-art" data-reveal data-reveal-delay="120" aria-hidden="true">
-      <div class="art-col art-col--from">
-        <p class="art-label">{t.teaserFrom}</p>
-        <div class="art-doc">
-          <span class="art-doc-bar"></span>
-          <span class="art-line art-line--head"></span>
-          <span class="art-line"></span>
-          <span class="art-line art-line--mark"></span>
-          <span class="art-line"></span>
-          <span class="art-line art-line--short"></span>
+    <figure class="teaser-art" data-reveal data-reveal-delay="120">
+      <div class="ta-frame">
+        <div class="ta-shell">
+          <div class="ta-slide">
+            <p class="ta-eyebrow">{timeline?.eyebrow}</p>
+            <h3 class="ta-title">{timeline?.title}</h3>
+            <ol class="ta-tl">
+              {
+                MOMENTS.map((m) => (
+                  <li>
+                    <span class="ta-date">{m.date}</span>
+                    <span class="ta-moment">{m.title}</span>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
         </div>
-      </div>
 
-      <span class="art-arrow"></span>
-
-      <div class="art-col art-col--to">
-        <p class="art-label">{t.teaserTo}</p>
-        <div class="art-slide">
-          <span class="art-eyebrow"></span>
-          <span class="art-title"></span>
-          <ol class="art-tl">
-            {
-              MOMENTS.map((m) => (
-                <li>
-                  <span class="art-date">{m.date}</span>
-                </li>
-              ))
-            }
-          </ol>
-        </div>
-        <ul class="art-fields">
-          <li><b>title</b><span>string</span></li>
-          <li><b>items</b><span>required · ordered</span></li>
+        <ul class="ta-notes">
+          {
+            NOTES.map((n) => (
+              <li class="ta-note" style={`--at:${n.at}`}>
+                <span class="ta-key">{n.key}</span>
+                {n.cons.map((c) => (
+                  <span class="ta-cons">{c}</span>
+                ))}
+              </li>
+            ))
+          }
         </ul>
       </div>
-    </div>
+
+      <figcaption class="ta-foot">
+        <b>timeline-slide</b>
+        <span>{t.teaserFoot}</span>
+      </figcaption>
+    </figure>
   </div>
 </section>
 
@@ -87,164 +104,90 @@ const MOMENTS = [
   }
 
   /* ---------- the illustration ---------- */
+  /* Queried on its own width, not the viewport: the callouts may only sit
+     beside the slide when the column is wide enough that the slide keeps a
+     readable size. On a 900px screen this block is half the page. */
   .teaser-art {
+    margin: 0;
+    container-type: inline-size;
+  }
+  .ta-frame {
     display: grid;
-    grid-template-columns: 1fr auto 1.25fr;
-    gap: 0.9rem;
-    /* Labels line up across the two columns; only the arrow centres. */
-    align-items: start;
+    gap: 1.5rem;
   }
-  @media (max-width: 480px) {
-    .teaser-art {
-      grid-template-columns: 1fr;
-      gap: 1.2rem;
-    }
-  }
-  .art-label {
-    font-family: var(--mono);
-    font-size: 0.56rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-    margin: 0 0 0.5rem;
-  }
-  .art-col--from .art-label {
-    color: var(--brass);
-  }
-  .art-col--to .art-label {
-    color: var(--green-bright);
-  }
-
-  /* the document you start with, at a slight angle */
-  .art-doc {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-    padding: 0.65rem 0.7rem 0.9rem;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-sm);
-    rotate: -2deg;
-  }
-  .art-doc-bar {
-    height: 6px;
-    width: 55%;
-    border-radius: 3px;
-    background: var(--paper-warm);
-    margin-bottom: 0.25rem;
-  }
-  .art-line {
-    height: 5px;
-    border-radius: 3px;
-    background: var(--sage);
-  }
-  .art-line--head {
-    height: 8px;
-    width: 78%;
-    background: var(--ink-mute);
-    opacity: 0.35;
-  }
-  .art-line--short {
-    width: 46%;
-  }
-  /* the passage that becomes a field */
-  .art-line--mark {
-    width: 88%;
-    background: var(--brass-soft);
-    box-shadow: inset 0 -1px 0 var(--brass);
-  }
-
-  .art-arrow {
-    width: 1.6rem;
-    height: 1px;
-    background: var(--line);
-    position: relative;
-    justify-self: center;
-    align-self: center;
-  }
-  .art-arrow::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 50%;
-    translate: 0 -50%;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-left: 7px solid var(--green-bright);
-  }
-  @media (max-width: 480px) {
-    .art-arrow {
-      width: 1px;
-      height: 1.4rem;
-      justify-self: start;
-      margin-left: 1.2rem;
-    }
-    .art-arrow::after {
-      right: auto;
-      top: auto;
-      bottom: 0;
-      left: 50%;
-      translate: -50% 0;
-      border: 0;
-      border-left: 5px solid transparent;
-      border-right: 5px solid transparent;
-      border-top: 7px solid var(--green-bright);
+  @container (min-width: 460px) {
+    .ta-frame {
+      grid-template-columns: 1fr 7.5rem;
+      align-items: stretch;
     }
   }
 
-  /* the slide it becomes */
-  .art-slide {
+  /* The shell is the query container, not the slide: an element cannot query
+     its own container-type, so `cqi` in the slide's own padding would resolve
+     against the viewport instead of the slide width. min-width keeps the
+     timeline's long words from pushing the grid track wider than its share. */
+  .ta-shell {
+    container-type: inline-size;
+    min-width: 0;
+  }
+
+  /* The slide keeps its own quiet palette: the point of the picture is that a
+     slide carries fields, not colours. */
+  .ta-slide {
     aspect-ratio: 16 / 9;
     container-type: inline-size;
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
     box-shadow: var(--shadow-md);
-    padding: 6cqi;
+    padding: 5.5cqi;
     display: flex;
     flex-direction: column;
   }
-  .art-eyebrow {
-    height: 4px;
-    width: 22%;
-    border-radius: 2px;
-    background: var(--green-bright);
+  .ta-eyebrow {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 2.4cqi;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-bright);
   }
-  .art-title {
-    height: 11px;
-    width: 68%;
-    border-radius: 3px;
-    background: var(--ink);
-    opacity: 0.82;
-    margin-top: 3cqi;
+  .ta-title {
+    margin: 0.35em 0 0;
+    font-family: var(--display);
+    font-variation-settings: 'wght' 620;
+    font-weight: 700;
+    font-size: 6.4cqi;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    color: var(--ink);
   }
-  .art-tl {
+  .ta-tl {
     list-style: none;
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
     margin: auto 0 0;
-    padding: 2.5cqi 0 0;
+    padding: 2.4cqi 0 0;
     position: relative;
   }
-  .art-tl::before {
+  .ta-tl::before {
     content: '';
     position: absolute;
     left: 0;
     right: 0;
-    top: calc(3.2cqi - 1px);
+    top: calc(3.1cqi - 1px);
     height: 2px;
     background: var(--sage);
   }
-  .art-tl li {
+  .ta-tl li {
     position: relative;
-    padding-right: 2cqi;
+    padding-right: 2.4cqi;
   }
-  .art-tl li::before {
+  .ta-tl li::before {
     content: '';
     position: absolute;
-    top: 2.5cqi;
+    top: 2.4cqi;
     left: 0;
     width: 1.6cqi;
     height: 1.6cqi;
@@ -252,47 +195,95 @@ const MOMENTS = [
     background: var(--green-bright);
     box-shadow: 0 0 0 0.8cqi var(--card);
   }
-  .art-date {
+  .ta-date {
     display: block;
-    margin-top: 6cqi;
+    margin-top: 4.6cqi;
     font-family: var(--mono);
-    font-size: 3.6cqi;
+    font-size: 3cqi;
     color: var(--green-bright);
     font-variant-numeric: tabular-nums;
   }
-
-  .art-fields {
-    list-style: none;
-    margin: 0.55rem 0 0;
-    padding: 0;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-    background: var(--card);
-    overflow: hidden;
-  }
-  .art-fields li {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.7rem;
-    padding: 0.38rem 0.6rem;
-    border-bottom: 1px solid var(--line);
-    font-family: var(--mono);
-    font-size: 0.6rem;
-  }
-  .art-fields li:last-child {
-    border-bottom: 0;
-  }
-  .art-fields b {
-    color: var(--ink);
+  .ta-moment {
+    display: block;
+    margin-top: 0.7cqi;
+    font-family: var(--display);
+    font-variation-settings: 'wght' 600;
     font-weight: 700;
+    font-size: 2.7cqi;
+    line-height: 1.15;
+    color: var(--ink);
   }
-  .art-fields span {
+
+  /* the field names, pointing back at the regions they own */
+  .ta-notes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+  }
+  @container (min-width: 460px) {
+    .ta-notes {
+      position: relative;
+      display: block;
+    }
+    .ta-note {
+      position: absolute;
+      top: var(--at);
+      translate: 0 -50%;
+      width: 100%;
+    }
+    /* the hairline back to the slide edge, with the arrowhead at that end */
+    .ta-note::before {
+      content: '';
+      position: absolute;
+      right: calc(100% + 0.5rem);
+      top: 0.42rem;
+      width: 0.7rem;
+      border-top: 1px solid var(--line);
+    }
+    .ta-note::after {
+      content: '';
+      position: absolute;
+      right: calc(100% + 1.2rem);
+      top: 0.42rem;
+      translate: 0 -50%;
+      border-top: 3.5px solid transparent;
+      border-bottom: 3.5px solid transparent;
+      border-right: 5px solid var(--brass);
+    }
+  }
+  .ta-key {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .ta-cons {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    line-height: 1.5;
     color: var(--ink-mute);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .art-doc {
-      rotate: none;
-    }
+  .ta-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 0.85rem;
+    margin-top: 0.9rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.72rem;
+    color: var(--ink-mute);
+  }
+  .ta-foot b {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--green-bright);
   }
 </style>

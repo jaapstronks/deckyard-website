@@ -80,6 +80,44 @@ const SOURCE_OF: Record<string, string> = {
   'image-slide': 'library',
 };
 
+// Slide-type glyphs for the "add a slide" mock, in the same order as the
+// picker options in the dictionary. Schematic on purpose: this is a diagram of
+// a type picker, not a screenshot of one.
+const GLYPHS = [
+  // title
+  '<rect x="4" y="7" width="16" height="3.2" rx="1.6"/><rect x="4" y="13" width="9" height="2.4" rx="1.2"/>',
+  // timeline
+  '<path d="M3 13h18" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="6" cy="13" r="2"/><circle cx="12" cy="13" r="2"/><circle cx="18" cy="13" r="2"/>',
+  // chart
+  '<rect x="4" y="12" width="3.6" height="7" rx="1"/><rect x="10.2" y="8" width="3.6" height="11" rx="1"/><rect x="16.4" y="5" width="3.6" height="14" rx="1"/>',
+  // quote
+  '<path d="M5 16c0-4 2-6.6 5-7.4l.6 1.8C9 11 8.4 11.9 8.4 13H11v5H5zm7.6 0c0-4 2-6.6 5-7.4l.6 1.8c-1.6.6-2.2 1.5-2.2 2.6H18.6v5h-6z"/>',
+  // image
+  '<rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="10.2" r="1.6"/><path d="M5.5 17.2l4.2-4.2 3 3 2.6-2.4 3.4 3.6z"/>',
+];
+
+// The record every route ends up producing. Built from the same demo content
+// the slide in zone 3 renders, so the JSON here and the slide down there can
+// never drift apart. The shape is structural; only the values are translated.
+const timelineType = t.types.find((x) => x.id === 'timeline-slide');
+const RECORD = [
+  '{',
+  '  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,',
+  '  <span class="k">"content"</span>: {',
+  `    <span class="k">"title"</span>: <span class="s">"${timelineType?.title ?? ''}"</span>,`,
+  '    <span class="k">"items"</span>: [',
+  ...(timelineType?.items ?? [])
+    .slice(0, 2)
+    .map(
+      (it) =>
+        `      { <span class="k">"date"</span>: <span class="s">"${it.date}"</span>, <span class="k">"title"</span>: <span class="s">"${it.title}"</span> },`
+    ),
+  '      …',
+  '    ]',
+  '  }',
+  '}',
+].join('\n');
+
 // Abstract tiles standing in for an image library. Deliberately schematic: this
 // is a diagram of a picker, not a photo montage.
 const TILES = [
@@ -197,17 +235,103 @@ const TILES = [
 
       {
         t.routes.map((r, i) => (
-          <pre
-            class="route-body"
+          <div
+            class="surface"
             id={`route-body-${r.id}`}
             role="tabpanel"
             aria-labelledby={`route-tab-${r.id}`}
             data-route-body={r.id}
             hidden={i !== 0}
-            set:html={r.snippet}
-          />
+          >
+            <div class="scol">
+              <p class="scol-label">{r.leftLabel}</p>
+
+              {r.picker && (
+                <div class="mock">
+                  <p class="mock-bar">{r.picker.title}</p>
+                  <ul class="picks">
+                    {r.picker.options.map((opt, oi) => (
+                      <li class={oi === (r.picker?.chosen ?? -1) ? 'pick is-picked' : 'pick'}>
+                        <svg
+                          class="pick-glyph"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                          set:html={GLYPHS[oi] ?? ''}
+                        />
+                        {opt}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {r.system && (
+                <div class="mock">
+                  <p class="mock-bar">{r.system.name}</p>
+                  <ul class="syslines">
+                    {r.system.lines.map((l) => (
+                      <li>{l}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {r.chat && (
+                <div class="chat">
+                  {r.chat.map((m) => (
+                    <div class={m.self ? 'bub is-self' : 'bub'}>
+                      <span class="bub-who">{m.who}</span>
+                      <p>{m.text}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div class="scol">
+              <p class="scol-label">{r.rightLabel}</p>
+
+              {r.form && (
+                <div class="mock">
+                  <p class="mock-bar">{r.form.title}</p>
+                  <ul class="formrows">
+                    {r.form.fields.map((f) => (
+                      <li>
+                        <span class="form-key">{f.key}</span>
+                        <span class="form-val">{f.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p class="form-more">{r.form.more}</p>
+                </div>
+              )}
+
+              {r.code && <pre class="wire-code" set:html={r.code} />}
+
+              {r.wire && (
+                <ul class="wire">
+                  {r.wire.map((w) => (
+                    <li class={w.dir === '←' ? 'is-in' : 'is-out'}>
+                      <span class="wire-dir" aria-hidden="true">
+                        {w.dir}
+                      </span>
+                      <span set:html={w.text} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <p class="surface-note" set:html={r.note} />
+          </div>
         ))
       }
+
+      <div class="record">
+        <p class="record-cap">{t.recordCaption}</p>
+        <pre class="record-code" set:html={RECORD} />
+        <p class="record-note">{t.recordNote}</p>
+      </div>
 
       <p class="gate">
         <span class="gate-mark" aria-hidden="true"></span>
@@ -873,6 +997,7 @@ const TILES = [
   .route[aria-selected='true'] {
     border-color: var(--green);
     background: var(--green-wash);
+    box-shadow: inset 0 -3px 0 var(--green);
   }
   .route-label {
     font-family: var(--display);
@@ -885,9 +1010,269 @@ const TILES = [
     line-height: 1.45;
     color: var(--ink-soft);
   }
-  .route-body {
-    margin: 0.7rem 0 0;
-    padding: 0.85rem 1rem;
+  /* The route panel shows only the surface: whoever is acting on the left,
+     the mechanism they reach for on the right. What they produce is not in
+     here - it is the record below, which never changes. */
+  /* an explicit display beats the UA rule for [hidden], so restate it */
+  .surface[hidden] {
+    display: none;
+  }
+  .surface {
+    display: grid;
+    gap: 1rem;
+    margin-top: 0.7rem;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--paper-warm);
+  }
+  @media (min-width: 760px) {
+    .surface {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem 1.4rem;
+    }
+    .surface-note {
+      grid-column: 1 / -1;
+    }
+  }
+  .scol {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .scol-label {
+    font-family: var(--mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 0.5rem;
+  }
+  .surface-note {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .surface-note :global(b) {
+    color: var(--ink);
+  }
+
+  /* a small window: the type picker, the filled form, the running system */
+  .mock {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .mock-bar {
+    margin: 0;
+    padding: 0.42rem 0.6rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-warm);
+    font-family: var(--mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .picks {
+    list-style: none;
+    margin: 0;
+    padding: 0.45rem;
+    display: grid;
+    gap: 0.25rem;
+  }
+  .pick {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .pick.is-picked {
+    border-color: var(--green);
+    background: var(--green-wash);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .pick-glyph {
+    width: 17px;
+    height: 17px;
+    flex: none;
+    fill: currentColor;
+    color: var(--ink-mute);
+  }
+  .pick.is-picked .pick-glyph {
+    color: var(--green);
+  }
+
+  .formrows {
+    list-style: none;
+    margin: 0;
+    padding: 0.6rem 0.6rem 0.2rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .formrows li {
+    display: grid;
+    gap: 0.18rem;
+  }
+  .form-key {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+  }
+  .form-val {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: var(--paper);
+    font-size: 0.8rem;
+    color: var(--ink);
+  }
+  .form-more {
+    margin: 0.55rem 0.6rem 0.7rem;
+    padding: 0.3rem 0.5rem;
+    border: 1px dashed var(--line);
+    border-radius: 5px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--ink-mute);
+  }
+
+  .syslines {
+    list-style: none;
+    margin: 0;
+    padding: 0.6rem;
+    display: grid;
+    gap: 0.32rem;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+  }
+  .syslines li::before {
+    content: '· ';
+    color: var(--ink-mute);
+  }
+
+  .chat {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .bub {
+    max-width: 94%;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+  }
+  .bub.is-self {
+    justify-self: end;
+    background: var(--green-wash);
+    border-color: #cadbcf;
+  }
+  .bub-who {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.54rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 0.18rem;
+  }
+  .bub p {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+
+  /* the request a system sends, and the exchange an agent has to go through */
+  .wire-code {
+    margin: 0;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    overflow-x: auto;
+  }
+  .wire-code :global(.k) { color: var(--brass); }
+  .wire-code :global(.s) { color: var(--green); }
+  .wire-code :global(.c) { color: var(--ink-mute); font-style: italic; }
+
+  .wire {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    overflow: hidden;
+  }
+  .wire li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .wire li:last-child {
+    border-bottom: 0;
+  }
+  .wire-dir {
+    color: var(--ink-mute);
+  }
+  .wire .is-in {
+    background: var(--green-wash);
+  }
+  .wire .is-in .wire-dir {
+    color: var(--green);
+  }
+  .wire :global(b) {
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  /* the one thing that does not change when you switch route */
+  .record {
+    margin-top: 1.2rem;
+  }
+  .record-cap {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .record-cap::before {
+    content: '';
+    width: 1.4rem;
+    height: 2px;
+    background: var(--brass);
+    flex: none;
+  }
+  .record-code {
+    margin: 0;
+    padding: 0.9rem 1rem;
     background: var(--green-deep);
     color: #d8e5dc;
     border-radius: var(--radius-sm);
@@ -896,9 +1281,16 @@ const TILES = [
     line-height: 1.65;
     overflow-x: auto;
   }
-  .route-body :global(.k) { color: var(--brass-soft); }
-  .route-body :global(.s) { color: #9fd6b4; }
-  .route-body :global(.c) { color: #7d8f85; font-style: italic; }
+  .record-code :global(.k) { color: var(--brass-soft); }
+  .record-code :global(.s) { color: #9fd6b4; }
+  .record-code :global(.c) { color: #7d8f85; font-style: italic; }
+  .record-note {
+    margin: 0.55rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    line-height: 1.5;
+    color: var(--ink-mute);
+  }
 
   .gate {
     display: flex;
