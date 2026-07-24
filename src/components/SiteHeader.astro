@@ -10,8 +10,10 @@ interface Props {
 const { currentPath, lang } = Astro.props;
 const t = ui[lang];
 const isBlog = currentPath.includes('/blog');
+const isChangelog = currentPath.includes('/changelog');
 const homeHref = localizePath('/', lang);
 const blogHref = localizePath('/blog/', lang);
+const changelogHref = localizePath('/changelog/', lang);
 // Docs are English-only; the link stays on the root docs regardless of locale.
 const docsHref = '/docs/creating/';
 ---
@@ -27,6 +29,7 @@ const docsHref = '/docs/creating/';
     <div class="header-actions">
       <nav class="site-nav" id="site-nav" aria-label="Primary">
         <a href={blogHref} aria-current={isBlog ? 'page' : undefined}>{t.nav.blog}</a>
+        <a href={changelogHref} aria-current={isChangelog ? 'page' : undefined}>{t.nav.changelog}</a>
         <a href={docsHref}>{t.nav.docs}</a>
         <a href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noopener">{t.nav.github}</a>
         <LanguageSwitcher currentPath={currentPath} ariaLabel={t.nav.languageAria} />
