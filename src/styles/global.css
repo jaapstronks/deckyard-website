@@ -1,0 +1,27 @@
+/* ============================================================
+   Global stylesheet entry - imported once, by SiteLayout.astro.
+
+   The layer order below is the whole cascade contract. Later layers win,
+   so you never need a specificity hack to override an earlier one:
+
+     tokens      -> :root custom properties, no selectors
+     base        -> bare element defaults
+     primitives  -> reusable design-system classes (.section, .btn, .lead)
+     chrome      -> the site frame (header, nav, footer)
+
+   Component <style> blocks in .astro files are deliberately NOT in a layer.
+   Unlayered styles outrank every layer, so a component always wins over the
+   global system without fighting specificity. That is the rule:
+
+     shared across pages  -> a layer here
+     owned by one component -> that component's <style> block
+
+   Docs (Starlight) have their own entry: styles/starlight-custom.css.
+   ============================================================ */
+
+@layer tokens, base, primitives, chrome;
+
+@import './tokens.css';
+@import './base.css';
+@import './primitives.css';
+@import './chrome.css';

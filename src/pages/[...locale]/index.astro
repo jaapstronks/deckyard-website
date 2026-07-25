@@ -1,0 +1,18 @@
+---
+// Homepage, one build per locale: / for EN, /nl/ for NL, /<code>/ for anything
+// added later. The rest parameter is `undefined` for the default locale, which
+// is what puts EN at the root without a prefix.
+//
+// Only the paths localeParams() returns are built, so this route never collides
+// with Starlight's /docs/**.
+import HomePage from '@/components/pages/HomePage.astro';
+import { localeParams, type Lang } from '@/i18n';
+
+export function getStaticPaths() {
+  return localeParams();
+}
+
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<HomePage lang={lang} />

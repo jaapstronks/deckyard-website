@@ -1,0 +1,382 @@
+---
+// Zone 1: the pile you actually start from. Four things from four places, in
+// four different shapes - a report, a spreadsheet, a note, an image library.
+// The card feeding the currently selected slide type comes forward, and the
+// passages a field is drawn from are marked via data-span; the controller does
+// both, driven by data in ./data.ts.
+import { ui, type Lang } from '@/i18n';
+import { TILES } from './data';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].anatomy;
+---
+
+<div class="zone" data-reveal>
+  <p class="zone-label"><span class="zone-n">1</span>{t.sourcesLabel}</p>
+  <div class="sources" id="sources">
+    {
+      t.sources.map((src) => (
+        <article class="src" data-src={src.id}>
+          <header class="src-bar">
+            <span class="src-dots" aria-hidden="true">
+              <>
+                <i />
+                <i />
+                <i />
+              </>
+            </span>
+            <span class="src-name">{src.name}</span>
+          </header>
+
+          {src.kind === 'doc' && (
+            <div class="src-doc">
+              <h4>{src.heading}</h4>
+              {(src.paragraphs ?? []).map((p) => (
+                <p set:html={p} />
+              ))}
+            </div>
+          )}
+
+          {src.kind === 'sheet' && (
+            <div class="src-sheet">
+              <table>
+                <tbody>
+                  {(src.rows ?? []).map((row, r) => (
+                    <tr class={r === 0 ? 'is-head' : ''}>
+                      <th scope="row">{r + 1}</th>
+                      {row.map((cell) => (
+                        <td set:html={cell} />
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {src.kind === 'note' && (
+            <div class="src-note">
+              {(src.paragraphs ?? []).map((p) => (
+                <p set:html={p} />
+              ))}
+            </div>
+          )}
+
+          {src.kind === 'library' && (
+            <div class="src-library">
+              <div class="tiles">
+                {TILES.map((src, i) => (
+                  <span
+                    class={i === 0 ? 'tile is-picked' : 'tile'}
+                    data-span={i === 0 ? 'i1' : undefined}
+                  >
+                    <img
+                      src={src}
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      width="320"
+                      height="240"
+                    />
+                  </span>
+                ))}
+              </div>
+              <p class="tile-meta">
+                <b>{src.assetFile}</b>
+                <span data-span="i2">{src.assetAlt}</span>
+              </p>
+            </div>
+          )}
+
+          <footer class="src-caption">{src.caption}</footer>
+        </article>
+      ))
+    }
+  </div>
+  <p class="zone-note">{t.sourcesNote}</p>
+</div>
+
+<style>
+  /* ---------- 1. raw sources ---------- */
+  /* Clippings on a desk, not four tidy columns: the cards run wider than their
+   share of the row and overlap at the edges, which buys legible type without
+   costing width. Left overlaps right, so the pile has a direction. */
+  .sources {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+  @media (max-width: 899px) {
+    .sources {
+      flex-wrap: wrap;
+      gap: 0.8rem;
+    }
+  }
+
+  .src {
+    --pad-l: 0rem;
+    --pad-l-low: 0rem;
+    --pad-r: 0rem;
+    position: relative;
+    flex: 1 1 0;
+    min-width: 0;
+    margin-inline: -0.65rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    opacity: 0.86;
+    transition:
+      opacity var(--dur-component) var(--ease-out-quint),
+      rotate var(--dur-component) var(--ease-out-quint),
+      translate var(--dur-component) var(--ease-out-quint),
+      scale var(--dur-component) var(--ease-out-quint),
+      box-shadow var(--dur-component) var(--ease-out-quint);
+  }
+  .src:first-child {
+    margin-left: 0;
+  }
+  .src:last-child {
+    margin-right: 0;
+  }
+  /* Each card is overlapped by its neighbours, so its content is inset past
+   those strips: on the left always (the pile stacks left over right), on the
+   right for when this card's neighbour is the active one and comes forward.
+   Clipped glyphs read as a bug, not as a pile. The tilt widens the covered
+   strip towards the bottom, so anything sitting low gets a little more. */
+  .src:not(:first-child) {
+    --pad-l: 1.35rem;
+    --pad-l-low: 1.85rem;
+  }
+  .src:not(:last-child) {
+    --pad-r: 1.35rem;
+  }
+  .src:nth-child(1) {
+    rotate: -2.4deg;
+    translate: 0 6px;
+    z-index: 4;
+  }
+  .src:nth-child(2) {
+    rotate: 1.7deg;
+    translate: 0 -4px;
+    z-index: 3;
+  }
+  .src:nth-child(3) {
+    rotate: -1.3deg;
+    translate: 0 10px;
+    z-index: 2;
+  }
+  .src:nth-child(4) {
+    rotate: 2.1deg;
+    translate: 0 -2px;
+    z-index: 1;
+  }
+  .src.is-active {
+    opacity: 1;
+    rotate: 0deg;
+    translate: 0 -6px;
+    z-index: 6;
+    box-shadow: var(--shadow-md);
+    border-color: var(--brass);
+  }
+  /* Overlap is a desktop conceit; stacked or paired, the cards need their own
+   room and sit flat. */
+  @media (max-width: 899px) {
+    .src:nth-child(n) {
+      --pad-l: 0rem;
+      --pad-l-low: 0rem;
+      --pad-r: 0rem;
+      flex: 1 1 calc(50% - 0.8rem);
+      margin-inline: 0;
+      translate: 0;
+      rotate: 0deg;
+    }
+    .src.is-active {
+      scale: 1;
+    }
+  }
+  @media (max-width: 520px) {
+    .src:nth-child(n) {
+      flex-basis: 100%;
+    }
+  }
+
+  .src-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem calc(0.55rem + var(--pad-r)) 0.4rem calc(0.55rem + var(--pad-l));
+    background: var(--paper-warm);
+    border-bottom: 1px solid var(--line);
+    min-width: 0;
+  }
+  .src-dots {
+    display: flex;
+    gap: 0.16rem;
+    flex: none;
+  }
+  .src-dots i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .src-name {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    color: var(--ink-mute);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .src-caption {
+    padding: 0.4rem calc(0.6rem + var(--pad-r)) 0.4rem calc(0.6rem + var(--pad-l-low));
+    border-top: 1px solid var(--line);
+    background: var(--paper-warm);
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  /* word processor */
+  .src-doc {
+    padding: 0.75rem calc(0.85rem + var(--pad-r)) 0.75rem calc(0.85rem + var(--pad-l));
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 0.74rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-height: 12.5rem;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 76%, transparent);
+    mask-image: linear-gradient(to bottom, #000 76%, transparent);
+  }
+  .src-doc h4 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 0.5rem;
+    line-height: 1.3;
+  }
+  .src-doc p {
+    margin: 0 0 0.55em;
+  }
+
+  /* spreadsheet */
+  .src-sheet {
+    padding: 0.4rem calc(0.4rem + var(--pad-r)) 0.4rem calc(0.4rem + var(--pad-l));
+  }
+  .src-sheet table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+  }
+  .src-sheet th {
+    width: 1.2rem;
+    color: var(--ink-mute);
+    font-weight: 400;
+    font-size: 0.58rem;
+    text-align: center;
+    background: var(--paper-warm);
+    border: 1px solid var(--line);
+  }
+  .src-sheet td {
+    padding: 0.3rem 0.4rem;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+  .src-sheet td:nth-child(3) {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .src-sheet tr.is-head td {
+    background: var(--paper-warm);
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* a loose note */
+  .src-note {
+    padding: 0.85rem calc(0.9rem + var(--pad-r)) 0.85rem calc(0.9rem + var(--pad-l));
+    background: #fdf6dc;
+    font-size: 0.78rem;
+    line-height: 1.62;
+    color: #4a4023;
+    min-height: 7rem;
+  }
+  .src-note p {
+    margin: 0 0 0.55em;
+  }
+  .src-note p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* image library */
+  .src-library {
+    padding: 0.6rem calc(0.6rem + var(--pad-r)) 0.6rem calc(0.6rem + var(--pad-l));
+  }
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem;
+  }
+  .tile {
+    aspect-ratio: 4 / 3;
+    border-radius: 3px;
+    display: block;
+    overflow: hidden;
+    background: var(--paper-warm);
+  }
+  .tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .tile.is-picked {
+    outline: 2px solid var(--brass);
+    outline-offset: 1px;
+  }
+  .tile-meta {
+    margin: 0.55rem 0 0;
+    padding-left: calc(var(--pad-l-low) - var(--pad-l));
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    line-height: 1.5;
+    color: var(--ink-mute);
+  }
+  .tile-meta b {
+    display: block;
+    color: var(--ink-soft);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* The .is-picked tile doubles as a lit passage (it is the image field's value),
+   so it needs the lit treatment as an outline rather than a highlight. */
+  .tile.is-picked:global(.is-lit) {
+    background: none;
+    outline-color: var(--green-bright);
+    outline-width: 3px;
+  }
+
+  /* Passages that feed a field are styled in anatomy.css: the markup for them
+   comes from translated HTML (set:html), so the classes are not in this
+   template and cannot be scoped to it. */
+
+  /* This zone animates cards forward, so it owns its own opt-out. */
+  @media (prefers-reduced-motion: reduce) {
+    .src {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,219 @@
+---
+import { ui, localizePath, defaultLang, type Lang } from '@/i18n';
+
+interface Props {
+  id: string;
+  lang?: Lang;
+  title: string;
+  intro: string;
+  pubDate: Date;
+  category: string;
+  heroImage?: string;
+  heroImageAlt?: string;
+  featured?: boolean;
+  revealDelay?: number;
+}
+
+const {
+  id,
+  lang = defaultLang,
+  title,
+  intro,
+  pubDate,
+  category,
+  heroImage,
+  heroImageAlt,
+  featured = false,
+  revealDelay,
+} = Astro.props;
+
+const t = ui[lang].blogCard;
+const postHref = localizePath(`/blog/${id}/`, lang);
+const dateLabel = new Intl.DateTimeFormat(t.dateLocale, {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+}).format(pubDate);
+---
+
+<article
+  class:list={[
+    'post-card',
+    { 'post-card--featured': featured, 'post-card--textonly': featured && !heroImage },
+  ]}
+  data-reveal
+  data-reveal-delay={revealDelay}
+>
+  {
+    heroImage && (
+      <div class="post-card-media">
+        <img
+          src={heroImage}
+          alt={heroImageAlt ?? ''}
+          loading="lazy"
+          transition:name={`post-hero-${id}`}
+        />
+      </div>
+    )
+  }
+  <div class="post-card-body">
+    <p class="post-meta">
+      <span class="post-meta-cat">{category}</span>
+      <time datetime={pubDate.toISOString()}>{dateLabel}</time>
+    </p>
+    <h3 transition:name={`post-title-${id}`}>
+      <a href={postHref}>{title}</a>
+    </h3>
+    <p>{intro}</p>
+    <span class="post-card-more" aria-hidden="true">{t.readMore}</span>
+  </div>
+</article>
+
+<style>
+  .post-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition:
+      translate var(--dur-component) var(--ease-out-quint),
+      box-shadow var(--dur-component) var(--ease-out-quint);
+  }
+  .post-card:hover {
+    translate: 0 -5px;
+    box-shadow: var(--shadow-md);
+  }
+
+  .post-card-media {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--sage);
+  }
+  .post-card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 700ms var(--ease-out-quint);
+  }
+  .post-card:hover .post-card-media img {
+    scale: 1.04;
+  }
+
+  .post-card-body {
+    padding: 22px 24px 26px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  /* Category and date, one line when they fit. When they don't, the line has to
+     break *between* them: two wrapped strings sitting side by side read as a
+     broken two-column table. Flex line-breaking runs on max-content sizes, so
+     the date (nowrap, never shrinks) drops to its own line first, and only then
+     does the category shrink and wrap inside itself. */
+  .post-meta {
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--brass);
+    margin-bottom: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    align-items: baseline;
+  }
+  .post-meta-cat {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  .post-meta time {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    color: var(--ink-mute);
+  }
+
+  .post-card h3 {
+    margin-bottom: 10px;
+  }
+  .post-card h3 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  /* Stretch the title link over the whole card so the card is one hit area. */
+  .post-card h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+  .post-card h3 a:hover {
+    color: var(--green);
+  }
+
+  .post-card p {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    margin-bottom: 0;
+  }
+
+  .post-card-more {
+    margin-top: auto;
+    padding-top: 16px;
+    font-weight: 620;
+    font-size: 0.9rem;
+    color: var(--green);
+  }
+
+  /* Featured variant: the lead card on the blog index spans the grid and
+     splits into image + copy side by side. */
+  .post-card--featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  }
+  @media (max-width: 860px) {
+    .post-card--featured {
+      grid-template-columns: 1fr;
+    }
+  }
+  .post-card--featured .post-card-media {
+    aspect-ratio: auto;
+    min-height: 280px;
+  }
+  .post-card--featured .post-card-body {
+    padding: var(--space-lg);
+    justify-content: center;
+  }
+  .post-card--featured h3 {
+    font-size: var(--step-3);
+    font-variation-settings:
+      'opsz' 50,
+      'wght' 620;
+  }
+  .post-card--featured p {
+    font-size: 1.05rem;
+  }
+
+  /* A featured card with no hero image would otherwise leave the whole image
+     column empty. One column instead, with the copy held to a readable measure
+     rather than stretched across the full grid. */
+  .post-card--textonly {
+    grid-template-columns: 1fr;
+  }
+  .post-card--textonly .post-card-body {
+    max-width: var(--container-text);
+  }
+
+  /* This component owns its hover motion, so it owns the opt-out too. */
+  @media (prefers-reduced-motion: reduce) {
+    .post-card,
+    .post-card-media img {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,469 @@
+---
+// One rendered slide, at 16:9, for every place on the site that shows one.
+//
+// There used to be three of these: the big slide in the explainer's zone 3, a
+// trimmed copy under each route in zone 2, and a third copy in the homepage
+// teaser. Same object, three implementations, so they drifted - the timeline
+// rail and its nodes were only aligned in one of them. The page's whole claim
+// is that a slide is one record rendered by a theme; it should be rendered by
+// one component too.
+//
+// What a slide is made of comes in as props (the same shape the anatomy
+// dictionary stores). How big the type sits on the canvas is the `variant`:
+// the canvas is always 16:9 and every size is in `cqi`, so a variant is not
+// "how large is the slide" but "how large does the type read against it".
+// A slide that is physically small in a column needs a coarser scale to stay
+// legible, which is the only reason there is more than one.
+//
+// Colour, type family and shape all come from the --t-* tokens declared below.
+// Those are the house-style contract: the explainer's theme control just sets
+// them inline on the element (see anatomy/data.ts THEMES), and every slide on
+// the site inherits the same defaults for free.
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  /** Timeline body. */
+  items?: { date: string; title: string }[];
+  /** Chart body. */
+  bars?: { label: string; value: number }[];
+  quote?: { text: string; name: string; role: string };
+  image?: { src: string; alt: string; caption?: string };
+  /**
+   * Type scale against the canvas. `subject` is the slide you are studying,
+   * `outcome` the one a route just produced, `figure` an illustration.
+   */
+  variant?: 'subject' | 'outcome' | 'figure';
+  /**
+   * Mark up the slide for the explainer's controls: `data-slide` so the house
+   * style can be swapped on it, `data-region` so hovering a field can light
+   * the part of the slide that field drives.
+   */
+  interactive?: boolean;
+  /** Index of the element that was just added; gets the "this is new" tint. */
+  fresh?: number;
+}
+
+const {
+  eyebrow,
+  title,
+  items,
+  bars,
+  quote,
+  image,
+  variant = 'subject',
+  interactive = false,
+  fresh,
+} = Astro.props;
+
+const region = (name: string) => (interactive ? name : undefined);
+const max = Math.max(1, ...(bars ?? []).map((b) => b.value));
+---
+
+<div class="slide-shell">
+  <div class:list={['slide', `slide--${variant}`]} data-slide={interactive ? '' : undefined}>
+    {eyebrow && <p class="slide-eyebrow">{eyebrow}</p>}
+    {
+      title && (
+        <h4
+          class:list={['slide-title', { 'slide-title--sm': !!image }]}
+          data-region={region('title')}
+        >
+          {title}
+        </h4>
+      )
+    }
+
+    {
+      items && (
+        <ol class="slide-tl" data-region={region('items')}>
+          {items.map((it, i) => (
+            <li data-fresh={i === fresh ? '' : undefined}>
+              <span class="tl-date">{it.date}</span>
+              <span class="tl-title">{it.title}</span>
+            </li>
+          ))}
+        </ol>
+      )
+    }
+
+    {
+      bars && (
+        <div class="slide-chart" data-region={region('data')}>
+          {bars.map((b, i) => (
+            <div class="bar" data-fresh={i === fresh ? '' : undefined}>
+              <span class="bar-v">{b.value}</span>
+              <span class="bar-fill" style={`height:${Math.round((b.value / max) * 100)}%`} />
+              <span class="bar-l">{b.label}</span>
+            </div>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      quote && (
+        <blockquote class="slide-quote">
+          <p data-region={region('quote')}>{quote.text}</p>
+          <footer>
+            <span class="q-name" data-region={region('authorName')}>
+              {quote.name}
+            </span>
+            <span class="q-role" data-region={region('authorTitle')}>
+              {quote.role}
+            </span>
+          </footer>
+        </blockquote>
+      )
+    }
+
+    {
+      image && (
+        <figure class="slide-img">
+          <img
+            class="slide-img-frame"
+            data-region={region('image')}
+            src={image.src}
+            alt={image.alt}
+            loading="lazy"
+            decoding="async"
+          />
+          {image.caption && (
+            <figcaption data-region={region('caption')}>{image.caption}</figcaption>
+          )}
+        </figure>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  /* The shell is the query container, not the slide: an element cannot query
+     its own container-type, so `cqi` in the slide's own padding would resolve
+     against the viewport instead of the slide width. min-width keeps long
+     words from pushing a grid track wider than its share. */
+  .slide-shell {
+    container-type: inline-size;
+    min-width: 0;
+  }
+
+  .slide {
+    /* ---- house style ----
+       The theme control writes these inline; the values here are Deckyard's
+       own, which is why switching back to it just clears the overrides. */
+    --t-bg: var(--card);
+    --t-ink: var(--ink);
+    --t-accent: var(--green-bright);
+    --t-head: var(--ink);
+    --t-muted: var(--ink-mute);
+    --t-rule: var(--sage);
+    --t-radius: var(--radius-sm);
+    --t-font-head: var(--display);
+    --t-font-body: var(--body);
+    --t-font-eye: var(--mono);
+    --t-eye-ls: 0.14em;
+    --t-node: 50%;
+    --t-border: 1px solid var(--line);
+
+    /* ---- type scale ----
+       All in cqi (1% of the slide's own width), so a slide renders the same at
+       any physical size and a variant below only has to restate the numbers it
+       reads differently. Never `em` in one of these: a custom property is
+       substituted into the element that uses it, so an em would resolve
+       against that element's font size rather than against the canvas. */
+    --t-pad: 5cqi;
+    --t-eyebrow: 1.9cqi;
+    --t-title: 5.2cqi;
+    --t-title-sm: 3.6cqi;
+    /* leading above the title, in em of the title itself - correct here,
+       because this one is only ever used on .slide-title */
+    --t-title-space: 0.3em;
+    --t-date: 2.2cqi;
+    --t-moment: 2.1cqi;
+    --t-tl-gap: 2cqi;
+    --t-tl-node: 1.4cqi;
+    --t-bar-v: 2.1cqi;
+    --t-bar-l: 1.7cqi;
+    --t-chart-gap: 4.5cqi;
+    --t-chart-h: 58%;
+    --t-quote: 5.4cqi;
+    --t-quote-foot: 1.9cqi;
+    --t-caption: 1.7cqi;
+
+    aspect-ratio: 16 / 9;
+    container-type: inline-size;
+    background: var(--t-bg);
+    color: var(--t-ink);
+    font-family: var(--t-font-body);
+    border: var(--t-border);
+    border-radius: var(--t-radius);
+    box-shadow: var(--shadow-md);
+    padding: var(--t-pad);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition:
+      background var(--dur-component) ease,
+      color var(--dur-component) ease,
+      border-radius var(--dur-component) ease;
+  }
+
+  /* The slide a route produced: physically about half the subject's width, so
+     the type steps up to stay readable. */
+  .slide--outcome {
+    --t-eyebrow: 2cqi;
+    --t-title: 5cqi;
+    --t-title-space: 0.35em;
+    --t-date: 2.6cqi;
+    --t-moment: 2.4cqi;
+    --t-tl-gap: 2.2cqi;
+    --t-tl-node: 1.5cqi;
+    --t-bar-v: 2.4cqi;
+    --t-bar-l: 1.9cqi;
+    --t-chart-gap: 4cqi;
+    --t-chart-h: 54%;
+  }
+
+  /* An illustration in a homepage column: smaller still, coarser still. */
+  .slide--figure {
+    --t-pad: 5.5cqi;
+    --t-eyebrow: 2.4cqi;
+    --t-title: 6.4cqi;
+    --t-title-space: 0.35em;
+    --t-date: 3cqi;
+    --t-moment: 2.7cqi;
+    --t-tl-gap: 2.4cqi;
+    --t-tl-node: 1.6cqi;
+  }
+
+  /* ---------- the field probe ----------
+     Only slides rendered with `interactive` carry [data-region], so these
+     never match anywhere else. */
+  .slide [data-region] {
+    border-radius: 4px;
+    transition:
+      opacity var(--dur-micro) ease,
+      box-shadow var(--dur-micro) ease;
+  }
+  .slide.is-probing [data-region] {
+    opacity: 0.3;
+  }
+  .slide.is-probing [data-region].is-lit {
+    opacity: 1;
+    box-shadow: 0 0 0 2px var(--t-accent);
+  }
+
+  /* ---------- head ---------- */
+  .slide-eyebrow {
+    margin: 0;
+    font-family: var(--t-font-eye);
+    font-size: var(--t-eyebrow);
+    letter-spacing: var(--t-eye-ls);
+    text-transform: uppercase;
+    color: var(--t-accent);
+  }
+  .slide-title {
+    margin: var(--t-title-space) 0 0;
+    font-family: var(--t-font-head);
+    font-size: var(--t-title);
+    font-variation-settings: 'wght' 620;
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    color: var(--t-head);
+  }
+  .slide-title--sm {
+    font-size: var(--t-title-sm);
+  }
+
+  /* ---------- timeline ----------
+     The rail sits at the nodes' centre line and the nodes hang off the top of
+     each item, so the two are derived from the same pair of tokens rather than
+     eyeballed apart. */
+  .slide-tl {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    margin: auto 0 0;
+    padding: var(--t-tl-gap) 0 0;
+    position: relative;
+  }
+  .slide-tl::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(var(--t-tl-gap) + var(--t-tl-node) / 2 - 1px);
+    height: 2px;
+    background: var(--t-rule);
+  }
+  .slide-tl li {
+    position: relative;
+    padding-right: var(--t-tl-gap);
+  }
+  .slide-tl li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--t-tl-node);
+    height: var(--t-tl-node);
+    border-radius: var(--t-node);
+    background: var(--t-accent);
+    box-shadow: 0 0 0 calc(var(--t-tl-node) / 2) var(--t-bg);
+  }
+  .tl-date {
+    display: block;
+    margin-top: calc(var(--t-tl-gap) + var(--t-tl-node));
+    font-family: var(--t-font-eye);
+    font-size: var(--t-date);
+    color: var(--t-accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .tl-title {
+    display: block;
+    margin-top: 0.25em;
+    font-family: var(--t-font-head);
+    font-variation-settings: 'wght' 600;
+    font-weight: 700;
+    font-size: var(--t-moment);
+    line-height: 1.15;
+    color: var(--t-head);
+  }
+
+  /* ---------- chart ---------- */
+  .slide-chart {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: var(--t-chart-gap);
+    margin-top: auto;
+    height: var(--t-chart-h);
+  }
+  /* Grid, not flex: the bar height percentage must resolve against a track
+     that excludes the value and the label, or the proportions get distorted. */
+  .bar {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+  }
+  .bar-v {
+    text-align: center;
+    padding-bottom: 0.8cqi;
+    font-family: var(--t-font-head);
+    font-variation-settings: 'wght' 620;
+    font-weight: 700;
+    font-size: var(--t-bar-v);
+    color: var(--t-head);
+    font-variant-numeric: tabular-nums;
+  }
+  .bar-fill {
+    align-self: end;
+    width: 100%;
+    background: var(--t-accent);
+    border-radius: 3px 3px 0 0;
+  }
+  .bar-l {
+    text-align: center;
+    padding-top: 1cqi;
+    font-family: var(--t-font-eye);
+    font-size: var(--t-bar-l);
+    color: var(--t-muted);
+    border-top: 1px solid var(--t-rule);
+  }
+
+  /* ---------- quote ---------- */
+  .slide-quote {
+    margin: auto 0;
+    padding: 0;
+  }
+  .slide-quote p {
+    font-family: var(--t-font-head);
+    font-variation-settings: 'wght' 600;
+    font-weight: 700;
+    font-size: var(--t-quote);
+    line-height: 1.18;
+    letter-spacing: -0.022em;
+    color: var(--t-head);
+    margin: 0;
+    max-width: 88%;
+  }
+  .slide-quote p::before {
+    content: '\201C';
+  }
+  .slide-quote p::after {
+    content: '\201D';
+  }
+  .slide-quote footer {
+    margin-top: 3cqi;
+    font-size: var(--t-quote-foot);
+  }
+  .q-name {
+    display: block;
+    font-weight: 600;
+    color: var(--t-ink);
+  }
+  .q-role {
+    display: block;
+    color: var(--t-muted);
+  }
+
+  /* ---------- image ---------- */
+  .slide-img {
+    margin: 2cqi 0 0;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+  .slide-img-frame {
+    flex: 1;
+    width: 100%;
+    object-fit: cover;
+    border-radius: calc(var(--t-radius) / 2);
+    min-height: 0;
+  }
+  .slide-img figcaption {
+    margin-top: 1.4cqi;
+    font-size: var(--t-caption);
+    color: var(--t-muted);
+    font-family: var(--t-font-eye);
+  }
+
+  /* ---------- what a route just added ----------
+     The brass tint stays after the animation, so it still reads as "this is
+     the new one" on a still page. */
+  [data-fresh] .tl-date,
+  [data-fresh] .bar-v {
+    color: var(--brass);
+  }
+  [data-fresh] .bar-fill {
+    background: var(--brass);
+  }
+  .slide-tl li[data-fresh]::before {
+    background: var(--brass);
+  }
+  :global(.surface.is-switching) [data-fresh] {
+    animation: slide-arrive var(--dur-component) var(--ease-out-quint) both;
+  }
+  @keyframes slide-arrive {
+    from {
+      opacity: 0;
+      translate: 0 8px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide,
+    .slide [data-region] {
+      transition: none;
+    }
+    :global(.surface.is-switching) [data-fresh] {
+      animation: none;
+    }
+  }
+</style>

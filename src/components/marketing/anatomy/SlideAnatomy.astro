@@ -1,0 +1,51 @@
+---
+// Explainer: how raw material becomes an on-brand slide, and why the slide
+// type is the control point rather than an inconvenience.
+//
+// Three zones stacked full width, each its own component:
+//   1. ZoneSources - the pile of things from different places.
+//   2. ZoneRoutes  - by hand, via the API, or via MCP; one gate for all three.
+//   3. ZoneSlide   - the slide, under two independent controls.
+//
+// The named slots let the calling page thread its own prose between the zones,
+// so the argument and the evidence interleave instead of sitting in two blocks.
+//
+// The demo content is a lemonade stand reported on in stiff corporate
+// register, deliberately absurd so nobody reads the example as a claim about
+// Deckyard.
+//
+// Interactivity spans all three zones (picking a type highlights a source in
+// zone 1 and re-renders the slide in zone 3), so the controller lives here at
+// the shared root rather than in any single zone. Shared data is in ./data.ts.
+import type { Lang } from '@/i18n';
+import ZoneSources from './ZoneSources.astro';
+import ZoneRoutes from './ZoneRoutes.astro';
+import ZoneSlide from './ZoneSlide.astro';
+import './anatomy.css';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<div class="anatomy">
+  <div class="anatomy-inner">
+    <ZoneSources lang={lang} />
+
+    <slot name="after-sources" />
+    <p class="flow" aria-hidden="true"><span class="flow-arrow"></span></p>
+
+    <ZoneRoutes lang={lang} />
+
+    <slot name="after-routes" />
+    <p class="flow" aria-hidden="true"><span class="flow-arrow"></span></p>
+
+    <ZoneSlide lang={lang} />
+    <slot name="after-slide" />
+  </div>
+</div>
+
+<script>
+  import './controller';
+</script>

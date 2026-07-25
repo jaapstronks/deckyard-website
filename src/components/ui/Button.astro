@@ -1,0 +1,41 @@
+---
+// Renders an <a> when given an href, a <button> otherwise. The point is not to
+// save characters over `class="btn btn-primary"` but to make the variant a
+// typed choice, so a new page cannot invent a fifth button style by typo.
+
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'ghost';
+  /** Opens in a new tab with the right rel. Only meaningful with href. */
+  external?: boolean;
+  type?: 'button' | 'submit';
+  class?: string;
+}
+
+const {
+  href,
+  variant = 'primary',
+  external = false,
+  type = 'button',
+  class: className,
+} = Astro.props;
+
+const classes = ['btn', variant === 'ghost' ? 'btn-ghost' : 'btn-primary', className];
+---
+
+{
+  href ? (
+    <a
+      class:list={classes}
+      href={href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener' : undefined}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button class:list={classes} type={type}>
+      <slot />
+    </button>
+  )
+}

@@ -26,10 +26,7 @@ async function generateFavicons() {
   for (const { name, size } of sizes) {
     const outputPath = join(publicDir, name);
 
-    await sharp(svgBuffer)
-      .resize(size, size)
-      .png()
-      .toFile(outputPath);
+    await sharp(svgBuffer).resize(size, size).png().toFile(outputPath);
 
     console.log(`✓ Generated ${name} (${size}x${size})`);
   }

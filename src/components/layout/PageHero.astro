@@ -1,0 +1,37 @@
+---
+// The centered kicker / title / intro block that opens a secondary page:
+// blog index, a blog post, the changelog. Styling lives in the primitives
+// layer (.page-hero*) because it is part of the shared design system; this
+// component is just the markup contract over it.
+//
+// The title is a prop rather than a slot so the h1 stays inside this
+// component's scope - a slotted h1 would belong to the caller and could not
+// be styled here.
+
+interface Props {
+  title: string;
+  kicker?: string;
+  intro?: string;
+  /** `header` when the hero opens an <article>, `section` otherwise. */
+  as?: 'section' | 'header';
+  /** View-transition name for the title, used to morph card -> post. */
+  titleTransition?: string;
+}
+
+const { title, kicker, intro, as = 'section', titleTransition } = Astro.props;
+const Tag = as;
+const hasBelow = Astro.slots.has('below');
+---
+
+<Tag class="page-hero">
+  <div class="container">
+    <div class="page-hero-inner">
+      {kicker && <p class="kicker kicker--center">{kicker}</p>}
+      {titleTransition ? <h1 transition:name={titleTransition}>{title}</h1> : <h1>{title}</h1>}
+      {intro && <p class="page-hero-intro">{intro}</p>}
+      <slot name="meta" />
+    </div>
+  </div>
+
+  {hasBelow && <slot name="below" />}
+</Tag>

@@ -1,0 +1,310 @@
+---
+// Zone 3: one slide under two independent controls - the type (what it means)
+// and the house style (how it looks). Changing one never touches the other,
+// which is the whole thesis of the page. The field list beside it is the
+// record the slide actually is; hovering a field lights the region it drives.
+import { ui, type Lang } from '@/i18n';
+import { FIELDS, TILES } from './data';
+import Slide from '@/components/ui/Slide.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].anatomy;
+
+const libraryAlt = t.sources.find((s) => s.kind === 'library')?.assetAlt ?? '';
+---
+
+<div class="zone" data-reveal>
+  <p class="zone-label"><span class="zone-n">3</span>{t.recordLabel}</p>
+
+  <div class="controls">
+    <div class="ctl">
+      <p class="ctl-label">{t.typeLabel}</p>
+      <div class="seg" role="tablist" aria-label={t.typeLabel}>
+        {
+          t.types.map((type, i) => (
+            <button
+              type="button"
+              role="tab"
+              data-type={type.id}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`pane-${type.id}`}
+              id={`tab-${type.id}`}
+            >
+              {type.label}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+    <div class="ctl">
+      <p class="ctl-label">{t.themeLabel}</p>
+      <div class="seg seg--theme" role="tablist" aria-label={t.themeLabel}>
+        {
+          t.themes.map((theme, i) => (
+            <button
+              type="button"
+              role="tab"
+              data-theme={theme.id}
+              aria-selected={i === 0 ? 'true' : 'false'}
+            >
+              <span class="sw" style={`background:${theme.swatch}`} aria-hidden="true" />
+              {theme.label}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="stage">
+    <div class="stage-slide">
+      {
+        t.types.map((type, i) => (
+          <div
+            class="pane"
+            id={`pane-${type.id}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${type.id}`}
+            data-pane={type.id}
+            hidden={i !== 0}
+          >
+            <Slide
+              interactive
+              eyebrow={type.eyebrow}
+              title={type.title}
+              items={type.items}
+              bars={type.bars}
+              quote={type.quote}
+              image={
+                type.image
+                  ? { src: TILES[0], alt: libraryAlt, caption: type.image.caption }
+                  : undefined
+              }
+            />
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="stage-side">
+      {
+        t.types.map((type, i) => (
+          <div class="side" data-side={type.id} hidden={i !== 0}>
+            <p class="ctl-label ctl-label--fields">
+              {t.fieldsLabel}
+              <span class="typeid">{type.id}</span>
+            </p>
+            <ul class="fieldlist">
+              {(FIELDS[type.id] ?? []).map((f) => (
+                <li class="field" data-field={f.key} data-spans={f.spans.join(',')} tabindex="0">
+                  <span class="field-key">{f.key}</span>
+                  <span class="field-type">{f.type}</span>
+                  <span class="field-cons">
+                    {f.required && <b class="req">required</b>}
+                    {f.ordered && <b class="ord">ordered</b>}
+                    {f.min != null && <span>min {f.min}</span>}
+                    {f.max != null && <span>max {f.max}</span>}
+                    {f.maxLen != null && <span>max {f.maxLen}</span>}
+                    {f.sub && <span>{f.sub}</span>}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p class="claim" set:html={type.claim} />
+          </div>
+        ))
+      }
+      <p class="hint">{t.hint}</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ---------- 3. the slide ---------- */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem 2rem;
+    margin-bottom: 1.2rem;
+  }
+  .ctl-label {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 0.45rem;
+  }
+  .ctl-label--fields {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+  .typeid {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--green-bright);
+  }
+  .seg {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.28rem;
+    padding: 0.24rem;
+    background: var(--paper-warm);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    width: fit-content;
+    max-width: 100%;
+  }
+  .seg button {
+    font-family: var(--body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.4rem 0.78rem;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition:
+      background var(--dur-micro) ease,
+      color var(--dur-micro) ease;
+  }
+  .seg button:hover {
+    background: var(--sage);
+    color: var(--ink);
+  }
+  .seg button[aria-selected='true'] {
+    background: var(--green);
+    color: var(--paper);
+  }
+  .seg--theme button[aria-selected='true'] {
+    background: var(--ink);
+  }
+  .sw {
+    width: 11px;
+    height: 11px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    flex: none;
+  }
+
+  .stage {
+    display: grid;
+    gap: 1.4rem;
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .stage {
+      grid-template-columns: 1.55fr 1fr;
+      gap: 1.8rem;
+    }
+  }
+
+  /* The slide itself is components/ui/Slide.astro: same object as the outcome
+     under each route in zone 2 and the illustration on the homepage, so it is
+     rendered in one place. This zone only owns the two controls beside it and
+     the field list, which is what makes the slide the subject rather than an
+     illustration. */
+
+  /* ---------- field list ---------- */
+  .fieldlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    overflow: hidden;
+  }
+  .field {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.2rem 0.7rem;
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    transition: background var(--dur-micro) ease;
+  }
+  .field:last-child {
+    border-bottom: 0;
+  }
+  .field:hover,
+  .field.is-lit {
+    background: var(--green-wash);
+  }
+  .field-key {
+    grid-column: 1;
+    grid-row: 1;
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .field-type {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    font-size: 0.62rem;
+    padding: 0.05rem 0.4rem;
+    border-radius: 4px;
+    border: 1px solid var(--line);
+    background: var(--paper-warm);
+    color: var(--ink-mute);
+  }
+  .field-cons {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem 0.6rem;
+    font-size: 0.64rem;
+    color: var(--ink-mute);
+  }
+  .field-cons .req {
+    color: #9a3412;
+    font-weight: 700;
+  }
+  .field-cons .ord {
+    color: var(--green-bright);
+    font-weight: 700;
+  }
+
+  .claim {
+    margin: 0.9rem 0 0;
+    padding: 0.8rem 0.95rem;
+    background: var(--green-wash);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .claim :global(b) {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    color: var(--green);
+  }
+  .hint {
+    margin: 0.9rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    color: var(--ink-mute);
+  }
+
+  /* The slide's own motion opts out inside Slide.astro; these two are this
+     component's. */
+  @media (prefers-reduced-motion: reduce) {
+    .seg button,
+    .field {
+      transition: none;
+    }
+  }
+</style>

@@ -1,0 +1,458 @@
+---
+// Two doors on one page: run Deckyard yourself, or have us run an instance.
+// They belong together because a managed instance is only legible as the
+// contrast to self-hosting - a page for each would say half a thing twice.
+//
+// No prices and no plan table, deliberately: this is not a SaaS, and the
+// first step is a conversation. See CLAUDE.md.
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import PageHero from '@/components/layout/PageHero.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import { ui, type Lang } from '@/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].hosting;
+
+// The one address hosting enquiries land on: Bureau Bolster's general address,
+// since Bolster is the party that actually runs the managed instances. Kept
+// here rather than in the copy files because it is the same in every language
+// and must not drift between them.
+const CONTACT_EMAIL = 'info@bureaubolster.nl';
+const mailtoHref = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Deckyard hosting')}`;
+
+// Docs are English-only, so this link is the same for every locale.
+const deployDocsHref = '/docs/deployment/quickstart/';
+---
+
+<SiteLayout title={t.metaTitle} description={t.metaDescription}>
+  <PageHero kicker={t.heroKicker} title={t.heroTitle} intro={t.heroIntro} />
+
+  <!-- ============ the two routes ============ -->
+  <Section>
+    <SectionHead title={t.routesTitle} lead={t.routesLead} />
+    <div class="routes">
+      <article class="route" data-reveal>
+        <p class="route-label">{t.selfLabel}</p>
+        <h3>{t.selfTitle}</h3>
+        <p class="route-body">{t.selfBody}</p>
+        <ul class="route-points">
+          {t.selfPoints.map((point) => <li>{point}</li>)}
+        </ul>
+        <Button href={deployDocsHref} variant="ghost">{t.selfCta}</Button>
+      </article>
+
+      <article class="route route--managed" data-reveal data-reveal-delay="90">
+        <p class="route-label">{t.managedLabel}</p>
+        <h3>{t.managedTitle}</h3>
+        <p class="route-body">{t.managedBody}</p>
+        <ul class="route-points">
+          {t.managedPoints.map((point) => <li>{point}</li>)}
+        </ul>
+        <Button href="#contact">{t.managedCta}</Button>
+      </article>
+    </div>
+  </Section>
+
+  <!-- ============ the domain, shown rather than described ============ -->
+  <Section variant="tint">
+    <div class="domain">
+      <div class="domain-copy" data-reveal>
+        <p class="kicker">{t.domainKicker}</p>
+        <h2>{t.domainTitle}</h2>
+        <p class="lead">{t.domainBody}</p>
+      </div>
+
+      <!-- Decorative browser chrome. aria-hidden because the hostname is an
+           illustration, not information a screen reader should read as fact;
+           the paragraph above already says it. -->
+      <figure class="browser" data-reveal data-reveal-delay="120">
+        <div class="browser-frame" aria-hidden="true">
+          <div class="browser-bar">
+            <span class="browser-dot"></span>
+            <span class="browser-dot"></span>
+            <span class="browser-dot"></span>
+            <span class="browser-url">
+              <svg viewBox="0 0 24 24" width="12" height="12" focusable="false">
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  d="M7 10V7a5 5 0 0 1 10 0v3M5 10h14v10H5z"></path>
+              </svg>
+              {t.domainExample}
+            </span>
+          </div>
+          <div class="browser-view">
+            <div class="browser-slide">
+              <span class="browser-mark"></span>
+              <span class="browser-line browser-line--title"></span>
+              <span class="browser-line"></span>
+            </div>
+            <div class="browser-strip">
+              <span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+        </div>
+        <figcaption>{t.domainCaption}</figcaption>
+      </figure>
+    </div>
+  </Section>
+
+  <!-- ============ what managed actually means ============ -->
+  <Section>
+    <SectionHead title={t.includedTitle} lead={t.includedLead} />
+    <ul class="included">
+      {
+        t.included.map((item, i) => (
+          <li data-reveal data-reveal-delay={i === 0 ? undefined : i * 70}>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- ============ what it funds ============ -->
+  <Section variant="tint">
+    <div class="funding" data-reveal>
+      <p class="kicker">{t.fundingKicker}</p>
+      <h2>{t.fundingTitle}</h2>
+      {t.fundingBody.map((paragraph) => <p class="funding-body">{paragraph}</p>)}
+    </div>
+  </Section>
+
+  <!-- ============ contact ============ -->
+  <Section variant="dark" id="contact">
+    <SectionHead title={t.contactTitle} lead={t.contactBody} />
+    <div class="contact" data-reveal data-reveal-delay="100">
+      <Button href={mailtoHref}>{t.contactCta}</Button>
+      <p class="contact-address"><a href={mailtoHref}>{CONTACT_EMAIL}</a></p>
+    </div>
+    <div class="contact-note" data-reveal data-reveal-delay="160">
+      <h3>{t.contactNoteHeading}</h3>
+      <ul>
+        {t.contactNote.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </Section>
+</SiteLayout>
+
+<style>
+  /* ---------- the two routes ---------- */
+  /* Two panels, not four boxes: the whole point is that there are exactly two
+     ways to run this. */
+  .routes {
+    display: grid;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+  }
+  @media (min-width: 800px) {
+    .routes {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .route {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-sm);
+  }
+  /* The managed route is the one that needs asking for, so it carries the
+     accent. Self-hosting needs no persuasion; it needs a link. */
+  .route--managed {
+    border-color: var(--green);
+    box-shadow: var(--shadow-md);
+  }
+  .route-label {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+  .route h3 {
+    margin: 0.5rem 0 0.6rem;
+    font-size: var(--step-2);
+    letter-spacing: -0.015em;
+  }
+  .route-body {
+    margin: 0;
+    color: var(--ink-soft);
+  }
+  .route-points {
+    list-style: none;
+    margin: 1.2rem 0 1.6rem;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .route-points li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .route-points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--brass-bright);
+  }
+  /* Push the button to the bottom so the two panels line up whatever the copy
+     length, without hard-coding a height. */
+  .route :global(.btn) {
+    margin-top: auto;
+  }
+
+  /* ---------- the domain mock ---------- */
+  .domain {
+    display: grid;
+    gap: var(--space-lg);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .domain {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      gap: var(--space-xl);
+    }
+  }
+  .domain-copy h2 {
+    margin-bottom: 0.7rem;
+  }
+  .domain-copy .lead {
+    margin-bottom: 0;
+  }
+
+  .browser {
+    margin: 0;
+  }
+  .browser-frame {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--card);
+    box-shadow: var(--shadow-lg);
+  }
+  .browser-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+    background: var(--paper-warm);
+    border-bottom: 1px solid var(--line);
+  }
+  .browser-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--line);
+    flex: 0 0 auto;
+  }
+  .browser-url {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex: 1 1 auto;
+    min-width: 0;
+    margin-left: 8px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .browser-url svg {
+    flex: 0 0 auto;
+    color: var(--green);
+  }
+
+  /* A suggestion of a deck rather than a fake screenshot: a slide on screen with
+     a filmstrip under it. An honest placeholder reads better than a mock nobody
+     can verify, but it still has to read as *a deck*, not as an empty box. */
+  .browser-view {
+    aspect-ratio: 16 / 10;
+    padding: var(--space-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: linear-gradient(160deg, var(--paper) 0%, var(--paper-warm) 100%);
+  }
+  .browser-slide {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 9px;
+    padding: 8% 9%;
+    border-radius: var(--radius-sm);
+    background: var(--green-wash);
+    border: 1px solid var(--line);
+  }
+  .browser-mark {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    background: var(--green);
+    margin-bottom: auto;
+  }
+  .browser-line {
+    height: 7px;
+    width: 44%;
+    border-radius: 999px;
+    background: var(--line);
+  }
+  .browser-line--title {
+    height: 11px;
+    width: 66%;
+    background: var(--brass-bright);
+  }
+  .browser-strip {
+    flex: 0 0 auto;
+    display: flex;
+    gap: 8px;
+  }
+  .browser-strip span {
+    flex: 0 0 13%;
+    aspect-ratio: 16 / 9;
+    border-radius: 3px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+  }
+  /* The first thumbnail is the slide currently on screen. */
+  .browser-strip span:first-child {
+    background: var(--green-wash);
+    border-color: var(--green);
+  }
+  .browser figcaption {
+    margin-top: 0.9rem;
+    font-size: 0.85rem;
+    color: var(--ink-mute);
+  }
+
+  /* ---------- what is included ---------- */
+  .included {
+    list-style: none;
+    margin: var(--space-lg) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 800px) {
+    .included {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+    }
+  }
+  .included li {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 1.3rem 1.5rem 1.4rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .included h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+    font-variation-settings: 'wght' 620;
+    letter-spacing: -0.015em;
+  }
+  .included p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- funding ---------- */
+  .funding {
+    max-width: var(--container-text);
+  }
+  .funding h2 {
+    margin-bottom: 0.7rem;
+  }
+  .funding-body {
+    margin: 0 0 1.1em;
+    color: var(--ink-soft);
+  }
+  .funding-body:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ---------- contact ---------- */
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.4rem;
+  }
+  /* The address is printed next to the button because plenty of people would
+     rather mail from their own client than trust a link. */
+  .contact-address {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+  }
+  .contact-address a {
+    color: var(--lead-fg);
+  }
+  .contact-note {
+    margin-top: var(--space-lg);
+    max-width: var(--container-text);
+  }
+  .contact-note h3 {
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass-bright);
+    margin: 0 0 0.8rem;
+  }
+  .contact-note ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .contact-note li {
+    position: relative;
+    padding-left: 1.5rem;
+    color: var(--lead-fg);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  .contact-note li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--brass-bright);
+  }
+</style>

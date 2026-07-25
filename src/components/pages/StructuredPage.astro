@@ -1,0 +1,337 @@
+---
+// The "how it works" explainer. Prose carries the argument; the interactive
+// zones of SlideAnatomy sit inside it as the evidence, one per beat.
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import SlideAnatomy from '@/components/marketing/anatomy/SlideAnatomy.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import { ui, sandboxUrl, type Lang } from '@/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].structured;
+const docsHref = '/docs/slide-types/';
+---
+
+<SiteLayout title={t.metaTitle} description={t.metaDescription}>
+  <article class="explainer">
+    <!-- ============ masthead ============ -->
+    <header class="ex-hero">
+      <div class="container">
+        <p class="kicker" data-reveal>{t.kicker}</p>
+        <h1 data-reveal data-reveal-delay="60">{t.title}</h1>
+        <p class="ex-dek" data-reveal data-reveal-delay="120">{t.dek}</p>
+        <dl class="ex-stats" data-reveal data-reveal-delay="180">
+          {
+            t.stats.map((s) => (
+              <div>
+                <dt>{s.value}</dt>
+                <dd>{s.label}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </header>
+
+    <!-- ============ the argument, with the demo threaded through ============ -->
+    <Section>
+      <div class="ex-prose" data-reveal>
+        <h2>{t.s1Title}</h2>
+        {t.s1Body.map((p) => <p>{p}</p>)}
+      </div>
+
+      <SlideAnatomy lang={lang}>
+        <div slot="after-sources" class="ex-prose ex-prose--inter">
+          <h2>{t.s2Title}</h2>
+          {t.s2Body.map((p) => <p>{p}</p>)}
+        </div>
+
+        <div slot="after-routes">
+          <blockquote class="ex-pull">
+            <p>{t.pull}</p>
+          </blockquote>
+          <div class="ex-prose ex-prose--inter">
+            <h2>{t.s3Title}</h2>
+            {t.s3Body.map((p) => <p>{p}</p>)}
+          </div>
+        </div>
+      </SlideAnatomy>
+    </Section>
+
+    <!-- ============ what follows from it ============ -->
+    <Section variant="tint">
+      <div class="ex-prose" data-reveal>
+        <h2>{t.chainTitle}</h2>
+        <p class="lead">{t.chainLead}</p>
+      </div>
+      <ol class="ex-chain">
+        {
+          t.chain.map((link, i) => (
+            <li data-reveal data-reveal-delay={i === 0 ? undefined : i * 70}>
+              <p class="ex-chain-because">{link.because}</p>
+              <h3>{link.claim}</h3>
+              <p class="ex-chain-body">{link.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </Section>
+
+    <!-- ============ the comparison ============ -->
+    <Section>
+      <div class="ex-prose" data-reveal>
+        <h2>{t.compareTitle}</h2>
+        <p class="lead">{t.compareLead}</p>
+      </div>
+      <div class="ex-tablewrap" data-reveal data-reveal-delay="80">
+        <table class="ex-table">
+          <thead>
+            <tr>
+              <th scope="col"><span class="visually-hidden-th">{t.compareAspect}</span></th>
+              <th scope="col">{t.compareCanvas}</th>
+              <th scope="col" class="is-record">{t.compareRecord}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              t.compareRows.map((row) => (
+                <tr>
+                  <th scope="row">{row.aspect}</th>
+                  <td>{row.canvas}</td>
+                  <td class="is-record">{row.record}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </Section>
+
+    <!-- ============ cta ============ -->
+    <Section variant="dark">
+      <SectionHead title={t.ctaTitle} lead={t.ctaBody} />
+      <div class="ex-actions" data-reveal data-reveal-delay="100">
+        <Button href={sandboxUrl(lang)} external>{t.ctaSandbox}</Button>
+        <Button href={docsHref} variant="ghost">{t.ctaDocs}</Button>
+      </div>
+    </Section>
+  </article>
+</SiteLayout>
+
+<style>
+  /* ---------- masthead ---------- */
+  .ex-hero {
+    padding: 4.5rem 0 2.5rem;
+  }
+  .ex-hero h1 {
+    font-size: var(--step-5);
+    max-width: 16ch;
+    margin-bottom: 0;
+  }
+  .ex-dek {
+    margin: 1.5rem 0 0;
+    max-width: 58ch;
+    font-size: var(--step-1);
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  /* A stat row rather than a subtitle: three facts that are checkable, which
+     is the register the whole page is arguing in. */
+  .ex-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 2.6rem 0 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  /* Padding on both sides, so a label never touches the divider to its left.
+     Only the first cell hugs the text column's edge. */
+  .ex-stats > div {
+    flex: 1 1 13rem;
+    min-width: 0;
+    padding: 1rem 1.4rem;
+    border-right: 1px solid var(--line);
+  }
+  .ex-stats > div:first-child {
+    padding-left: 0;
+  }
+  .ex-stats > div:last-child {
+    border-right: 0;
+  }
+  .ex-stats dt {
+    font-family: var(--display);
+    font-variation-settings: 'wght' 660;
+    font-size: 2rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--green);
+    font-variant-numeric: tabular-nums;
+  }
+  .ex-stats dd {
+    margin: 0.45rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    line-height: 1.5;
+    color: var(--ink-mute);
+  }
+
+  /* ---------- prose ---------- */
+  .ex-prose {
+    max-width: var(--container-text);
+  }
+  .ex-prose h2 {
+    font-size: var(--step-3);
+    margin-bottom: 0.7rem;
+  }
+  .ex-prose p {
+    margin: 0 0 1.1em;
+    color: var(--ink-soft);
+  }
+  .ex-prose p:last-child {
+    margin-bottom: 0;
+  }
+  /* Prose sitting between two zones of the demo needs air on both sides. */
+  .ex-prose--inter {
+    margin: 3rem 0 0;
+  }
+
+  .ex-pull {
+    margin: 3.2rem 0 0;
+    padding: 0 0 0 1.4rem;
+    border-left: 3px solid var(--brass);
+    /* Not `ch`: that would resolve against this element's body font, not the
+       much larger display face the quote is actually set in. */
+    max-width: 34rem;
+  }
+  .ex-pull p {
+    margin: 0;
+    font-family: var(--display);
+    font-variation-settings: 'wght' 600;
+    font-size: var(--step-3);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  /* ---------- the chain ---------- */
+  /* Not numbered: these are four parallel consequences of one decision, not a
+     sequence. The repeated "because" is the structure. */
+  .ex-chain {
+    list-style: none;
+    margin: 2.2rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 800px) {
+    .ex-chain {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+    }
+  }
+  .ex-chain li {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 1.3rem 1.5rem 1.4rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .ex-chain-because {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+  .ex-chain h3 {
+    margin: 0.5rem 0 0.55rem;
+    font-size: 1.15rem;
+    font-variation-settings: 'wght' 620;
+    letter-spacing: -0.015em;
+  }
+  .ex-chain-body {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- comparison ---------- */
+  .ex-tablewrap {
+    margin-top: 2rem;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--card);
+  }
+  .ex-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 40rem;
+  }
+  .ex-table th,
+  .ex-table td {
+    text-align: left;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .ex-table thead th {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    font-weight: 400;
+    border-bottom-color: var(--line);
+    background: var(--paper-warm);
+  }
+  .ex-table thead th.is-record {
+    color: var(--green);
+  }
+  .ex-table tbody th {
+    font-family: var(--body);
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--ink);
+    width: 30%;
+  }
+  .ex-table td {
+    font-size: 0.92rem;
+    color: var(--ink-mute);
+  }
+  /* The record column is the one being argued for, so it reads as the answer. */
+  .ex-table td.is-record,
+  .ex-table thead th.is-record {
+    background: var(--green-wash);
+    color: var(--ink-soft);
+  }
+  .ex-table tbody tr:last-child th,
+  .ex-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .visually-hidden-th {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /* ---------- cta ---------- */
+  .ex-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>
