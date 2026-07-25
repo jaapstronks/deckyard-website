@@ -1,9 +1,12 @@
 ---
-import SiteLayout from '../../layouts/SiteLayout.astro';
-import Waitlist from '../Waitlist.astro';
-import InstallWidget from '../InstallWidget.astro';
-import StructuredTeaser from '../StructuredTeaser.astro';
-import { ui, sandboxUrl, type Lang } from '../../i18n/ui';
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import Waitlist from '@/components/marketing/Waitlist.astro';
+import InstallWidget from '@/components/marketing/InstallWidget.astro';
+import StructuredTeaser from '@/components/marketing/StructuredTeaser.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import { ui, sandboxUrl, type Lang } from '@/i18n';
 
 interface Props {
   lang: Lang;
@@ -35,14 +38,13 @@ const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? ico
     <div class="container hero-inner">
       <p class="kicker kicker--center" data-reveal>{t.heroKicker}</p>
       <h1 data-reveal data-reveal-delay="80">
-        {t.heroTitleMain} <span class="accent">{t.heroTitleHighlight}</span>
+        {t.heroTitleMain}
+        <span class="accent">{t.heroTitleHighlight}</span>
       </h1>
       <p class="hero-tagline" data-reveal data-reveal-delay="140">{t.heroTagline}</p>
       <p class="lead" data-reveal data-reveal-delay="200">{t.heroLead}</p>
       <div class="hero-sandbox" data-reveal data-reveal-delay="260">
-        <a class="btn btn-primary" href={sandboxUrl(lang)} target="_blank" rel="noopener">
-          {t.sandboxButton}
-        </a>
+        <Button href={sandboxUrl(lang)} external>{t.sandboxButton}</Button>
         <p class="hero-sandbox-note">{t.sandboxNote}</p>
       </div>
       <div data-reveal data-reveal-delay="340">
@@ -55,85 +57,125 @@ const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? ico
   <StructuredTeaser lang={lang} />
 
   <!-- ============ WHAT SHIPS ============ -->
-  <section class="section section-tint">
-    <div class="container">
-      <div class="section-head section-head--center" data-reveal>
-        <p class="kicker kicker--center">{t.featuresKicker}</p>
-        <h2>{t.featuresTitle}</h2>
-        <p class="lead">{t.featuresLead}</p>
-      </div>
+  <Section variant="tint">
+    <SectionHead center kicker={t.featuresKicker} title={t.featuresTitle} lead={t.featuresLead} />
 
-      <div class="pillars pillars--features">
-        {
-          pillars.map((pillar, i) => (
-            <div class="pillar" data-reveal data-reveal-delay={i === 0 ? undefined : i * 60}>
-              <div class="pillar-icon" aria-hidden="true">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  set:html={pillar.icon}
-                />
-              </div>
-              <h3>{pillar.title}</h3>
-              <p>{pillar.body}</p>
+    <div class="pillars">
+      {
+        pillars.map((pillar, i) => (
+          <div class="pillar" data-reveal data-reveal-delay={i === 0 ? undefined : i * 60}>
+            <div class="pillar-icon" aria-hidden="true">
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                set:html={pillar.icon}
+              />
             </div>
-          ))
-        }
-      </div>
+            <h3>{pillar.title}</h3>
+            <p>{pillar.body}</p>
+          </div>
+        ))
+      }
     </div>
-  </section>
+  </Section>
 
   <!-- ============ INSTALL ============ -->
-  <section class="section">
-    <div class="container">
-      <div class="section-head section-head--center" data-reveal>
-        <p class="kicker kicker--center">{ui[lang].install.kicker}</p>
-        <h2>{ui[lang].install.title}</h2>
-        <p class="lead">{ui[lang].install.lead}</p>
-      </div>
-      <div data-reveal data-reveal-delay="80">
-        <InstallWidget lang={lang} />
-      </div>
+  <Section>
+    <SectionHead
+      center
+      kicker={ui[lang].install.kicker}
+      title={ui[lang].install.title}
+      lead={ui[lang].install.lead}
+    />
+    <div data-reveal data-reveal-delay="80">
+      <InstallWidget lang={lang} />
     </div>
-  </section>
+  </Section>
 
   <!-- ============ OPEN SOURCE RELEASE + CTA ============ -->
-  <section class="section section-dark">
-    <div class="container">
-      <div class="section-head" data-reveal>
-        <p class="kicker">{t.ctaKicker}</p>
-        <h2>{t.ctaTitle}</h2>
-        <p class="lead">{t.ctaLead}</p>
-      </div>
-      <div class="cta-actions" data-reveal data-reveal-delay="120">
-        <a class="btn btn-primary" href={sandboxUrl(lang)} target="_blank" rel="noopener">
-          {t.ctaSandboxButton}
-        </a>
-        <a
-          class="btn btn-ghost"
-          href="https://github.com/jaapstronks/deckyard"
-          target="_blank"
-          rel="noopener"
-        >
-          {t.ctaGithub}
-        </a>
-      </div>
-      <div data-reveal data-reveal-delay="180">
-        <Waitlist id="footer" lang={lang} buttonLabel={t.ctaWaitlistButton} />
-      </div>
+  <Section variant="dark">
+    <SectionHead kicker={t.ctaKicker} title={t.ctaTitle} lead={t.ctaLead} />
+    <div class="cta-actions" data-reveal data-reveal-delay="120">
+      <Button href={sandboxUrl(lang)} external>{t.ctaSandboxButton}</Button>
+      <Button href="https://github.com/jaapstronks/deckyard" variant="ghost" external>
+        {t.ctaGithub}
+      </Button>
     </div>
-  </section>
+    <div data-reveal data-reveal-delay="180">
+      <Waitlist id="footer" lang={lang} buttonLabel={t.ctaWaitlistButton} />
+    </div>
+  </Section>
 </SiteLayout>
 
 <style>
-  /* Hero: the sandbox button is the primary action; the waitlist sits below it
-     as the lower-intent alternative. */
+  /* ---------- Hero ----------
+     Only the homepage has this; the other pages open with .page-hero. */
+
+  .hero {
+    padding-block: var(--space-xl) var(--space-4xl);
+    overflow: clip;
+    background:
+      radial-gradient(900px 420px at 12% -8%, rgba(223, 232, 224, 0.9), transparent 65%),
+      radial-gradient(700px 380px at 95% 8%, rgba(240, 200, 77, 0.14), transparent 60%),
+      var(--paper);
+  }
+
+  .hero-inner {
+    max-width: 940px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .hero h1 {
+    font-size: var(--step-7);
+    font-variation-settings:
+      'opsz' 96,
+      'wght' 720;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+  }
+  .hero h1 .accent {
+    color: var(--green);
+    font-style: normal;
+  }
+
+  .hero-tagline {
+    max-width: 24em;
+    margin: 20px auto 0;
+    font-family: var(--display);
+    font-variation-settings:
+      'opsz' 40,
+      'wght' 560;
+    font-size: var(--step-2);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--green);
+    text-wrap: balance;
+  }
+
+  .hero .lead {
+    margin: 22px auto 30px;
+  }
+
+  /* The waitlist form lives in Waitlist.astro, so reach past the scope to
+     center it inside the hero. */
+  .hero :global(.waitlist-form) {
+    justify-content: center;
+    margin-inline: auto;
+  }
+  .hero :global(.waitlist-note) {
+    margin-inline: auto;
+    max-width: 40em;
+  }
+
+  /* The sandbox button is the primary action; the waitlist sits below it as
+     the lower-intent alternative. */
   .hero-sandbox {
     margin: 1.75rem 0 1.5rem;
   }
@@ -142,24 +184,57 @@ const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? ico
     font-size: 0.9rem;
     color: var(--ink-soft);
   }
+
+  /* ---------- Feature pillars ---------- */
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-sm);
+  }
+  @media (max-width: 1080px) {
+    .pillars {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 860px) {
+    .pillars {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .pillar {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: var(--space-sm);
+    box-shadow: var(--shadow-sm);
+  }
+  .pillar h3 {
+    margin-top: 14px;
+  }
+  .pillar p {
+    color: var(--ink-soft);
+    margin-bottom: 0;
+    font-size: 0.92rem;
+  }
+
+  .pillar-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: var(--green-wash);
+    color: var(--green);
+  }
+
+  /* ---------- Closing CTA ---------- */
+
   .cta-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
     margin-bottom: 1.75rem;
-  }
-  .btn-ghost {
-    background: transparent;
-    color: var(--brass-soft);
-    border: 1.5px solid var(--brass-soft);
-    box-shadow: none;
-  }
-  .btn-ghost:hover {
-    background: var(--brass-soft);
-    color: var(--green-deep);
-    translate: 0 -2px;
-  }
-  .btn-ghost:active {
-    translate: 0 0;
   }
 </style>

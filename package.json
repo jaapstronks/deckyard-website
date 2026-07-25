@@ -6,7 +6,11 @@
     "sync-docs": "node scripts/sync-docs.js",
     "dev": "npm run sync-docs && astro dev",
     "build": "npm run sync-docs && astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check": "npm run sync-docs && astro check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "verify": "npm run format:check && npm run check && npm run build"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
@@ -16,5 +20,11 @@
     "@fontsource-variable/funnel-sans": "^5.2.8",
     "@fontsource/space-mono": "^5.2.9",
     "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^5.9.3"
   }
 }

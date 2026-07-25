@@ -1,20 +1,13 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import SiteHeader from '../components/SiteHeader.astro';
-import SiteFooter from '../components/SiteFooter.astro';
-import {
-  ui,
-  languages,
-  getLangFromUrl,
-  stripLangFromPath,
-  localizePath,
-  type Lang,
-} from '../i18n/ui';
+import SiteHeader from '@/components/layout/SiteHeader.astro';
+import SiteFooter from '@/components/layout/SiteFooter.astro';
+import { ui, languages, getLangFromUrl, stripLangFromPath, localizePath, type Lang } from '@/i18n';
 import '@fontsource-variable/bricolage-grotesque';
 import '@fontsource-variable/funnel-sans';
 import '@fontsource/space-mono';
 import '@fontsource/space-mono/700.css';
-import '../styles/site.css';
+import '@/styles/global.css';
 
 interface Props {
   title: string;
@@ -101,14 +94,15 @@ const organizationSchema = {
     <link
       rel="alternate"
       type="application/rss+xml"
-      title="Deckyard blog"
-      href={`${siteUrl}/rss.xml`}
+      title={t.blogIndex.feedTitle}
+      href={new URL(localizePath('/rss.xml', lang), siteUrl).href}
     />
 
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
 
     <!-- Privacy-friendly analytics (self-hosted Plausible, no cookies) -->
-    <script defer data-domain="deckyard.eu" src="https://analytics.dreamkit.eu/js/script.js"></script>
+    <script defer data-domain="deckyard.eu" src="https://analytics.dreamkit.eu/js/script.js"
+    ></script>
 
     <ClientRouter />
 

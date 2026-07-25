@@ -1,0 +1,28 @@
+---
+// One route for every locale's blog posts. A post declares its language in
+// frontmatter, so the cross product of locales and posts is filtered down to
+// the posts that actually exist in each language - a locale with no posts yet
+// simply gets no post pages, not empty ones.
+import { getCollection } from 'astro:content';
+import BlogPostPage from '@/components/pages/BlogPostPage.astro';
+import { languages, defaultLang, type Lang } from '@/i18n';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) =>
+    import.meta.env.PROD ? !data.draft : true
+  );
+
+  return (Object.keys(languages) as Lang[]).flatMap((lang) =>
+    posts
+      .filter((post) => (post.data.lang ?? defaultLang) === lang)
+      .map((post) => ({
+        params: { locale: lang === defaultLang ? undefined : lang, slug: post.id },
+        props: { post, lang },
+      }))
+  );
+}
+
+const { post, lang } = Astro.props;
+---
+
+<BlogPostPage post={post} lang={lang} />

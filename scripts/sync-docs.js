@@ -80,8 +80,7 @@ async function injectFrontmatterIfMissing(relPath, title) {
 async function syncInstallScript() {
   const dest = path.join(websiteRoot, 'public', 'install.sh');
   const localSrc = path.resolve(websiteRoot, '..', 'deckyard', 'scripts', 'install.sh');
-  const rawUrl =
-    'https://raw.githubusercontent.com/jaapstronks/deckyard/main/scripts/install.sh';
+  const rawUrl = 'https://raw.githubusercontent.com/jaapstronks/deckyard/main/scripts/install.sh';
 
   let script = null;
   let source = '';
@@ -159,11 +158,3 @@ main().catch((err) => {
   console.error('[website] sync-docs failed:', err);
   process.exit(1);
 });
-
-
-
-
-
-
-
-

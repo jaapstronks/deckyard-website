@@ -1,0 +1,123 @@
+/* ============================================================
+   Design tokens - the only place raw values live.
+   Nothing in this file selects an element; it just declares the
+   vocabulary that base.css, primitives.css and component styles use.
+
+   Type family is shared with Dreamkit (Bricolage / Funnel / Space Mono);
+   palette and surfaces are Deckyard's own: forest green + brass on warm
+   stone, soft radii, layered shadows.
+   ============================================================ */
+
+@layer tokens {
+  :root {
+    /* ---- Palette ---- */
+    --paper: #f5f3ef;
+    --paper-warm: #efe9df;
+    --card: #ffffff;
+    --ink: #1c1917;
+    --ink-soft: #44403c;
+    --ink-mute: #6e675f;
+
+    --green: #254d38;
+    --green-bright: #2d6b4a;
+    --green-deep: #10281b;
+    --green-wash: #e6efe8;
+
+    --brass: #b8860f;
+    --brass-bright: #dba323;
+    --brass-soft: #f0c84d;
+
+    --sage: #dfe8e0;
+    --line: #e2ddd3;
+
+    /* ---- Type families ---- */
+    --display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif;
+    --body: 'Funnel Sans Variable', 'Funnel Sans', system-ui, sans-serif;
+    --mono: 'Space Mono', ui-monospace, 'SF Mono', monospace;
+
+    /* ---- Type scale ----
+       Fluid steps, viewport-interpolated. Negative steps are the mono
+       label sizes (kickers, bylines, meta rows); they stay fixed because
+       tracking-heavy uppercase text does not want to scale.
+       Never write a bare font-size clamp() in a component: add a step. */
+    --step--3: 0.66rem; /* smallest mono label: post meta, footer headings */
+    --step--2: 0.72rem; /* mono label: kicker, byline */
+    --step--1: 0.9rem;
+    --step-0: 1rem;
+    --step-1: clamp(1.08rem, 1.8vw, 1.28rem); /* lead paragraph, article intro */
+    --step-2: clamp(1.2rem, 2.5vw, 1.65rem); /* hero tagline */
+    --step-3: clamp(1.5rem, 3.2vw, 2.2rem); /* large h3, featured card title */
+    --step-4: clamp(1.9rem, 4vw, 2.9rem); /* h2 */
+    --step-5: clamp(2.2rem, 5vw, 3.6rem); /* page-hero h1 */
+    --step-6: clamp(2.6rem, 6.4vw, 4.6rem); /* default h1 */
+    --step-7: clamp(3rem, 7.4vw, 5.4rem); /* homepage hero h1 */
+
+    /* ---- Space scale ----
+       Also fluid, so vertical rhythm tightens on phones without a
+       breakpoint per component. Same rule as the type scale: reach for a
+       step, don't invent a clamp. --gutter is separate on purpose - it is
+       the page's inline safe area, not a rhythm value. */
+    --space-2xs: clamp(8px, 0.8vw, 10px);
+    --space-xs: clamp(12px, 2.4vw, 22px);
+    --space-sm: clamp(18px, 2.6vw, 28px);
+    --space-md: clamp(24px, 3vw, 34px);
+    --space-lg: clamp(30px, 4vw, 44px);
+    --space-xl: clamp(36px, 5vw, 60px);
+    --space-2xl: clamp(44px, 6vw, 72px);
+    --space-3xl: clamp(60px, 8vw, 100px);
+    --space-4xl: clamp(72px, 10vw, 128px);
+
+    --gutter: clamp(20px, 4vw, 40px);
+
+    /* ---- Shape + depth ---- */
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 9px;
+    --shadow-sm: 0 1px 2px rgba(28, 25, 23, 0.06), 0 4px 14px rgba(37, 77, 56, 0.06);
+    --shadow-md: 0 2px 6px rgba(28, 25, 23, 0.07), 0 14px 40px rgba(37, 77, 56, 0.11);
+    --shadow-lg: 0 4px 10px rgba(28, 25, 23, 0.08), 0 30px 70px rgba(16, 40, 27, 0.18);
+
+    /* ---- Motion ---- */
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-settle: linear(0, 0.06 10%, 0.31 32%, 0.72 62%, 0.92 82%, 1);
+    --dur-micro: 160ms;
+    --dur-component: 240ms;
+    --dur-reveal: 640ms;
+
+    /* ---- Measure ---- */
+    --container: 1120px;
+    --container-text: 700px;
+  }
+
+  /* ---- Surface semantics ----
+     Everything whose colour depends on the surface it sits on reads these
+     rather than the palette directly. A dark section then only has to flip
+     the tokens (see .section-dark in primitives.css) instead of reaching
+     into every component with a descendant selector. That is what keeps
+     "on a dark background" from becoming N cross-component overrides.
+
+     Values here are the light-surface defaults. */
+  :root {
+    --heading-fg: inherit;
+    --lead-fg: var(--ink-soft);
+    --kicker-fg: var(--brass);
+    --kicker-rule: var(--brass-bright);
+
+    --link-fg: var(--green);
+    --link-fg-hover: var(--green-bright);
+
+    --btn-primary-bg: var(--green);
+    --btn-primary-fg: #fff;
+    --btn-primary-bg-hover: var(--green-bright);
+
+    --field-bg: var(--card);
+    --field-fg: var(--ink);
+    --field-border: var(--line);
+    --field-placeholder: var(--ink-mute);
+    --field-focus-border: var(--green-bright);
+    --field-focus-ring: rgba(45, 107, 74, 0.14);
+
+    --note-fg: var(--ink-mute);
+    --status-fg: var(--green);
+  }
+}

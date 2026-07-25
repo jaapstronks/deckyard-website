@@ -1,0 +1,295 @@
+---
+// Homepage teaser for the "how it works" explainer. One picture, one claim:
+// the slide you are looking at is made of named fields, so it knows what it is.
+//
+// Deliberately not a before/after. The document-becomes-a-slide story needs the
+// full width of /structured-slides to be legible; squeezed into half a homepage
+// section it reads as two grey rectangles with an arrow between them. Here the
+// slide carries real content and the field names point at the regions they own.
+//
+// The content is borrowed from the anatomy dictionary, so this is literally the
+// slide you meet again on the explainer page.
+import { ui, localizePath, type Lang } from '@/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].structured;
+const href = localizePath('/structured-slides', lang);
+
+const timeline = ui[lang].anatomy.types.find((x) => x.id === 'timeline-slide');
+// Three moments rather than four: at this size the columns need the room, and
+// ending on "resumed" beats ending on "suspended".
+const MOMENTS = [0, 1, 3].map((i) => timeline?.items?.[i]).filter(Boolean) as {
+  date: string;
+  title: string;
+}[];
+
+// Where each callout attaches, as a share of the slide's height. The slide has
+// a fixed aspect ratio, so these stay put at every width.
+const NOTES = [
+  { key: 'title', at: '27%', cons: ['string · max 120'] },
+  { key: 'items', at: '76%', cons: ['required · ordered', 'date · title · text'] },
+];
+---
+
+<section class="section teaser">
+  <div class="container teaser-grid">
+    <div class="teaser-copy" data-reveal>
+      <p class="kicker">{t.teaserKicker}</p>
+      <h2>{t.teaserTitle}</h2>
+      <p class="lead">{t.teaserBody}</p>
+      <a class="btn btn-primary" href={href}>{t.teaserCta}</a>
+    </div>
+
+    <figure class="teaser-art" data-reveal data-reveal-delay="120">
+      <div class="ta-frame">
+        <div class="ta-shell">
+          <div class="ta-slide">
+            <p class="ta-eyebrow">{timeline?.eyebrow}</p>
+            <h3 class="ta-title">{timeline?.title}</h3>
+            <ol class="ta-tl">
+              {
+                MOMENTS.map((m) => (
+                  <li>
+                    <span class="ta-date">{m.date}</span>
+                    <span class="ta-moment">{m.title}</span>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+        </div>
+
+        <ul class="ta-notes">
+          {
+            NOTES.map((n) => (
+              <li class="ta-note" style={`--at:${n.at}`}>
+                <span class="ta-key">{n.key}</span>
+                {n.cons.map((c) => (
+                  <span class="ta-cons">{c}</span>
+                ))}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <figcaption class="ta-foot">
+        <b>timeline-slide</b>
+        <span>{t.teaserFoot}</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  /* The hero above already ends on a generous 130px, and both sections sit on
+     the same paper, so a full section padding on top of that reads as a hole
+     rather than as a break. Trim the top, keep the bottom. */
+  .teaser {
+    padding-block-start: 0;
+  }
+  .teaser-grid {
+    display: grid;
+    gap: 2.2rem;
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .teaser-grid {
+      grid-template-columns: 1fr 1.05fr;
+      gap: 3.5rem;
+    }
+  }
+  .teaser-copy h2 {
+    margin-bottom: 0.6rem;
+  }
+  .teaser-copy .lead {
+    margin-bottom: 1.6rem;
+  }
+
+  /* ---------- the illustration ---------- */
+  /* Queried on its own width, not the viewport: the callouts may only sit
+     beside the slide when the column is wide enough that the slide keeps a
+     readable size. On a 900px screen this block is half the page. */
+  .teaser-art {
+    margin: 0;
+    container-type: inline-size;
+  }
+  .ta-frame {
+    display: grid;
+    gap: 1.5rem;
+  }
+  @container (min-width: 460px) {
+    .ta-frame {
+      grid-template-columns: 1fr 7.5rem;
+      align-items: stretch;
+    }
+  }
+
+  /* The shell is the query container, not the slide: an element cannot query
+     its own container-type, so `cqi` in the slide's own padding would resolve
+     against the viewport instead of the slide width. min-width keeps the
+     timeline's long words from pushing the grid track wider than its share. */
+  .ta-shell {
+    container-type: inline-size;
+    min-width: 0;
+  }
+
+  /* The slide keeps its own quiet palette: the point of the picture is that a
+     slide carries fields, not colours. */
+  .ta-slide {
+    aspect-ratio: 16 / 9;
+    container-type: inline-size;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    padding: 5.5cqi;
+    display: flex;
+    flex-direction: column;
+  }
+  .ta-eyebrow {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 2.4cqi;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--green-bright);
+  }
+  .ta-title {
+    margin: 0.35em 0 0;
+    font-family: var(--display);
+    font-variation-settings: 'wght' 620;
+    font-weight: 700;
+    font-size: 6.4cqi;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+  .ta-tl {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    margin: auto 0 0;
+    padding: 2.4cqi 0 0;
+    position: relative;
+  }
+  .ta-tl::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(3.1cqi - 1px);
+    height: 2px;
+    background: var(--sage);
+  }
+  .ta-tl li {
+    position: relative;
+    padding-right: 2.4cqi;
+  }
+  .ta-tl li::before {
+    content: '';
+    position: absolute;
+    top: 2.4cqi;
+    left: 0;
+    width: 1.6cqi;
+    height: 1.6cqi;
+    border-radius: 50%;
+    background: var(--green-bright);
+    box-shadow: 0 0 0 0.8cqi var(--card);
+  }
+  .ta-date {
+    display: block;
+    margin-top: 4.6cqi;
+    font-family: var(--mono);
+    font-size: 3cqi;
+    color: var(--green-bright);
+    font-variant-numeric: tabular-nums;
+  }
+  .ta-moment {
+    display: block;
+    margin-top: 0.7cqi;
+    font-family: var(--display);
+    font-variation-settings: 'wght' 600;
+    font-weight: 700;
+    font-size: 2.7cqi;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+
+  /* the field names, pointing back at the regions they own */
+  .ta-notes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+  }
+  @container (min-width: 460px) {
+    .ta-notes {
+      position: relative;
+      display: block;
+    }
+    .ta-note {
+      position: absolute;
+      top: var(--at);
+      translate: 0 -50%;
+      width: 100%;
+    }
+    /* the hairline back to the slide edge, with the arrowhead at that end */
+    .ta-note::before {
+      content: '';
+      position: absolute;
+      right: calc(100% + 0.5rem);
+      top: 0.42rem;
+      width: 0.7rem;
+      border-top: 1px solid var(--line);
+    }
+    .ta-note::after {
+      content: '';
+      position: absolute;
+      right: calc(100% + 1.2rem);
+      top: 0.42rem;
+      translate: 0 -50%;
+      border-top: 3.5px solid transparent;
+      border-bottom: 3.5px solid transparent;
+      border-right: 5px solid var(--brass);
+    }
+  }
+  .ta-key {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .ta-cons {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    line-height: 1.5;
+    color: var(--ink-mute);
+  }
+
+  .ta-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.4rem 0.85rem;
+    margin-top: 0.9rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.72rem;
+    color: var(--ink-mute);
+  }
+  .ta-foot b {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--green-bright);
+  }
+</style>

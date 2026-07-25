@@ -1,0 +1,401 @@
+/* ============================================================
+   Chrome layer - the site frame: header, nav, language switcher, footer.
+
+   These stay global rather than scoped for one reason: they cross component
+   boundaries. The header renders LanguageSwitcher, and the mobile drawer has
+   to restyle the switcher's internals (.site-nav .lang-menu). Scoped styles
+   can't reach into a child component, so the frame is styled as one unit.
+   ============================================================ */
+
+@layer chrome {
+  /* ---------- Header ---------- */
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--paper) 86%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--green);
+  }
+  .brand svg {
+    color: var(--green);
+  }
+  .brand-name {
+    font-family: var(--display);
+    font-variation-settings:
+      'opsz' 40,
+      'wght' 640;
+    font-size: 1.22rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .brand-badge {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--brass);
+    border: 1px solid var(--brass-bright);
+    border-radius: 999px;
+    padding: 3px 9px 2px;
+    margin-left: 4px;
+    translate: 0 -1px;
+  }
+
+  /* Right-hand cluster: the collapsible nav, the always-visible CTA, and the
+     hamburger (mobile only). */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+  .site-nav a {
+    font-family: var(--body);
+    font-weight: 550;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: var(--ink-soft);
+  }
+  .site-nav a:hover,
+  .site-nav a[aria-current='page'] {
+    color: var(--green);
+  }
+
+  /* Hamburger toggle: hidden on desktop, shown at the mobile breakpoint below. */
+  .nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .nav-toggle-box {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 18px;
+  }
+  .nav-toggle-bar {
+    height: 2px;
+    width: 100%;
+    background: currentColor;
+    border-radius: 2px;
+    transition:
+      transform var(--dur-micro) ease,
+      opacity var(--dur-micro) ease;
+  }
+  /* Morph the three bars into an X while the drawer is open. */
+  .site-header.nav-open .nav-toggle-bar:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+  .site-header.nav-open .nav-toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+  .site-header.nav-open .nav-toggle-bar:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  /* ---------- Language switcher ----------
+     A dropdown that scales to any number of locales. */
+
+  .lang-switch {
+    position: relative;
+  }
+  .lang-switch-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    cursor: pointer;
+    list-style: none;
+    color: var(--ink-soft);
+    font-family: var(--mono);
+    font-size: var(--step--2);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    transition:
+      color var(--dur-micro) ease,
+      border-color var(--dur-micro) ease,
+      background var(--dur-micro) ease;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .lang-switch-trigger::-webkit-details-marker {
+    display: none;
+  }
+  .lang-switch-trigger:hover {
+    color: var(--green);
+    border-color: var(--brass-bright);
+  }
+  .lang-switch[open] .lang-switch-trigger {
+    color: var(--green);
+    border-color: var(--brass-bright);
+    background: var(--green-wash);
+  }
+  .lang-switch-globe {
+    color: var(--brass);
+    flex: none;
+  }
+  .lang-switch-code {
+    line-height: 1;
+  }
+  .lang-switch-caret {
+    flex: none;
+    opacity: 0.6;
+    transition: transform var(--dur-micro) ease;
+  }
+  .lang-switch[open] .lang-switch-caret {
+    transform: rotate(180deg);
+  }
+
+  .lang-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 60;
+    min-width: 168px;
+    margin: 0;
+    padding: 6px;
+    list-style: none;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    animation: lang-menu-in var(--dur-micro) ease;
+  }
+  @keyframes lang-menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .lang-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--ink);
+    font-family: var(--body);
+    font-weight: 550;
+    font-size: 0.92rem;
+    letter-spacing: 0;
+  }
+  .lang-menu-item:hover {
+    background: var(--green-wash);
+    color: var(--green);
+  }
+  .lang-menu-item.is-active {
+    color: var(--green);
+  }
+  .lang-menu-code {
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--brass);
+    min-width: 1.6em;
+  }
+  .lang-menu-name {
+    flex: 1;
+  }
+  .lang-menu-check {
+    color: var(--green);
+    flex: none;
+  }
+
+  /* ---------- Mobile drawer ----------
+     Collapse the nav links + language switcher into a hamburger drawer.
+     Logo and the CTA stay visible in the bar. */
+
+  @media (max-width: 700px) {
+    .nav-toggle {
+      display: inline-flex;
+    }
+
+    /* The nav becomes a drawer panel dropping from under the header. */
+    .site-nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 2px;
+      padding: 8px;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+      box-shadow: 0 12px 28px -12px color-mix(in srgb, var(--ink) 30%, transparent);
+
+      /* Hidden until opened. Collapse height + fade so it animates cleanly. */
+      display: flex;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      pointer-events: none;
+      transition:
+        max-height var(--dur-micro) ease,
+        opacity var(--dur-micro) ease;
+    }
+    .site-header.nav-open .site-nav {
+      max-height: 80vh;
+      opacity: 1;
+      pointer-events: auto;
+      overflow-y: auto; /* tall content (open language list) scrolls inside the drawer */
+    }
+
+    .site-nav a {
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+    }
+    .site-nav a:hover {
+      background: var(--green-wash);
+    }
+
+    /* Language switcher sits in the drawer as a full-width row. */
+    .site-nav .lang-switch {
+      width: 100%;
+    }
+    .site-nav .lang-switch-trigger {
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    /* Render the language options in-flow so they aren't clipped by the drawer's
+       overflow; the absolute dropdown only makes sense in the desktop bar. */
+    .site-nav .lang-menu {
+      position: static;
+      min-width: 0;
+      margin-top: 4px;
+      box-shadow: none;
+      border: none;
+      padding: 4px 0 0;
+      background: transparent;
+      animation: none;
+    }
+    .site-nav .lang-menu-item {
+      padding: 12px 14px;
+    }
+  }
+
+  /* Very narrow: drop the decorative Beta badge to protect the brand + CTA. */
+  @media (max-width: 420px) {
+    .brand-badge {
+      display: none;
+    }
+  }
+
+  /* ---------- Footer ---------- */
+
+  .site-footer {
+    background: var(--green-deep);
+    color: rgba(242, 239, 230, 0.75);
+    padding-block: var(--space-2xl);
+    font-size: 0.92rem;
+  }
+  .site-footer a {
+    color: #f2efe6;
+    text-decoration: none;
+  }
+  .site-footer a:hover {
+    color: var(--brass-soft);
+  }
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px 48px;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--display);
+    font-variation-settings:
+      'opsz' 40,
+      'wght' 640;
+    font-size: 1.15rem;
+    color: #fff;
+  }
+  .footer-brand svg {
+    color: var(--brass-soft);
+  }
+  .footer-tag {
+    margin-top: 10px;
+    max-width: 30em;
+  }
+  .footer-links {
+    display: flex;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+  }
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 9px;
+  }
+  .footer-links h4 {
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--brass-soft);
+    margin-bottom: 14px;
+  }
+  .footer-meta {
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(242, 239, 230, 0.14);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 30px;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(242, 239, 230, 0.5);
+  }
+}

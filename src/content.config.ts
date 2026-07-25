@@ -42,6 +42,6 @@ export const collections = {
   releases,
   docs: defineCollection({
     loader: docsLoader(),
-    schema: docsSchema()
+    schema: docsSchema(),
   }),
 };

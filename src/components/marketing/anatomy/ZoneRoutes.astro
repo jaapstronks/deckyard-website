@@ -1,0 +1,700 @@
+---
+// Zone 2: the three routes from raw material to a structured slide - by hand,
+// via the API, via MCP - and the one gate they all pass through. Each route
+// renders the slide it actually produces, not a shared idealised one: a
+// scheduled job appending last month's figure yields a chart, not a timeline.
+import { ui, type Lang } from '@/i18n';
+import { GLYPHS } from './data';
+import DemoSlide from '@/components/marketing/DemoSlide.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].anatomy;
+
+// The slide a route produces is rendered from the same demo content as zone 3,
+// so the outcome under the tabs and the slide further down cannot drift apart.
+function demoFor(kind: 'timeline' | 'chart') {
+  return t.types.find((x) => x.id === `${kind}-slide`);
+}
+---
+
+<div class="zone" data-reveal>
+  <p class="zone-label"><span class="zone-n">2</span>{t.routesLabel}</p>
+  <p class="zone-lead">{t.routesLead}</p>
+
+  <div class="routes" role="tablist" aria-label={t.routesLabel}>
+    {
+      t.routes.map((r, i) => (
+        <button
+          type="button"
+          role="tab"
+          class="route"
+          data-route={r.id}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          aria-controls={`route-body-${r.id}`}
+          id={`route-tab-${r.id}`}
+        >
+          <span class="route-label">{r.label}</span>
+          <span class="route-blurb">{r.blurb}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    t.routes.map((r, i) => (
+      <div
+        class="surface"
+        id={`route-body-${r.id}`}
+        role="tabpanel"
+        aria-labelledby={`route-tab-${r.id}`}
+        data-route-body={r.id}
+        hidden={i !== 0}
+      >
+        <div class="scol">
+          <p class="scol-label">{r.leftLabel}</p>
+
+          {r.picker && (
+            <div class="mock">
+              <p class="mock-bar">{r.picker.title}</p>
+              <ul class="picks">
+                {r.picker.options.map((opt, oi) => (
+                  <li class={oi === (r.picker?.chosen ?? -1) ? 'pick is-picked' : 'pick'}>
+                    <svg
+                      class="pick-glyph"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                      set:html={GLYPHS[oi] ?? ''}
+                    />
+                    {opt}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {r.flow && (
+            <div class="mock">
+              <p class="mock-bar mock-bar--flow">
+                <span class="flow-name">{r.flow.name}</span>
+                <span class="flow-status">{r.flow.status}</span>
+              </p>
+              <ol class="steps">
+                {r.flow.steps.map((s) => (
+                  <li class="step">
+                    <span class="step-kind">{s.kind}</span>
+                    <span class="step-name">{s.name}</span>
+                    {s.detail && <span class="step-detail">{s.detail}</span>}
+                    {s.data && <span class="step-data" set:html={s.data} />}
+                    {s.branch && <span class="step-branch">{s.branch}</span>}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+
+          {r.chat && (
+            <div class="chat">
+              {r.chat.map((m) => (
+                <div class={m.self ? 'bub is-self' : 'bub'}>
+                  <span class="bub-who">{m.who}</span>
+                  <p>{m.text}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div class="scol">
+          <p class="scol-label">{r.rightLabel}</p>
+
+          {r.form && (
+            <div class="mock">
+              <p class="mock-bar">{r.form.title}</p>
+              <ul class="formrows">
+                {r.form.fields.map((f) => (
+                  <li>
+                    <span class="form-key">{f.key}</span>
+                    <span class="form-val">{f.value}</span>
+                  </li>
+                ))}
+              </ul>
+              <p class="form-more">{r.form.more}</p>
+            </div>
+          )}
+
+          {r.sent && (
+            <div class="mock sent">
+              <p class="mock-bar">{r.sent.barLabel}</p>
+              <pre class="wire-code" set:html={r.sent.code} />
+              <p class="sent-ok">{r.sent.okLabel}</p>
+            </div>
+          )}
+
+          {r.wire && (
+            <ul class="wire">
+              {r.wire.map((w) => (
+                <li class={w.dir === '←' ? 'is-in' : 'is-out'}>
+                  <span class="wire-dir" aria-hidden="true">
+                    {w.dir}
+                  </span>
+                  <span set:html={w.text} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        <div class="result">
+          <p class="result-head">{r.result.label}</p>
+          <div class="result-slide">
+            <DemoSlide
+              kind={r.result.kind}
+              eyebrow={demoFor(r.result.kind)?.eyebrow}
+              title={demoFor(r.result.kind)?.title}
+              items={demoFor(r.result.kind)?.items}
+              bars={
+                r.result.extraBar
+                  ? [...(demoFor(r.result.kind)?.bars ?? []), r.result.extraBar]
+                  : demoFor(r.result.kind)?.bars
+              }
+              fresh={r.result.fresh}
+            />
+          </div>
+          <div class="result-side">
+            <p class="scol-label">{r.result.storedLabel}</p>
+            <pre class="stored" set:html={r.result.stored} />
+            <p class="surface-note" set:html={r.result.note} />
+          </div>
+        </div>
+      </div>
+    ))
+  }
+
+  <p class="gate">
+    <span class="gate-mark" aria-hidden="true"></span>
+    <span set:html={t.gateText} />
+  </p>
+</div>
+
+<style>
+  /* ---------- 2. structuring ---------- */
+  .routes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem;
+  }
+  @media (max-width: 700px) {
+    .routes {
+      grid-template-columns: 1fr;
+    }
+  }
+  .route {
+    text-align: left;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+    transition:
+      border-color var(--dur-micro) ease,
+      background var(--dur-micro) ease;
+  }
+  .route:hover {
+    border-color: var(--green-bright);
+  }
+  .route[aria-selected='true'] {
+    border-color: var(--green);
+    background: var(--green-wash);
+    box-shadow: inset 0 -3px 0 var(--green);
+  }
+  .route-label {
+    font-family: var(--display);
+    font-variation-settings: 'wght' 620;
+    font-size: 0.98rem;
+    color: var(--ink);
+  }
+  .route-blurb {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  /* The route panel shows only the surface: whoever is acting on the left,
+   the mechanism they reach for on the right. What they produce is not in
+   here - it is the record below, which never changes. */
+  /* an explicit display beats the UA rule for [hidden], so restate it */
+  .surface[hidden] {
+    display: none;
+  }
+  .surface {
+    display: grid;
+    gap: 1rem;
+    margin-top: 0.7rem;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--paper-warm);
+  }
+  @media (min-width: 760px) {
+    .surface {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem 1.4rem;
+    }
+    .surface-note {
+      grid-column: 1 / -1;
+    }
+  }
+  .scol {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  /* These labels carry the narrative - skip them and the panel is a pile of
+   boxes - so they are set as short prose rather than as a mono eyebrow, which
+   reads as an optional tag you may pass over. */
+  .scol-label {
+    font-family: var(--body);
+    font-size: 0.86rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    margin: 0 0 0.55rem;
+  }
+  .surface-note {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .surface-note :global(b) {
+    color: var(--ink);
+  }
+
+  /* a small window: the type picker, the filled form, the running system */
+  .mock {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .mock-bar {
+    margin: 0;
+    padding: 0.42rem 0.6rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-warm);
+    font-family: var(--mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .picks {
+    list-style: none;
+    margin: 0;
+    padding: 0.45rem;
+    display: grid;
+    gap: 0.25rem;
+  }
+  .pick {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .pick.is-picked {
+    border-color: var(--green);
+    background: var(--green-wash);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .pick-glyph {
+    width: 17px;
+    height: 17px;
+    flex: none;
+    fill: currentColor;
+    color: var(--ink-mute);
+  }
+  .pick.is-picked .pick-glyph {
+    color: var(--green);
+  }
+
+  .formrows {
+    list-style: none;
+    margin: 0;
+    padding: 0.6rem 0.6rem 0.2rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .formrows li {
+    display: grid;
+    gap: 0.18rem;
+  }
+  .form-key {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+  }
+  .form-val {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: var(--paper);
+    font-size: 0.8rem;
+    color: var(--ink);
+  }
+  .form-more {
+    margin: 0.55rem 0.6rem 0.7rem;
+    padding: 0.3rem 0.5rem;
+    border: 1px dashed var(--line);
+    border-radius: 5px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--ink-mute);
+  }
+
+  /* The automation, drawn the way no-code tools draw one: steps threaded on a
+   rail, each carrying the data that actually passed through on the last run.
+   Non-developers meet this shape in Zapier and Make; a cron line and a curl
+   command are the same fact, told to a smaller audience. */
+  .mock-bar--flow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .flow-name {
+    color: var(--ink-soft);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 0.64rem;
+  }
+  .flow-status {
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.58rem;
+  }
+
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0.75rem 0.7rem 0.8rem 1.85rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .step {
+    --rail: -0.72rem;
+    position: relative;
+    display: grid;
+    gap: 0.15rem;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: var(--paper);
+  }
+  .step::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--rail) - 5px);
+    top: 0.7rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--card);
+    border: 2px solid var(--green-bright);
+  }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: calc(var(--rail) - 1px);
+    top: 1.5rem;
+    bottom: -0.85rem;
+    width: 2px;
+    background: var(--line);
+  }
+  .step:last-child::before {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .step-kind {
+    font-family: var(--mono);
+    font-size: 0.53rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .step-name {
+    font-size: 0.82rem;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+  .step-detail {
+    font-size: 0.76rem;
+    line-height: 1.4;
+    color: var(--ink-mute);
+  }
+  /* Data that moved, not a label about it: mono on a tint, the way a run log
+   shows a payload. */
+  .step-data {
+    margin-top: 0.15rem;
+    padding: 0.28rem 0.45rem;
+    border-radius: 5px;
+    border-left: 2px solid var(--brass);
+    background: var(--paper-warm);
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    overflow-wrap: anywhere;
+  }
+  .step-data :global(.k) {
+    color: var(--brass);
+  }
+  .step-data :global(.s) {
+    color: var(--green);
+  }
+  /* The leg the flow does not take, hung off an elbow so the step reads as a
+   fork rather than as one more instruction. */
+  .step-branch {
+    justify-self: start;
+    position: relative;
+    margin: 0.35rem 0 0 0.9rem;
+    padding: 0.2rem 0.45rem;
+    border: 1px dashed var(--line);
+    border-radius: 5px;
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    color: var(--ink-mute);
+  }
+  .step-branch::before {
+    content: '';
+    position: absolute;
+    left: -0.72rem;
+    top: -0.3rem;
+    width: 0.6rem;
+    height: 0.65rem;
+    border-left: 1.5px dashed var(--line);
+    border-bottom: 1.5px dashed var(--line);
+    border-bottom-left-radius: 5px;
+  }
+
+  /* the request that last action fired, framed as a run record */
+  .sent .wire-code {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .sent-ok {
+    margin: 0;
+    padding: 0.4rem 0.6rem;
+    border-top: 1px solid var(--line);
+    background: var(--green-wash);
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--green);
+  }
+
+  .chat {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .bub {
+    max-width: 94%;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+  }
+  .bub.is-self {
+    justify-self: end;
+    background: var(--green-wash);
+    border-color: #cadbcf;
+  }
+  .bub-who {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.54rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 0.18rem;
+  }
+  .bub p {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+
+  /* the request a system sends, and the exchange an agent has to go through */
+  .wire-code {
+    margin: 0;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    /* Wrap rather than scroll: a scrollbar under a four-line request is noise,
+     and nothing here is long enough to need one. */
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .wire-code :global(.k) {
+    color: var(--brass);
+  }
+  .wire-code :global(.s) {
+    color: var(--green);
+  }
+  .wire-code :global(.c) {
+    color: var(--ink-mute);
+    font-style: italic;
+  }
+
+  .wire {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    overflow: hidden;
+  }
+  .wire li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .wire li:last-child {
+    border-bottom: 0;
+  }
+  .wire-dir {
+    color: var(--ink-mute);
+  }
+  .wire .is-in {
+    background: var(--green-wash);
+  }
+  .wire .is-in .wire-dir {
+    color: var(--green);
+  }
+  .wire :global(b) {
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  /* What comes out of this route. A tray of its own, bled to the panel edges
+   and tinted the same green the gate uses, so the eye reads two beats -
+   what happens, then what it produces - instead of four equal boxes. */
+  .result {
+    display: grid;
+    gap: 0.9rem;
+    margin: 0 -1rem -1rem;
+    padding: 1rem;
+    background: var(--green-wash);
+    border-top: 1px solid #cadbcf;
+    border-radius: 0 0 calc(var(--radius-sm) - 1px) calc(var(--radius-sm) - 1px);
+  }
+  @media (min-width: 760px) {
+    .result {
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 0.9rem 1.4rem;
+    }
+    .result-head {
+      grid-column: 1 / -1;
+    }
+  }
+  .result-head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0;
+    font-family: var(--display);
+    font-variation-settings: 'wght' 600;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+  /* The same diamond the gate uses, not a triangle: a bare downward triangle in
+   front of a heading reads as a disclosure control you can collapse. */
+  .result-head::before {
+    content: '';
+    flex: none;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 2px;
+    background: var(--green);
+    rotate: 45deg;
+  }
+  .result-side {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .stored {
+    margin: 0 0 0.75rem;
+    padding: 0.6rem 0.7rem;
+    background: var(--green-deep);
+    color: #d8e5dc;
+    border-radius: var(--radius-sm);
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .stored :global(.k) {
+    color: var(--brass-soft);
+  }
+  .stored :global(.s) {
+    color: #9fd6b4;
+  }
+
+  .gate {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    margin: 0.9rem 0 0;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--green);
+    border-radius: var(--radius-sm);
+    background: var(--green-wash);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .gate :global(b) {
+    color: var(--green);
+    font-family: var(--mono);
+    font-size: 0.85em;
+  }
+  .gate-mark {
+    flex: none;
+    width: 0.7rem;
+    height: 0.7rem;
+    margin-top: 0.35rem;
+    border-radius: 2px;
+    background: var(--green);
+    rotate: 45deg;
+  }
+</style>

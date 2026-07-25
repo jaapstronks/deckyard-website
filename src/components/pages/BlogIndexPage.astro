@@ -1,8 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
-import SiteLayout from '../../layouts/SiteLayout.astro';
-import BlogCard from '../BlogCard.astro';
-import { ui, localizePath, type Lang } from '../../i18n/ui';
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import BlogCard from '@/components/blog/BlogCard.astro';
+import PageHero from '@/components/layout/PageHero.astro';
+import Section from '@/components/layout/Section.astro';
+import { ui, localizePath, type Lang } from '@/i18n';
 
 interface Props {
   lang: Lang;
@@ -18,61 +20,75 @@ const posts = (
 ).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const [lead, ...rest] = posts;
-const emptyHtml = t.empty.replace('{home}', localizePath('/', lang));
+const emptyHtml = t.empty
+  .replace('{home}', localizePath('/', lang))
+  .replace('{rss}', localizePath('/rss.xml', lang));
 ---
 
 <SiteLayout title={t.metaTitle} description={t.metaDescription}>
-  <section class="section article-hero" style="padding-bottom: 0;">
-    <div class="container">
-      <div class="article-hero-inner">
-        <p class="kicker kicker--center">{t.kicker}</p>
-        <h1>{t.title}</h1>
-        <p class="article-intro">{t.intro}</p>
-      </div>
-    </div>
-  </section>
+  <PageHero kicker={t.kicker} title={t.title} intro={t.intro} />
 
-  <section class="section">
-    <div class="container">
+  <Section>
+    {
+      posts.length === 0 && (
+        <div class="blog-empty" data-reveal>
+          <p class="lead" set:html={emptyHtml} />
+        </div>
+      )
+    }
+    <div class="post-grid">
       {
-        posts.length === 0 && (
-          <div class="blog-empty" data-reveal>
-            <p class="lead" set:html={emptyHtml} />
-          </div>
+        lead && (
+          <BlogCard
+            id={lead.id}
+            lang={lang}
+            title={lead.data.title}
+            intro={lead.data.intro}
+            pubDate={lead.data.pubDate}
+            category={lead.data.category}
+            heroImage={lead.data.heroImage}
+            heroImageAlt={lead.data.heroImageAlt}
+            featured
+          />
         )
       }
-      <div class="post-grid">
-        {
-          lead && (
-            <BlogCard
-              id={lead.id}
-              lang={lang}
-              title={lead.data.title}
-              intro={lead.data.intro}
-              pubDate={lead.data.pubDate}
-              category={lead.data.category}
-              heroImage={lead.data.heroImage}
-              heroImageAlt={lead.data.heroImageAlt}
-              featured
-            />
-          )
-        }
-        {
-          rest.map((post, index) => (
-            <BlogCard
-              id={post.id}
-              lang={lang}
-              title={post.data.title}
-              intro={post.data.intro}
-              pubDate={post.data.pubDate}
-              category={post.data.category}
-              heroImage={post.data.heroImage}
-              heroImageAlt={post.data.heroImageAlt}
-              revealDelay={(index % 3) * 80}
-            />
-          ))
-        }
-      </div>
+      {
+        rest.map((post, index) => (
+          <BlogCard
+            id={post.id}
+            lang={lang}
+            title={post.data.title}
+            intro={post.data.intro}
+            pubDate={post.data.pubDate}
+            category={post.data.category}
+            heroImage={post.data.heroImage}
+            heroImageAlt={post.data.heroImageAlt}
+            revealDelay={(index % 3) * 80}
+          />
+        ))
+      }
     </div>
-  </section>
+  </Section>
 </SiteLayout>
+
+<style>
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-sm);
+  }
+  @media (max-width: 860px) {
+    .post-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .blog-empty {
+    max-width: 640px;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .blog-empty .lead {
+    margin-inline: auto;
+  }
+</style>

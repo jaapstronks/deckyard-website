@@ -1,7 +1,9 @@
 ---
 import { getCollection, render } from 'astro:content';
-import SiteLayout from '../../layouts/SiteLayout.astro';
-import { ui, type Lang } from '../../i18n/ui';
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import PageHero from '@/components/layout/PageHero.astro';
+import Section from '@/components/layout/Section.astro';
+import { ui, type Lang } from '@/i18n';
 
 interface Props {
   lang: Lang;
@@ -32,63 +34,54 @@ const entries = await Promise.all(
 ---
 
 <SiteLayout title={t.metaTitle} description={t.metaDescription}>
-  <section class="section article-hero" style="padding-bottom: 0;">
-    <div class="container">
-      <div class="article-hero-inner">
-        <p class="kicker kicker--center">{t.kicker}</p>
-        <h1>{t.title}</h1>
-        <p class="article-intro">{t.intro}</p>
-      </div>
-    </div>
-  </section>
+  <PageHero kicker={t.kicker} title={t.title} intro={t.intro} />
 
-  <section class="section">
-    <div class="container container--narrow">
-      <ol class="changelog">
-        {
-          entries.map((release, index) => (
-            <li class="changelog-entry" id={release.anchor} data-reveal data-reveal-delay={Math.min(index, 2) * 80}>
-              <div class="changelog-rail" aria-hidden="true">
-                <span class="changelog-dot" />
+  <Section width="narrow">
+    <ol class="changelog">
+      {
+        entries.map((release, index) => (
+          <li
+            class="changelog-entry"
+            id={release.anchor}
+            data-reveal
+            data-reveal-delay={Math.min(index, 2) * 80}
+          >
+            <div class="changelog-rail" aria-hidden="true">
+              <span class="changelog-dot" />
+            </div>
+
+            <div class="changelog-content">
+              <header class="changelog-head">
+                <a class="changelog-version" href={`#${release.anchor}`}>
+                  <span class="changelog-num">v{release.data.version}</span>
+                  {release.data.latest && <span class="changelog-latest">{t.latestBadge}</span>}
+                </a>
+                <p class="changelog-meta">
+                  {release.data.tag && <span class="changelog-tag">{release.data.tag}</span>}
+                  <time datetime={release.data.date.toISOString()}>{release.dateLabel}</time>
+                </p>
+              </header>
+
+              <p class="changelog-summary">{release.data.summary}</p>
+
+              <div class="changelog-body">
+                <release.Content />
               </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
 
-              <div class="changelog-content">
-                <header class="changelog-head">
-                  <a class="changelog-version" href={`#${release.anchor}`}>
-                    <span class="changelog-num">v{release.data.version}</span>
-                    {release.data.latest && <span class="changelog-latest">{t.latestBadge}</span>}
-                  </a>
-                  <p class="changelog-meta">
-                    {release.data.tag && <span class="changelog-tag">{release.data.tag}</span>}
-                    <time datetime={release.data.date.toISOString()}>{release.dateLabel}</time>
-                  </p>
-                </header>
-
-                <p class="changelog-summary">{release.data.summary}</p>
-
-                <div class="changelog-body">
-                  <release.Content />
-                </div>
-              </div>
-            </li>
-          ))
-        }
-      </ol>
-
-      <p class="changelog-footer">
-        <a href="https://github.com/jaapstronks/deckyard/releases" target="_blank" rel="noopener">
-          {t.githubCta}
-        </a>
-      </p>
-    </div>
-  </section>
+    <p class="changelog-footer">
+      <a href="https://github.com/jaapstronks/deckyard/releases" target="_blank" rel="noopener">
+        {t.githubCta}
+      </a>
+    </p>
+  </Section>
 </SiteLayout>
 
 <style>
-  .container--narrow {
-    max-width: 760px;
-  }
-
   .changelog {
     list-style: none;
     margin: 0;
@@ -137,7 +130,9 @@ const entries = await Promise.all(
   }
   .changelog-entry:first-child .changelog-dot {
     background: var(--green);
-    box-shadow: 0 0 0 4px var(--paper), 0 0 0 6px var(--brass-soft);
+    box-shadow:
+      0 0 0 4px var(--paper),
+      0 0 0 6px var(--brass-soft);
   }
 
   .changelog-head {

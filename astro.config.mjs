@@ -4,11 +4,12 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://deckyard.eu',
-  // Marketing pages are bilingual: EN at the root (no prefix), NL under /nl/,
-  // handled with file-based routing + helpers in src/i18n/ui.ts. We deliberately
-  // do NOT set Astro's global `i18n` config here: Starlight would inherit the
-  // `nl` locale and emit 97 duplicate English-content /nl/docs pages. Docs stay
-  // English-only, so locale routing lives entirely in the custom pages.
+  // Marketing pages are multilingual: EN at the root (no prefix), every other
+  // locale under /<code>/. Handled by the src/pages/[...locale]/ routes plus the
+  // registry in src/i18n/. We deliberately do NOT set Astro's global `i18n`
+  // config here: Starlight would inherit those locales and emit 97 duplicate
+  // English-content /<code>/docs pages per language. Docs stay English-only, so
+  // locale routing lives entirely in the marketing pages.
   integrations: [
     sitemap(),
     starlight({
@@ -56,8 +57,8 @@ export default defineConfig({
             { label: 'From PowerPoint', link: '/docs/creating/from-pptx/' },
             { label: 'From Markdown', link: '/docs/creating/from-markdown/' },
             { label: 'From JSON', link: '/docs/creating/from-json/' },
-            { label: 'Duplicating', link: '/docs/creating/duplicating/' }
-          ]
+            { label: 'Duplicating', link: '/docs/creating/duplicating/' },
+          ],
         },
         {
           label: 'Editing',
@@ -69,8 +70,8 @@ export default defineConfig({
             { label: 'Converting Slides', link: '/docs/editing/converting-slides/' },
             { label: 'Speaker Notes', link: '/docs/editing/speaker-notes/' },
             { label: 'Keyboard Shortcuts', link: '/docs/editing/keyboard-shortcuts/' },
-            { label: 'Accessibility', link: '/docs/editing/accessibility/' }
-          ]
+            { label: 'Accessibility', link: '/docs/editing/accessibility/' },
+          ],
         },
         {
           label: 'Organizing',
@@ -78,8 +79,8 @@ export default defineConfig({
             { label: 'Overview', link: '/docs/organizing/' },
             { label: 'Search & Discovery', link: '/docs/organizing/search/' },
             { label: 'Tags', link: '/docs/organizing/tags/' },
-            { label: 'Trash & Recovery', link: '/docs/organizing/trash/' }
-          ]
+            { label: 'Trash & Recovery', link: '/docs/organizing/trash/' },
+          ],
         },
         {
           label: 'Slide Types',
@@ -89,8 +90,8 @@ export default defineConfig({
             { label: 'Interactive', link: '/docs/slide-types/interactive/' },
             { label: 'Content Cards', link: '/docs/slide-types/cards/' },
             { label: 'Media', link: '/docs/slide-types/media/' },
-            { label: 'Structure', link: '/docs/slide-types/structure/' }
-          ]
+            { label: 'Structure', link: '/docs/slide-types/structure/' },
+          ],
         },
         {
           label: 'AI Features',
@@ -100,8 +101,8 @@ export default defineConfig({
             { label: 'DreamBot Analysis', link: '/docs/ai/analysis/' },
             { label: 'AI Translation', link: '/docs/ai/translation/' },
             { label: 'Description Generation', link: '/docs/ai/description-generation/' },
-            { label: 'Alt Text Generation', link: '/docs/ai/alt-text/' }
-          ]
+            { label: 'Alt Text Generation', link: '/docs/ai/alt-text/' },
+          ],
         },
         {
           label: 'Interactions',
@@ -109,8 +110,8 @@ export default defineConfig({
             { label: 'Polls', link: '/docs/interactions/polls/' },
             { label: 'Q&A', link: '/docs/interactions/qa/' },
             { label: 'Feedback', link: '/docs/interactions/feedback/' },
-            { label: 'Lead Capture', link: '/docs/interactions/lead-capture/' }
-          ]
+            { label: 'Lead Capture', link: '/docs/interactions/lead-capture/' },
+          ],
         },
         {
           label: 'Presenting',
@@ -121,8 +122,8 @@ export default defineConfig({
             // { label: 'Live Video Overlay', link: '/docs/presenter/live-video/' }, // TODO: create docs page
             { label: 'Audience Follow Mode', link: '/docs/presenter/follow-mode/' },
             { label: 'Speaker Notes View', link: '/docs/presenter/notes-view/' },
-            { label: 'Presentation Locks', link: '/docs/presenter/presentation-locks/' }
-          ]
+            { label: 'Presentation Locks', link: '/docs/presenter/presentation-locks/' },
+          ],
         },
         {
           label: 'Publishing',
@@ -130,8 +131,8 @@ export default defineConfig({
             { label: 'Publishing & Sharing', link: '/docs/publishing/' },
             { label: 'Embedding (SDK)', link: '/docs/publishing/embedding/' },
             { label: 'RSS Feeds', link: '/docs/publishing/rss-feeds/' },
-            { label: 'OpenGraph Images', link: '/docs/publishing/og-images/' }
-          ]
+            { label: 'OpenGraph Images', link: '/docs/publishing/og-images/' },
+          ],
         },
         {
           label: 'Export',
@@ -142,8 +143,8 @@ export default defineConfig({
             { label: 'Image Export', link: '/docs/export/images/' },
             { label: 'Speaker Notes', link: '/docs/export/notes/' },
             { label: 'Handoff Bundle', link: '/docs/export/handoff-bundle/' },
-            { label: 'Data Backup', link: '/docs/export/backup/' }
-          ]
+            { label: 'Data Backup', link: '/docs/export/backup/' },
+          ],
         },
         {
           label: 'Collaboration',
@@ -152,18 +153,21 @@ export default defineConfig({
             { label: 'Sharing & Permissions', link: '/docs/collaboration/sharing-permissions/' },
             { label: 'Comments', link: '/docs/collaboration/comments/' },
             { label: 'Real-time Editing', link: '/docs/collaboration/realtime-editing/' },
-            { label: 'Activity & Notifications', link: '/docs/collaboration/activity-notifications/' },
+            {
+              label: 'Activity & Notifications',
+              link: '/docs/collaboration/activity-notifications/',
+            },
             { label: 'Version History', link: '/docs/collaboration/versions/' },
-            { label: 'Ownership Transfer', link: '/docs/collaboration/ownership-transfer/' }
-          ]
+            { label: 'Ownership Transfer', link: '/docs/collaboration/ownership-transfer/' },
+          ],
         },
         {
           label: 'Asset Libraries',
           items: [
             { label: 'Overview', link: '/docs/libraries/' },
             { label: 'Slide Library', link: '/docs/libraries/slide-library/' },
-            { label: 'Image Library', link: '/docs/libraries/image-library/' }
-          ]
+            { label: 'Image Library', link: '/docs/libraries/image-library/' },
+          ],
         },
         {
           label: 'Themes',
@@ -171,8 +175,8 @@ export default defineConfig({
             { label: 'Overview', link: '/docs/themes/' },
             { label: 'Theme Editor', link: '/docs/themes/editor/' },
             { label: 'Font Management', link: '/docs/themes/font-management/' },
-            { label: 'Custom Slide Types', link: '/docs/customization/custom-slide-types/' }
-          ]
+            { label: 'Custom Slide Types', link: '/docs/customization/custom-slide-types/' },
+          ],
         },
         {
           label: 'Admin & Self-Hosting',
@@ -184,8 +188,8 @@ export default defineConfig({
             { label: 'Digest Emails', link: '/docs/admin/digest-emails/' },
             { label: 'Instance Settings', link: '/docs/admin/settings/' },
             { label: 'GDPR & Privacy', link: '/docs/admin/gdpr-privacy/' },
-            { label: 'Sandbox Mode', link: '/docs/admin/sandbox-mode/' }
-          ]
+            { label: 'Sandbox Mode', link: '/docs/admin/sandbox-mode/' },
+          ],
         },
         {
           label: 'Configuration',
@@ -194,8 +198,8 @@ export default defineConfig({
             { label: 'Authentication', link: '/docs/configuration/authentication/' },
             { label: 'Database', link: '/docs/configuration/database/' },
             { label: 'i18n / Localization', link: '/docs/configuration/i18n/' },
-            { label: 'Rate Limiting', link: '/docs/configuration/rate-limiting/' }
-          ]
+            { label: 'Rate Limiting', link: '/docs/configuration/rate-limiting/' },
+          ],
         },
         {
           label: 'Deployment',
@@ -204,8 +208,8 @@ export default defineConfig({
             { label: 'Quick Start', link: '/docs/deployment/quickstart/' },
             { label: 'Docker', link: '/docs/deployment/docker/' },
             { label: 'Scaling', link: '/docs/deployment/scaling/' },
-            { label: 'Website Hosting', link: '/docs/deployment/website-hosting/' }
-          ]
+            { label: 'Website Hosting', link: '/docs/deployment/website-hosting/' },
+          ],
         },
         {
           label: 'Integrations',
@@ -216,20 +220,18 @@ export default defineConfig({
             { label: 'Unsplash', link: '/docs/integrations/unsplash/' },
             { label: 'Giphy', link: '/docs/integrations/giphy/' },
             { label: 'Notion', link: '/docs/integrations/notion/' },
-            { label: 'Real-Time Updates', link: '/docs/integrations/real-time/' }
-          ]
+            { label: 'Real-Time Updates', link: '/docs/integrations/real-time/' },
+          ],
         },
         {
           label: 'Developer',
           items: [
             { label: 'Overview', link: '/docs/developer/' },
             { label: 'Sessions & Auth', link: '/docs/developer/sessions/' },
-            { label: 'Rendering Pipeline', link: '/docs/developer/rendering/' }
-          ]
-        }
-      ]
-    })
-  ]
+            { label: 'Rendering Pipeline', link: '/docs/developer/rendering/' },
+          ],
+        },
+      ],
+    }),
+  ],
 });
-
-

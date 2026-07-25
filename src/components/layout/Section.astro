@@ -1,0 +1,48 @@
+---
+// A page section: vertical rhythm + surface + the inner measure container.
+// Replaces hand-writing <section class="section section-tint"><div class="container">
+// on every page. Classes live in styles/primitives.css; this is the API over them.
+
+interface Props {
+  /** Surface treatment. `dark` also flips the surface tokens - see primitives.css. */
+  variant?: 'plain' | 'tint' | 'dark';
+  /** Inner measure. `full` omits the container so the slot can bleed edge to edge. */
+  width?: 'default' | 'narrow' | 'full';
+  /** Drop the bottom padding when the next section owns that space. */
+  flushBottom?: boolean;
+  id?: string;
+  /** Extra classes for page-specific styling of this section. */
+  class?: string;
+}
+
+const {
+  variant = 'plain',
+  width = 'default',
+  flushBottom = false,
+  id,
+  class: className,
+} = Astro.props;
+---
+
+<section
+  id={id}
+  class:list={[
+    'section',
+    {
+      'section-tint': variant === 'tint',
+      'section-dark': variant === 'dark',
+      'section--flush-bottom': flushBottom,
+    },
+    className,
+  ]}
+>
+  {
+    width === 'full' ? (
+      <slot />
+    ) : (
+      <div class:list={['container', { 'container--narrow': width === 'narrow' }]}>
+        <slot />
+      </div>
+    )
+  }
+</section>

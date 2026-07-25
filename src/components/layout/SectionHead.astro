@@ -1,0 +1,28 @@
+---
+// The kicker / heading / lead block that opens a section. Every marketing
+// section starts with one, so it is a component rather than four hand-written
+// elements per section.
+
+interface Props {
+  title: string;
+  kicker?: string;
+  lead?: string;
+  center?: boolean;
+  /** Wrap in a scroll-reveal. On by default: every current use reveals. */
+  reveal?: boolean;
+  revealDelay?: number;
+}
+
+const { title, kicker, lead, center = false, reveal = true, revealDelay } = Astro.props;
+---
+
+<div
+  class:list={['section-head', { 'section-head--center': center }]}
+  data-reveal={reveal ? '' : undefined}
+  data-reveal-delay={revealDelay}
+>
+  {kicker && <p class:list={['kicker', { 'kicker--center': center }]}>{kicker}</p>}
+  <h2>{title}</h2>
+  {lead && <p class="lead">{lead}</p>}
+  <slot />
+</div>

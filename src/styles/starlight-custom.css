@@ -42,8 +42,15 @@
 [data-pagefind-body] h3,
 [data-pagefind-body] h4,
 .site-title {
-  font-family: 'Outfit', Inter, system-ui, -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, sans-serif;
+  font-family:
+    'Outfit',
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
   font-weight: 700;
   font-synthesis: none;
 }

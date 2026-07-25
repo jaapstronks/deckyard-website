@@ -1,0 +1,94 @@
+/* ============================================================
+   Base layer - element defaults only.
+   Bare element selectors, no classes. Anything that needs a class
+   belongs in primitives.css or in the component that owns it.
+   ============================================================ */
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17.5px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--display);
+    line-height: 1.05;
+    margin: 0 0 0.5em;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--step-6);
+    font-variation-settings:
+      'opsz' 96,
+      'wght' 640;
+    letter-spacing: -0.025em;
+  }
+
+  h2 {
+    font-size: var(--step-4);
+    font-variation-settings:
+      'opsz' 60,
+      'wght' 600;
+    letter-spacing: -0.02em;
+    color: var(--heading-fg);
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    font-variation-settings:
+      'opsz' 30,
+      'wght' 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+
+  p {
+    margin: 0 0 1em;
+  }
+
+  a {
+    color: var(--link-fg);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    transition: color var(--dur-micro) ease;
+  }
+
+  a:hover {
+    color: var(--link-fg-hover);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  ::selection {
+    background: var(--brass-soft);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--brass-bright);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}

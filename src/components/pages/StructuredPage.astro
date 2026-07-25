@@ -1,9 +1,12 @@
 ---
 // The "how it works" explainer. Prose carries the argument; the interactive
 // zones of SlideAnatomy sit inside it as the evidence, one per beat.
-import SiteLayout from '../../layouts/SiteLayout.astro';
-import SlideAnatomy from '../SlideAnatomy.astro';
-import { ui, sandboxUrl, type Lang } from '../../i18n/ui';
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import SlideAnatomy from '@/components/marketing/anatomy/SlideAnatomy.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import { ui, sandboxUrl, type Lang } from '@/i18n';
 
 interface Props {
   lang: Lang;
@@ -35,100 +38,87 @@ const docsHref = '/docs/slide-types/';
     </header>
 
     <!-- ============ the argument, with the demo threaded through ============ -->
-    <section class="section">
-      <div class="container">
-        <div class="ex-prose" data-reveal>
-          <h2>{t.s1Title}</h2>
-          {t.s1Body.map((p) => <p>{p}</p>)}
+    <Section>
+      <div class="ex-prose" data-reveal>
+        <h2>{t.s1Title}</h2>
+        {t.s1Body.map((p) => <p>{p}</p>)}
+      </div>
+
+      <SlideAnatomy lang={lang}>
+        <div slot="after-sources" class="ex-prose ex-prose--inter">
+          <h2>{t.s2Title}</h2>
+          {t.s2Body.map((p) => <p>{p}</p>)}
         </div>
 
-        <SlideAnatomy lang={lang}>
-          <div slot="after-sources" class="ex-prose ex-prose--inter">
-            <h2>{t.s2Title}</h2>
-            {t.s2Body.map((p) => <p>{p}</p>)}
+        <div slot="after-routes">
+          <blockquote class="ex-pull">
+            <p>{t.pull}</p>
+          </blockquote>
+          <div class="ex-prose ex-prose--inter">
+            <h2>{t.s3Title}</h2>
+            {t.s3Body.map((p) => <p>{p}</p>)}
           </div>
-
-          <div slot="after-routes">
-            <blockquote class="ex-pull">
-              <p>{t.pull}</p>
-            </blockquote>
-            <div class="ex-prose ex-prose--inter">
-              <h2>{t.s3Title}</h2>
-              {t.s3Body.map((p) => <p>{p}</p>)}
-            </div>
-          </div>
-        </SlideAnatomy>
-      </div>
-    </section>
+        </div>
+      </SlideAnatomy>
+    </Section>
 
     <!-- ============ what follows from it ============ -->
-    <section class="section section-tint">
-      <div class="container">
-        <div class="ex-prose" data-reveal>
-          <h2>{t.chainTitle}</h2>
-          <p class="lead">{t.chainLead}</p>
-        </div>
-        <ol class="ex-chain">
-          {
-            t.chain.map((link, i) => (
-              <li data-reveal data-reveal-delay={i === 0 ? undefined : i * 70}>
-                <p class="ex-chain-because">{link.because}</p>
-                <h3>{link.claim}</h3>
-                <p class="ex-chain-body">{link.body}</p>
-              </li>
-            ))
-          }
-        </ol>
+    <Section variant="tint">
+      <div class="ex-prose" data-reveal>
+        <h2>{t.chainTitle}</h2>
+        <p class="lead">{t.chainLead}</p>
       </div>
-    </section>
+      <ol class="ex-chain">
+        {
+          t.chain.map((link, i) => (
+            <li data-reveal data-reveal-delay={i === 0 ? undefined : i * 70}>
+              <p class="ex-chain-because">{link.because}</p>
+              <h3>{link.claim}</h3>
+              <p class="ex-chain-body">{link.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </Section>
 
     <!-- ============ the comparison ============ -->
-    <section class="section">
-      <div class="container">
-        <div class="ex-prose" data-reveal>
-          <h2>{t.compareTitle}</h2>
-          <p class="lead">{t.compareLead}</p>
-        </div>
-        <div class="ex-tablewrap" data-reveal data-reveal-delay="80">
-          <table class="ex-table">
-            <thead>
-              <tr>
-                <th scope="col"><span class="visually-hidden-th">{t.compareAspect}</span></th>
-                <th scope="col">{t.compareCanvas}</th>
-                <th scope="col" class="is-record">{t.compareRecord}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                t.compareRows.map((row) => (
-                  <tr>
-                    <th scope="row">{row.aspect}</th>
-                    <td>{row.canvas}</td>
-                    <td class="is-record">{row.record}</td>
-                  </tr>
-                ))
-              }
-            </tbody>
-          </table>
-        </div>
+    <Section>
+      <div class="ex-prose" data-reveal>
+        <h2>{t.compareTitle}</h2>
+        <p class="lead">{t.compareLead}</p>
       </div>
-    </section>
+      <div class="ex-tablewrap" data-reveal data-reveal-delay="80">
+        <table class="ex-table">
+          <thead>
+            <tr>
+              <th scope="col"><span class="visually-hidden-th">{t.compareAspect}</span></th>
+              <th scope="col">{t.compareCanvas}</th>
+              <th scope="col" class="is-record">{t.compareRecord}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              t.compareRows.map((row) => (
+                <tr>
+                  <th scope="row">{row.aspect}</th>
+                  <td>{row.canvas}</td>
+                  <td class="is-record">{row.record}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </Section>
 
     <!-- ============ cta ============ -->
-    <section class="section section-dark">
-      <div class="container">
-        <div class="section-head" data-reveal>
-          <h2>{t.ctaTitle}</h2>
-          <p class="lead">{t.ctaBody}</p>
-        </div>
-        <div class="ex-actions" data-reveal data-reveal-delay="100">
-          <a class="btn btn-primary" href={sandboxUrl(lang)} target="_blank" rel="noopener">
-            {t.ctaSandbox}
-          </a>
-          <a class="btn btn-ghost" href={docsHref}>{t.ctaDocs}</a>
-        </div>
+    <Section variant="dark">
+      <SectionHead title={t.ctaTitle} lead={t.ctaBody} />
+      <div class="ex-actions" data-reveal data-reveal-delay="100">
+        <Button href={sandboxUrl(lang)} external>{t.ctaSandbox}</Button>
+        <Button href={docsHref} variant="ghost">{t.ctaDocs}</Button>
       </div>
-    </section>
+    </Section>
   </article>
 </SiteLayout>
 
@@ -343,19 +333,5 @@ const docsHref = '/docs/slide-types/';
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-  }
-  .btn-ghost {
-    background: transparent;
-    color: var(--brass-soft);
-    border: 1.5px solid var(--brass-soft);
-    box-shadow: none;
-  }
-  .btn-ghost:hover {
-    background: var(--brass-soft);
-    color: var(--green-deep);
-    translate: 0 -2px;
-  }
-  .btn-ghost:active {
-    translate: 0 0;
   }
 </style>
