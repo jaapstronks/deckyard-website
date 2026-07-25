@@ -105,7 +105,10 @@ them in a global block.
 | New feature in core | Add/update docs in `./docs/` matching the feature |
 | API change in core  | Update `./docs/developer/` and API reference      |
 | New slide type      | Add to `./docs/slide-types/`                      |
-| Pricing change      | Update `./src/pages/[...locale]/pricing.astro`    |
+
+There is no pricing page and there will not be one: Deckyard is not a SaaS and
+the site does not sell hosted seats. "We can host it for you" is an aside on an
+existing page, not a plan-and-price table.
 
 ## Keeping Docs in Sync
 
