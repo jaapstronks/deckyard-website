@@ -5,6 +5,7 @@ import PageHero from '@/components/layout/PageHero.astro';
 import Section from '@/components/layout/Section.astro';
 import { ui, type Lang } from '@/i18n';
 import { langFromFolder } from '@/lib/content';
+import { compareReleasesDesc } from '@/lib/releases';
 
 interface Props {
   lang: Lang;
@@ -16,7 +17,7 @@ const releases = (
   await getCollection('releases', ({ data }) => (import.meta.env.PROD ? !data.draft : true))
 )
   .filter((release) => langFromFolder(release.id, 'releases') === lang)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  .sort(compareReleasesDesc);
 
 // Pre-render each release body so the timeline can lay them out in order.
 const entries = await Promise.all(
