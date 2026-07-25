@@ -1,7 +1,7 @@
 import type { HomeContent } from '@/i18n/types';
 
 export const home: HomeContent = {
-  metaTitle: 'Deckyard — Open source, end-to-end presentation platform',
+  metaTitle: 'Deckyard - Open source, end-to-end presentation platform',
   metaDescription:
     'The open source presentation platform you run yourself. Create, present, publish and collaborate in one tool - on brand by default, GDPR-native, no lock-in. MIT licensed, code on GitHub.',
   heroKicker: 'Open source · End-to-end · Made in Europe',

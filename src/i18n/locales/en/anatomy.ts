@@ -10,7 +10,7 @@ export const anatomy: AnatomyContent = {
       kind: 'doc',
       name: 'Lemonade-Stand-Q3-Review-FINAL-v2-reviewed_by_jane-REALFINAL(3).docx',
       caption: 'Word processor',
-      heading: 'Q3 Operational Review — Sunnyside Lemonade Stand',
+      heading: 'Q3 Operational Review - Sunnyside Lemonade Stand',
       paragraphs: [
         '<b data-span="h1">1. Background.</b> The Stand was <span data-span="n1">constituted by resolution of the household</span> in <span data-span="t1">2021</span>. In <span data-span="t2">2022</span> it entered its <span data-span="n2">first strategic partnership</span>, with the adjacent bake sale. Operations were <span data-span="n3">suspended for reasons of weather</span> throughout <span data-span="t3">2024</span>. Trading <span data-span="n4">resumed under revised governance</span> in <span data-span="t4">2025</span>.',
         '<b>2. Performance.</b> In the period under review the Stand dispensed 412 cups, an increase of 18 per cent on the comparable quarter.',
@@ -180,7 +180,7 @@ export const anatomy: AnatomyContent = {
       id: 'timeline-slide',
       label: 'Timeline',
       claim:
-        '<b>ordered: true</b> — the sequence is the meaning here, not a layout choice. So it projects to a numbered list for screen readers, and nothing downstream is allowed to reshuffle it.',
+        '<b>ordered: true</b> - the sequence is the meaning here, not a layout choice. So it projects to a numbered list for screen readers, and nothing downstream is allowed to reshuffle it.',
       eyebrow: 'Background',
       title: 'Historical development of the Stand',
       items: [
@@ -194,7 +194,7 @@ export const anatomy: AnatomyContent = {
       id: 'chart-slide',
       label: 'Chart',
       claim:
-        '<b>data: csv (required)</b> — the figures live in the record as data, not as a picture of a chart. That is why this field can stay wired to the spreadsheet instead of being copied out of it.',
+        '<b>data: csv (required)</b> - the figures live in the record as data, not as a picture of a chart. That is why this field can stay wired to the spreadsheet instead of being copied out of it.',
       eyebrow: 'Volumes',
       title: 'Cups dispensed per month',
       bars: [
@@ -207,7 +207,7 @@ export const anatomy: AnatomyContent = {
       id: 'quote-slide',
       label: 'Quote',
       claim:
-        '<b>authorName is required</b> — an unattributed quote is not a valid slide in this format. The type holds a journalistic norm that otherwise depends on whoever happened to be in a hurry.',
+        '<b>authorName is required</b> - an unattributed quote is not a valid slide in this format. The type holds a journalistic norm that otherwise depends on whoever happened to be in a hurry.',
       eyebrow: 'Stakeholder feedback',
       title: '',
       quote: {
@@ -220,7 +220,7 @@ export const anatomy: AnatomyContent = {
       id: 'image-slide',
       label: 'Image',
       claim:
-        '<b>imageRole: content | decorative</b> — the format asks what the image is <em>for</em>. Call it decorative and screen readers skip it; call it meaningful and it wants alt text. A canvas cannot ask that question, because there an image is only pixels at coordinates.',
+        '<b>imageRole: content | decorative</b> - the format asks what the image is <em>for</em>. Call it decorative and screen readers skip it; call it meaningful and it wants alt text. A canvas cannot ask that question, because there an image is only pixels at coordinates.',
       eyebrow: 'Operations',
       title: 'The Stand in operation',
       image: { caption: 'The Stand, Saturday morning.' },
