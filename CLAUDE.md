@@ -10,7 +10,8 @@ Marketing website and user documentation for Deckyard.
 
 **i18n:** Marketing pages are bilingual (EN default at root, NL under `/nl/`). Docs are English-only.
 
-**Output:** Static HTML deployed to a Hetzner box via rsync + Cloudflare CDN
+**Output:** Static HTML rsynced to a Hetzner box (Bolster) that serves
+`deckyard.eu` via Caddy. No CDN in front of it. See `.github/workflows/deploy.yml`.
 
 ## Related Repositories
 
@@ -107,8 +108,47 @@ them in a global block.
 | New slide type      | Add to `./docs/slide-types/`                      |
 
 There is no pricing page and there will not be one: Deckyard is not a SaaS and
-the site does not sell hosted seats. "We can host it for you" is an aside on an
-existing page, not a plan-and-price table.
+the site does not sell hosted seats. Managed hosting is offered on `/hosting`,
+which is deliberately **not** a plan-and-price table: it presents self-hosting
+and a managed instance as two doors onto the same software, states that hosting
+revenue funds the development, and ends in an email rather than a checkout. No
+tiers, no seat counts, no prices; the first step is a conversation.
+
+## Social cards (og:image)
+
+Every page carries its own share card, generated at build time. Nothing to
+maintain per page: add a page, get a card.
+
+```
+src/lib/og/
+  card.ts       the template - background, eyebrow, title, intro, logo lockup
+  targets.ts    which pages get a card, and what copy goes on it
+  render.ts     satori (layout -> SVG) + resvg (SVG -> PNG)
+  fonts/        three static TTFs, vendored (satori cannot read woff2)
+src/pages/og/[...path].png.ts   the endpoint: one PNG per target
+```
+
+The card route mirrors the page route, so `/nl/blog/de-code-staat-online` gets
+`/og/nl/blog/de-code-staat-online.png`. `targets.ts` is read by both the
+endpoint (to build the images) and the layouts (to point `og:image` at one), so
+a page can never advertise a card that was not generated; a page missing from
+the list silently falls back to the hand-made homepage card.
+
+- **Marketing pages** are listed in `marketingPages` in `targets.ts`. A new
+  route needs one entry there, taking the page's **hero** copy (the human
+  sentence), not its meta title (which carries the SEO suffix).
+- **Blog posts and docs pages** are picked up from their collections, so they
+  need nothing. Docs get their section as a second eyebrow item
+  (`DOCS · DEPLOYMENT`), derived from the path.
+- **The homepage keeps its hand-made card** in `public/images/og/`: it sells
+  the product rather than naming a page. Any page can do the same by passing
+  `ogImage` to `SiteLayout`.
+- **Docs get theirs through a Starlight component override**
+  (`src/components/starlight/Head.astro`), because Starlight's `head` config
+  only takes one static image for the whole docs section.
+
+Editing `card.ts` restyles all ~105 cards at once. They cost roughly 9s of the
+build; iterate on the design by rebuilding and opening `dist/og/**.png`.
 
 ## Keeping Docs in Sync
 
@@ -163,6 +203,11 @@ Other rules:
   `[...locale]/blog/[slug].astro` route filters the locale x post cross product
   down to the posts that exist per language. Each locale gets its own feed
   (`/rss.xml`, `/nl/rss.xml`, ...).
+- A post belongs to one language and the filename is the URL, so a Dutch post is
+  a separate file with its own **Dutch** slug, not `<english-slug>.nl.md`. Start
+  from `src/content/blog/_template.md`; underscore-prefixed files are excluded
+  from the collection glob, so the template never becomes a post. `draft: true`
+  is visible in `npm run dev` and dropped from the production build.
 - Docs (Starlight) are English-only, no switcher.
 - Dutch copy is outgoing editorial text: no em dashes (use `-` or `;`).
 - Structural data (slide-type field vocabularies, theme tokens) is **not** copy:
