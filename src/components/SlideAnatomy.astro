@@ -1,0 +1,1774 @@
+---
+// Explainer: how raw material becomes an on-brand slide, and why the slide type
+// is the control point rather than an inconvenience.
+//
+// Three zones stacked full width:
+//   1. Raw input      - a pile of things from different places (doc, sheet,
+//                       note, image library). The one feeding the current slide
+//                       type comes forward.
+//   2. Structuring    - by hand, via the API, or via MCP. Three routes, one
+//                       gate: all of them validate against the same type.
+//   3. The slide      - two independent controls on one slide: the type (what
+//                       it means) and the house style (how it looks). Changing
+//                       one never touches the other; that is the whole thesis.
+//
+// The demo content is a lemonade stand reported on in stiff corporate register,
+// deliberately absurd so nobody reads the example as a claim about Deckyard.
+import { ui, type Lang } from '../i18n/ui';
+import DemoSlide from './DemoSlide.astro';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].anatomy;
+
+interface FieldDef {
+  key: string;
+  type: string;
+  required?: boolean;
+  ordered?: boolean;
+  min?: number;
+  max?: number;
+  maxLen?: number;
+  sub?: string;
+  /** Passages in the source material this field was drawn from. Empty means the
+   *  field is an authoring decision, not something the source contains. */
+  spans: string[];
+}
+
+// Field vocabulary per slide type. Structural, so not translated: the keys,
+// types, required flags and limits mirror the real definitions in the engine
+// (shared/slide-types/types/*.js). Note that image-slide's `alt` is genuinely
+// optional there - `imageRole` is what carries the accessibility decision.
+const FIELDS: Record<string, FieldDef[]> = {
+  'timeline-slide': [
+    { key: 'title', type: 'string', maxLen: 120, spans: ['h1'] },
+    {
+      key: 'items',
+      type: 'items',
+      required: true,
+      ordered: true,
+      min: 2,
+      max: 10,
+      sub: 'date · title · text',
+      spans: ['t1', 'n1', 't2', 'n2', 't3', 'n3', 't4', 'n4'],
+    },
+  ],
+  'chart-slide': [
+    { key: 'title', type: 'string', required: true, maxLen: 120, spans: ['sh'] },
+    { key: 'chartType', type: 'enum', required: true, sub: 'bar · line · pie', spans: [] },
+    { key: 'data', type: 'csv', required: true, spans: ['c1', 'c2', 'c3'] },
+  ],
+  'quote-slide': [
+    { key: 'quote', type: 'string', required: true, maxLen: 400, spans: ['q1'] },
+    { key: 'authorName', type: 'string', required: true, maxLen: 80, spans: ['q2'] },
+    { key: 'authorTitle', type: 'string', required: true, maxLen: 120, spans: ['q3'] },
+  ],
+  'image-slide': [
+    { key: 'image', type: 'image', spans: ['i1'] },
+    { key: 'alt', type: 'string', maxLen: 180, spans: ['i2'] },
+    { key: 'imageRole', type: 'enum', sub: 'content · decorative', spans: [] },
+    { key: 'caption', type: 'string', maxLen: 160, spans: [] },
+  ],
+};
+
+// Which raw source each slide type draws on. Drives which card comes forward.
+const SOURCE_OF: Record<string, string> = {
+  'timeline-slide': 'doc',
+  'chart-slide': 'sheet',
+  'quote-slide': 'note',
+  'image-slide': 'library',
+};
+
+// Slide-type glyphs for the "add a slide" mock, in the same order as the
+// picker options in the dictionary. Schematic on purpose: this is a diagram of
+// a type picker, not a screenshot of one.
+const GLYPHS = [
+  // title
+  '<rect x="4" y="7" width="16" height="3.2" rx="1.6"/><rect x="4" y="13" width="9" height="2.4" rx="1.2"/>',
+  // timeline
+  '<path d="M3 13h18" stroke="currentColor" stroke-width="1.4" fill="none"/><circle cx="6" cy="13" r="2"/><circle cx="12" cy="13" r="2"/><circle cx="18" cy="13" r="2"/>',
+  // chart
+  '<rect x="4" y="12" width="3.6" height="7" rx="1"/><rect x="10.2" y="8" width="3.6" height="11" rx="1"/><rect x="16.4" y="5" width="3.6" height="14" rx="1"/>',
+  // quote
+  '<path d="M5 16c0-4 2-6.6 5-7.4l.6 1.8C9 11 8.4 11.9 8.4 13H11v5H5zm7.6 0c0-4 2-6.6 5-7.4l.6 1.8c-1.6.6-2.2 1.5-2.2 2.6H18.6v5h-6z"/>',
+  // image
+  '<rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="10.2" r="1.6"/><path d="M5.5 17.2l4.2-4.2 3 3 2.6-2.4 3.4 3.6z"/>',
+];
+
+// The alt text the image field holds, reused as the rendered slide's alt: the
+// accessibility claim on this page is that the field is the alt, so the demo
+// had better behave that way too.
+const libraryAlt = t.sources.find((s) => s.kind === 'library')?.assetAlt ?? '';
+
+// The slide a route produces is rendered from the same demo content as zone 3,
+// so the outcome under the tabs and the slide further down cannot drift apart.
+function demoFor(kind: 'timeline' | 'chart') {
+  return t.types.find((x) => x.id === `${kind}-slide`);
+}
+
+// The asset library holds photographs, so it shows photographs: colour fields
+// read as a wireframe of a picker rather than as somebody's actual library.
+// Unsplash License, credited in public/images/library/CREDITS.md. The first one
+// is the picked asset and is also what the image-slide renders, so it ships at
+// a larger size than the thumbnails.
+const TILES = [
+  '/images/library/stand-saturday-morning.jpg',
+  '/images/library/tray-of-glasses.jpg',
+  '/images/library/pitcher.jpg',
+  '/images/library/lemons-in-a-box.jpg',
+  '/images/library/hand-lettered-sign.jpg',
+  '/images/library/pouring-out.jpg',
+];
+---
+
+<div class="anatomy">
+  <div class="anatomy-inner">
+    <!-- ================= 1. raw input ================= -->
+    <div class="zone" data-reveal>
+      <p class="zone-label"><span class="zone-n">1</span>{t.sourcesLabel}</p>
+      <div class="sources" id="sources">
+        {
+          t.sources.map((src) => (
+            <article class="src" data-src={src.id}>
+              <header class="src-bar">
+                <span class="src-dots" aria-hidden="true">
+                  <i /><i /><i />
+                </span>
+                <span class="src-name">{src.name}</span>
+              </header>
+
+              {src.kind === 'doc' && (
+                <div class="src-doc">
+                  <h4>{src.heading}</h4>
+                  {(src.paragraphs ?? []).map((p) => (
+                    <p set:html={p} />
+                  ))}
+                </div>
+              )}
+
+              {src.kind === 'sheet' && (
+                <div class="src-sheet">
+                  <table>
+                    <tbody>
+                      {(src.rows ?? []).map((row, r) => (
+                        <tr class={r === 0 ? 'is-head' : ''}>
+                          <th scope="row">{r + 1}</th>
+                          {row.map((cell) => (
+                            <td set:html={cell} />
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {src.kind === 'note' && (
+                <div class="src-note">
+                  {(src.paragraphs ?? []).map((p) => (
+                    <p set:html={p} />
+                  ))}
+                </div>
+              )}
+
+              {src.kind === 'library' && (
+                <div class="src-library">
+                  <div class="tiles">
+                    {TILES.map((src, i) => (
+                      <span class={i === 0 ? 'tile is-picked' : 'tile'} data-span={i === 0 ? 'i1' : undefined}>
+                        <img src={src} alt="" loading="lazy" decoding="async" width="320" height="240" />
+                      </span>
+                    ))}
+                  </div>
+                  <p class="tile-meta">
+                    <b>{src.assetFile}</b>
+                    <span data-span="i2">{src.assetAlt}</span>
+                  </p>
+                </div>
+              )}
+
+              <footer class="src-caption">{src.caption}</footer>
+            </article>
+          ))
+        }
+      </div>
+      <p class="zone-note">{t.sourcesNote}</p>
+    </div>
+
+    <slot name="after-sources" />
+    <p class="flow" aria-hidden="true"><span class="flow-arrow"></span></p>
+
+    <!-- ================= 2. structuring ================= -->
+    <div class="zone" data-reveal>
+      <p class="zone-label"><span class="zone-n">2</span>{t.routesLabel}</p>
+      <p class="zone-lead">{t.routesLead}</p>
+
+      <div class="routes" role="tablist" aria-label={t.routesLabel}>
+        {
+          t.routes.map((r, i) => (
+            <button
+              type="button"
+              role="tab"
+              class="route"
+              data-route={r.id}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`route-body-${r.id}`}
+              id={`route-tab-${r.id}`}
+            >
+              <span class="route-label">{r.label}</span>
+              <span class="route-blurb">{r.blurb}</span>
+            </button>
+          ))
+        }
+      </div>
+
+      {
+        t.routes.map((r, i) => (
+          <div
+            class="surface"
+            id={`route-body-${r.id}`}
+            role="tabpanel"
+            aria-labelledby={`route-tab-${r.id}`}
+            data-route-body={r.id}
+            hidden={i !== 0}
+          >
+            <div class="scol">
+              <p class="scol-label">{r.leftLabel}</p>
+
+              {r.picker && (
+                <div class="mock">
+                  <p class="mock-bar">{r.picker.title}</p>
+                  <ul class="picks">
+                    {r.picker.options.map((opt, oi) => (
+                      <li class={oi === (r.picker?.chosen ?? -1) ? 'pick is-picked' : 'pick'}>
+                        <svg
+                          class="pick-glyph"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                          set:html={GLYPHS[oi] ?? ''}
+                        />
+                        {opt}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {r.system && (
+                <div class="mock">
+                  <p class="mock-bar">{r.system.name}</p>
+                  <ul class="syslines">
+                    {r.system.lines.map((l) => (
+                      <li>{l}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {r.chat && (
+                <div class="chat">
+                  {r.chat.map((m) => (
+                    <div class={m.self ? 'bub is-self' : 'bub'}>
+                      <span class="bub-who">{m.who}</span>
+                      <p>{m.text}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div class="scol">
+              <p class="scol-label">{r.rightLabel}</p>
+
+              {r.form && (
+                <div class="mock">
+                  <p class="mock-bar">{r.form.title}</p>
+                  <ul class="formrows">
+                    {r.form.fields.map((f) => (
+                      <li>
+                        <span class="form-key">{f.key}</span>
+                        <span class="form-val">{f.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p class="form-more">{r.form.more}</p>
+                </div>
+              )}
+
+              {r.code && <pre class="wire-code" set:html={r.code} />}
+
+              {r.wire && (
+                <ul class="wire">
+                  {r.wire.map((w) => (
+                    <li class={w.dir === '←' ? 'is-in' : 'is-out'}>
+                      <span class="wire-dir" aria-hidden="true">
+                        {w.dir}
+                      </span>
+                      <span set:html={w.text} />
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div class="result">
+              <p class="result-head">{r.result.label}</p>
+              <div class="result-slide">
+                <DemoSlide
+                  kind={r.result.kind}
+                  eyebrow={demoFor(r.result.kind)?.eyebrow}
+                  title={demoFor(r.result.kind)?.title}
+                  items={demoFor(r.result.kind)?.items}
+                  bars={
+                    r.result.extraBar
+                      ? [...(demoFor(r.result.kind)?.bars ?? []), r.result.extraBar]
+                      : demoFor(r.result.kind)?.bars
+                  }
+                  fresh={r.result.fresh}
+                />
+              </div>
+              <div class="result-side">
+                <p class="scol-label">{r.result.storedLabel}</p>
+                <pre class="stored" set:html={r.result.stored} />
+                <p class="surface-note" set:html={r.result.note} />
+              </div>
+            </div>
+          </div>
+        ))
+      }
+
+      <p class="gate">
+        <span class="gate-mark" aria-hidden="true"></span>
+        <span set:html={t.gateText} />
+      </p>
+    </div>
+
+    <slot name="after-routes" />
+    <p class="flow" aria-hidden="true"><span class="flow-arrow"></span></p>
+
+    <!-- ================= 3. the slide ================= -->
+    <div class="zone" data-reveal>
+      <p class="zone-label"><span class="zone-n">3</span>{t.recordLabel}</p>
+
+      <div class="controls">
+        <div class="ctl">
+          <p class="ctl-label">{t.typeLabel}</p>
+          <div class="seg" role="tablist" aria-label={t.typeLabel}>
+            {
+              t.types.map((type, i) => (
+                <button
+                  type="button"
+                  role="tab"
+                  data-type={type.id}
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                  aria-controls={`pane-${type.id}`}
+                  id={`tab-${type.id}`}
+                >
+                  {type.label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+        <div class="ctl">
+          <p class="ctl-label">{t.themeLabel}</p>
+          <div class="seg seg--theme" role="tablist" aria-label={t.themeLabel}>
+            {
+              t.themes.map((theme, i) => (
+                <button
+                  type="button"
+                  role="tab"
+                  data-theme={theme.id}
+                  aria-selected={i === 0 ? 'true' : 'false'}
+                >
+                  <span class="sw" style={`background:${theme.swatch}`} aria-hidden="true" />
+                  {theme.label}
+                </button>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-slide">
+          {
+            t.types.map((type, i) => (
+              <div
+                class="pane"
+                id={`pane-${type.id}`}
+                role="tabpanel"
+                aria-labelledby={`tab-${type.id}`}
+                data-pane={type.id}
+                hidden={i !== 0}
+              >
+                <div class="slide" data-slide>
+                  {type.eyebrow && <p class="slide-eyebrow">{type.eyebrow}</p>}
+
+                  {type.items && (
+                    <>
+                      <h4 class="slide-title" data-region="title">
+                        {type.title}
+                      </h4>
+                      <ol class="slide-tl" data-region="items">
+                        {type.items.map((it) => (
+                          <li>
+                            <span class="tl-date">{it.date}</span>
+                            <span class="tl-title">{it.title}</span>
+                          </li>
+                        ))}
+                      </ol>
+                    </>
+                  )}
+
+                  {type.bars && (
+                    <>
+                      <h4 class="slide-title" data-region="title">
+                        {type.title}
+                      </h4>
+                      <div class="slide-chart" data-region="data">
+                        {type.bars.map((b) => {
+                          const max = Math.max(1, ...type.bars!.map((x) => x.value));
+                          return (
+                            <div class="bar">
+                              <span class="bar-v">{b.value}</span>
+                              <span
+                                class="bar-fill"
+                                style={`height:${Math.round((b.value / max) * 100)}%`}
+                              />
+                              <span class="bar-l">{b.label}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+
+                  {type.quote && (
+                    <blockquote class="slide-quote">
+                      <p data-region="quote">{type.quote.text}</p>
+                      <footer>
+                        <span class="q-name" data-region="authorName">
+                          {type.quote.name}
+                        </span>
+                        <span class="q-role" data-region="authorTitle">
+                          {type.quote.role}
+                        </span>
+                      </footer>
+                    </blockquote>
+                  )}
+
+                  {type.image && (
+                    <>
+                      <h4 class="slide-title slide-title--sm" data-region="title">
+                        {type.title}
+                      </h4>
+                      <figure class="slide-img">
+                        <img
+                          class="slide-img-frame"
+                          data-region="image"
+                          src={TILES[0]}
+                          alt={libraryAlt}
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <figcaption data-region="caption">{type.image.caption}</figcaption>
+                      </figure>
+                    </>
+                  )}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="stage-side">
+          {
+            t.types.map((type, i) => (
+              <div class="side" data-side={type.id} hidden={i !== 0}>
+                <p class="ctl-label ctl-label--fields">
+                  {t.fieldsLabel}
+                  <span class="typeid">{type.id}</span>
+                </p>
+                <ul class="fieldlist">
+                  {(FIELDS[type.id] ?? []).map((f) => (
+                    <li class="field" data-field={f.key} data-spans={f.spans.join(',')} tabindex="0">
+                      <span class="field-key">{f.key}</span>
+                      <span class="field-type">{f.type}</span>
+                      <span class="field-cons">
+                        {f.required && <b class="req">required</b>}
+                        {f.ordered && <b class="ord">ordered</b>}
+                        {f.min != null && <span>min {f.min}</span>}
+                        {f.max != null && <span>max {f.max}</span>}
+                        {f.maxLen != null && <span>max {f.maxLen}</span>}
+                        {f.sub && <span>{f.sub}</span>}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <p class="claim" set:html={type.claim} />
+              </div>
+            ))
+          }
+          <p class="hint">{t.hint}</p>
+        </div>
+      </div>
+    </div>
+
+    <slot name="after-slide" />
+  </div>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('.anatomy');
+  if (root) {
+    const typeTabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-type]'));
+    const themeTabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-theme]'));
+    const routeTabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-route]'));
+    const panes = Array.from(root.querySelectorAll<HTMLElement>('[data-pane]'));
+    const sides = Array.from(root.querySelectorAll<HTMLElement>('[data-side]'));
+    const routeBodies = Array.from(root.querySelectorAll<HTMLElement>('[data-route-body]'));
+    const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-src]'));
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-slide]'));
+
+    // Which raw source each slide type draws on. Mirrors SOURCE_OF above.
+    const SOURCE_OF: Record<string, string> = {
+      'timeline-slide': 'doc',
+      'chart-slide': 'sheet',
+      'quote-slide': 'note',
+      'image-slide': 'library',
+    };
+
+    // Theme tokens. Only the alternates need declaring; the Deckyard theme is
+    // the stylesheet default, so switching back just clears the overrides.
+    const THEME_KEYS = [
+      '--t-bg',
+      '--t-ink',
+      '--t-accent',
+      '--t-head',
+      '--t-muted',
+      '--t-rule',
+      '--t-radius',
+      '--t-font-head',
+      '--t-font-body',
+      '--t-font-eye',
+      '--t-eye-ls',
+      '--t-node',
+      '--t-border',
+    ];
+    const THEMES: Record<string, Record<string, string>> = {
+      deckyard: {},
+      council: {
+        '--t-bg': '#ffffff',
+        '--t-ink': '#12233a',
+        '--t-accent': '#1f5fa8',
+        '--t-head': '#0d2a4d',
+        '--t-muted': '#5a6b7d',
+        '--t-rule': '#ccd8e4',
+        '--t-radius': '2px',
+        '--t-font-head': 'Arial, Helvetica, sans-serif',
+        '--t-font-body': 'Arial, Helvetica, sans-serif',
+        '--t-font-eye': 'Arial, Helvetica, sans-serif',
+        '--t-eye-ls': '0.2em',
+        '--t-node': '2px',
+        '--t-border': '1px solid #dee6ee',
+      },
+      editorial: {
+        '--t-bg': '#f8f2e7',
+        '--t-ink': '#241f18',
+        '--t-accent': '#9a3412',
+        '--t-head': '#1c1712',
+        '--t-muted': '#6b5f4c',
+        '--t-rule': '#dbcbad',
+        '--t-radius': '2px',
+        '--t-font-head': 'Georgia, "Times New Roman", serif',
+        '--t-font-body': 'Georgia, "Times New Roman", serif',
+        '--t-font-eye': 'var(--mono)',
+        '--t-eye-ls': '0.22em',
+        '--t-node': '50%',
+        '--t-border': '1px solid #e5d8bd',
+      },
+      studio: {
+        '--t-bg': '#111018',
+        '--t-ink': '#f3effa',
+        '--t-accent': '#57e0c8',
+        '--t-head': '#ffffff',
+        '--t-muted': '#9a91ad',
+        '--t-rule': '#2f2b3d',
+        '--t-radius': '12px',
+        '--t-font-eye': 'var(--mono)',
+        '--t-eye-ls': '0.18em',
+        '--t-node': '50%',
+        '--t-border': '1px solid #262336',
+      },
+    };
+
+    function select(list: HTMLButtonElement[], attr: string, value: string) {
+      list.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset[attr] === value)));
+    }
+
+    function showType(typeId: string) {
+      select(typeTabs, 'type', typeId);
+      panes.forEach((p) => {
+        p.hidden = p.dataset.pane !== typeId;
+      });
+      sides.forEach((s) => {
+        s.hidden = s.dataset.side !== typeId;
+      });
+      // Bring the source this type draws on forward, and mark its passages.
+      const srcId = SOURCE_OF[typeId];
+      cards.forEach((c) => c.classList.toggle('is-active', c.dataset.src === srcId));
+      markUsed(typeId);
+    }
+
+    function markUsed(typeId: string) {
+      const side = sides.find((s) => s.dataset.side === typeId);
+      const used = new Set<string>();
+      side?.querySelectorAll<HTMLElement>('.field').forEach((f) => {
+        (f.dataset.spans || '')
+          .split(',')
+          .filter(Boolean)
+          .forEach((id) => used.add(id));
+      });
+      root!.querySelectorAll<HTMLElement>('[data-span]').forEach((s) => {
+        s.classList.toggle('is-used', used.has(s.dataset.span || ''));
+      });
+    }
+
+    function applyTheme(themeId: string) {
+      select(themeTabs, 'theme', themeId);
+      const vars = THEMES[themeId] || {};
+      slides.forEach((slide) => {
+        THEME_KEYS.forEach((k) => slide.style.removeProperty(k));
+        Object.entries(vars).forEach(([k, v]) => slide.style.setProperty(k, v));
+      });
+    }
+
+    function showRoute(routeId: string) {
+      select(routeTabs, 'route', routeId);
+      routeBodies.forEach((b) => {
+        b.hidden = b.dataset.routeBody !== routeId;
+        b.classList.remove('is-switching');
+      });
+      // Let the element this route just added arrive rather than appear.
+      // Toggling the class off and back on restarts the animation; the reflow
+      // in between is what makes the restart stick.
+      const shown = routeBodies.find((b) => b.dataset.routeBody === routeId);
+      if (shown) {
+        void shown.offsetWidth;
+        shown.classList.add('is-switching');
+      }
+    }
+
+    function light(field: HTMLElement, on: boolean) {
+      const key = field.dataset.field;
+      const ids = (field.dataset.spans || '').split(',').filter(Boolean);
+      const pane = panes.find((p) => !p.hidden);
+
+      field.classList.toggle('is-lit', on);
+      // Some fields (alt, imageRole) drive no visible region: they exist for
+      // screen readers or for the renderer. Dimming the slide for those would
+      // just look broken, so only probe when there is something to point at.
+      const regions = Array.from(pane?.querySelectorAll<HTMLElement>('[data-region]') ?? []);
+      const hasRegion = regions.some((r) => r.dataset.region === key);
+      pane?.querySelector('.slide')?.classList.toggle('is-probing', on && hasRegion);
+      regions.forEach((r) => {
+        r.classList.toggle('is-lit', on && r.dataset.region === key);
+      });
+      root!.querySelectorAll<HTMLElement>('[data-span]').forEach((s) => {
+        s.classList.toggle('is-lit', on && ids.includes(s.dataset.span || ''));
+      });
+    }
+
+    typeTabs.forEach((tab) => tab.addEventListener('click', () => showType(tab.dataset.type || '')));
+    themeTabs.forEach((tab) =>
+      tab.addEventListener('click', () => applyTheme(tab.dataset.theme || ''))
+    );
+    routeTabs.forEach((tab) =>
+      tab.addEventListener('click', () => showRoute(tab.dataset.route || ''))
+    );
+
+    root.querySelectorAll<HTMLElement>('.field').forEach((field) => {
+      field.addEventListener('mouseenter', () => light(field, true));
+      field.addEventListener('mouseleave', () => light(field, false));
+      field.addEventListener('focus', () => light(field, true));
+      field.addEventListener('blur', () => light(field, false));
+    });
+
+    showType(typeTabs[0]?.dataset.type || '');
+  }
+</script>
+
+<style>
+  /* ---------- zones ---------- */
+  .zone {
+    margin-top: 2.5rem;
+  }
+  .zone-label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 0.9rem;
+  }
+  .zone-n {
+    display: grid;
+    place-items: center;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 50%;
+    background: var(--green);
+    color: var(--paper);
+    font-size: 0.62rem;
+    letter-spacing: 0;
+    flex: none;
+  }
+  .zone-lead {
+    max-width: 62ch;
+    margin: 0 0 1.2rem;
+    color: var(--ink-soft);
+  }
+  .zone-note {
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    color: var(--ink-mute);
+    margin: 1rem 0 0;
+  }
+
+  /* the step between zones */
+  .flow {
+    display: flex;
+    justify-content: center;
+    margin: 1.6rem 0 0;
+  }
+  .flow-arrow {
+    width: 1px;
+    height: 2.4rem;
+    background: linear-gradient(to bottom, transparent, var(--line) 30%, var(--green-bright));
+    position: relative;
+  }
+  .flow-arrow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    translate: -50% 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 7px solid var(--green-bright);
+  }
+
+  /* ---------- 1. raw sources ---------- */
+  .sources {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+  @media (max-width: 899px) {
+    .sources {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.7rem;
+    }
+  }
+  @media (max-width: 520px) {
+    .sources {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* A pile of things on a desk: each card sits at a slight angle and settles
+     upright when it is the one feeding the current slide type. */
+  .src {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    opacity: 0.55;
+    filter: saturate(0.5);
+    transition:
+      opacity var(--dur-component) var(--ease-out-quint),
+      rotate var(--dur-component) var(--ease-out-quint),
+      translate var(--dur-component) var(--ease-out-quint),
+      box-shadow var(--dur-component) var(--ease-out-quint),
+      filter var(--dur-component) var(--ease-out-quint);
+  }
+  .src:nth-child(1) { rotate: -1.4deg; }
+  .src:nth-child(2) { rotate: 0.9deg; }
+  .src:nth-child(3) { rotate: -0.6deg; }
+  .src:nth-child(4) { rotate: 1.6deg; }
+  .src.is-active {
+    opacity: 1;
+    rotate: 0deg;
+    translate: 0 -5px;
+    filter: none;
+    box-shadow: var(--shadow-md);
+    border-color: var(--brass);
+  }
+
+  .src-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 0.55rem;
+    background: var(--paper-warm);
+    border-bottom: 1px solid var(--line);
+    min-width: 0;
+  }
+  .src-dots {
+    display: flex;
+    gap: 0.16rem;
+    flex: none;
+  }
+  .src-dots i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .src-name {
+    font-family: var(--mono);
+    font-size: 0.53rem;
+    color: var(--ink-mute);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .src-caption {
+    padding: 0.4rem 0.6rem;
+    border-top: 1px solid var(--line);
+    background: var(--paper-warm);
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  /* word processor */
+  .src-doc {
+    padding: 0.75rem 0.8rem;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 0.66rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-height: 11.5rem;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 76%, transparent);
+    mask-image: linear-gradient(to bottom, #000 76%, transparent);
+  }
+  .src-doc h4 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 0.5rem;
+    line-height: 1.3;
+  }
+  .src-doc p {
+    margin: 0 0 0.55em;
+  }
+
+  /* spreadsheet */
+  .src-sheet {
+    padding: 0.5rem 0.4rem 0.7rem;
+  }
+  .src-sheet table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+  }
+  .src-sheet th {
+    width: 1.1rem;
+    color: var(--ink-mute);
+    font-weight: 400;
+    font-size: 0.52rem;
+    text-align: center;
+    background: var(--paper-warm);
+    border: 1px solid var(--line);
+  }
+  .src-sheet td {
+    padding: 0.22rem 0.35rem;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+  .src-sheet td:nth-child(3) {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+  .src-sheet tr.is-head td {
+    background: var(--paper-warm);
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  /* a loose note */
+  .src-note {
+    padding: 0.8rem 0.85rem;
+    background: #fdf6dc;
+    font-size: 0.7rem;
+    line-height: 1.62;
+    color: #4a4023;
+    min-height: 7rem;
+  }
+  .src-note p {
+    margin: 0 0 0.55em;
+  }
+  .src-note p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* image library */
+  .src-library {
+    padding: 0.6rem;
+  }
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.25rem;
+  }
+  .tile {
+    aspect-ratio: 4 / 3;
+    border-radius: 3px;
+    display: block;
+    overflow: hidden;
+    background: var(--paper-warm);
+  }
+  .tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .tile.is-picked {
+    outline: 2px solid var(--brass);
+    outline-offset: 1px;
+  }
+  .tile-meta {
+    margin: 0.55rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.53rem;
+    line-height: 1.5;
+    color: var(--ink-mute);
+  }
+  .tile-meta b {
+    display: block;
+    color: var(--ink-soft);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* passages that feed a field */
+  .anatomy :global([data-span]) {
+    border-radius: 3px;
+    padding: 0 1px;
+    transition:
+      background var(--dur-micro) ease,
+      box-shadow var(--dur-micro) ease,
+      color var(--dur-micro) ease;
+  }
+  .anatomy :global([data-span].is-used) {
+    box-shadow: inset 0 -1.5px 0 rgba(184, 134, 15, 0.55);
+  }
+  .anatomy :global([data-span].is-lit) {
+    background: var(--brass);
+    color: var(--green-deep);
+    box-shadow: none;
+  }
+  .tile.is-picked:global(.is-lit) {
+    background: none;
+    outline-color: var(--green-bright);
+    outline-width: 3px;
+  }
+
+  /* ---------- 2. structuring ---------- */
+  .routes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem;
+  }
+  @media (max-width: 700px) {
+    .routes {
+      grid-template-columns: 1fr;
+    }
+  }
+  .route {
+    text-align: left;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    cursor: pointer;
+    font-family: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 0.28rem;
+    transition:
+      border-color var(--dur-micro) ease,
+      background var(--dur-micro) ease;
+  }
+  .route:hover {
+    border-color: var(--green-bright);
+  }
+  .route[aria-selected='true'] {
+    border-color: var(--green);
+    background: var(--green-wash);
+    box-shadow: inset 0 -3px 0 var(--green);
+  }
+  .route-label {
+    font-family: var(--display);
+    font-variation-settings: 'wght' 620;
+    font-size: 0.98rem;
+    color: var(--ink);
+  }
+  .route-blurb {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--ink-soft);
+  }
+  /* The route panel shows only the surface: whoever is acting on the left,
+     the mechanism they reach for on the right. What they produce is not in
+     here - it is the record below, which never changes. */
+  /* an explicit display beats the UA rule for [hidden], so restate it */
+  .surface[hidden] {
+    display: none;
+  }
+  .surface {
+    display: grid;
+    gap: 1rem;
+    margin-top: 0.7rem;
+    padding: 1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--paper-warm);
+  }
+  @media (min-width: 760px) {
+    .surface {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem 1.4rem;
+    }
+    .surface-note {
+      grid-column: 1 / -1;
+    }
+  }
+  .scol {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  /* These labels carry the narrative - skip them and the panel is a pile of
+     boxes - so they are set as short prose rather than as a mono eyebrow, which
+     reads as an optional tag you may pass over. */
+  .scol-label {
+    font-family: var(--body);
+    font-size: 0.86rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    margin: 0 0 0.55rem;
+  }
+  .surface-note {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .surface-note :global(b) {
+    color: var(--ink);
+  }
+
+  /* a small window: the type picker, the filled form, the running system */
+  .mock {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .mock-bar {
+    margin: 0;
+    padding: 0.42rem 0.6rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper-warm);
+    font-family: var(--mono);
+    font-size: 0.56rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .picks {
+    list-style: none;
+    margin: 0;
+    padding: 0.45rem;
+    display: grid;
+    gap: 0.25rem;
+  }
+  .pick {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .pick.is-picked {
+    border-color: var(--green);
+    background: var(--green-wash);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .pick-glyph {
+    width: 17px;
+    height: 17px;
+    flex: none;
+    fill: currentColor;
+    color: var(--ink-mute);
+  }
+  .pick.is-picked .pick-glyph {
+    color: var(--green);
+  }
+
+  .formrows {
+    list-style: none;
+    margin: 0;
+    padding: 0.6rem 0.6rem 0.2rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .formrows li {
+    display: grid;
+    gap: 0.18rem;
+  }
+  .form-key {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    color: var(--ink-mute);
+  }
+  .form-val {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: var(--paper);
+    font-size: 0.8rem;
+    color: var(--ink);
+  }
+  .form-more {
+    margin: 0.55rem 0.6rem 0.7rem;
+    padding: 0.3rem 0.5rem;
+    border: 1px dashed var(--line);
+    border-radius: 5px;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--ink-mute);
+  }
+
+  .syslines {
+    list-style: none;
+    margin: 0;
+    padding: 0.6rem;
+    display: grid;
+    gap: 0.32rem;
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    color: var(--ink-soft);
+  }
+  .syslines li::before {
+    content: '· ';
+    color: var(--ink-mute);
+  }
+
+  .chat {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .bub {
+    max-width: 94%;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+  }
+  .bub.is-self {
+    justify-self: end;
+    background: var(--green-wash);
+    border-color: #cadbcf;
+  }
+  .bub-who {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.54rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 0.18rem;
+  }
+  .bub p {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+
+  /* the request a system sends, and the exchange an agent has to go through */
+  .wire-code {
+    margin: 0;
+    padding: 0.7rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    /* Wrap rather than scroll: a scrollbar under a four-line request is noise,
+       and nothing here is long enough to need one. */
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .wire-code :global(.k) { color: var(--brass); }
+  .wire-code :global(.s) { color: var(--green); }
+  .wire-code :global(.c) { color: var(--ink-mute); font-style: italic; }
+
+  .wire {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    overflow: hidden;
+  }
+  .wire li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .wire li:last-child {
+    border-bottom: 0;
+  }
+  .wire-dir {
+    color: var(--ink-mute);
+  }
+  .wire .is-in {
+    background: var(--green-wash);
+  }
+  .wire .is-in .wire-dir {
+    color: var(--green);
+  }
+  .wire :global(b) {
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  /* What comes out of this route. A tray of its own, bled to the panel edges
+     and tinted the same green the gate uses, so the eye reads two beats -
+     what happens, then what it produces - instead of four equal boxes. */
+  .result {
+    display: grid;
+    gap: 0.9rem;
+    margin: 0 -1rem -1rem;
+    padding: 1rem;
+    background: var(--green-wash);
+    border-top: 1px solid #cadbcf;
+    border-radius: 0 0 calc(var(--radius-sm) - 1px) calc(var(--radius-sm) - 1px);
+  }
+  @media (min-width: 760px) {
+    .result {
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 0.9rem 1.4rem;
+    }
+    .result-head {
+      grid-column: 1 / -1;
+    }
+  }
+  .result-head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0;
+    font-family: var(--display);
+    font-variation-settings: 'wght' 600;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+  /* The same diamond the gate uses, not a triangle: a bare downward triangle in
+     front of a heading reads as a disclosure control you can collapse. */
+  .result-head::before {
+    content: '';
+    flex: none;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 2px;
+    background: var(--green);
+    rotate: 45deg;
+  }
+  .result-side {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .stored {
+    margin: 0 0 0.75rem;
+    padding: 0.6rem 0.7rem;
+    background: var(--green-deep);
+    color: #d8e5dc;
+    border-radius: var(--radius-sm);
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .stored :global(.k) { color: var(--brass-soft); }
+  .stored :global(.s) { color: #9fd6b4; }
+
+  .gate {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    margin: 0.9rem 0 0;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--green);
+    border-radius: var(--radius-sm);
+    background: var(--green-wash);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .gate :global(b) {
+    color: var(--green);
+    font-family: var(--mono);
+    font-size: 0.85em;
+  }
+  .gate-mark {
+    flex: none;
+    width: 0.7rem;
+    height: 0.7rem;
+    margin-top: 0.35rem;
+    border-radius: 2px;
+    background: var(--green);
+    rotate: 45deg;
+  }
+
+  /* ---------- 3. the slide ---------- */
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.1rem 2rem;
+    margin-bottom: 1.2rem;
+  }
+  .ctl-label {
+    font-family: var(--mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 0.45rem;
+  }
+  .ctl-label--fields {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+  .typeid {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--green-bright);
+  }
+  .seg {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.28rem;
+    padding: 0.24rem;
+    background: var(--paper-warm);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    width: fit-content;
+    max-width: 100%;
+  }
+  .seg button {
+    font-family: var(--body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 0.4rem 0.78rem;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition:
+      background var(--dur-micro) ease,
+      color var(--dur-micro) ease;
+  }
+  .seg button:hover {
+    background: var(--sage);
+    color: var(--ink);
+  }
+  .seg button[aria-selected='true'] {
+    background: var(--green);
+    color: var(--paper);
+  }
+  .seg--theme button[aria-selected='true'] {
+    background: var(--ink);
+  }
+  .sw {
+    width: 11px;
+    height: 11px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    flex: none;
+  }
+
+  .stage {
+    display: grid;
+    gap: 1.4rem;
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .stage {
+      grid-template-columns: 1.55fr 1fr;
+      gap: 1.8rem;
+    }
+  }
+
+  /* The pane is the query container, not the slide. An element cannot query its
+     own container-type, so `cqi` in the slide's own declarations (its padding)
+     would otherwise resolve against the viewport instead of the slide width. */
+  .pane {
+    container-type: inline-size;
+  }
+
+  /* The slide carries its own palette, independent of the page: that is the
+     point of the house-style control. Tokens default to Deckyard's own. */
+  .slide {
+    --t-bg: var(--card);
+    --t-ink: var(--ink);
+    --t-accent: var(--green-bright);
+    --t-head: var(--ink);
+    --t-muted: var(--ink-mute);
+    --t-rule: var(--sage);
+    --t-radius: var(--radius-sm);
+    --t-font-head: var(--display);
+    --t-font-body: var(--body);
+    --t-font-eye: var(--mono);
+    --t-eye-ls: 0.14em;
+    --t-node: 50%;
+    --t-border: 1px solid var(--line);
+
+    aspect-ratio: 16 / 9;
+    container-type: inline-size;
+    background: var(--t-bg);
+    color: var(--t-ink);
+    font-family: var(--t-font-body);
+    border: var(--t-border);
+    border-radius: var(--t-radius);
+    box-shadow: var(--shadow-md);
+    padding: 5cqi;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition:
+      background var(--dur-component) ease,
+      color var(--dur-component) ease,
+      border-radius var(--dur-component) ease;
+  }
+  .slide [data-region] {
+    border-radius: 4px;
+    transition:
+      opacity var(--dur-micro) ease,
+      box-shadow var(--dur-micro) ease;
+  }
+  .slide.is-probing [data-region] {
+    opacity: 0.3;
+  }
+  .slide.is-probing [data-region].is-lit {
+    opacity: 1;
+    box-shadow: 0 0 0 2px var(--t-accent);
+  }
+  .slide-eyebrow {
+    font-family: var(--t-font-eye);
+    font-size: 1.9cqi;
+    letter-spacing: var(--t-eye-ls);
+    text-transform: uppercase;
+    color: var(--t-accent);
+    margin: 0;
+  }
+  .slide-title {
+    font-family: var(--t-font-head);
+    font-size: 5.2cqi;
+    font-variation-settings: 'wght' 620;
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    color: var(--t-head);
+    margin: 0.3em 0 0;
+  }
+  .slide-title--sm {
+    font-size: 3.6cqi;
+  }
+
+  .slide-tl {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    margin: auto 0 0;
+    padding: 2cqi 0 0;
+    position: relative;
+  }
+  .slide-tl::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(2.7cqi - 1px);
+    height: 2px;
+    background: var(--t-rule);
+  }
+  .slide-tl li {
+    position: relative;
+    padding-right: 2cqi;
+  }
+  .slide-tl li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1.4cqi;
+    height: 1.4cqi;
+    border-radius: var(--t-node);
+    background: var(--t-accent);
+    box-shadow: 0 0 0 0.7cqi var(--t-bg);
+  }
+  .tl-date {
+    display: block;
+    margin-top: 3.4cqi;
+    font-family: var(--t-font-eye);
+    font-size: 2.2cqi;
+    color: var(--t-accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .tl-title {
+    display: block;
+    margin-top: 0.5cqi;
+    font-family: var(--t-font-head);
+    font-variation-settings: 'wght' 600;
+    font-weight: 700;
+    font-size: 2.1cqi;
+    line-height: 1.15;
+    color: var(--t-head);
+  }
+
+  .slide-chart {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 4.5cqi;
+    margin-top: auto;
+    height: 58%;
+  }
+  /* Grid, not flex: the bar height percentage must resolve against a track that
+     excludes the value and the label, or the proportions get distorted. */
+  .bar {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+  }
+  .bar-v {
+    text-align: center;
+    padding-bottom: 0.8cqi;
+    font-family: var(--t-font-head);
+    font-variation-settings: 'wght' 620;
+    font-weight: 700;
+    font-size: 2.1cqi;
+    color: var(--t-head);
+    font-variant-numeric: tabular-nums;
+  }
+  .bar-fill {
+    align-self: end;
+    width: 100%;
+    background: var(--t-accent);
+    border-radius: 3px 3px 0 0;
+  }
+  .bar-l {
+    text-align: center;
+    padding-top: 1cqi;
+    font-family: var(--t-font-eye);
+    font-size: 1.7cqi;
+    color: var(--t-muted);
+    border-top: 1px solid var(--t-rule);
+  }
+
+  .slide-quote {
+    margin: auto 0;
+    padding: 0;
+  }
+  .slide-quote p {
+    font-family: var(--t-font-head);
+    font-variation-settings: 'wght' 600;
+    font-weight: 700;
+    font-size: 5.4cqi;
+    line-height: 1.18;
+    letter-spacing: -0.022em;
+    color: var(--t-head);
+    margin: 0;
+    max-width: 88%;
+  }
+  .slide-quote p::before { content: '\201C'; }
+  .slide-quote p::after { content: '\201D'; }
+  .slide-quote footer {
+    margin-top: 3cqi;
+    font-size: 1.9cqi;
+  }
+  .q-name {
+    display: block;
+    font-weight: 600;
+    color: var(--t-ink);
+  }
+  .q-role {
+    display: block;
+    color: var(--t-muted);
+  }
+
+  .slide-img {
+    margin: 2cqi 0 0;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+  .slide-img-frame {
+    flex: 1;
+    width: 100%;
+    object-fit: cover;
+    border-radius: calc(var(--t-radius) / 2);
+    min-height: 0;
+  }
+  .slide-img figcaption {
+    margin-top: 1.4cqi;
+    font-size: 1.7cqi;
+    color: var(--t-muted);
+    font-family: var(--t-font-eye);
+  }
+
+  /* ---------- field list ---------- */
+  .fieldlist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    overflow: hidden;
+  }
+  .field {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.2rem 0.7rem;
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    transition: background var(--dur-micro) ease;
+  }
+  .field:last-child {
+    border-bottom: 0;
+  }
+  .field:hover,
+  .field.is-lit {
+    background: var(--green-wash);
+  }
+  .field-key {
+    grid-column: 1;
+    grid-row: 1;
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .field-type {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    font-size: 0.62rem;
+    padding: 0.05rem 0.4rem;
+    border-radius: 4px;
+    border: 1px solid var(--line);
+    background: var(--paper-warm);
+    color: var(--ink-mute);
+  }
+  .field-cons {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem 0.6rem;
+    font-size: 0.64rem;
+    color: var(--ink-mute);
+  }
+  .field-cons .req {
+    color: #9a3412;
+    font-weight: 700;
+  }
+  .field-cons .ord {
+    color: var(--green-bright);
+    font-weight: 700;
+  }
+
+  .claim {
+    margin: 0.9rem 0 0;
+    padding: 0.8rem 0.95rem;
+    background: var(--green-wash);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .claim :global(b) {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    color: var(--green);
+  }
+  .hint {
+    margin: 0.9rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.64rem;
+    color: var(--ink-mute);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .src,
+    .slide,
+    .slide [data-region],
+    .seg button,
+    .field,
+    .anatomy :global([data-span]) {
+      transition: none;
+    }
+  }
+</style>
