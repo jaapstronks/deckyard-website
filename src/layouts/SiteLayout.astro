@@ -2,7 +2,15 @@
 import { ClientRouter } from 'astro:transitions';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
 import SiteFooter from '@/components/layout/SiteFooter.astro';
-import { ui, languages, getLangFromUrl, stripLangFromPath, localizePath, type Lang } from '@/i18n';
+import {
+  ui,
+  languages,
+  defaultLang,
+  getLangFromUrl,
+  stripLangFromPath,
+  localizePath,
+  type Lang,
+} from '@/i18n';
 import { ogImageForPath } from '@/lib/og/targets';
 import '@fontsource-variable/bricolage-grotesque';
 import '@fontsource-variable/funnel-sans';
@@ -16,9 +24,29 @@ interface Props {
   ogImage?: string;
   type?: 'website' | 'article';
   publishedTime?: string;
+  /**
+   * The locales this exact page exists in. Defaults to all of them, which is
+   * true for everything under [...locale]. A page that lives in one language
+   * only names it: a blog post (a Dutch post is its own file with its own
+   * Dutch slug, so the English URL will never exist) or an English-only demo.
+   */
+  locales?: Lang[];
+  /**
+   * Where the language switcher sends someone who picks a locale this page has
+   * no version in. Root-form path of the nearest page that does exist.
+   */
+  localeFallback?: string;
 }
 
-const { title, description, ogImage, type = 'website', publishedTime } = Astro.props;
+const {
+  title,
+  description,
+  ogImage,
+  type = 'website',
+  publishedTime,
+  locales,
+  localeFallback = '/',
+} = Astro.props;
 
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = ui[lang];
@@ -34,13 +62,24 @@ const resolvedOgImage =
   ogImage ?? (await ogImageForPath(currentPath)) ?? '/images/og/deckyard-og.png';
 const ogImageUrl = new URL(resolvedOgImage, siteUrl).href;
 
-// hreflang alternates: same page in every locale, plus x-default -> EN.
+// hreflang alternates: this page in the locales it was actually built for.
+// A set of one is not a set - a page with no counterpart gets no alternates at
+// all, rather than advertising a twin that 404s and breaking the reciprocity
+// Google expects both ways.
 const { path: logicalPath } = stripLangFromPath(currentPath);
-const alternates = (Object.keys(languages) as Lang[]).map((l) => ({
-  hreflang: l,
-  href: new URL(localizePath(logicalPath, l), siteUrl).href,
-}));
-const xDefaultHref = new URL(localizePath(logicalPath, 'en'), siteUrl).href;
+const pageLocales = locales ?? (Object.keys(languages) as Lang[]);
+const alternates =
+  pageLocales.length > 1
+    ? pageLocales.map((l) => ({
+        hreflang: l,
+        href: new URL(localizePath(logicalPath, l), siteUrl).href,
+      }))
+    : [];
+// x-default names the version to serve when no language matches, so it only
+// means anything while there is something to choose between.
+const xDefaultHref = pageLocales.includes(defaultLang)
+  ? new URL(localizePath(logicalPath, defaultLang), siteUrl).href
+  : undefined;
 
 const organizationSchema = {
   '@context': 'https://schema.org',
@@ -66,7 +105,11 @@ const organizationSchema = {
 
     <link rel="canonical" href={canonicalUrl} />
     {alternates.map((alt) => <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />)}
-    <link rel="alternate" hreflang="x-default" href={xDefaultHref} />
+    {
+      alternates.length > 0 && xDefaultHref && (
+        <link rel="alternate" hreflang="x-default" href={xDefaultHref} />
+      )
+    }
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -116,7 +159,12 @@ const organizationSchema = {
 
     <a class="skip-link" href="#main">{t.skipToContent}</a>
 
-    <SiteHeader currentPath={currentPath} lang={lang} />
+    <SiteHeader
+      currentPath={currentPath}
+      lang={lang}
+      locales={pageLocales}
+      localeFallback={localeFallback}
+    />
 
     <main id="main">
       <slot />

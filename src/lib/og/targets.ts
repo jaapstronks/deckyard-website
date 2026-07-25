@@ -125,6 +125,11 @@ async function collectTargets(): Promise<OgTarget[]> {
 
 // The collections are read once per build, not once per page: SiteLayout asks
 // for a lookup on every one of the ~150 pages it renders.
+//
+// Nothing invalidates this, which is what you want in a build and worth
+// knowing in `astro dev`: add or rename a post, or change its title, and the
+// card and the og:image link stay on the old value until the dev server
+// restarts. The page itself hot-reloads, so the two disagree until then.
 let cache: Promise<Map<string, CardInput>> | undefined;
 
 function targetMap(): Promise<Map<string, CardInput>> {

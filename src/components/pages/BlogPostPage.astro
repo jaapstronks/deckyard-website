@@ -28,6 +28,8 @@ const blogHref = localizePath('/blog/', lang);
   description={description ?? intro}
   type="article"
   publishedTime={pubDate.toISOString()}
+  locales={[lang]}
+  localeFallback="/blog/"
 >
   <div class="reading-progress" aria-hidden="true"></div>
 
