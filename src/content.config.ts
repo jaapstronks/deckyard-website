@@ -4,7 +4,9 @@ import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 
 const blog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: 'src/content/blog' }),
+  // Underscore-prefixed files are skipped, so `_template.md` can live next to
+  // the posts without becoming one.
+  loader: glob({ pattern: '**/[!_]*.md', base: 'src/content/blog' }),
   schema: z.object({
     title: z.string(),
     intro: z.string(),

@@ -37,7 +37,10 @@ const dateLabel = new Intl.DateTimeFormat(t.dateLocale, {
 ---
 
 <article
-  class:list={['post-card', { 'post-card--featured': featured }]}
+  class:list={[
+    'post-card',
+    { 'post-card--featured': featured, 'post-card--textonly': featured && !heroImage },
+  ]}
   data-reveal
   data-reveal-delay={revealDelay}
 >
@@ -55,7 +58,7 @@ const dateLabel = new Intl.DateTimeFormat(t.dateLocale, {
   }
   <div class="post-card-body">
     <p class="post-meta">
-      <span>{category}</span>
+      <span class="post-meta-cat">{category}</span>
       <time datetime={pubDate.toISOString()}>{dateLabel}</time>
     </p>
     <h3 transition:name={`post-title-${id}`}>
@@ -107,19 +110,31 @@ const dateLabel = new Intl.DateTimeFormat(t.dateLocale, {
     flex: 1;
   }
 
+  /* Category and date, one line when they fit. When they don't, the line has to
+     break *between* them: two wrapped strings sitting side by side read as a
+     broken two-column table. Flex line-breaking runs on max-content sizes, so
+     the date (nowrap, never shrinks) drops to its own line first, and only then
+     does the category shrink and wrap inside itself. */
   .post-meta {
     font-family: var(--mono);
     font-size: var(--step--3);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     color: var(--brass);
     margin-bottom: 12px;
     display: flex;
-    gap: 10px;
-    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 12px;
+    align-items: baseline;
+  }
+  .post-meta-cat {
+    flex: 0 1 auto;
+    min-width: 0;
   }
   .post-meta time {
+    flex: 0 0 auto;
+    white-space: nowrap;
     color: var(--ink-mute);
   }
 
@@ -182,6 +197,16 @@ const dateLabel = new Intl.DateTimeFormat(t.dateLocale, {
   }
   .post-card--featured p {
     font-size: 1.05rem;
+  }
+
+  /* A featured card with no hero image would otherwise leave the whole image
+     column empty. One column instead, with the copy held to a readable measure
+     rather than stretched across the full grid. */
+  .post-card--textonly {
+    grid-template-columns: 1fr;
+  }
+  .post-card--textonly .post-card-body {
+    max-width: var(--container-text);
   }
 
   /* This component owns its hover motion, so it owns the opt-out too. */
