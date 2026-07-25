@@ -590,7 +590,7 @@ export const ui: Record<Lang, Content> = {
               'updates the team library slide',
             ],
           },
-          code: '<span class="c">PUT /api/v1/presentations/{id}/slides/{slideId}</span>\n{\n  <span class="k">"type"</span>: <span class="s">"chart-slide"</span>,\n  <span class="k">"content"</span>: {\n    <span class="k">"chartType"</span>: <span class="s">"bar"</span>,\n    <span class="k">"data"</span>: <span class="s">"month,cups\\nJune,96\\nJuly,141\\nAugust,175\\nSeptember,188"</span>\n  }\n}',
+          code: '<span class="c">PUT /api/v1/presentations/{id}/slides/{slideId}</span>\n{\n  <span class="k">"type"</span>: <span class="s">"chart-slide"</span>,\n  <span class="k">"content"</span>: {\n    <span class="k">"chartType"</span>: <span class="s">"bar"</span>,\n    <span class="k">"data"</span>: <span class="s">"month,cups\\n…\\nAugust,175\\nSeptember,188"</span>\n  }\n}',
           result: {
             kind: 'chart',
             label: 'And this is the slide',
@@ -1066,7 +1066,7 @@ export const ui: Record<Lang, Content> = {
               'werkt de slide in de teambibliotheek bij',
             ],
           },
-          code: '<span class="c">PUT /api/v1/presentations/{id}/slides/{slideId}</span>\n{\n  <span class="k">"type"</span>: <span class="s">"chart-slide"</span>,\n  <span class="k">"content"</span>: {\n    <span class="k">"chartType"</span>: <span class="s">"bar"</span>,\n    <span class="k">"data"</span>: <span class="s">"maand,bekers\\njuni,96\\njuli,141\\naugustus,175\\nseptember,188"</span>\n  }\n}',
+          code: '<span class="c">PUT /api/v1/presentations/{id}/slides/{slideId}</span>\n{\n  <span class="k">"type"</span>: <span class="s">"chart-slide"</span>,\n  <span class="k">"content"</span>: {\n    <span class="k">"chartType"</span>: <span class="s">"bar"</span>,\n    <span class="k">"data"</span>: <span class="s">"maand,bekers\\n…\\naugustus,175\\nseptember,188"</span>\n  }\n}',
           result: {
             kind: 'chart',
             label: 'En dit is de slide',
