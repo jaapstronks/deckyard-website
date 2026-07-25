@@ -63,13 +63,18 @@ const max = Math.max(1, ...(bars ?? []).map((b) => b.value));
   <div class:list={['slide', `slide--${variant}`]} data-slide={interactive ? '' : undefined}>
     {eyebrow && <p class="slide-eyebrow">{eyebrow}</p>}
     {
+      /* A paragraph, not a heading. The title inside a rendered slide is the
+         slide's own copy, not a rung in this page's outline - and a page can
+         carry a dozen of these (one per route, one per slide type, one in the
+         homepage figure), which as headings pile a dozen phantom sections into
+         the structure anyone navigating by heading has to walk. */
       title && (
-        <h4
+        <p
           class:list={['slide-title', { 'slide-title--sm': !!image }]}
           data-region={region('title')}
         >
           {title}
-        </h4>
+        </p>
       )
     }
 
@@ -163,6 +168,11 @@ const max = Math.max(1, ...(bars ?? []).map((b) => b.value));
     --t-eye-ls: 0.14em;
     --t-node: 50%;
     --t-border: 1px solid var(--line);
+    /* The tint on whatever a route just added. It is real text on the slide's
+       own background, so it is a theme token like the rest rather than a fixed
+       brass: the one dark house style needs the bright end of the range where
+       the light ones need the dark end. */
+    --t-fresh: var(--brass-text);
 
     /* ---- type scale ----
        All in cqi (1% of the slide's own width), so a slide renders the same at
@@ -269,6 +279,7 @@ const max = Math.max(1, ...(bars ?? []).map((b) => b.value));
     font-weight: 700;
     line-height: 1.06;
     letter-spacing: -0.025em;
+    text-wrap: balance;
     color: var(--t-head);
   }
   .slide-title--sm {
@@ -435,13 +446,13 @@ const max = Math.max(1, ...(bars ?? []).map((b) => b.value));
      the new one" on a still page. */
   [data-fresh] .tl-date,
   [data-fresh] .bar-v {
-    color: var(--brass);
+    color: var(--t-fresh);
   }
   [data-fresh] .bar-fill {
-    background: var(--brass);
+    background: var(--t-fresh);
   }
   .slide-tl li[data-fresh]::before {
-    background: var(--brass);
+    background: var(--t-fresh);
   }
   :global(.surface.is-switching) [data-fresh] {
     animation: slide-arrive var(--dur-component) var(--ease-out-quint) both;
@@ -454,6 +465,17 @@ const max = Math.max(1, ...(bars ?? []).map((b) => b.value));
     to {
       opacity: 1;
       translate: 0 0;
+    }
+  }
+
+  /* Bars and timeline nodes are shapes filled with the theme's accent, and a
+     forced palette drops author backgrounds - the chart would read as an empty
+     frame with numbers floating over it. */
+  @media (forced-colors: active) {
+    .bar-fill,
+    .slide-tl li::before,
+    .slide-tl li[data-fresh]::before {
+      background: CanvasText;
     }
   }
 

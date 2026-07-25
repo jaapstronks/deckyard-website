@@ -38,6 +38,21 @@
     color: #fff;
   }
 
+  /* Text for screen readers only. Clipped rather than display:none or
+     visibility:hidden, both of which take it out of the accessibility tree
+     along with the pixels. */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
   /* ---------- Kicker + lead ---------- */
 
   .kicker {
@@ -194,11 +209,27 @@
 
     --note-fg: rgba(255, 255, 255, 0.6);
     --status-fg: var(--brass-soft);
+
+    /* The light-surface focus ring is the deep green, which all but disappears
+       here; the error red is 2.2:1 on this background. Both are tokens for
+       exactly this reason - flip them once and every component follows. */
+    --focus-ring: var(--brass-bright);
+    --error-fg: #ffb4a0;
   }
 
   .section-head {
     max-width: 760px;
     margin-bottom: var(--space-xl);
+  }
+  /* A section head reads at h2 size whatever level it carries: the level says
+     where it sits in the outline, not how big it is. */
+  .section-head-title {
+    font-size: var(--step-4);
+    font-variation-settings:
+      'opsz' 60,
+      'wght' 600;
+    letter-spacing: -0.02em;
+    color: var(--heading-fg);
   }
   .section-head--center {
     margin-inline: auto;
@@ -243,6 +274,21 @@
   .js [data-reveal].is-revealed {
     opacity: 1;
     translate: 0 0;
+  }
+
+  /* ---------- Forced colours ----------
+     Same split as reduced motion: this layer repairs what this layer owns.
+     A button whose only boundary is a background colour has no boundary once
+     the user's palette replaces it, so give it a real border to keep. */
+
+  @media (forced-colors: active) {
+    .btn {
+      border: 1px solid currentColor;
+    }
+    .kicker::before,
+    .kicker--center::after {
+      background: CanvasText;
+    }
   }
 
   /* ---------- Reduced motion ----------

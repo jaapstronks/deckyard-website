@@ -461,7 +461,7 @@ function demoFor(kind: 'timeline' | 'chart') {
     overflow-wrap: anywhere;
   }
   .step-data :global(.k) {
-    color: var(--brass);
+    color: var(--brass-text);
   }
   .step-data :global(.s) {
     color: var(--green);
@@ -556,7 +556,7 @@ function demoFor(kind: 'timeline' | 'chart') {
     overflow-wrap: anywhere;
   }
   .wire-code :global(.k) {
-    color: var(--brass);
+    color: var(--brass-text);
   }
   .wire-code :global(.s) {
     color: var(--green);
@@ -696,5 +696,19 @@ function demoFor(kind: 'timeline' | 'chart') {
     border-radius: 2px;
     background: var(--green);
     rotate: 45deg;
+  }
+
+  /* The selected route is a tint plus an inset underline, and forced colours
+     keeps neither. */
+  @media (forced-colors: active) {
+    .route[aria-selected='true'] {
+      border: 2px solid Highlight;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .route {
+      transition: none;
+    }
   }
 </style>

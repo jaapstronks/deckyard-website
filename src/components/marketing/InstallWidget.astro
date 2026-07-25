@@ -68,7 +68,12 @@ Tell me the URL to open and the edit/present links for anything you create.`;
         <span class="dot"></span><span class="dot"></span><span class="dot"></span>
       </div>
       <div class="terminal-body">
-        <pre class="terminal-code"><code><span class="term-prompt">$</span> {oneLiner}</code></pre>
+        <!-- A shell command, and a prompt for a coding agent below: English on
+             every locale, and nothing a machine translator should touch. -->
+        <pre
+          class="terminal-code"
+          lang="en"
+          translate="no"><code><span class="term-prompt">$</span> {oneLiner}</code></pre>
         <button
           class="copy-btn"
           type="button"
@@ -97,7 +102,10 @@ Tell me the URL to open and the edit/present links for anything you create.`;
         <span class="dot"></span><span class="dot"></span><span class="dot"></span>
       </div>
       <div class="terminal-body terminal-body--block">
-        <pre class="terminal-code terminal-code--prompt"><code>{agentPrompt}</code></pre>
+        <pre
+          class="terminal-code terminal-code--prompt"
+          lang="en"
+          translate="no"><code>{agentPrompt}</code></pre>
         <button
           class="copy-btn copy-btn--float"
           type="button"
@@ -172,6 +180,10 @@ Tell me the URL to open and the edit/present links for anything you create.`;
   }
 
   .terminal {
+    /* Dark plate inside a light section: the ring flips the way .section-dark
+       flips it. The copy button's ring is offset onto this background, not
+       onto the button, so this is the pairing that has to clear 3:1. */
+    --focus-ring: var(--brass-bright);
     background: var(--green-deep, #14281b);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-md);
@@ -297,6 +309,20 @@ Tell me the URL to open and the edit/present links for anything you create.`;
     opacity: 0.7;
   }
 
+  /* The active tab is a fill, which forced colours discards. */
+  @media (forced-colors: active) {
+    .install-tab.is-active {
+      border: 2px solid Highlight;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .install-tab,
+    .copy-btn {
+      transition: none;
+    }
+  }
+
   @media (max-width: 560px) {
     .terminal-body {
       flex-direction: column;
@@ -317,6 +343,8 @@ Tell me the URL to open and the edit/present links for anything you create.`;
 </style>
 
 <script>
+  import { initRovingIn } from '@/lib/roving';
+
   function initInstallWidget() {
     document.querySelectorAll<HTMLElement>('[data-install-widget]').forEach((widget) => {
       if (widget.dataset.bound) return;
@@ -368,6 +396,9 @@ Tell me the URL to open and the edit/present links for anything you create.`;
           }, 1800);
         });
       });
+
+      // Arrow keys across the tablist, so the role it claims is one it keeps.
+      initRovingIn(widget);
     });
   }
   initInstallWidget();

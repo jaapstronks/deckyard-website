@@ -26,6 +26,12 @@
     --brass: #b8860f;
     --brass-bright: #dba323;
     --brass-soft: #f0c84d;
+    /* Brass as *text*. The three above are fills, rules and outlines, where
+       3:1 is the bar; as small type on a light surface --brass only reaches
+       2.9:1 and --brass-bright 2.0:1, both a 1.4.3 failure. This one clears
+       4.5:1 on paper, paper-warm, card and green-wash. Reach for it whenever
+       brass is a colour on a glyph rather than on a shape. */
+    --brass-text: #8a6209;
 
     --sage: #dfe8e0;
     --line: #e2ddd3;
@@ -100,8 +106,15 @@
   :root {
     --heading-fg: inherit;
     --lead-fg: var(--ink-soft);
-    --kicker-fg: var(--brass);
+    --kicker-fg: var(--brass-text);
     --kicker-rule: var(--brass-bright);
+
+    /* The focus ring is a surface token like any other: it has to clear 3:1
+       against whatever it is drawn on (WCAG 1.4.11), and brass-bright only
+       manages 2:1 on paper. Dark surfaces flip it back to brass. */
+    --focus-ring: var(--green);
+
+    --error-fg: #9c3620;
 
     --link-fg: var(--green);
     --link-fg-hover: var(--green-bright);
