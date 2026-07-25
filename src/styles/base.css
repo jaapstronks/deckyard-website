@@ -11,6 +11,11 @@
 
   html {
     scroll-behavior: smooth;
+    /* The header is sticky, so anything the browser scrolls to - an anchor, or
+       a control it just moved focus to - lands underneath it unless the scroll
+       port reserves the header's height. WCAG 2.2 2.4.11 counts a focus ring
+       hidden behind sticky chrome as no focus ring at all. */
+    scroll-padding-top: calc(64px + var(--space-xs));
   }
 
   body {
@@ -87,8 +92,23 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--brass-bright);
+    outline: 3px solid var(--focus-ring);
     outline-offset: 2px;
     border-radius: 4px;
+  }
+
+  /* The skip link is the first thing a keyboard user lands on and it sits on
+     its own green plate, where the ring has to be the light one. */
+  .skip-link:focus-visible {
+    outline-color: var(--brass-bright);
+  }
+
+  /* Forced colours (Windows High Contrast and friends) throws away author
+     colours, so an outline painted in one of ours can vanish into the user's
+     palette. Hand the ring back to the system rather than fight for it. */
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline-color: Highlight;
+    }
   }
 }

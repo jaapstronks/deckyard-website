@@ -8,12 +8,20 @@ interface Props {
   kicker?: string;
   lead?: string;
   center?: boolean;
+  /**
+   * Heading level. A section head is an h2 under the page's h1, which is right
+   * for every page that opens with a hero. A page whose first section head *is*
+   * its opening - /embed-demo - passes 1, so the page has an h1 rather than
+   * starting its outline at level 2.
+   */
+  level?: 1 | 2;
   /** Wrap in a scroll-reveal. On by default: every current use reveals. */
   reveal?: boolean;
   revealDelay?: number;
 }
 
-const { title, kicker, lead, center = false, reveal = true, revealDelay } = Astro.props;
+const { title, kicker, lead, center = false, level = 2, reveal = true, revealDelay } = Astro.props;
+const Heading = `h${level}` as 'h1' | 'h2';
 ---
 
 <div
@@ -22,7 +30,7 @@ const { title, kicker, lead, center = false, reveal = true, revealDelay } = Astr
   data-reveal-delay={revealDelay}
 >
   {kicker && <p class:list={['kicker', { 'kicker--center': center }]}>{kicker}</p>}
-  <h2>{title}</h2>
+  <Heading class="section-head-title">{title}</Heading>
   {lead && <p class="lead">{lead}</p>}
   <slot />
 </div>

@@ -5,6 +5,7 @@
 // in zone 3, so the behaviour does not belong to either of them. It binds
 // against the shared .anatomy root and re-binds after view transitions.
 import { SOURCE_OF, THEME_KEYS, THEMES } from './data';
+import { initRovingIn } from '@/lib/roving';
 
 function initAnatomy() {
   const root = document.querySelector<HTMLElement>('.anatomy');
@@ -18,8 +19,16 @@ function initAnatomy() {
     const cards = Array.from(root.querySelectorAll<HTMLElement>('[data-src]'));
     const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-slide]'));
 
-    function select(list: HTMLButtonElement[], attr: string, value: string) {
-      list.forEach((btn) => btn.setAttribute('aria-selected', String(btn.dataset[attr] === value)));
+    // The two tablists say aria-selected; the house-style picker is a
+    // radiogroup (it selects one of N without revealing a panel), and a radio
+    // says aria-checked.
+    function select(
+      list: HTMLButtonElement[],
+      attr: string,
+      value: string,
+      state = 'aria-selected'
+    ) {
+      list.forEach((btn) => btn.setAttribute(state, String(btn.dataset[attr] === value)));
     }
 
     function showType(typeId: string) {
@@ -51,7 +60,7 @@ function initAnatomy() {
     }
 
     function applyTheme(themeId: string) {
-      select(themeTabs, 'theme', themeId);
+      select(themeTabs, 'theme', themeId, 'aria-checked');
       const vars = THEMES[themeId] || {};
       slides.forEach((slide) => {
         THEME_KEYS.forEach((k) => slide.style.removeProperty(k));
@@ -113,6 +122,7 @@ function initAnatomy() {
     });
 
     showType(typeTabs[0]?.dataset.type || '');
+    initRovingIn(root);
   }
 }
 

@@ -102,6 +102,9 @@ const organizationSchema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <!-- The site has one surface, a light one. Saying so keeps a browser in
+         dark mode from rendering form controls and scrollbars dark against it. -->
+    <meta name="color-scheme" content="light" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -170,7 +173,11 @@ const organizationSchema = {
       localeFallback={localeFallback}
     />
 
-    <main id="main">
+    <!-- tabindex="-1" so the skip link actually moves focus here. Following a
+         fragment scrolls the viewport but only focuses the target if it can
+         take focus; without it the next Tab goes back to the header the link
+         was there to skip. -->
+    <main id="main" tabindex="-1">
       <slot />
     </main>
 

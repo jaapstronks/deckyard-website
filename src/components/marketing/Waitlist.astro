@@ -38,11 +38,15 @@ const label = buttonLabel ?? t.button;
       required
       placeholder={t.placeholder}
       autocomplete="email"
+      aria-describedby={`${id}-note`}
     />
     <button class="btn btn-primary" type="submit">{label}</button>
   </form>
-  <p class="waitlist-status" data-waitlist-status hidden aria-live="polite"></p>
-  <p class="waitlist-note">{t.note}</p>
+  <!-- role="status" as well as aria-live: the two are equivalent on paper, but
+       a region that carries the role is announced far more reliably by older
+       screen readers than a bare aria-live attribute. -->
+  <p class="waitlist-status" data-waitlist-status hidden role="status" aria-live="polite"></p>
+  <p class="waitlist-note" id={`${id}-note`}>{t.note}</p>
 </div>
 
 <script>
@@ -110,8 +114,12 @@ const label = buttonLabel ?? t.button;
       border-color var(--dur-micro) ease,
       box-shadow var(--dur-micro) ease;
   }
+  /* The border swap and the soft ring are the house treatment; the outline is
+     the accessible one and is deliberately not suppressed here. This block
+     used to open with `outline: none`, and because component styles outrank
+     every layer that also cancelled the global :focus-visible ring - on a dark
+     section the remaining tint is 0.18 alpha, which is not an indicator. */
   .waitlist-form input[type='email']:focus {
-    outline: none;
     border-color: var(--field-focus-border);
     box-shadow: 0 0 0 4px var(--field-focus-ring);
   }
@@ -130,8 +138,10 @@ const label = buttonLabel ?? t.button;
     margin-top: 12px;
     color: var(--status-fg);
   }
+  /* Hard-coded, this was 2.2:1 on the dark section the form usually sits on.
+     --error-fg is the token that flips with the surface (see primitives.css). */
   .waitlist-status[data-state='error'] {
-    color: #9c3620;
+    color: var(--error-fg);
   }
 
   /* Honeypot + visually-hidden label. */

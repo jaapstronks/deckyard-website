@@ -31,9 +31,12 @@ const t = ui[lang].anatomy;
             <span class="src-name">{src.name}</span>
           </header>
 
+          {/* The heading of a *simulated* document, not of this page: styled
+              as one, marked up as the paragraph it is, so it does not enter the
+              page outline three levels below the section it sits in. */}
           {src.kind === 'doc' && (
             <div class="src-doc">
-              <h4>{src.heading}</h4>
+              <p class="src-doc-title">{src.heading}</p>
               {(src.paragraphs ?? []).map((p) => (
                 <p set:html={p} />
               ))}
@@ -43,13 +46,21 @@ const t = ui[lang].anatomy;
           {src.kind === 'sheet' && (
             <div class="src-sheet">
               <table>
+                {/* The card's own title bar is decoration; a screen reader
+                    reaching the table announces "table" and nothing else
+                    without this. */}
+                <caption class="sr-only">{src.caption}</caption>
                 <tbody>
                   {(src.rows ?? []).map((row, r) => (
                     <tr class={r === 0 ? 'is-head' : ''}>
-                      <th scope="row">{r + 1}</th>
-                      {row.map((cell) => (
-                        <td set:html={cell} />
-                      ))}
+                      <th class="src-sheet-n" scope="row">
+                        {r + 1}
+                      </th>
+                      {row.map((cell) =>
+                        // Row 0 is the sheet's header row - the spreadsheet
+                        // chrome draws it as a cell, but it names the column.
+                        r === 0 ? <th scope="col" set:html={cell} /> : <td set:html={cell} />
+                      )}
                     </tr>
                   ))}
                 </tbody>
@@ -257,7 +268,7 @@ const t = ui[lang].anatomy;
     -webkit-mask-image: linear-gradient(to bottom, #000 76%, transparent);
     mask-image: linear-gradient(to bottom, #000 76%, transparent);
   }
-  .src-doc h4 {
+  .src-doc-title {
     font-family: Georgia, 'Times New Roman', serif;
     font-size: 0.82rem;
     font-weight: 700;
@@ -279,7 +290,8 @@ const t = ui[lang].anatomy;
     font-family: var(--mono);
     font-size: 0.68rem;
   }
-  .src-sheet th {
+  /* The row-number gutter: a row header, the way a spreadsheet's is. */
+  .src-sheet-n {
     width: 1.2rem;
     color: var(--ink-mute);
     font-weight: 400;
@@ -288,16 +300,19 @@ const t = ui[lang].anatomy;
     background: var(--paper-warm);
     border: 1px solid var(--line);
   }
-  .src-sheet td {
+  .src-sheet td,
+  .src-sheet th[scope='col'] {
     padding: 0.3rem 0.4rem;
     border: 1px solid var(--line);
     color: var(--ink-soft);
+    text-align: left;
   }
-  .src-sheet td:nth-child(3) {
+  .src-sheet td:nth-child(3),
+  .src-sheet th[scope='col']:nth-child(3) {
     text-align: right;
     font-variant-numeric: tabular-nums;
   }
-  .src-sheet tr.is-head td {
+  .src-sheet tr.is-head th[scope='col'] {
     background: var(--paper-warm);
     color: var(--ink);
     font-weight: 700;

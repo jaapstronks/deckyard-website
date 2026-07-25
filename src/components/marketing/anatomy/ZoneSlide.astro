@@ -41,14 +41,17 @@ const libraryAlt = t.sources.find((s) => s.kind === 'library')?.assetAlt ?? '';
     </div>
     <div class="ctl">
       <p class="ctl-label">{t.themeLabel}</p>
-      <div class="seg seg--theme" role="tablist" aria-label={t.themeLabel}>
+      <!-- A radiogroup, not a tablist: picking a house style restyles the slide
+           already on screen, it does not reveal a panel. A tab that controls
+           nothing is a promise to a screen reader that no markup keeps. -->
+      <div class="seg seg--theme" role="radiogroup" aria-label={t.themeLabel}>
         {
           t.themes.map((theme, i) => (
             <button
               type="button"
-              role="tab"
+              role="radio"
               data-theme={theme.id}
-              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-checked={i === 0 ? 'true' : 'false'}
             >
               <span class="sw" style={`background:${theme.swatch}`} aria-hidden="true" />
               {theme.label}
@@ -183,11 +186,12 @@ const libraryAlt = t.sources.find((s) => s.kind === 'library')?.assetAlt ?? '';
     background: var(--sage);
     color: var(--ink);
   }
-  .seg button[aria-selected='true'] {
+  .seg button[aria-selected='true'],
+  .seg button[aria-checked='true'] {
     background: var(--green);
     color: var(--paper);
   }
-  .seg--theme button[aria-selected='true'] {
+  .seg--theme button[aria-checked='true'] {
     background: var(--ink);
   }
   .sw {
@@ -297,6 +301,18 @@ const libraryAlt = t.sources.find((s) => s.kind === 'library')?.assetAlt ?? '';
     font-family: var(--mono);
     font-size: 0.64rem;
     color: var(--ink-mute);
+  }
+
+  /* Both segmented controls say "picked" with a fill, which forced colours
+     replaces with the user's own background. Give the state a border it keeps. */
+  @media (forced-colors: active) {
+    .seg button[aria-selected='true'],
+    .seg button[aria-checked='true'] {
+      border: 2px solid Highlight;
+    }
+    .field.is-lit {
+      outline: 2px solid Highlight;
+    }
   }
 
   /* The slide's own motion opts out inside Slide.astro; these two are this

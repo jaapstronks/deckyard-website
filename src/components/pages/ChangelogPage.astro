@@ -52,10 +52,15 @@ const entries = await Promise.all(
 
             <div class="changelog-content">
               <header class="changelog-head">
-                <a class="changelog-version" href={`#${release.anchor}`}>
-                  <span class="changelog-num">v{release.data.version}</span>
-                  {release.data.latest && <span class="changelog-latest">{t.latestBadge}</span>}
-                </a>
+                {/* The version names the release, so it is the release's
+                    heading - and the rung the ### inside each release body
+                    needs above it. Without one the page went h1 -> h3. */}
+                <h2 class="changelog-version-h">
+                  <a class="changelog-version" href={`#${release.anchor}`}>
+                    <span class="changelog-num">v{release.data.version}</span>
+                    {release.data.latest && <span class="changelog-latest">{t.latestBadge}</span>}
+                  </a>
+                </h2>
                 <p class="changelog-meta">
                   {release.data.tag && <span class="changelog-tag">{release.data.tag}</span>}
                   <time datetime={release.data.date.toISOString()}>{release.dateLabel}</time>
@@ -142,6 +147,15 @@ const entries = await Promise.all(
     justify-content: space-between;
     gap: 8px 16px;
   }
+  /* The heading is the wrapper; everything it looks like is on the link and
+     the number inside it, so the h2's own defaults are cleared. */
+  .changelog-version-h {
+    margin: 0;
+    font-size: inherit;
+    font-variation-settings: normal;
+    letter-spacing: normal;
+    line-height: inherit;
+  }
   .changelog-version {
     display: inline-flex;
     align-items: center;
@@ -180,7 +194,7 @@ const entries = await Promise.all(
     color: var(--ink-mute);
   }
   .changelog-tag {
-    color: var(--brass);
+    color: var(--brass-text);
   }
 
   .changelog-summary {
@@ -199,7 +213,7 @@ const entries = await Promise.all(
     font-size: 0.78rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--brass);
+    color: var(--brass-text);
     margin: 28px 0 10px;
   }
   .changelog-body :global(h3:first-child) {

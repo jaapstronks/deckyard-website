@@ -115,6 +115,7 @@ export const THEME_KEYS = [
   '--t-eye-ls',
   '--t-node',
   '--t-border',
+  '--t-fresh',
 ];
 export const THEMES: Record<string, Record<string, string>> = {
   deckyard: {},
@@ -160,5 +161,7 @@ export const THEMES: Record<string, Record<string, string>> = {
     '--t-eye-ls': '0.18em',
     '--t-node': '50%',
     '--t-border': '1px solid #262336',
+    // The only dark house style, so the only one that needs the bright brass.
+    '--t-fresh': '#dba323',
   },
 };
