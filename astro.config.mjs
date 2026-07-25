@@ -24,22 +24,12 @@ export default defineConfig({
             src: 'https://analytics.dreamkit.eu/js/script.js',
           },
         },
-        // Default social-share image for docs pages (Starlight omits og:image otherwise)
-        {
-          tag: 'meta',
-          attrs: {
-            property: 'og:image',
-            content: 'https://deckyard.eu/images/deckyard-editor-preview.png',
-          },
-        },
-        {
-          tag: 'meta',
-          attrs: {
-            name: 'twitter:image',
-            content: 'https://deckyard.eu/images/deckyard-editor-preview.png',
-          },
-        },
       ],
+      // Starlight has no per-page og:image, only one static entry in `head`.
+      // The override gives each docs page the card generated for its own path.
+      components: {
+        Head: './src/components/starlight/Head.astro',
+      },
       logo: {
         light: './src/assets/deckyard-mark.svg',
         dark: './src/assets/deckyard-mark-dark.svg',

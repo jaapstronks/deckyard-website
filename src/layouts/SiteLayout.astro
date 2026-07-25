@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 import SiteHeader from '@/components/layout/SiteHeader.astro';
 import SiteFooter from '@/components/layout/SiteFooter.astro';
 import { ui, languages, getLangFromUrl, stripLangFromPath, localizePath, type Lang } from '@/i18n';
+import { ogImageForPath } from '@/lib/og/targets';
 import '@fontsource-variable/bricolage-grotesque';
 import '@fontsource-variable/funnel-sans';
 import '@fontsource/space-mono';
@@ -17,13 +18,7 @@ interface Props {
   publishedTime?: string;
 }
 
-const {
-  title,
-  description,
-  ogImage = '/images/og/deckyard-og.png',
-  type = 'website',
-  publishedTime,
-} = Astro.props;
+const { title, description, ogImage, type = 'website', publishedTime } = Astro.props;
 
 const lang: Lang = getLangFromUrl(Astro.url);
 const t = ui[lang];
@@ -31,7 +26,13 @@ const currentPath = Astro.url.pathname;
 
 const siteUrl = 'https://deckyard.eu';
 const canonicalUrl = new URL(currentPath, siteUrl).href;
-const ogImageUrl = new URL(ogImage, siteUrl).href;
+
+// Share image, in order: whatever the page asked for, else the card generated
+// for this exact route, else the hand-made homepage card. Pages never have to
+// know a card exists - adding one in src/lib/og/targets.ts is enough.
+const resolvedOgImage =
+  ogImage ?? (await ogImageForPath(currentPath)) ?? '/images/og/deckyard-og.png';
+const ogImageUrl = new URL(resolvedOgImage, siteUrl).href;
 
 // hreflang alternates: same page in every locale, plus x-default -> EN.
 const { path: logicalPath } = stripLangFromPath(currentPath);
