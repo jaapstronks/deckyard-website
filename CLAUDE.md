@@ -258,6 +258,30 @@ Other rules:
 - Structural data (slide-type field vocabularies, theme tokens) is **not** copy:
   it lives beside the component, e.g. `components/marketing/anatomy/data.ts`.
 
+## Release notes (`/changelog`)
+
+The public changelog is **hand-written**, not a mirror of `deckyard/CHANGELOG.md`.
+The generated changelog is a commit list; this one is written for someone who
+runs Deckyard and is deciding whether to update. Nothing in the build reads the
+core repo's tags, so a release only reaches the site when someone writes it.
+
+- One file per language per version, named after the version:
+  `src/content/releases/en/1.3.0.md` and `.../nl/1.3.0.md`. Start from
+  `src/content/releases/_template.md` (underscore-prefixed, so the glob skips it).
+- **`latest: true` moves.** Exactly one release carries it per language; take it
+  off the previous version in the same commit.
+- Order is date-first, version as the tiebreaker (`src/lib/releases.ts`), because
+  two versions can share a date and the collection's own order is alphabetical.
+- Source material is the core repo's `CHANGELOG.md` section for the tag plus the
+  GitHub Release. `refactor`/`chore`/`docs`/`test` commits are not release-note
+  material.
+- These are outgoing editorial copy in **both** languages: no em dashes.
+
+**How a release gets here.** `deckyard`'s `merge-housekeeping` skill (section C)
+notices at re-arm that a tag was cut and files a briefing to this repo; a session
+that starts here writes the notes and closes it. So the trigger lives with the
+release, and the copy stays hand-written.
+
 ## Key Files
 
 - `astro.config.mjs` - Starlight config, sidebar structure
