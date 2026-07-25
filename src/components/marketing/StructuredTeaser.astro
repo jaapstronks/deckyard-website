@@ -7,9 +7,11 @@
 // section it reads as two grey rectangles with an arrow between them. Here the
 // slide carries real content and the field names point at the regions they own.
 //
-// The content is borrowed from the anatomy dictionary, so this is literally the
-// slide you meet again on the explainer page.
+// The content is borrowed from the anatomy dictionary and rendered by the same
+// Slide component, so this is literally the slide you meet again on the
+// explainer page - not a lookalike that can drift away from it.
 import { ui, localizePath, type Lang } from '@/i18n';
+import Slide from '@/components/ui/Slide.astro';
 
 interface Props {
   lang: Lang;
@@ -45,22 +47,12 @@ const NOTES = [
 
     <figure class="teaser-art" data-reveal data-reveal-delay="120">
       <div class="ta-frame">
-        <div class="ta-shell">
-          <div class="ta-slide">
-            <p class="ta-eyebrow">{timeline?.eyebrow}</p>
-            <h3 class="ta-title">{timeline?.title}</h3>
-            <ol class="ta-tl">
-              {
-                MOMENTS.map((m) => (
-                  <li>
-                    <span class="ta-date">{m.date}</span>
-                    <span class="ta-moment">{m.title}</span>
-                  </li>
-                ))
-              }
-            </ol>
-          </div>
-        </div>
+        <Slide
+          variant="figure"
+          eyebrow={timeline?.eyebrow}
+          title={timeline?.title}
+          items={MOMENTS}
+        />
 
         <ul class="ta-notes">
           {
@@ -126,98 +118,6 @@ const NOTES = [
       grid-template-columns: 1fr 7.5rem;
       align-items: stretch;
     }
-  }
-
-  /* The shell is the query container, not the slide: an element cannot query
-     its own container-type, so `cqi` in the slide's own padding would resolve
-     against the viewport instead of the slide width. min-width keeps the
-     timeline's long words from pushing the grid track wider than its share. */
-  .ta-shell {
-    container-type: inline-size;
-    min-width: 0;
-  }
-
-  /* The slide keeps its own quiet palette: the point of the picture is that a
-     slide carries fields, not colours. */
-  .ta-slide {
-    aspect-ratio: 16 / 9;
-    container-type: inline-size;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-md);
-    padding: 5.5cqi;
-    display: flex;
-    flex-direction: column;
-  }
-  .ta-eyebrow {
-    margin: 0;
-    font-family: var(--mono);
-    font-size: 2.4cqi;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--green-bright);
-  }
-  .ta-title {
-    margin: 0.35em 0 0;
-    font-family: var(--display);
-    font-variation-settings: 'wght' 620;
-    font-weight: 700;
-    font-size: 6.4cqi;
-    line-height: 1.06;
-    letter-spacing: -0.025em;
-    color: var(--ink);
-  }
-  .ta-tl {
-    list-style: none;
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 1fr;
-    margin: auto 0 0;
-    padding: 2.4cqi 0 0;
-    position: relative;
-  }
-  .ta-tl::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: calc(3.1cqi - 1px);
-    height: 2px;
-    background: var(--sage);
-  }
-  .ta-tl li {
-    position: relative;
-    padding-right: 2.4cqi;
-  }
-  .ta-tl li::before {
-    content: '';
-    position: absolute;
-    top: 2.4cqi;
-    left: 0;
-    width: 1.6cqi;
-    height: 1.6cqi;
-    border-radius: 50%;
-    background: var(--green-bright);
-    box-shadow: 0 0 0 0.8cqi var(--card);
-  }
-  .ta-date {
-    display: block;
-    margin-top: 4.6cqi;
-    font-family: var(--mono);
-    font-size: 3cqi;
-    color: var(--green-bright);
-    font-variant-numeric: tabular-nums;
-  }
-  .ta-moment {
-    display: block;
-    margin-top: 0.7cqi;
-    font-family: var(--display);
-    font-variation-settings: 'wght' 600;
-    font-weight: 700;
-    font-size: 2.7cqi;
-    line-height: 1.15;
-    color: var(--ink);
   }
 
   /* the field names, pointing back at the regions they own */

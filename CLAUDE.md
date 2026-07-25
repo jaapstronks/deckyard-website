@@ -28,7 +28,10 @@ Marketing website and user documentation for Deckyard.
 - `src/components/`
   - `layout/` - site frame + page structure: `SiteHeader`, `SiteFooter`,
     `LanguageSwitcher`, `Section`, `SectionHead`, `PageHero`
-  - `ui/` - small reusable elements: `Button`, `DeckyardMark`, `DeckEmbed`
+  - `ui/` - small reusable elements: `Button`, `DeckyardMark`, `DeckEmbed`,
+    and `Slide` (the one 16:9 slide renderer - the explainer's big slide, the
+    outcome under each route and the homepage figure are all this component,
+    told apart only by a `variant`)
   - `marketing/` - page sections that sell, incl. `anatomy/` (the explainer)
   - `blog/` - `BlogCard`
   - `pages/` - the page bodies (`HomePage`, `StructuredPage`, ...), each driven

@@ -5,6 +5,7 @@
 // record the slide actually is; hovering a field lights the region it drives.
 import { ui, type Lang } from '@/i18n';
 import { FIELDS, TILES } from './data';
+import Slide from '@/components/ui/Slide.astro';
 
 interface Props {
   lang: Lang;
@@ -70,81 +71,19 @@ const libraryAlt = t.sources.find((s) => s.kind === 'library')?.assetAlt ?? '';
             data-pane={type.id}
             hidden={i !== 0}
           >
-            <div class="slide" data-slide>
-              {type.eyebrow && <p class="slide-eyebrow">{type.eyebrow}</p>}
-
-              {type.items && (
-                <>
-                  <h4 class="slide-title" data-region="title">
-                    {type.title}
-                  </h4>
-                  <ol class="slide-tl" data-region="items">
-                    {type.items.map((it) => (
-                      <li>
-                        <span class="tl-date">{it.date}</span>
-                        <span class="tl-title">{it.title}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </>
-              )}
-
-              {type.bars && (
-                <>
-                  <h4 class="slide-title" data-region="title">
-                    {type.title}
-                  </h4>
-                  <div class="slide-chart" data-region="data">
-                    {type.bars.map((b) => {
-                      const max = Math.max(1, ...type.bars!.map((x) => x.value));
-                      return (
-                        <div class="bar">
-                          <span class="bar-v">{b.value}</span>
-                          <span
-                            class="bar-fill"
-                            style={`height:${Math.round((b.value / max) * 100)}%`}
-                          />
-                          <span class="bar-l">{b.label}</span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </>
-              )}
-
-              {type.quote && (
-                <blockquote class="slide-quote">
-                  <p data-region="quote">{type.quote.text}</p>
-                  <footer>
-                    <span class="q-name" data-region="authorName">
-                      {type.quote.name}
-                    </span>
-                    <span class="q-role" data-region="authorTitle">
-                      {type.quote.role}
-                    </span>
-                  </footer>
-                </blockquote>
-              )}
-
-              {type.image && (
-                <>
-                  <h4 class="slide-title slide-title--sm" data-region="title">
-                    {type.title}
-                  </h4>
-                  <figure class="slide-img">
-                    <img
-                      class="slide-img-frame"
-                      data-region="image"
-                      src={TILES[0]}
-                      alt={libraryAlt}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <figcaption data-region="caption">{type.image.caption}</figcaption>
-                  </figure>
-                </>
-              )}
-            </div>
+            <Slide
+              interactive
+              eyebrow={type.eyebrow}
+              title={type.title}
+              items={type.items}
+              bars={type.bars}
+              quote={type.quote}
+              image={
+                type.image
+                  ? { src: TILES[0], alt: libraryAlt, caption: type.image.caption }
+                  : undefined
+              }
+            />
           </div>
         ))
       }
@@ -182,8 +121,6 @@ const libraryAlt = t.sources.find((s) => s.kind === 'library')?.assetAlt ?? '';
     </div>
   </div>
 </div>
-
-<slot name="after-slide" />
 
 <style>
   /* ---------- 3. the slide ---------- */
@@ -273,229 +210,11 @@ const libraryAlt = t.sources.find((s) => s.kind === 'library')?.assetAlt ?? '';
     }
   }
 
-  /* The pane is the query container, not the slide. An element cannot query its
-   own container-type, so `cqi` in the slide's own declarations (its padding)
-   would otherwise resolve against the viewport instead of the slide width. */
-  .pane {
-    container-type: inline-size;
-  }
-
-  /* The slide carries its own palette, independent of the page: that is the
-   point of the house-style control. Tokens default to Deckyard's own. */
-  .slide {
-    --t-bg: var(--card);
-    --t-ink: var(--ink);
-    --t-accent: var(--green-bright);
-    --t-head: var(--ink);
-    --t-muted: var(--ink-mute);
-    --t-rule: var(--sage);
-    --t-radius: var(--radius-sm);
-    --t-font-head: var(--display);
-    --t-font-body: var(--body);
-    --t-font-eye: var(--mono);
-    --t-eye-ls: 0.14em;
-    --t-node: 50%;
-    --t-border: 1px solid var(--line);
-
-    aspect-ratio: 16 / 9;
-    container-type: inline-size;
-    background: var(--t-bg);
-    color: var(--t-ink);
-    font-family: var(--t-font-body);
-    border: var(--t-border);
-    border-radius: var(--t-radius);
-    box-shadow: var(--shadow-md);
-    padding: 5cqi;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition:
-      background var(--dur-component) ease,
-      color var(--dur-component) ease,
-      border-radius var(--dur-component) ease;
-  }
-  .slide [data-region] {
-    border-radius: 4px;
-    transition:
-      opacity var(--dur-micro) ease,
-      box-shadow var(--dur-micro) ease;
-  }
-  .slide.is-probing [data-region] {
-    opacity: 0.3;
-  }
-  .slide.is-probing [data-region].is-lit {
-    opacity: 1;
-    box-shadow: 0 0 0 2px var(--t-accent);
-  }
-  .slide-eyebrow {
-    font-family: var(--t-font-eye);
-    font-size: 1.9cqi;
-    letter-spacing: var(--t-eye-ls);
-    text-transform: uppercase;
-    color: var(--t-accent);
-    margin: 0;
-  }
-  .slide-title {
-    font-family: var(--t-font-head);
-    font-size: 5.2cqi;
-    font-variation-settings: 'wght' 620;
-    font-weight: 700;
-    line-height: 1.06;
-    letter-spacing: -0.025em;
-    color: var(--t-head);
-    margin: 0.3em 0 0;
-  }
-  .slide-title--sm {
-    font-size: 3.6cqi;
-  }
-
-  .slide-tl {
-    list-style: none;
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 1fr;
-    margin: auto 0 0;
-    padding: 2cqi 0 0;
-    position: relative;
-  }
-  .slide-tl::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: calc(2.7cqi - 1px);
-    height: 2px;
-    background: var(--t-rule);
-  }
-  .slide-tl li {
-    position: relative;
-    padding-right: 2cqi;
-  }
-  .slide-tl li::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 1.4cqi;
-    height: 1.4cqi;
-    border-radius: var(--t-node);
-    background: var(--t-accent);
-    box-shadow: 0 0 0 0.7cqi var(--t-bg);
-  }
-  .tl-date {
-    display: block;
-    margin-top: 3.4cqi;
-    font-family: var(--t-font-eye);
-    font-size: 2.2cqi;
-    color: var(--t-accent);
-    font-variant-numeric: tabular-nums;
-  }
-  .tl-title {
-    display: block;
-    margin-top: 0.5cqi;
-    font-family: var(--t-font-head);
-    font-variation-settings: 'wght' 600;
-    font-weight: 700;
-    font-size: 2.1cqi;
-    line-height: 1.15;
-    color: var(--t-head);
-  }
-
-  .slide-chart {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: 1fr;
-    gap: 4.5cqi;
-    margin-top: auto;
-    height: 58%;
-  }
-  /* Grid, not flex: the bar height percentage must resolve against a track that
-   excludes the value and the label, or the proportions get distorted. */
-  .bar {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    height: 100%;
-  }
-  .bar-v {
-    text-align: center;
-    padding-bottom: 0.8cqi;
-    font-family: var(--t-font-head);
-    font-variation-settings: 'wght' 620;
-    font-weight: 700;
-    font-size: 2.1cqi;
-    color: var(--t-head);
-    font-variant-numeric: tabular-nums;
-  }
-  .bar-fill {
-    align-self: end;
-    width: 100%;
-    background: var(--t-accent);
-    border-radius: 3px 3px 0 0;
-  }
-  .bar-l {
-    text-align: center;
-    padding-top: 1cqi;
-    font-family: var(--t-font-eye);
-    font-size: 1.7cqi;
-    color: var(--t-muted);
-    border-top: 1px solid var(--t-rule);
-  }
-
-  .slide-quote {
-    margin: auto 0;
-    padding: 0;
-  }
-  .slide-quote p {
-    font-family: var(--t-font-head);
-    font-variation-settings: 'wght' 600;
-    font-weight: 700;
-    font-size: 5.4cqi;
-    line-height: 1.18;
-    letter-spacing: -0.022em;
-    color: var(--t-head);
-    margin: 0;
-    max-width: 88%;
-  }
-  .slide-quote p::before {
-    content: '\201C';
-  }
-  .slide-quote p::after {
-    content: '\201D';
-  }
-  .slide-quote footer {
-    margin-top: 3cqi;
-    font-size: 1.9cqi;
-  }
-  .q-name {
-    display: block;
-    font-weight: 600;
-    color: var(--t-ink);
-  }
-  .q-role {
-    display: block;
-    color: var(--t-muted);
-  }
-
-  .slide-img {
-    margin: 2cqi 0 0;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-  }
-  .slide-img-frame {
-    flex: 1;
-    width: 100%;
-    object-fit: cover;
-    border-radius: calc(var(--t-radius) / 2);
-    min-height: 0;
-  }
-  .slide-img figcaption {
-    margin-top: 1.4cqi;
-    font-size: 1.7cqi;
-    color: var(--t-muted);
-    font-family: var(--t-font-eye);
-  }
+  /* The slide itself is components/ui/Slide.astro: same object as the outcome
+     under each route in zone 2 and the illustration on the homepage, so it is
+     rendered in one place. This zone only owns the two controls beside it and
+     the field list, which is what makes the slide the subject rather than an
+     illustration. */
 
   /* ---------- field list ---------- */
   .fieldlist {
@@ -580,10 +299,9 @@ const libraryAlt = t.sources.find((s) => s.kind === 'library')?.assetAlt ?? '';
     color: var(--ink-mute);
   }
 
-  /* Type/theme switching and the field probe are this zone's motion. */
+  /* The slide's own motion opts out inside Slide.astro; these two are this
+     component's. */
   @media (prefers-reduced-motion: reduce) {
-    .slide,
-    .slide [data-region],
     .seg button,
     .field {
       transition: none;

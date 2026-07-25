@@ -5,7 +5,7 @@
 // scheduled job appending last month's figure yields a chart, not a timeline.
 import { ui, type Lang } from '@/i18n';
 import { GLYPHS } from './data';
-import DemoSlide from '@/components/marketing/DemoSlide.astro';
+import Slide from '@/components/ui/Slide.astro';
 
 interface Props {
   lang: Lang;
@@ -150,8 +150,8 @@ function demoFor(kind: 'timeline' | 'chart') {
         <div class="result">
           <p class="result-head">{r.result.label}</p>
           <div class="result-slide">
-            <DemoSlide
-              kind={r.result.kind}
+            <Slide
+              variant="outcome"
               eyebrow={demoFor(r.result.kind)?.eyebrow}
               title={demoFor(r.result.kind)?.title}
               items={demoFor(r.result.kind)?.items}
