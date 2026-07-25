@@ -4,18 +4,30 @@ import { languages, stripLangFromPath, localizePath, type Lang } from '@/i18n';
 interface Props {
   currentPath: string;
   ariaLabel: string;
+  /** Locales this page exists in. Anything else routes to the fallback. */
+  locales: Lang[];
+  /** Root-form path to send a locale that has no version of this page. */
+  localeFallback: string;
 }
-const { currentPath, ariaLabel } = Astro.props;
+const { currentPath, ariaLabel, locales, localeFallback } = Astro.props;
 
 // Resolve the logical (root-form) path once, then build the URL per locale so
 // the switcher lands on the same page in the other language.
+//
+// Not every page has a counterpart everywhere: a blog post exists in the one
+// language it was written in, and its Dutch sibling is a separate post with a
+// separate slug. Rather than link to a URL that was never built, those locales
+// go to the nearest page that does exist - the blog index, or home. Every
+// language stays in the menu, so the switcher does not quietly change shape
+// from page to page.
 const { path, lang: active } = stripLangFromPath(currentPath);
+const here = new Set(locales);
 
 const entries = (Object.keys(languages) as Lang[]).map((lang) => ({
   lang,
   code: lang.toUpperCase(),
   name: languages[lang],
-  href: localizePath(path, lang),
+  href: localizePath(here.has(lang) ? path : localeFallback, lang),
   current: lang === active,
 }));
 ---
@@ -92,17 +104,25 @@ const entries = (Object.keys(languages) as Lang[]).map((lang) => ({
 </details>
 
 <script>
-  // Close the language dropdown on outside-click or Escape. Re-bind after each
-  // view transition so the behaviour survives client-side navigation.
+  // Close the language dropdown on outside-click or Escape.
+  //
+  // Outside-click has to listen on document, so it is bound once here at module
+  // scope and finds the open dropdown at event time. Binding it per element
+  // instead would leak a listener on every client-side navigation: ClientRouter
+  // swaps in a fresh <details>, the guard below sees an unbound element, and the
+  // old closure keeps a detached node alive for the rest of the session.
+  // Escape is bound on the element, which is replaced along with it.
+  document.addEventListener('click', (event) => {
+    document.querySelectorAll<HTMLDetailsElement>('[data-lang-switch][open]').forEach((el) => {
+      if (!el.contains(event.target as Node)) el.open = false;
+    });
+  });
+
   function initLangSwitch() {
-    const details = document.querySelectorAll<HTMLDetailsElement>('[data-lang-switch]');
-    details.forEach((el) => {
+    document.querySelectorAll<HTMLDetailsElement>('[data-lang-switch]').forEach((el) => {
       if (el.dataset.bound) return;
       el.dataset.bound = 'true';
 
-      document.addEventListener('click', (event) => {
-        if (el.open && !el.contains(event.target as Node)) el.open = false;
-      });
       el.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
           el.open = false;
