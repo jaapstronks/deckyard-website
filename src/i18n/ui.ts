@@ -173,18 +173,21 @@ export interface Content {
 
     // --- zone 2: structuring it ---
     //
-    // Every route has the same two-column shape: on the left the world of
-    // whoever is acting, on the right the mechanism they reach for. The record
-    // they all produce is deliberately NOT in here - it sits below the tabs and
-    // never changes, because that sameness is the entire argument. Showing a
-    // different JSON blob per tab used to read as "by hand means typing JSON".
+    // Every route has the same three-part shape: on the left the world of
+    // whoever is acting, on the right the mechanism they reach for, and below
+    // both the slide that comes out of it, with the element this route just
+    // added marked and animated in.
+    //
+    // The routes deliberately do NOT all produce the same slide. A scheduled
+    // job appending last month's figure is a chart, not a timeline; pretending
+    // otherwise to make the JSON match would be a nicer diagram about a product
+    // that does not exist.
     routes: {
       id: string;
       label: string;
       blurb: string;
       leftLabel: string;
       rightLabel: string;
-      note: string; // one line under the panel; may contain <b>
       // left column - exactly one of these
       picker?: { title: string; options: string[]; chosen: number }; // hand
       system?: { name: string; lines: string[] }; // api
@@ -193,9 +196,18 @@ export interface Content {
       form?: { title: string; fields: { key: string; value: string }[]; more: string }; // hand
       code?: string; // api; HTML with .k/.s/.c spans
       wire?: { dir: string; text: string }[]; // mcp; text may contain <b>
+      // what comes out: which demo slide to render, which element is new, and
+      // the record fragment that element is stored as
+      result: {
+        kind: 'timeline' | 'chart';
+        label: string;
+        fresh: number;
+        extraBar?: { label: string; value: number };
+        storedLabel: string;
+        stored: string; // HTML with .k/.s spans
+        note: string; // may contain <b>
+      };
     }[];
-    recordCaption: string;
-    recordNote: string;
     gateText: string; // may contain <b>
 
     // --- zone 3: the slide ---
@@ -532,42 +544,62 @@ export const ui: Record<Lang, Content> = {
 
       routesLabel: 'Turning it into structure',
       routesLead:
-        'This is the step everyone skips over. It can happen three ways, and the point is not which one you pick: it is that all three have to arrive at the same record.',
+        'This is the step everyone skips over. It can happen three ways, and the point is not which one you pick: it is that all three end up with a slide that is stored as data, and all three are checked against the same slide type.',
       routes: [
         {
           id: 'hand',
           label: 'By hand',
-          blurb: 'Someone opens the editor, picks a type and fills in the fields.',
-          leftLabel: 'Add a slide',
-          rightLabel: 'Fill in the fields',
+          blurb: 'Someone picks a type and fills it in, on the slide or in the fields.',
+          leftLabel: 'Pick a type',
+          rightLabel: 'Fill in the moment',
           picker: {
             title: 'New slide',
             options: ['Title', 'Timeline', 'Chart', 'Quote', 'Image'],
             chosen: 1,
           },
           form: {
-            title: 'Timeline · moment 1 of 4',
+            title: 'Timeline · moment 4 of 4',
             fields: [
-              { key: 'date', value: '2021' },
-              { key: 'title', value: 'Constituted by resolution' },
-              { key: 'text', value: 'By resolution of the household.' },
+              { key: 'date', value: '2025' },
+              { key: 'title', value: 'Trading resumed' },
+              { key: 'text', value: 'Under revised governance.' },
             ],
             more: '+ add moment',
           },
-          note: 'No JSON, no drawing on a canvas. The form <b>is</b> the slide type, and the editor writes the record underneath.',
+          result: {
+            kind: 'timeline',
+            label: 'And this is the slide',
+            fresh: 3,
+            storedLabel: 'Stored as',
+            stored:
+              '{ <span class="k">"date"</span>: <span class="s">"2025"</span>, <span class="k">"title"</span>: <span class="s">"Trading resumed"</span> }',
+            note: 'You can type that moment straight onto the slide or into the fields, whichever you prefer. The difference with a drawing tool is not where you type: it is what is kept. A drawing tool keeps a text box that happens to read 2025. This keeps a moment that <b>has</b> a date. And because the type knows how a timeline should look, it is laid out for you.',
+          },
         },
         {
           id: 'api',
           label: 'Through the API',
-          blurb: 'A script or a business system posts the slide. No one retypes a table.',
+          blurb: 'A system keeps a slide up to date. Nobody retypes last month.',
           leftLabel: 'What is running',
           rightLabel: 'What it sends',
           system: {
-            name: 'reporting-service',
-            lines: ['every monday, 06:00', 'four rows from the register', 'no human in the loop'],
+            name: 'monthly-figures.job',
+            lines: [
+              'first monday of the month, 06:00',
+              'reads last month from the register',
+              'updates the team library slide',
+            ],
           },
-          code: '<span class="c">POST /api/presentations/:id/slides</span>\n{\n  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,\n  <span class="k">"content"</span>: { <span class="k">"items"</span>: [ … ] }\n}',
-          note: 'A slide the system may not save is a slide a person may not save either. <b>Same check, same rules.</b>',
+          code: '<span class="c">PUT /api/v1/presentations/{id}/slides/{slideId}</span>\n{\n  <span class="k">"type"</span>: <span class="s">"chart-slide"</span>,\n  <span class="k">"content"</span>: {\n    <span class="k">"chartType"</span>: <span class="s">"bar"</span>,\n    <span class="k">"data"</span>: <span class="s">"month,cups\\nJune,96\\nJuly,141\\nAugust,175\\nSeptember,188"</span>\n  }\n}',
+          result: {
+            kind: 'chart',
+            label: 'And this is the slide',
+            fresh: 3,
+            extraBar: { label: 'September', value: 188 },
+            storedLabel: 'Stored as',
+            stored: '<span class="k">"data"</span>: <span class="s">"… August,175\\nSeptember,188"</span>',
+            note: 'The figures are a column in the record, so a job can append to them. The slide sits in the team library, which means the next deck that pulls it in already has last month in it. And the write goes through the same validation a person does: <b>a chart the editor would refuse, the API refuses too.</b>',
+          },
         },
         {
           id: 'mcp',
@@ -594,12 +626,17 @@ export const ui: Record<Lang, Content> = {
             },
             { dir: '→', text: 'add_slide({ type: "timeline-slide", … })' },
           ],
-          note: 'The agent cannot invent a layout, because there is no layout to invent. It can only ask what exists and fill it in.',
+          result: {
+            kind: 'timeline',
+            label: 'And this is the slide',
+            fresh: 3,
+            storedLabel: 'Stored as',
+            stored:
+              '{ <span class="k">"date"</span>: <span class="s">"2025"</span>, <span class="k">"title"</span>: <span class="s">"Trading resumed"</span> }',
+            note: 'The agent cannot invent a layout, because there is no layout to invent. It asks what exists, gets told what a timeline needs, and fills that in. <b>The result is on style before anyone has looked at it.</b>',
+          },
         },
       ],
-      recordCaption: 'And in all three cases, this is what gets stored',
-      recordNote:
-        'The same record, byte for byte. Which route it came in through leaves no trace in it.',
       gateText:
         'All three arrive at the same gate: the record is checked against its slide type. What a person may not save, an integration may not save either, and the other way round. <b>That is where the control lives</b> - not in doing it by hand.',
 
@@ -983,42 +1020,62 @@ export const ui: Record<Lang, Content> = {
 
       routesLabel: 'Er structuur van maken',
       routesLead:
-        'Dit is de stap waar iedereen overheen leest. Het kan op drie manieren, en het punt is niet welke je kiest: het is dat alle drie bij hetzelfde record moeten uitkomen.',
+        'Dit is de stap waar iedereen overheen leest. Het kan op drie manieren, en het punt is niet welke je kiest: het is dat er in alle drie de gevallen een slide uitkomt die als data is opgeslagen, en dat alle drie tegen hetzelfde slidetype worden gecontroleerd.',
       routes: [
         {
           id: 'hand',
           label: 'Met de hand',
-          blurb: 'Iemand opent de editor, kiest een type en vult de velden in.',
-          leftLabel: 'Slide toevoegen',
-          rightLabel: 'De velden invullen',
+          blurb: 'Iemand kiest een type en vult het in, op de slide of in de velden.',
+          leftLabel: 'Kies een type',
+          rightLabel: 'Vul het moment in',
           picker: {
             title: 'Nieuwe slide',
             options: ['Titel', 'Tijdlijn', 'Grafiek', 'Citaat', 'Beeld'],
             chosen: 1,
           },
           form: {
-            title: 'Tijdlijn · moment 1 van 4',
+            title: 'Tijdlijn · moment 4 van 4',
             fields: [
-              { key: 'date', value: '2021' },
-              { key: 'title', value: 'Opgericht bij besluit' },
-              { key: 'text', value: 'Bij besluit van het huishouden.' },
+              { key: 'date', value: '2025' },
+              { key: 'title', value: 'Exploitatie hervat' },
+              { key: 'text', value: 'Onder herzien bestuur.' },
             ],
             more: '+ moment toevoegen',
           },
-          note: 'Geen JSON, geen tekenen op een canvas. Het formulier <b>is</b> het slidetype, en de editor schrijft er het record onder.',
+          result: {
+            kind: 'timeline',
+            label: 'En dit is de slide',
+            fresh: 3,
+            storedLabel: 'Opgeslagen als',
+            stored:
+              '{ <span class="k">"date"</span>: <span class="s">"2025"</span>, <span class="k">"title"</span>: <span class="s">"Exploitatie hervat"</span> }',
+            note: 'Je kunt dat moment gewoon op de slide intikken of in de velden, net wat je prettiger vindt. Het verschil met een tekenprogramma zit niet in waar je typt, maar in wat er bewaard blijft. Een tekenprogramma bewaart een tekstvak waar toevallig 2025 in staat. Dit bewaart een moment dat een datum <b>heeft</b>. En omdat het type weet hoe een tijdlijn eruit hoort te zien, is de opmaak al voor je gedaan.',
+          },
         },
         {
           id: 'api',
           label: 'Via de API',
-          blurb: 'Een script of bedrijfssysteem stuurt de slide. Niemand tikt een tabel over.',
+          blurb: 'Een systeem houdt een slide bij. Niemand tikt vorige maand over.',
           leftLabel: 'Wat er draait',
           rightLabel: 'Wat het stuurt',
           system: {
-            name: 'reporting-service',
-            lines: ['elke maandag, 06:00', 'vier regels uit het register', 'geen mens in de lus'],
+            name: 'maandcijfers.job',
+            lines: [
+              'eerste maandag van de maand, 06:00',
+              'leest vorige maand uit het register',
+              'werkt de slide in de teambibliotheek bij',
+            ],
           },
-          code: '<span class="c">POST /api/presentations/:id/slides</span>\n{\n  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,\n  <span class="k">"content"</span>: { <span class="k">"items"</span>: [ … ] }\n}',
-          note: 'Een slide die het systeem niet mag opslaan, mag een mens ook niet opslaan. <b>Dezelfde controle, dezelfde regels.</b>',
+          code: '<span class="c">PUT /api/v1/presentations/{id}/slides/{slideId}</span>\n{\n  <span class="k">"type"</span>: <span class="s">"chart-slide"</span>,\n  <span class="k">"content"</span>: {\n    <span class="k">"chartType"</span>: <span class="s">"bar"</span>,\n    <span class="k">"data"</span>: <span class="s">"maand,bekers\\njuni,96\\njuli,141\\naugustus,175\\nseptember,188"</span>\n  }\n}',
+          result: {
+            kind: 'chart',
+            label: 'En dit is de slide',
+            fresh: 3,
+            extraBar: { label: 'september', value: 188 },
+            storedLabel: 'Opgeslagen als',
+            stored: '<span class="k">"data"</span>: <span class="s">"… augustus,175\\nseptember,188"</span>',
+            note: 'De cijfers zijn een kolom in het record, dus een job kan er iets aan toevoegen. De slide staat in de teambibliotheek, dus de volgende presentatie die hem ophaalt heeft vorige maand er al in staan. En die schrijfactie gaat door dezelfde validatie als die van een mens: <b>een grafiek die de editor weigert, weigert de API ook.</b>',
+          },
         },
         {
           id: 'mcp',
@@ -1045,12 +1102,17 @@ export const ui: Record<Lang, Content> = {
             },
             { dir: '→', text: 'add_slide({ type: "timeline-slide", … })' },
           ],
-          note: 'De agent kan geen opmaak verzinnen, want er valt geen opmaak te verzinnen. Hij kan alleen vragen wat er bestaat en dat invullen.',
+          result: {
+            kind: 'timeline',
+            label: 'En dit is de slide',
+            fresh: 3,
+            storedLabel: 'Opgeslagen als',
+            stored:
+              '{ <span class="k">"date"</span>: <span class="s">"2025"</span>, <span class="k">"title"</span>: <span class="s">"Exploitatie hervat"</span> }',
+            note: 'De agent kan geen opmaak verzinnen, want er valt geen opmaak te verzinnen. Hij vraagt wat er bestaat, krijgt te horen wat een tijdlijn nodig heeft, en vult dat in. <b>Het resultaat staat in de huisstijl voordat iemand ernaar gekeken heeft.</b>',
+          },
         },
       ],
-      recordCaption: 'En in alle drie de gevallen wordt dit opgeslagen',
-      recordNote:
-        'Hetzelfde record, byte voor byte. Via welke route het binnenkwam, is er niet aan te zien.',
       gateText:
         'Alle drie komen ze bij dezelfde poort: het record wordt gecontroleerd tegen zijn slidetype. Wat een mens niet mag opslaan, mag een integratie ook niet, en andersom. <b>Daar zit de controle</b> - niet in het handmatig doen.',
 

@@ -15,6 +15,7 @@
 // The demo content is a lemonade stand reported on in stiff corporate register,
 // deliberately absurd so nobody reads the example as a claim about Deckyard.
 import { ui, type Lang } from '../i18n/ui';
+import DemoSlide from './DemoSlide.astro';
 
 interface Props {
   lang: Lang;
@@ -96,32 +97,16 @@ const GLYPHS = [
   '<rect x="3.5" y="5.5" width="17" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="10.2" r="1.6"/><path d="M5.5 17.2l4.2-4.2 3 3 2.6-2.4 3.4 3.6z"/>',
 ];
 
-// The record every route ends up producing. Built from the same demo content
-// the slide in zone 3 renders, so the JSON here and the slide down there can
-// never drift apart. The shape is structural; only the values are translated.
 // The alt text the image field holds, reused as the rendered slide's alt: the
 // accessibility claim on this page is that the field is the alt, so the demo
 // had better behave that way too.
 const libraryAlt = t.sources.find((s) => s.kind === 'library')?.assetAlt ?? '';
 
-const timelineType = t.types.find((x) => x.id === 'timeline-slide');
-const RECORD = [
-  '{',
-  '  <span class="k">"type"</span>: <span class="s">"timeline-slide"</span>,',
-  '  <span class="k">"content"</span>: {',
-  `    <span class="k">"title"</span>: <span class="s">"${timelineType?.title ?? ''}"</span>,`,
-  '    <span class="k">"items"</span>: [',
-  ...(timelineType?.items ?? [])
-    .slice(0, 2)
-    .map(
-      (it) =>
-        `      { <span class="k">"date"</span>: <span class="s">"${it.date}"</span>, <span class="k">"title"</span>: <span class="s">"${it.title}"</span> },`
-    ),
-  '      …',
-  '    ]',
-  '  }',
-  '}',
-].join('\n');
+// The slide a route produces is rendered from the same demo content as zone 3,
+// so the outcome under the tabs and the slide further down cannot drift apart.
+function demoFor(kind: 'timeline' | 'chart') {
+  return t.types.find((x) => x.id === `${kind}-slide`);
+}
 
 // The asset library holds photographs, so it shows photographs: colour fields
 // read as a wireframe of a picker rather than as somebody's actual library.
@@ -328,16 +313,31 @@ const TILES = [
               )}
             </div>
 
-            <p class="surface-note" set:html={r.note} />
+            <div class="result">
+              <div class="result-slide">
+                <p class="scol-label">{r.result.label}</p>
+                <DemoSlide
+                  kind={r.result.kind}
+                  eyebrow={demoFor(r.result.kind)?.eyebrow}
+                  title={demoFor(r.result.kind)?.title}
+                  items={demoFor(r.result.kind)?.items}
+                  bars={
+                    r.result.extraBar
+                      ? [...(demoFor(r.result.kind)?.bars ?? []), r.result.extraBar]
+                      : demoFor(r.result.kind)?.bars
+                  }
+                  fresh={r.result.fresh}
+                />
+              </div>
+              <div class="result-side">
+                <p class="scol-label">{r.result.storedLabel}</p>
+                <pre class="stored" set:html={r.result.stored} />
+                <p class="surface-note" set:html={r.result.note} />
+              </div>
+            </div>
           </div>
         ))
       }
-
-      <div class="record">
-        <p class="record-cap">{t.recordCaption}</p>
-        <pre class="record-code" set:html={RECORD} />
-        <p class="record-note">{t.recordNote}</p>
-      </div>
 
       <p class="gate">
         <span class="gate-mark" aria-hidden="true"></span>
@@ -650,7 +650,16 @@ const TILES = [
       select(routeTabs, 'route', routeId);
       routeBodies.forEach((b) => {
         b.hidden = b.dataset.routeBody !== routeId;
+        b.classList.remove('is-switching');
       });
+      // Let the element this route just added arrive rather than appear.
+      // Toggling the class off and back on restarts the animation; the reflow
+      // in between is what makes the restart stick.
+      const shown = routeBodies.find((b) => b.dataset.routeBody === routeId);
+      if (shown) {
+        void shown.offsetWidth;
+        shown.classList.add('is-switching');
+      }
     }
 
     function light(field: HTMLElement, on: boolean) {
@@ -1265,49 +1274,39 @@ const TILES = [
     font-weight: 700;
   }
 
-  /* the one thing that does not change when you switch route */
-  .record {
-    margin-top: 1.2rem;
+  /* what comes out of this route: the slide, and the record fragment the new
+     element is stored as */
+  .result {
+    display: grid;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
   }
-  .record-cap {
+  @media (min-width: 760px) {
+    .result {
+      grid-column: 1 / -1;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 1.4rem;
+    }
+  }
+  .result-side {
     display: flex;
-    align-items: center;
-    gap: 0.55rem;
-    margin: 0 0 0.5rem;
-    font-family: var(--mono);
-    font-size: 0.6rem;
-    letter-spacing: 0.13em;
-    text-transform: uppercase;
-    color: var(--ink);
+    flex-direction: column;
+    min-width: 0;
   }
-  .record-cap::before {
-    content: '';
-    width: 1.4rem;
-    height: 2px;
-    background: var(--brass);
-    flex: none;
-  }
-  .record-code {
-    margin: 0;
-    padding: 0.9rem 1rem;
+  .stored {
+    margin: 0 0 0.75rem;
+    padding: 0.6rem 0.7rem;
     background: var(--green-deep);
     color: #d8e5dc;
     border-radius: var(--radius-sm);
     font-family: var(--mono);
-    font-size: 0.7rem;
-    line-height: 1.65;
+    font-size: 0.66rem;
+    line-height: 1.6;
     overflow-x: auto;
   }
-  .record-code :global(.k) { color: var(--brass-soft); }
-  .record-code :global(.s) { color: #9fd6b4; }
-  .record-code :global(.c) { color: #7d8f85; font-style: italic; }
-  .record-note {
-    margin: 0.55rem 0 0;
-    font-family: var(--mono);
-    font-size: 0.66rem;
-    line-height: 1.5;
-    color: var(--ink-mute);
-  }
+  .stored :global(.k) { color: var(--brass-soft); }
+  .stored :global(.s) { color: #9fd6b4; }
 
   .gate {
     display: flex;
