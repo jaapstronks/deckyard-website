@@ -4,13 +4,25 @@ import { docsLoader } from '@astrojs/starlight/loaders';
 import { docsSchema } from '@astrojs/starlight/schema';
 
 const blog = defineCollection({
-  // Underscore-prefixed files are skipped, so `_template.md` can live next to
-  // the posts without becoming one.
+  // Posts live in a folder per language (blog/en/, blog/nl/); that folder is
+  // the post's language, so there is no `lang` field to contradict it. See
+  // src/lib/blog.ts. Underscore-prefixed files are skipped, so `_template.md`
+  // can sit next to the language folders without becoming a post.
+  //
+  // The id - and therefore the URL - is the file path, minus the language
+  // folder that the route strips. One exception worth knowing about: the glob
+  // loader honours a `slug:` in frontmatter first, verbatim, and it does so
+  // before this schema runs, so it works even though nothing declares it. It
+  // stays undeclared on purpose: a post that wants a different URL should get
+  // a different filename, not a second place where the URL is decided.
   loader: glob({ pattern: '**/[!_]*.md', base: 'src/content/blog' }),
   schema: z.object({
     title: z.string(),
     intro: z.string(),
-    lang: z.enum(['en', 'nl']).default('en'),
+    // The same string on the English and the Dutch file of one post. It is
+    // what lets hreflang and the language switcher point at the real
+    // counterpart; leave it off and the post is simply untranslated.
+    translationKey: z.string().optional(),
     pubDate: z.coerce.date(),
     category: z.string().default('Building in public'),
     tags: z.array(z.string()).default([]),

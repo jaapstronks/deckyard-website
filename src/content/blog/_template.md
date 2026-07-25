@@ -1,10 +1,15 @@
 ---
-# Copy this file, rename it to the slug you want (the filename becomes the URL:
-# `my-post.md` -> /blog/my-post/), and delete the comments.
+# Copy this file into the folder of the language you are writing in
+# (`en/` or `nl/`), rename it to the slug you want, and delete the comments.
+# The filename becomes the URL: `en/my-post.md` -> /blog/my-post/, and
+# `nl/mijn-post.md` -> /nl/blog/mijn-post/. There is no `lang` field; the
+# folder is the language, so the two can never disagree.
 #
 # A post belongs to exactly one language. A Dutch post is a separate file with
-# its own Dutch slug, not a translation sitting next to the English one; the
-# index, the RSS feed and the post route all filter on `lang`.
+# its own Dutch slug, not a translation sitting beside the English one. Give
+# both files the same `translationKey` and they become each other's official
+# version: the language switcher lands on the real translation instead of the
+# blog index, and both pages get a proper hreflang pair.
 
 # Required.
 title: 'A short, concrete title'
@@ -12,7 +17,10 @@ title: 'A short, concrete title'
 # summary, so write it as a standalone sentence or two.
 intro: 'One or two sentences that make the argument of the post on their own.'
 pubDate: 2026-07-25 # drives ordering on the index; newest first
-lang: en # 'en' or 'nl'
+
+# Optional. The same string on this post's other language versions; drop it
+# while the post exists in one language only.
+# translationKey: 'my-post'
 
 # Optional, with these defaults.
 category: 'Building in public' # kicker above the title; use the Dutch label on Dutch posts

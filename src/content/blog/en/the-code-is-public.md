@@ -1,8 +1,8 @@
 ---
 title: 'The code is public'
 intro: 'Deckyard has been running in daily use for months. As of today the source is on GitHub under an MIT licence, which means you can read it, run it, and fork it without asking anyone.'
+translationKey: 'the-code-is-public'
 pubDate: 2026-07-25
-lang: en
 category: 'Building in public'
 tags: ['launch', 'open source']
 draft: true

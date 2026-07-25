@@ -25,12 +25,13 @@ interface Props {
   type?: 'website' | 'article';
   publishedTime?: string;
   /**
-   * The locales this exact page exists in. Defaults to all of them, which is
-   * true for everything under [...locale]. A page that lives in one language
-   * only names it: a blog post (a Dutch post is its own file with its own
-   * Dutch slug, so the English URL will never exist) or an English-only demo.
+   * Where this page can be read in each locale. Omit it and every locale gets
+   * the same path, which is right for everything under [...locale]. Pages that
+   * break that assumption pass a map: a locale left out has no version of this
+   * page, and one that is present may sit at an entirely different URL - a
+   * Dutch blog post is its own file with its own Dutch slug.
    */
-  locales?: Lang[];
+  localeUrls?: Partial<Record<Lang, string>>;
   /**
    * Where the language switcher sends someone who picks a locale this page has
    * no version in. Root-form path of the nearest page that does exist.
@@ -44,7 +45,7 @@ const {
   ogImage,
   type = 'website',
   publishedTime,
-  locales,
+  localeUrls,
   localeFallback = '/',
 } = Astro.props;
 
@@ -67,18 +68,21 @@ const ogImageUrl = new URL(resolvedOgImage, siteUrl).href;
 // all, rather than advertising a twin that 404s and breaking the reciprocity
 // Google expects both ways.
 const { path: logicalPath } = stripLangFromPath(currentPath);
-const pageLocales = locales ?? (Object.keys(languages) as Lang[]);
+const pageUrls: Partial<Record<Lang, string>> =
+  localeUrls ??
+  Object.fromEntries(
+    (Object.keys(languages) as Lang[]).map((l) => [l, localizePath(logicalPath, l)])
+  );
+const pageLocales = Object.keys(pageUrls) as Lang[];
+
 const alternates =
   pageLocales.length > 1
-    ? pageLocales.map((l) => ({
-        hreflang: l,
-        href: new URL(localizePath(logicalPath, l), siteUrl).href,
-      }))
+    ? pageLocales.map((l) => ({ hreflang: l, href: new URL(pageUrls[l]!, siteUrl).href }))
     : [];
 // x-default names the version to serve when no language matches, so it only
 // means anything while there is something to choose between.
-const xDefaultHref = pageLocales.includes(defaultLang)
-  ? new URL(localizePath(logicalPath, defaultLang), siteUrl).href
+const xDefaultHref = pageUrls[defaultLang]
+  ? new URL(pageUrls[defaultLang]!, siteUrl).href
   : undefined;
 
 const organizationSchema = {
@@ -162,7 +166,7 @@ const organizationSchema = {
     <SiteHeader
       currentPath={currentPath}
       lang={lang}
-      locales={pageLocales}
+      localeUrls={pageUrls}
       localeFallback={localeFallback}
     />
 

@@ -1,8 +1,11 @@
 ---
-import { ui, localizePath, defaultLang, type Lang } from '@/i18n';
+import { ui, defaultLang, type Lang } from '@/i18n';
 
 interface Props {
+  /** The post's collection id. Only ties the view transition to the article. */
   id: string;
+  /** The post's URL. Not derived from `id`: the language folder is not in it. */
+  href: string;
   lang?: Lang;
   title: string;
   intro: string;
@@ -16,6 +19,7 @@ interface Props {
 
 const {
   id,
+  href: postHref,
   lang = defaultLang,
   title,
   intro,
@@ -28,7 +32,6 @@ const {
 } = Astro.props;
 
 const t = ui[lang].blogCard;
-const postHref = localizePath(`/blog/${id}/`, lang);
 const dateLabel = new Intl.DateTimeFormat(t.dateLocale, {
   day: 'numeric',
   month: 'short',

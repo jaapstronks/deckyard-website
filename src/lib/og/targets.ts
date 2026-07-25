@@ -7,6 +7,7 @@
 
 import { getCollection } from 'astro:content';
 import { ui, languages, localizePath, type Lang, type Content } from '@/i18n';
+import { postLang, postUrl } from '@/lib/blog';
 import type { CardInput } from './card';
 
 /** A page path (no trailing slash, '' for the site root) and its card copy. */
@@ -89,10 +90,10 @@ async function collectTargets(): Promise<OgTarget[]> {
     import.meta.env.PROD ? !data.draft : true
   );
   for (const post of posts) {
-    const lang = (post.data.lang ?? 'en') as Lang;
+    const lang = postLang(post);
     const t = ui[lang];
     targets.push({
-      path: normalizePath(localizePath(`/blog/${post.id}`, lang)),
+      path: normalizePath(postUrl(post)),
       input: {
         label: t.nav.blog,
         meta: new Intl.DateTimeFormat(t.blogPost.dateLocale, {

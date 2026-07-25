@@ -9,8 +9,10 @@ import { ui, localizePath, type Lang } from '@/i18n';
 interface Props {
   post: CollectionEntry<'blog'>;
   lang: Lang;
+  /** This post's URL per language, from its `translationKey` siblings. */
+  localeUrls: Partial<Record<Lang, string>>;
 }
-const { post, lang } = Astro.props;
+const { post, lang, localeUrls } = Astro.props;
 const t = ui[lang].blogPost;
 const { Content } = await render(post);
 const { title, intro, pubDate, category, author, heroImage, heroImageAlt, description } = post.data;
@@ -28,7 +30,7 @@ const blogHref = localizePath('/blog/', lang);
   description={description ?? intro}
   type="article"
   publishedTime={pubDate.toISOString()}
-  locales={[lang]}
+  localeUrls={localeUrls}
   localeFallback="/blog/"
 >
   <div class="reading-progress" aria-hidden="true"></div>

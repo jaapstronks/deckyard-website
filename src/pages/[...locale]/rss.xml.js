@@ -1,6 +1,7 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
-import { languages, defaultLang, localizePath, ui } from '@/i18n';
+import { languages, defaultLang, ui } from '@/i18n';
+import { postLang, postUrl } from '@/lib/blog';
 
 // One feed per locale: /rss.xml for EN, /nl/rss.xml for NL, and so on for any
 // language added later. Each feed carries only that language's posts.
@@ -15,9 +16,9 @@ export async function GET(context) {
   const { lang } = context.props;
   const t = ui[lang].blogIndex;
 
-  const posts = (
-    await getCollection('blog', ({ data }) => !data.draft && (data.lang ?? defaultLang) === lang)
-  ).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  const posts = (await getCollection('blog', ({ data }) => !data.draft))
+    .filter((post) => postLang(post) === lang)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   return rss({
     title: t.feedTitle,
@@ -27,7 +28,7 @@ export async function GET(context) {
       title: post.data.title,
       description: post.data.description ?? post.data.intro,
       pubDate: post.data.pubDate,
-      link: localizePath(`/blog/${post.id}/`, lang),
+      link: postUrl(post),
     })),
   });
 }

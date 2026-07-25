@@ -199,15 +199,34 @@ Other rules:
 - Routing is file-based (NOT Astro's global `i18n` config). Do **not** add an
   `i18n` block to `astro.config.mjs`: Starlight would inherit the extra locales
   and generate duplicate English-content `/<lang>/docs` pages.
-- Blog posts carry a `lang` field (`en` default) in frontmatter; the
-  `[...locale]/blog/[slug].astro` route filters the locale x post cross product
-  down to the posts that exist per language. Each locale gets its own feed
-  (`/rss.xml`, `/nl/rss.xml`, ...).
+- **A blog post's language is its folder**: `src/content/blog/en/`,
+  `src/content/blog/nl/`. There is no `lang` field, so the location and the
+  language cannot disagree, and the two languages cannot collide in the id (the
+  glob loader keys its store on the id and a duplicate is only a build
+  _warning_ - the loser vanishes from the site silently). `src/lib/blog.ts`
+  holds the three derivations: `postLang`, `postSlug`, `postUrl`. Each locale
+  gets its own feed (`/rss.xml`, `/nl/rss.xml`, ...).
 - A post belongs to one language and the filename is the URL, so a Dutch post is
-  a separate file with its own **Dutch** slug, not `<english-slug>.nl.md`. Start
-  from `src/content/blog/_template.md`; underscore-prefixed files are excluded
-  from the collection glob, so the template never becomes a post. `draft: true`
-  is visible in `npm run dev` and dropped from the production build.
+  a separate file with its own **Dutch** slug, not `<english-slug>.nl.md`. Give
+  the two files the same **`translationKey`** and they become each other's
+  official version: `hreflang` gets a real pair and the language switcher lands
+  on the translation instead of the blog index. Leave it off and the post is
+  untranslated, which is a normal state, not a defect. Start from
+  `src/content/blog/_template.md`; underscore-prefixed files are excluded from
+  the collection glob, so the template never becomes a post. `draft: true` is
+  visible in `npm run dev` and dropped from the production build - and a draft
+  translation is not advertised as a translation.
+- **The URL comes from the file path** - unless a post sets `slug:` in
+  frontmatter, which the glob loader honours first and verbatim, before the
+  schema runs. `content.config.ts` deliberately leaves it undeclared: a post
+  that wants a different URL should get a different filename rather than a
+  second place where the URL is decided.
+- **Which pages exist in which language is a page's own claim.** `SiteLayout`
+  takes `localeUrls` (a locale -> URL map); omit it and every locale gets the
+  same path, which is right for everything under `[...locale]`. Pages that
+  break that assumption - a blog post, the English-only `/embed-demo` - pass
+  the map, and both `hreflang` and the switcher follow it. A page that exists
+  in one language emits no alternates at all rather than a pair that 404s.
 - Docs (Starlight) are English-only, no switcher.
 - Dutch copy is outgoing editorial text: no em dashes (use `-` or `;`).
 - Structural data (slide-type field vocabularies, theme tokens) is **not** copy:
