@@ -190,11 +190,24 @@ export interface Content {
       rightLabel: string;
       // left column - exactly one of these
       picker?: { title: string; options: string[]; chosen: number }; // hand
-      system?: { name: string; lines: string[] }; // api
+      // api: an automation somebody assembled in a no-code tool. Steps run top
+      // to bottom; `data` is what actually passed through on the last run, set
+      // in mono on a tint so it reads as moved data rather than as label text.
+      flow?: {
+        name: string;
+        status: string;
+        steps: {
+          kind: string; // trigger / tool call / only if / action
+          name: string;
+          detail?: string;
+          data?: string; // HTML with .k/.s spans
+          branch?: string; // the leg the flow takes when the condition fails
+        }[];
+      };
       chat?: { who: string; text: string; self?: boolean }[]; // mcp
       // right column - exactly one of these
       form?: { title: string; fields: { key: string; value: string }[]; more: string }; // hand
-      code?: string; // api; HTML with .k/.s/.c spans
+      sent?: { barLabel: string; code: string; okLabel: string }; // api; code is HTML with .k/.s/.c spans
       wire?: { dir: string; text: string }[]; // mcp; text may contain <b>
       // what comes out: which demo slide to render, which element is new, and
       // the record fragment that element is stored as
@@ -403,7 +416,7 @@ export const ui: Record<Lang, Content> = {
       s2Title: 'Somebody has to turn that into slides',
       s2Body: [
         'Traditionally that somebody is you, at eleven at night, copying figures out of a spreadsheet and into text boxes. The figures now live in two places, and one of them started going out of date the moment you pasted it.',
-        'It does not have to work that way. But the alternative is not "let a robot do it" - that just moves the problem and adds a new worry. The alternative is that the slide has a declared shape, so that anything filling it can be checked against that shape first. You, a script, or an agent: same shape, same check.',
+        'The alternative is not "let a robot do it". It is that the slide has a declared shape, so whatever fills it - you, a script, an agent - is checked against that shape first.',
       ],
 
       pull: 'Control does not come from doing it by hand. It comes from the type.',
@@ -580,17 +593,39 @@ export const ui: Record<Lang, Content> = {
           id: 'api',
           label: 'Through the API',
           blurb: 'A system keeps a slide up to date. Nobody retypes last month.',
-          leftLabel: 'What is running',
-          rightLabel: 'What it sends',
-          system: {
-            name: 'monthly-figures.job',
-            lines: [
-              'first monday of the month, 06:00',
-              'reads last month from the register',
-              'updates the team library slide',
+          leftLabel: 'The automation somebody built',
+          rightLabel: 'What it sent last time',
+          flow: {
+            name: 'Monthly figures → team library',
+            status: 'Last run · 1 September, 06:00 · ok',
+            steps: [
+              {
+                kind: 'Trigger',
+                name: 'Every first Monday, 06:00',
+                data: '<span class="k">"firedAt"</span>: <span class="s">"2025-09-01T06:00"</span>',
+              },
+              {
+                kind: 'Tool call',
+                name: 'Figures register · get last month',
+                data: '{ <span class="k">"month"</span>: <span class="s">"September"</span>, <span class="k">"cups"</span>: 188 }',
+              },
+              {
+                kind: 'Only if',
+                name: 'That month is not on the slide yet',
+                branch: 'otherwise · stop, nothing to update',
+              },
+              {
+                kind: 'Action',
+                name: 'Deckyard · update the slide in the team library',
+                detail: 'The request it sends is on the right.',
+              },
             ],
           },
-          code: '<span class="c">PUT /api/v1/presentations/{id}/slides/{slideId}</span>\n{\n  <span class="k">"type"</span>: <span class="s">"chart-slide"</span>,\n  <span class="k">"content"</span>: {\n    <span class="k">"chartType"</span>: <span class="s">"bar"</span>,\n    <span class="k">"data"</span>: <span class="s">"month,cups\\n…\\nAugust,175\\nSeptember,188"</span>\n  }\n}',
+          sent: {
+            barLabel: 'Request · 1 September, 06:00',
+            code: '<span class="c">PUT /api/v1/presentations/{id}/slides/{slideId}</span>\n{\n  <span class="k">"type"</span>: <span class="s">"chart-slide"</span>,\n  <span class="k">"content"</span>: {\n    <span class="k">"chartType"</span>: <span class="s">"bar"</span>,\n    <span class="k">"data"</span>: <span class="s">"month,cups\\n…\\nAugust,175\\nSeptember,188"</span>\n  }\n}',
+            okLabel: '200 OK · slide updated, four months on the chart',
+          },
           result: {
             kind: 'chart',
             label: 'And this is the slide',
@@ -598,7 +633,7 @@ export const ui: Record<Lang, Content> = {
             extraBar: { label: 'September', value: 188 },
             storedLabel: 'Stored as',
             stored: '<span class="k">"data"</span>: <span class="s">"… August,175\\nSeptember,188"</span>',
-            note: 'The figures are a column in the record, so a job can append to them. The slide sits in the team library, which means the next deck that pulls it in already has last month in it. And the write goes through the same validation a person does: <b>a chart the editor would refuse, the API refuses too.</b>',
+            note: 'The figures are a column in the record, so an automation can append a month to them. The slide sits in the team library, which means the next deck that pulls it in already has last month in it. And the write goes through the same validation a person does: <b>a chart the editor would refuse, the API refuses too.</b>',
           },
         },
         {
@@ -879,7 +914,7 @@ export const ui: Record<Lang, Content> = {
       s2Title: 'Iemand moet daar slides van maken',
       s2Body: [
         'Van oudsher ben jij die iemand, om elf uur ’s avonds, cijfers overtikkend uit een spreadsheet in tekstvakken. Die cijfers staan nu op twee plekken, en één ervan begon te verouderen op het moment dat je plakte.',
-        'Het hoeft niet zo te werken. Maar het alternatief is niet "laat een robot het doen" - dat verplaatst het probleem alleen en voegt een zorg toe. Het alternatief is dat de slide een vastgelegde vorm heeft, zodat alles wat hem vult eerst tegen die vorm gecontroleerd kan worden. Jij, een script of een agent: dezelfde vorm, dezelfde controle.',
+        'Het alternatief is niet "laat een robot het doen". Het is dat de slide een vastgelegde vorm heeft, zodat alles wat hem vult - jij, een script, een agent - eerst tegen die vorm gecontroleerd wordt.',
       ],
 
       pull: 'Controle komt niet voort uit het handmatig doen. Die komt uit het type.',
@@ -1056,17 +1091,39 @@ export const ui: Record<Lang, Content> = {
           id: 'api',
           label: 'Via de API',
           blurb: 'Een systeem houdt een slide bij. Niemand tikt vorige maand over.',
-          leftLabel: 'Wat er draait',
-          rightLabel: 'Wat het stuurt',
-          system: {
-            name: 'maandcijfers.job',
-            lines: [
-              'eerste maandag van de maand, 06:00',
-              'leest vorige maand uit het register',
-              'werkt de slide in de teambibliotheek bij',
+          leftLabel: 'De automatisering die iemand bouwde',
+          rightLabel: 'Wat het de vorige keer stuurde',
+          flow: {
+            name: 'Maandcijfers → teambibliotheek',
+            status: 'Laatste run · 1 september, 06:00 · ok',
+            steps: [
+              {
+                kind: 'Trigger',
+                name: 'Elke eerste maandag, 06:00',
+                data: '<span class="k">"firedAt"</span>: <span class="s">"2025-09-01T06:00"</span>',
+              },
+              {
+                kind: 'Tool call',
+                name: 'Cijferregister · haal vorige maand op',
+                data: '{ <span class="k">"maand"</span>: <span class="s">"september"</span>, <span class="k">"bekers"</span>: 188 }',
+              },
+              {
+                kind: 'Alleen als',
+                name: 'Die maand nog niet op de slide staat',
+                branch: 'anders · stoppen, niets bij te werken',
+              },
+              {
+                kind: 'Actie',
+                name: 'Deckyard · slide in de teambibliotheek bijwerken',
+                detail: 'Het verzoek dat hij stuurt staat hiernaast.',
+              },
             ],
           },
-          code: '<span class="c">PUT /api/v1/presentations/{id}/slides/{slideId}</span>\n{\n  <span class="k">"type"</span>: <span class="s">"chart-slide"</span>,\n  <span class="k">"content"</span>: {\n    <span class="k">"chartType"</span>: <span class="s">"bar"</span>,\n    <span class="k">"data"</span>: <span class="s">"maand,bekers\\n…\\naugustus,175\\nseptember,188"</span>\n  }\n}',
+          sent: {
+            barLabel: 'Verzoek · 1 september, 06:00',
+            code: '<span class="c">PUT /api/v1/presentations/{id}/slides/{slideId}</span>\n{\n  <span class="k">"type"</span>: <span class="s">"chart-slide"</span>,\n  <span class="k">"content"</span>: {\n    <span class="k">"chartType"</span>: <span class="s">"bar"</span>,\n    <span class="k">"data"</span>: <span class="s">"maand,bekers\\n…\\naugustus,175\\nseptember,188"</span>\n  }\n}',
+            okLabel: '200 OK · slide bijgewerkt, vier maanden op de grafiek',
+          },
           result: {
             kind: 'chart',
             label: 'En dit is de slide',
@@ -1074,7 +1131,7 @@ export const ui: Record<Lang, Content> = {
             extraBar: { label: 'september', value: 188 },
             storedLabel: 'Opgeslagen als',
             stored: '<span class="k">"data"</span>: <span class="s">"… augustus,175\\nseptember,188"</span>',
-            note: 'De cijfers zijn een kolom in het record, dus een job kan er iets aan toevoegen. De slide staat in de teambibliotheek, dus de volgende presentatie die hem ophaalt heeft vorige maand er al in staan. En die schrijfactie gaat door dezelfde validatie als die van een mens: <b>een grafiek die de editor weigert, weigert de API ook.</b>',
+            note: 'De cijfers zijn een kolom in het record, dus een automatisering kan er een maand aan toevoegen. De slide staat in de teambibliotheek, dus de volgende presentatie die hem ophaalt heeft vorige maand er al in staan. En die schrijfactie gaat door dezelfde validatie als die van een mens: <b>een grafiek die de editor weigert, weigert de API ook.</b>',
           },
         },
         {
