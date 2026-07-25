@@ -1,8 +1,8 @@
 ---
 title: 'De huisstijl mag niet van je laptop afhangen'
 intro: 'In PowerPoint is de huisstijl niet beter dan de fonts die toevallig geïnstalleerd staan op de machine die het bestand opent. Een thema hoort een klein bestand te zijn dat de organisatie bezit, en één iemand moet dat mogen beheren zonder ook de servers te draaien.'
+translationKey: 'brand-off-your-laptop'
 pubDate: 2026-07-28
-lang: nl
 category: 'Ontwerpkeuzes'
 tags: ['themas', 'fonts', 'huisstijl']
 draft: true

@@ -5,6 +5,7 @@ import BlogCard from '@/components/blog/BlogCard.astro';
 import PageHero from '@/components/layout/PageHero.astro';
 import Section from '@/components/layout/Section.astro';
 import { ui, localizePath, type Lang } from '@/i18n';
+import { postLang, postUrl } from '@/lib/blog';
 
 interface Props {
   lang: Lang;
@@ -13,11 +14,10 @@ const { lang } = Astro.props;
 const t = ui[lang].blogIndex;
 
 const posts = (
-  await getCollection('blog', ({ data }) => {
-    const langMatch = (data.lang ?? 'en') === lang;
-    return langMatch && (import.meta.env.PROD ? !data.draft : true);
-  })
-).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  await getCollection('blog', ({ data }) => (import.meta.env.PROD ? !data.draft : true))
+)
+  .filter((post) => postLang(post) === lang)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const [lead, ...rest] = posts;
 const emptyHtml = t.empty
@@ -41,6 +41,7 @@ const emptyHtml = t.empty
         lead && (
           <BlogCard
             id={lead.id}
+            href={postUrl(lead)}
             lang={lang}
             title={lead.data.title}
             intro={lead.data.intro}
@@ -56,6 +57,7 @@ const emptyHtml = t.empty
         rest.map((post, index) => (
           <BlogCard
             id={post.id}
+            href={postUrl(post)}
             lang={lang}
             title={post.data.title}
             intro={post.data.intro}

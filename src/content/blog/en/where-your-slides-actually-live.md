@@ -1,8 +1,8 @@
 ---
 title: 'Where your slides actually live'
 intro: 'Self-hosting is the point, not a fallback. But somebody has to keep the server patched, and for a lot of organisations that somebody does not exist. So we run instances too, and that is what funds the development.'
+translationKey: 'where-your-slides-live'
 pubDate: 2026-07-31
-lang: en
 category: 'Building in public'
 tags: ['self-hosting', 'sovereignty']
 draft: true

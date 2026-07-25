@@ -6,12 +6,12 @@ import { ui, localizePath, sandboxUrl, type Lang } from '@/i18n';
 interface Props {
   currentPath: string;
   lang: Lang;
-  /** Locales this page exists in; the switcher routes the rest elsewhere. */
-  locales: Lang[];
+  /** Where this page lives per locale; the switcher routes the rest elsewhere. */
+  localeUrls: Partial<Record<Lang, string>>;
   /** Root-form path the switcher falls back to for a missing locale. */
   localeFallback: string;
 }
-const { currentPath, lang, locales, localeFallback } = Astro.props;
+const { currentPath, lang, localeUrls, localeFallback } = Astro.props;
 const t = ui[lang];
 const isBlog = currentPath.includes('/blog');
 const isDocs = currentPath.startsWith('/docs');
@@ -55,9 +55,9 @@ const docsHref = '/docs/creating/';
           <span class="nav-gh-label">{t.nav.github}</span>
         </a>
         <LanguageSwitcher
-          currentPath={currentPath}
+          lang={lang}
           ariaLabel={t.nav.languageAria}
-          locales={locales}
+          localeUrls={localeUrls}
           localeFallback={localeFallback}
         />
       </nav>

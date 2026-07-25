@@ -1,8 +1,8 @@
 ---
 title: 'The brand should not depend on your laptop'
 intro: 'In PowerPoint the house style is only as good as the fonts installed on the machine that opens the file. A theme should be a small file the organisation owns, and one person should be allowed to own it without also running the servers.'
+translationKey: 'brand-off-your-laptop'
 pubDate: 2026-07-28
-lang: en
 category: 'Design decisions'
 tags: ['themes', 'fonts', 'brand']
 draft: true

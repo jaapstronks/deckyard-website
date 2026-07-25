@@ -1,8 +1,8 @@
 ---
 title: 'Waar je slides eigenlijk staan'
 intro: 'Zelf hosten is het uitgangspunt, geen terugvaloptie. Maar iemand moet die server wel bijhouden, en bij veel organisaties bestaat die iemand niet. Dus draaien wij ook instances, en dat is wat de doorontwikkeling betaalt.'
+translationKey: 'where-your-slides-live'
 pubDate: 2026-07-31
-lang: nl
 category: 'Bouwen in de openbaarheid'
 tags: ['zelf hosten', 'soevereiniteit']
 draft: true

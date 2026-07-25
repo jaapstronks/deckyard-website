@@ -1,33 +1,31 @@
 ---
-import { languages, stripLangFromPath, localizePath, type Lang } from '@/i18n';
+import { languages, localizePath, type Lang } from '@/i18n';
 
 interface Props {
-  currentPath: string;
+  /** The locale currently being read. */
+  lang: Lang;
   ariaLabel: string;
-  /** Locales this page exists in. Anything else routes to the fallback. */
-  locales: Lang[];
+  /** Where this page lives per locale. A locale absent from it has no version. */
+  localeUrls: Partial<Record<Lang, string>>;
   /** Root-form path to send a locale that has no version of this page. */
   localeFallback: string;
 }
-const { currentPath, ariaLabel, locales, localeFallback } = Astro.props;
+const { lang: active, ariaLabel, localeUrls, localeFallback } = Astro.props;
 
-// Resolve the logical (root-form) path once, then build the URL per locale so
-// the switcher lands on the same page in the other language.
+// Most pages sit at the same path in every language, but not all: a blog post
+// exists in the language it was written in, and its translation is a separate
+// file with a separate Dutch slug, so the counterpart URL is not something this
+// component can derive. It is handed the map instead.
 //
-// Not every page has a counterpart everywhere: a blog post exists in the one
-// language it was written in, and its Dutch sibling is a separate post with a
-// separate slug. Rather than link to a URL that was never built, those locales
-// go to the nearest page that does exist - the blog index, or home. Every
-// language stays in the menu, so the switcher does not quietly change shape
-// from page to page.
-const { path, lang: active } = stripLangFromPath(currentPath);
-const here = new Set(locales);
-
+// A locale with no version of this page goes to the nearest page that does have
+// one - the blog index, or home - rather than to a URL that was never built.
+// Every language stays in the menu either way, so the switcher does not quietly
+// change shape from page to page.
 const entries = (Object.keys(languages) as Lang[]).map((lang) => ({
   lang,
   code: lang.toUpperCase(),
   name: languages[lang],
-  href: localizePath(here.has(lang) ? path : localeFallback, lang),
+  href: localeUrls[lang] ?? localizePath(localeFallback, lang),
   current: lang === active,
 }));
 ---

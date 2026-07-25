@@ -1,8 +1,8 @@
 ---
 title: 'De code staat online'
 intro: 'Deckyard draait al maanden in dagelijks gebruik. Vanaf vandaag staat de broncode op GitHub onder een MIT-licentie: je kunt hem lezen, draaien en forken zonder iemand om toestemming te vragen.'
+translationKey: 'the-code-is-public'
 pubDate: 2026-07-25
-lang: nl
 category: 'Bouwen in de openbaarheid'
 tags: ['launch', 'open source']
 draft: true
