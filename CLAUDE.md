@@ -199,13 +199,15 @@ Other rules:
 - Routing is file-based (NOT Astro's global `i18n` config). Do **not** add an
   `i18n` block to `astro.config.mjs`: Starlight would inherit the extra locales
   and generate duplicate English-content `/<lang>/docs` pages.
-- **A blog post's language is its folder**: `src/content/blog/en/`,
-  `src/content/blog/nl/`. There is no `lang` field, so the location and the
-  language cannot disagree, and the two languages cannot collide in the id (the
-  glob loader keys its store on the id and a duplicate is only a build
-  _warning_ - the loser vanishes from the site silently). `src/lib/blog.ts`
-  holds the three derivations: `postLang`, `postSlug`, `postUrl`. Each locale
-  gets its own feed (`/rss.xml`, `/nl/rss.xml`, ...).
+- **An editorial entry's language is its folder**, never a frontmatter field:
+  `src/content/blog/en/`, `src/content/blog/nl/`, and the same for
+  `src/content/releases/`. The location and the language then cannot disagree,
+  and the two languages cannot collide in the id (the glob loader keys its
+  store on the id and a duplicate is only a build _warning_ - the loser
+  vanishes from the site silently). `src/lib/content.ts` holds the guard, which
+  fails the build rather than guessing; `src/lib/blog.ts` adds the blog's own
+  derivations: `postLang`, `postSlug`, `postUrl`. Each locale gets its own feed
+  (`/rss.xml`, `/nl/rss.xml`, ...).
 - A post belongs to one language and the filename is the URL, so a Dutch post is
   a separate file with its own **Dutch** slug, not `<english-slug>.nl.md`. Give
   the two files the same **`translationKey`** and they become each other's

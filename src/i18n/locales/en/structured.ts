@@ -1,7 +1,7 @@
 import type { StructuredContent } from '@/i18n/types';
 
 export const structured: StructuredContent = {
-  metaTitle: 'How it works — structured slides, not drawings — Deckyard',
+  metaTitle: 'How it works - structured slides, not drawings - Deckyard',
   metaDescription:
     'A Deckyard slide is a record with a type, not a canvas you drop shapes onto. That one decision is where the accessibility, the integrations and the house style all come from.',
   kicker: 'How it works',

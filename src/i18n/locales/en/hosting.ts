@@ -1,7 +1,7 @@
 import type { HostingContent } from '@/i18n/types';
 
 export const hosting: HostingContent = {
-  metaTitle: 'Hosting — run it yourself, or let us run it — Deckyard',
+  metaTitle: 'Hosting - run it yourself, or let us run it - Deckyard',
   metaDescription:
     'Deckyard is a Docker Compose file you can run on your own servers. If nobody in your organisation wants that job, we run a dedicated instance for you on your own domain, in Europe.',
   heroKicker: 'Hosting',

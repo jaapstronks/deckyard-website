@@ -1,7 +1,7 @@
 import type { BlogIndexContent } from '@/i18n/types';
 
 export const blogIndex: BlogIndexContent = {
-  metaTitle: 'Blog — Deckyard',
+  metaTitle: 'Blog - Deckyard',
   metaDescription:
     'Building Deckyard in the open: notes on open source presentations, digital sovereignty and brand systems for organizations that want to own their work.',
   kicker: 'Building in public',

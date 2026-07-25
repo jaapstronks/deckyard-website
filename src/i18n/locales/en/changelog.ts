@@ -1,7 +1,7 @@
 import type { ChangelogContent } from '@/i18n/types';
 
 export const changelog: ChangelogContent = {
-  metaTitle: 'Changelog — Deckyard',
+  metaTitle: 'Changelog - Deckyard',
   metaDescription:
     "What's new in Deckyard, release by release: collaboration, editor, exports, themes, self-hosting and security, in plain language.",
   kicker: "What's new",
