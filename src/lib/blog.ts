@@ -1,31 +1,21 @@
-// Blog posts, and the two things the collection does not say out loud.
+// Blog posts, and the thing the collection does not say out loud.
 //
-// A post's language is the folder it sits in (src/content/blog/<lang>/), not a
-// frontmatter field, so its location and its language cannot disagree. That
-// also keeps the ids of the two languages apart: the glob loader keys its
-// store on the id, and a Dutch post whose slug happened to match an English
-// one used to overwrite it with nothing louder than a build warning.
-//
-// Two files are the same piece of writing when they share a `translationKey`.
+// A post's language is the folder it sits in - see src/lib/content.ts for why
+// that is a folder and not a field. What is specific to the blog is pairing:
+// two files are the same piece of writing when they share a `translationKey`.
 // Nothing else links them - a Dutch post is its own file with its own Dutch
 // slug - so without that key the language switcher and hreflang have no
 // counterpart to point at, and have to fall back to the blog index.
 
 import type { CollectionEntry } from 'astro:content';
-import { isLang, localizePath, type Lang } from '@/i18n';
+import { localizePath, type Lang } from '@/i18n';
+import { langFromFolder } from '@/lib/content';
 
 export type Post = CollectionEntry<'blog'>;
 
 /** The language folder a post sits in. */
 export function postLang(post: Post): Lang {
-  const [dir] = post.id.split('/');
-  if (!isLang(dir)) {
-    throw new Error(
-      `Blog post "${post.id}" is not in a language folder. ` +
-        `Move it to src/content/blog/<lang>/, e.g. src/content/blog/en/${post.id}.md`
-    );
-  }
-  return dir;
+  return langFromFolder(post.id, 'blog');
 }
 
 /** The URL slug: the id minus its language folder. */

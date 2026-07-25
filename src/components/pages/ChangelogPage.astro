@@ -4,6 +4,7 @@ import SiteLayout from '@/layouts/SiteLayout.astro';
 import PageHero from '@/components/layout/PageHero.astro';
 import Section from '@/components/layout/Section.astro';
 import { ui, type Lang } from '@/i18n';
+import { langFromFolder } from '@/lib/content';
 
 interface Props {
   lang: Lang;
@@ -12,11 +13,10 @@ const { lang } = Astro.props;
 const t = ui[lang].changelog;
 
 const releases = (
-  await getCollection('releases', ({ data }) => {
-    const langMatch = (data.lang ?? 'en') === lang;
-    return langMatch && (import.meta.env.PROD ? !data.draft : true);
-  })
-).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  await getCollection('releases', ({ data }) => (import.meta.env.PROD ? !data.draft : true))
+)
+  .filter((release) => langFromFolder(release.id, 'releases') === lang)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 // Pre-render each release body so the timeline can lay them out in order.
 const entries = await Promise.all(

@@ -35,12 +35,15 @@ const blog = defineCollection({
 });
 
 const releases = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: 'src/content/releases' }),
+  // A release note's language is its folder (releases/en/, releases/nl/), the
+  // same rule the blog follows; see src/lib/content.ts. One release therefore
+  // has one file per language, both named after the version.
+  loader: glob({ pattern: '**/[!_]*.md', base: 'src/content/releases' }),
   schema: z.object({
-    // Semver, e.g. "1.1.0". Doubles as the anchor slug (dots -> dashes).
+    // Semver, e.g. "1.1.0". Doubles as the anchor slug (dots -> dashes), so
+    // the two languages link to the same anchor on their own changelog page.
     version: z.string(),
     date: z.coerce.date(),
-    lang: z.enum(['en', 'nl']).default('en'),
     // One-line framing shown under the version heading.
     summary: z.string(),
     // Short badge next to the version, e.g. "Feature release".
