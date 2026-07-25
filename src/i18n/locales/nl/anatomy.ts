@@ -35,7 +35,7 @@ export const anatomy: AnatomyContent = {
       caption: 'Notitie op een telefoon',
       paragraphs: [
         'voor het jaarbericht, niet vergeten',
-        '<span data-span="q2">mw albers</span> <span data-span="q3">van nr 14</span> zei zaterdag dat het <span data-span="q1">alles afwegend, best goede limonade</span> is',
+        '<span data-span="q2">mw albers</span> <span data-span="q3">van nr 14</span> zei zaterdag dat het <span data-span="q1">niet de slechtste limonade was die ze ooit had gedronken</span>',
         'mooi citaat?? op een slide zetten',
       ],
     },
@@ -211,7 +211,7 @@ export const anatomy: AnatomyContent = {
       eyebrow: 'Terugkoppeling belanghebbenden',
       title: '',
       quote: {
-        text: 'Het is, alles afwegend, best goede limonade.',
+        text: 'Ik moet zeggen: het is niet de slechtste limonade die ik ooit heb gedronken.',
         name: 'Mevrouw H. Albers',
         role: 'Woonachtig op nummer 14, klant sinds de oprichting',
       },

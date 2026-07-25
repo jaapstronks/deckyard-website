@@ -43,12 +43,12 @@ const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? ico
       </h1>
       <p class="hero-tagline" data-reveal data-reveal-delay="140">{t.heroTagline}</p>
       <p class="lead" data-reveal data-reveal-delay="200">{t.heroLead}</p>
+      <!-- One action in the hero. The launch list has moved to the closing CTA:
+           now that the code is public, "try it" is the thing to ask for here,
+           and an email field competing with it only splits the decision. -->
       <div class="hero-sandbox" data-reveal data-reveal-delay="260">
         <Button href={sandboxUrl(lang)} external>{t.sandboxButton}</Button>
         <p class="hero-sandbox-note">{t.sandboxNote}</p>
-      </div>
-      <div data-reveal data-reveal-delay="340">
-        <Waitlist id="hero" lang={lang} />
       </div>
     </div>
   </section>
