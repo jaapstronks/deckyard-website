@@ -10,10 +10,11 @@ interface Props {
 const { currentPath, lang } = Astro.props;
 const t = ui[lang];
 const isBlog = currentPath.includes('/blog');
-const isChangelog = currentPath.includes('/changelog');
+const isDocs = currentPath.startsWith('/docs');
+const isHosting = currentPath.includes('/hosting');
 const homeHref = localizePath('/', lang);
 const blogHref = localizePath('/blog/', lang);
-const changelogHref = localizePath('/changelog/', lang);
+const hostingHref = localizePath('/hosting/', lang);
 // Docs are English-only; the link stays on the root docs regardless of locale.
 const docsHref = '/docs/creating/';
 ---
@@ -28,13 +29,27 @@ const docsHref = '/docs/creating/';
 
     <div class="header-actions">
       <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a href={hostingHref} aria-current={isHosting ? 'page' : undefined}>{t.nav.hosting}</a>
+        <a href={docsHref} aria-current={isDocs ? 'page' : undefined}>{t.nav.docs}</a>
         <a href={blogHref} aria-current={isBlog ? 'page' : undefined}>{t.nav.blog}</a>
-        <a href={changelogHref} aria-current={isChangelog ? 'page' : undefined}>{t.nav.changelog}</a
+        <!-- The mark carries the link on desktop; the label reappears in the
+             mobile drawer, where a lone icon in a full-width row reads as a
+             mistake. Changelog moved to the footer to keep this row short. -->
+        <a
+          class="nav-gh"
+          href="https://github.com/jaapstronks/deckyard"
+          target="_blank"
+          rel="noopener"
+          title={t.nav.github}
         >
-        <a href={docsHref}>{t.nav.docs}</a>
-        <a href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noopener"
-          >{t.nav.github}</a
-        >
+          <svg viewBox="0 0 16 16" width="19" height="19" aria-hidden="true" focusable="false">
+            <path
+              fill="currentColor"
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.4 7.4 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"
+            ></path>
+          </svg>
+          <span class="nav-gh-label">{t.nav.github}</span>
+        </a>
         <LanguageSwitcher currentPath={currentPath} ariaLabel={t.nav.languageAria} />
       </nav>
 
@@ -99,6 +114,35 @@ const docsHref = '/docs/creating/';
 </script>
 
 <style>
+  /* GitHub link: mark only on desktop, mark plus label in the mobile drawer.
+     The label is clipped rather than removed so the link keeps an accessible
+     name without needing an aria-label to duplicate the same string. */
+  .nav-gh {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-gh svg {
+    display: block;
+  }
+  .nav-gh-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  @media (max-width: 700px) {
+    .nav-gh-label {
+      position: static;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip-path: none;
+    }
+  }
+
   /* Sandbox link doubles as a lightweight CTA: a brass pill that reads as an
      action next to the plain nav links, without the weight of a full button.
      It lives outside .site-nav so it stays visible when the nav collapses into

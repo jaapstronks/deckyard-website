@@ -22,6 +22,7 @@ export interface NavContent {
   sandbox: string;
   blog: string;
   changelog: string;
+  hosting: string;
   docs: string;
   github: string;
   homeAria: string;
@@ -267,6 +268,49 @@ export interface ChangelogContent {
 }
 
 /** Everything one locale must provide to be complete. */
+export interface HostingContent {
+  metaTitle: string;
+  metaDescription: string;
+  heroKicker: string;
+  heroTitle: string;
+  heroIntro: string;
+
+  /** The two doors: run it yourself, or have it run for you. */
+  routesTitle: string;
+  routesLead: string;
+  selfLabel: string;
+  selfTitle: string;
+  selfBody: string;
+  selfPoints: string[];
+  selfCta: string;
+  managedLabel: string;
+  managedTitle: string;
+  managedBody: string;
+  managedPoints: string[];
+  managedCta: string;
+
+  domainKicker: string;
+  domainTitle: string;
+  domainBody: string;
+  /** Example hostname shown in the browser mock. Not a real domain. */
+  domainExample: string;
+  domainCaption: string;
+
+  includedTitle: string;
+  includedLead: string;
+  included: { title: string; body: string }[];
+
+  fundingKicker: string;
+  fundingTitle: string;
+  fundingBody: string[];
+
+  contactTitle: string;
+  contactBody: string;
+  contactCta: string;
+  contactNoteHeading: string;
+  contactNote: string[];
+}
+
 export interface Content extends LocaleMeta {
   nav: NavContent;
   waitlist: WaitlistContent;
@@ -274,6 +318,7 @@ export interface Content extends LocaleMeta {
   home: HomeContent;
   install: InstallContent;
   structured: StructuredContent;
+  hosting: HostingContent;
   anatomy: AnatomyContent;
   blogIndex: BlogIndexContent;
   blogPost: BlogPostContent;

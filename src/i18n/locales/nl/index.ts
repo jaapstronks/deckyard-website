@@ -7,6 +7,7 @@ import { footer } from './footer';
 import { home } from './home';
 import { install } from './install';
 import { structured } from './structured';
+import { hosting } from './hosting';
 import { anatomy } from './anatomy';
 import { blogIndex } from './blogIndex';
 import { blogPost } from './blogPost';
@@ -21,6 +22,7 @@ export const nl: Content = {
   home,
   install,
   structured,
+  hosting,
   anatomy,
   blogIndex,
   blogPost,
