@@ -161,10 +161,16 @@ const docsHref = '/docs/slide-types/';
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }
+  /* Padding on both sides, so a label never touches the divider to its left.
+     Only the first cell hugs the text column's edge. */
   .ex-stats > div {
     flex: 1 1 13rem;
-    padding: 1rem 1.4rem 1rem 0;
+    min-width: 0;
+    padding: 1rem 1.4rem;
     border-right: 1px solid var(--line);
+  }
+  .ex-stats > div:first-child {
+    padding-left: 0;
   }
   .ex-stats > div:last-child {
     border-right: 0;

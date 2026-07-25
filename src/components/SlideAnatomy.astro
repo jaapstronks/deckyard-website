@@ -99,6 +99,11 @@ const GLYPHS = [
 // The record every route ends up producing. Built from the same demo content
 // the slide in zone 3 renders, so the JSON here and the slide down there can
 // never drift apart. The shape is structural; only the values are translated.
+// The alt text the image field holds, reused as the rendered slide's alt: the
+// accessibility claim on this page is that the field is the alt, so the demo
+// had better behave that way too.
+const libraryAlt = t.sources.find((s) => s.kind === 'library')?.assetAlt ?? '';
+
 const timelineType = t.types.find((x) => x.id === 'timeline-slide');
 const RECORD = [
   '{',
@@ -118,15 +123,18 @@ const RECORD = [
   '}',
 ].join('\n');
 
-// Abstract tiles standing in for an image library. Deliberately schematic: this
-// is a diagram of a picker, not a photo montage.
+// The asset library holds photographs, so it shows photographs: colour fields
+// read as a wireframe of a picker rather than as somebody's actual library.
+// Unsplash License, credited in public/images/library/CREDITS.md. The first one
+// is the picked asset and is also what the image-slide renders, so it ships at
+// a larger size than the thumbnails.
 const TILES = [
-  'linear-gradient(150deg,#f4c04e,#d98a1f 55%,#7a4a10)',
-  'linear-gradient(150deg,#a8c8e8,#4a76a8 55%,#1f3b5c)',
-  'linear-gradient(150deg,#c9d8a8,#6f9448 55%,#2f4520)',
-  'linear-gradient(150deg,#e8b9a0,#b8663c 55%,#5c2f18)',
-  'linear-gradient(150deg,#cfd6d9,#7d8f97 55%,#39464c)',
-  'linear-gradient(150deg,#d8c4e0,#8a63a8 55%,#42284f)',
+  '/images/library/stand-saturday-morning.jpg',
+  '/images/library/tray-of-glasses.jpg',
+  '/images/library/pitcher.jpg',
+  '/images/library/lemons-in-a-box.jpg',
+  '/images/library/hand-lettered-sign.jpg',
+  '/images/library/pouring-out.jpg',
 ];
 ---
 
@@ -183,12 +191,10 @@ const TILES = [
               {src.kind === 'library' && (
                 <div class="src-library">
                   <div class="tiles">
-                    {TILES.map((g, i) => (
-                      <span
-                        class={i === 0 ? 'tile is-picked' : 'tile'}
-                        style={`background:${g}`}
-                        data-span={i === 0 ? 'i1' : undefined}
-                      />
+                    {TILES.map((src, i) => (
+                      <span class={i === 0 ? 'tile is-picked' : 'tile'} data-span={i === 0 ? 'i1' : undefined}>
+                        <img src={src} alt="" loading="lazy" decoding="async" width="320" height="240" />
+                      </span>
                     ))}
                   </div>
                   <p class="tile-meta">
@@ -460,10 +466,13 @@ const TILES = [
                         {type.title}
                       </h4>
                       <figure class="slide-img">
-                        <span
+                        <img
                           class="slide-img-frame"
                           data-region="image"
-                          style={`background:${TILES[0]}`}
+                          src={TILES[0]}
+                          alt={libraryAlt}
+                          loading="lazy"
+                          decoding="async"
                         />
                         <figcaption data-region="caption">{type.image.caption}</figcaption>
                       </figure>
@@ -921,6 +930,14 @@ const TILES = [
   .tile {
     aspect-ratio: 4 / 3;
     border-radius: 3px;
+    display: block;
+    overflow: hidden;
+    background: var(--paper-warm);
+  }
+  .tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
   }
   .tile.is-picked {
@@ -1615,6 +1632,8 @@ const TILES = [
   }
   .slide-img-frame {
     flex: 1;
+    width: 100%;
+    object-fit: cover;
     border-radius: calc(var(--t-radius) / 2);
     min-height: 0;
   }

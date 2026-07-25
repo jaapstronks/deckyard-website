@@ -85,6 +85,12 @@ const NOTES = [
 </section>
 
 <style>
+  /* The hero above already ends on a generous 130px, and both sections sit on
+     the same paper, so a full section padding on top of that reads as a hole
+     rather than as a break. Trim the top, keep the bottom. */
+  .teaser {
+    padding-block-start: 0;
+  }
   .teaser-grid {
     display: grid;
     gap: 2.2rem;
