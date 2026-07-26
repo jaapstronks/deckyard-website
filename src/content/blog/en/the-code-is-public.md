@@ -37,8 +37,9 @@ that away from you.
 
 ## What you can do today
 
-Three doors, in increasing order of commitment. The sandbox is a full Deckyard
-in your browser with no install and no account. The Docker Compose file gets you
+Three doors, in increasing order of commitment. The sandbox is the Deckyard
+editor in your browser with no install and no account; AI, uploads and publishing
+are off there, because it is public and anonymous. The Docker Compose file gets you
 a real instance on your own server in an afternoon. The repository is there to
 read, star, file issues against, or fork.
 

@@ -91,7 +91,7 @@ export const accessibility: AccessibilityContent = {
 
   ctaTitle: 'Check it rather than take our word for it',
   ctaBody:
-    'The sandbox is a full Deckyard in your browser, with no install and no account: build a timeline and see what the fields ask of you. On an instance of your own, open a published deck, follow the link to its reading view, and then switch JavaScript off and read it again.',
+    'The sandbox is the Deckyard editor in your browser, with no install and no account: build a timeline and see what the fields ask of you. Publishing is off there, so for the reading view you need an instance of your own: publish a deck, follow the link to its reading view, and then switch JavaScript off and read it again.',
   ctaDocs: 'Read the accessibility docs',
   ctaSandbox: 'Try the live sandbox',
 };

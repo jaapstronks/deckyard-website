@@ -104,7 +104,7 @@ export const structured: StructuredContent = {
 
   ctaTitle: 'Makkelijker te zien dan te lezen',
   ctaBody:
-    'De sandbox is een volledige Deckyard in je browser, zonder installatie en zonder account. Maak een tijdlijn, wissel het thema, kijk wat je gebouwd hebt.',
+    'De sandbox is de Deckyard-editor in je browser, zonder installatie en zonder account. Maak een tijdlijn, wissel het thema, kijk wat je gebouwd hebt. AI, uploads en publiceren staan er uit, want hij is openbaar en anoniem.',
   ctaSandbox: 'Probeer de sandbox',
   ctaDocs: 'Lees de slidetype-referentie',
 

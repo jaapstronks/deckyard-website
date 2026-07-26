@@ -92,7 +92,7 @@ export const accessibility: AccessibilityContent = {
 
   ctaTitle: 'Beter zelf nakijken dan ons op ons woord geloven',
   ctaBody:
-    'De sandbox is een volledige Deckyard in je browser, zonder installatie en zonder account: bouw een tijdlijn en kijk wat de velden van je vragen. Op een eigen instance open je een gepubliceerd deck, volg je de link naar de leesweergave, en zet je daarna JavaScript uit om het opnieuw te lezen.',
+    'De sandbox is de Deckyard-editor in je browser, zonder installatie en zonder account: bouw een tijdlijn en kijk wat de velden van je vragen. Publiceren staat daar uit, dus voor de leesweergave heb je een eigen instance nodig: publiceer een deck, volg de link naar de leesweergave, en zet daarna JavaScript uit om het opnieuw te lezen.',
   ctaDocs: 'Lees de toegankelijkheidsdocs',
   ctaSandbox: 'Probeer de live sandbox',
 };

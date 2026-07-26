@@ -38,8 +38,9 @@ kan niemand je meer afnemen.
 
 ## Wat je vandaag kunt doen
 
-Drie deuren, oplopend in toewijding. De sandbox is een volledige Deckyard in je
-browser, zonder installatie en zonder account. Met het Docker Compose-bestand
+Drie deuren, oplopend in toewijding. De sandbox is de Deckyard-editor in je
+browser, zonder installatie en zonder account; AI, uploads en publiceren staan
+er uit, want hij is openbaar en anoniem. Met het Docker Compose-bestand
 staat er in een middag een echte instance op je eigen server. En de repository
 ligt er om te lezen, te sterren, issues op te schrijven of te forken.
 

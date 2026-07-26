@@ -84,7 +84,7 @@ export const compare: CompareContent = {
 
   ctaTitle: 'Easier to judge than to read about',
   ctaBody:
-    'The sandbox is a full Deckyard in your browser, with no install and no account. Make a slide, switch the theme, and see whether the trade above is one you want.',
+    'The sandbox is the Deckyard editor in your browser, with no install and no account. Make a slide, switch the theme, and see whether the trade above is one you want. AI, uploads and publishing are off there, because it is public and anonymous.',
   ctaSandbox: 'Try the live sandbox',
   ctaHow: 'Read how it works',
 };

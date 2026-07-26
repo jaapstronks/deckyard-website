@@ -69,7 +69,15 @@ export const ui: Record<Lang, Content> = Object.fromEntries(
 
 // ---- Sandbox ---------------------------------------------------------------
 
-/** Live hosted playground: a full Deckyard anyone can try without installing. */
+/**
+ * Live hosted playground: the Deckyard editor anyone can try without installing.
+ *
+ * Not a full Deckyard, and copy must not say so. `SANDBOX_MODE` in the core repo
+ * switches off AI (a public anonymous playground plus per-prompt LLM cost is an
+ * open-ended bill), uploads and scope changes, which is why publishing is not
+ * available; decks expire and exports carry a watermark. Anything the site sends
+ * a reader here to try has to be something that works with those off.
+ */
 export const sandboxBaseUrl = 'https://sandbox.deckyard.eu';
 
 /**

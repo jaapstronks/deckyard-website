@@ -82,6 +82,7 @@ export const home: HomeContent = {
   ctaGithub: 'View on GitHub',
   ctaWaitlistButton: 'Join the launch list',
   sandboxButton: 'Try the live sandbox',
-  sandboxNote: 'No install, no signup: a full Deckyard, running in your browser.',
+  sandboxNote:
+    'No install, no signup. The editor is all of it; AI, uploads and publishing are switched off, because it is public and anonymous.',
   ctaSandboxButton: 'Open the sandbox',
 };
