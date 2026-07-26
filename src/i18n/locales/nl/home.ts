@@ -73,7 +73,7 @@ export const home: HomeContent = {
   compareKicker: 'Je komt ergens vandaan',
   compareTitle: 'Hoe dit zich verhoudt tot wat je nu gebruikt',
   compareBody:
-    'De meeste mensen die dit lezen maken hun decks in PowerPoint, Canva of Gamma. Alle drie zijn ergens goed in, en alle drie kosten je iets. De vergelijking zegt wat, en wanneer Deckyard het verkeerde antwoord is.',
+    'De meeste mensen die dit lezen maken hun decks in PowerPoint, Google Slides, Canva of Gamma. Alle vier zijn ergens goed in, en alle vier kosten je iets. De vergelijking zegt wat, en wanneer Deckyard het verkeerde antwoord is.',
   compareCta: 'Lees de vergelijking',
   ctaKicker: 'Open source, nu beschikbaar',
   ctaTitle: 'Verken de code, volg de lancering',
