@@ -78,7 +78,7 @@ export const accessibility: AccessibilityContent = {
     },
     {
       title: 'Een eigen thema kan nog steeds zakken op contrast',
-      body: 'De huisstijl woont in themetokens, en dat is precies wat hem consistent maakt; een token kan een kleurcombinatie bevatten die te bleek is. Consistent is niet hetzelfde als leesbaar, en dat is aan wie het thema maakt.',
+      body: 'Kies je een achtergrond, dan komt daar automatisch lichte of donkere tekst bij, maar dat gaat op helderheid en niet op een gemeten verhouding, en de theme-editor waarschuwt nergens als de combinatie tekortschiet. Dat de huisstijl in tokens woont maakt hem consistent; consistent is niet hetzelfde als leesbaar, en dat verschil is voorlopig van wie het thema maakt.',
     },
     {
       title: 'Video en audio hebben ondertiteling nodig',

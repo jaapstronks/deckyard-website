@@ -52,9 +52,15 @@ The presenter mode supports full keyboard navigation:
 | F | Fullscreen |
 | Escape | Exit |
 
-## High Contrast
+## Color Contrast
 
-Themes are designed with sufficient color contrast. When creating custom themes, ensure text remains readable against backgrounds.
+**Nothing in the theme editor checks contrast, and nothing warns you when a pair falls short.** Plan to test your theme yourself.
+
+What Deckyard does do is derive a text color: pick a background or accent color and you get light or dark text against it automatically. That choice is made on brightness, not on a measured contrast ratio, so a color you pick can land below the WCAG AA threshold of 4.5:1 for body text without anything saying so.
+
+The one place contrast is measured is a **slide background image**. The editor samples the region where the title sits, picks whichever of the theme's two text colors reads better over it, and adds a scrim when neither clears the 3:1 target for large text. That happens automatically and is stored on the slide, so exports and PDF renders make the same decision.
+
+When you build a custom theme, check the color pairs against WCAG AA yourself: 4.5:1 for body text, 3:1 for large text. The [reading view](#reading-view) of a published presentation is the easiest surface to test against, because it is plain HTML in whatever contrast checker you already use.
 
 ## Reading View
 
