@@ -7,6 +7,7 @@ import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
 import { ui, sandboxUrl, type Lang } from '@/i18n';
+import { withFacts } from '@/lib/facts';
 
 interface Props {
   lang: Lang;
@@ -14,6 +15,9 @@ interface Props {
 const { lang } = Astro.props;
 const t = ui[lang].structured;
 const docsHref = '/docs/slide-types/';
+// The stat row is the page's claim to being checkable, so the slide-type figure
+// comes from the one place that holds it rather than being typed per locale.
+const stats = t.stats.map((s) => ({ ...s, value: withFacts(s.value) }));
 ---
 
 <SiteLayout title={t.metaTitle} description={t.metaDescription}>
@@ -26,7 +30,7 @@ const docsHref = '/docs/slide-types/';
         <p class="ex-dek" data-reveal data-reveal-delay="120">{t.dek}</p>
         <dl class="ex-stats" data-reveal data-reveal-delay="180">
           {
-            t.stats.map((s) => (
+            stats.map((s) => (
               <div>
                 <dt>{s.value}</dt>
                 <dd>{s.label}</dd>

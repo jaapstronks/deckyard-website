@@ -23,10 +23,12 @@ export interface NavContent {
   blog: string;
   changelog: string;
   hosting: string;
+  /** Label for /compare/. In the footer rather than the header: the primary nav
+   *  is deliberately four items, and the homepage band is the real entrance. */
+  compare: string;
   docs: string;
   github: string;
   homeAria: string;
-  badge: string;
   languageAria: string;
   menuAria: string;
 }
@@ -60,12 +62,22 @@ export interface HomeContent {
   heroKicker: string;
   heroTitleMain: string;
   heroTitleHighlight: string;
-  heroTagline: string;
+  /**
+   * The one plain sentence saying what Deckyard is and what it stands in place
+   * of - the line somebody forwards to a colleague. Not a tagline: the kicker
+   * above the headline already does that job, and it did it twice.
+   */
+  heroWhatItIs: string;
   heroLead: string;
   featuresKicker: string;
   featuresTitle: string;
   featuresLead: string;
   pillars: Pillar[];
+  /** The band that sends someone arriving from another tool to /compare/. */
+  compareKicker: string;
+  compareTitle: string;
+  compareBody: string;
+  compareCta: string;
   ctaKicker: string;
   ctaTitle: string;
   ctaLead: string;
@@ -267,6 +279,54 @@ export interface ChangelogContent {
   dateLocale: string;
 }
 
+/**
+ * "What you gain, and what you give up": Deckyard next to the tools people
+ * actually arrive from. Deliberately not a feature matrix - every party gets a
+ * strength and a cost, Deckyard included, because a table we win every row of
+ * is not evidence of anything.
+ *
+ * `alternatives` is a list rather than four fixed keys so a fifth tool is one
+ * entry, and so a future /compare/<id>/ page per tool can read the same data
+ * instead of restating it.
+ */
+export interface CompareContent {
+  metaTitle: string;
+  metaDescription: string;
+  heroKicker: string;
+  heroTitle: string;
+  heroIntro: string;
+
+  tableTitle: string;
+  tableLead: string;
+  /** Column headings. `colTool` also labels the row-header column. */
+  colTool: string;
+  colStrength: string;
+  colGiveUp: string;
+  /** Deckyard's own row is marked so the table can show it as one of four. */
+  alternatives: {
+    /** Stable key; doubles as the slug if this tool ever gets its own page. */
+    id: string;
+    name: string;
+    self?: boolean;
+    strength: string;
+    giveUp: string;
+    /** The longer read: what the trade actually feels like in an organisation. */
+    body: string[];
+  }[];
+
+  readTitle: string;
+  readLead: string;
+
+  wrongTitle: string;
+  wrongLead: string;
+  wrong: string[];
+
+  ctaTitle: string;
+  ctaBody: string;
+  ctaSandbox: string;
+  ctaHow: string;
+}
+
 /** Everything one locale must provide to be complete. */
 export interface HostingContent {
   metaTitle: string;
@@ -318,6 +378,7 @@ export interface Content extends LocaleMeta {
   home: HomeContent;
   install: InstallContent;
   structured: StructuredContent;
+  compare: CompareContent;
   hosting: HostingContent;
   anatomy: AnatomyContent;
   blogIndex: BlogIndexContent;

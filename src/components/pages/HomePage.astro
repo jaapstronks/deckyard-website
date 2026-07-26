@@ -6,7 +6,8 @@ import StructuredTeaser from '@/components/marketing/StructuredTeaser.astro';
 import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
-import { ui, sandboxUrl, type Lang } from '@/i18n';
+import { ui, localizePath, sandboxUrl, type Lang } from '@/i18n';
+import { withFacts } from '@/lib/facts';
 
 interface Props {
   lang: Lang;
@@ -16,6 +17,8 @@ const t = ui[lang].home;
 
 // Locale-specific social card (NL homepage gets the Dutch OG image).
 const ogImage = lang === 'nl' ? '/images/og/deckyard-og-nl.png' : '/images/og/deckyard-og.png';
+
+const compareHref = localizePath('/compare/', lang);
 
 // Pillar icons are fixed per feature; only the title/body come from the
 // translation dictionary. Order matches t.pillars.
@@ -29,7 +32,13 @@ const icons = [
   '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
   '<rect x="2" y="3" width="20" height="7" rx="2"/><rect x="2" y="14" width="20" height="7" rx="2"/><path d="M6 6.5h.01M6 17.5h.01"/>',
 ];
-const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? icons[0] }));
+// `{count}` in the copy is the slide-type figure, substituted from one place so
+// the number cannot differ between here and /structured-slides.
+const pillars = t.pillars.map((pillar, i) => ({
+  ...pillar,
+  title: withFacts(pillar.title),
+  icon: icons[i] ?? icons[0],
+}));
 ---
 
 <SiteLayout title={t.metaTitle} description={t.metaDescription} ogImage={ogImage}>
@@ -41,7 +50,7 @@ const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? ico
         {t.heroTitleMain}
         <span class="accent">{t.heroTitleHighlight}</span>
       </h1>
-      <p class="hero-tagline" data-reveal data-reveal-delay="140">{t.heroTagline}</p>
+      <p class="hero-what" data-reveal data-reveal-delay="140">{t.heroWhatItIs}</p>
       <p class="lead" data-reveal data-reveal-delay="200">{t.heroLead}</p>
       <!-- One action in the hero. The launch list has moved to the closing CTA:
            now that the code is public, "try it" is the thing to ask for here,
@@ -82,6 +91,22 @@ const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? ico
           </div>
         ))
       }
+    </div>
+  </Section>
+
+  <!-- ============ COMING FROM ANOTHER TOOL ============ -->
+  <!-- One band rather than a section: the comparison itself lives on /compare/,
+       and this is the doorway for the reader who arrived wondering what to use
+       instead of PowerPoint. It sits after "what ships" because the trade only
+       means something once you know what the thing is. -->
+  <Section flushBottom>
+    <div class="compare-band" data-reveal>
+      <div class="compare-copy">
+        <p class="kicker">{t.compareKicker}</p>
+        <h2>{t.compareTitle}</h2>
+        <p>{t.compareBody}</p>
+      </div>
+      <Button href={compareHref} variant="ghost">{t.compareCta}</Button>
     </div>
   </Section>
 
@@ -145,18 +170,22 @@ const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? ico
     font-style: normal;
   }
 
-  .hero-tagline {
-    max-width: 24em;
+  /* The orienting sentence: what this is, and what it replaces. It keeps the
+     display face and the green so it still reads as the second line of the
+     hero, but it is a sentence rather than a slogan - hence the wider measure
+     and the step below the old tagline's, which would have run to five lines. */
+  .hero-what {
+    max-width: 33em;
     margin: 20px auto 0;
     font-family: var(--display);
     font-variation-settings:
       'opsz' 40,
       'wght' 560;
-    font-size: var(--step-2);
-    line-height: 1.3;
+    font-size: var(--step-1);
+    line-height: 1.4;
     letter-spacing: -0.01em;
     color: var(--green);
-    text-wrap: balance;
+    text-wrap: pretty;
   }
 
   .hero .lead {
@@ -227,6 +256,37 @@ const pillars = t.pillars.map((pillar, i) => ({ ...pillar, icon: icons[i] ?? ico
     place-items: center;
     background: var(--green-wash);
     color: var(--green);
+  }
+
+  /* ---------- "Coming from another tool" band ---------- */
+
+  .compare-band {
+    display: grid;
+    gap: var(--space-sm);
+    align-items: center;
+    padding: var(--space-md);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+  }
+  @media (min-width: 820px) {
+    .compare-band {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-lg);
+    }
+  }
+  .compare-copy {
+    max-width: 52ch;
+  }
+  .compare-copy h2 {
+    margin: 0.35rem 0 0.6rem;
+    font-size: var(--step-3);
+    letter-spacing: -0.02em;
+  }
+  .compare-copy p:last-child {
+    margin: 0;
+    color: var(--ink-soft);
   }
 
   /* ---------- Closing CTA ---------- */

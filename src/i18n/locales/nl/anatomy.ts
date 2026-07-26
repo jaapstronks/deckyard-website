@@ -182,7 +182,11 @@ export const anatomy: AnatomyContent = {
       claim:
         '<b>ordered: true</b> - de volgorde is hier de betekenis, geen opmaakkeuze. Daarom wordt dit voor een screenreader een genummerde lijst, en mag niets verderop de items herschikken.',
       eyebrow: 'Achtergrond',
-      title: 'Historische ontwikkeling van de Kraam',
+      // "De Kraam" mirrors the English "the Stand" - the same stiff register -
+      // but this slide is also shown on its own on the homepage, where the
+      // sentence that introduced the name is nowhere near it. Spelled out, so a
+      // standalone slide does not read as an unfilled placeholder.
+      title: 'Historische ontwikkeling van de Limonadekraam',
       items: [
         { date: '2021', title: 'Opgericht bij besluit' },
         { date: '2022', title: 'Eerste samenwerking' },
@@ -222,8 +226,8 @@ export const anatomy: AnatomyContent = {
       claim:
         '<b>imageRole: content | decorative</b> - het formaat vraagt waar het beeld <em>voor</em> is. Noem het decoratief en screenreaders slaan het over; noem het betekenisvol en het vraagt om alt-tekst. Een canvas kan die vraag niet stellen, want daar is een afbeelding alleen pixels op een coördinaat.',
       eyebrow: 'Bedrijfsvoering',
-      title: 'De Kraam in bedrijf',
-      image: { caption: 'De Kraam, zaterdagochtend.' },
+      title: 'De Limonadekraam in bedrijf',
+      image: { caption: 'De Limonadekraam, zaterdagochtend.' },
     },
   ],
   themes: [

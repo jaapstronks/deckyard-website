@@ -46,20 +46,6 @@
     letter-spacing: -0.02em;
     color: var(--ink);
   }
-  .brand-badge {
-    font-family: var(--mono);
-    font-size: 0.6rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--brass-text);
-    border: 1px solid var(--brass-bright);
-    border-radius: 999px;
-    padding: 3px 9px 2px;
-    margin-left: 4px;
-    translate: 0 -1px;
-  }
-
   /* Right-hand cluster: the collapsible nav, the always-visible CTA, and the
      hamburger (mobile only). */
   .header-actions {
@@ -328,13 +314,6 @@
     }
     .site-nav .lang-menu-item {
       padding: 12px 14px;
-    }
-  }
-
-  /* Very narrow: drop the decorative Beta badge to protect the brand + CTA. */
-  @media (max-width: 420px) {
-    .brand-badge {
-      display: none;
     }
   }
 

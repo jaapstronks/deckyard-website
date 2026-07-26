@@ -8,7 +8,7 @@ export const structured: StructuredContent = {
   title: 'A slide that knows what it is',
   dek: 'Most tools treat a slide as a canvas: a rectangle you drop boxes onto, wherever they look right. Deckyard treats it as a record with a type. It sounds like a technical detail. It is the reason everything else on this site is possible.',
   stats: [
-    { value: '38', label: 'slide types, each with its own fields' },
+    { value: '{count}', label: 'slide types, each with its own fields' },
     { value: '1', label: 'published schema, generated from the code' },
     { value: '0', label: 'colours or fonts stored in your content' },
   ],

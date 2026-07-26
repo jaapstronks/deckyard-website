@@ -2,7 +2,7 @@ import type { FooterContent } from '@/i18n/types';
 
 export const footer: FooterContent = {
   tagline:
-    'An open source presentation platform for organizations that want to own their story: their brand, their data, their infrastructure.',
+    'An open source presentation platform for organisations that want to own their story: their brand, their data, their infrastructure.',
   followHeading: 'Follow along',
   followBlog: 'Blog',
   followRss: 'RSS feed',
