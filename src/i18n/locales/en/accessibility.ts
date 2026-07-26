@@ -77,7 +77,7 @@ export const accessibility: AccessibilityContent = {
     },
     {
       title: 'A custom theme can still fail on contrast',
-      body: 'Brand lives in theme tokens, which is what makes it consistent - and a token can hold a colour combination that is too faint. Consistency is not the same as legibility, and the theme author owns that.',
+      body: 'Pick a background and you get light or dark text against it automatically, but that runs on brightness rather than a measured ratio, and nothing in the theme editor warns you when the pair falls short. Brand living in tokens is what makes it consistent; consistent is not the same as legible, and for now the theme author owns the difference.',
     },
     {
       title: 'Video and audio need captions',
