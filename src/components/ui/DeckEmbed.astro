@@ -7,50 +7,304 @@
  * points at a self-contained `.html` file exported from Deckyard
  * ("Download -> HTML") and dropped into `public/decks/`. See
  * `public/decks/README.md` for the convention and caveats.
+ *
+ * Two loading strategies, decided by whether a `poster` is passed:
+ *
+ * - **Without one**, the iframe is in the HTML and loads lazily. Right for a
+ *   deck further down a page.
+ * - **With one**, what ships is a link wrapped around a still of the first
+ *   slide, costing a few kilobytes against the export's half a megabyte. On a
+ *   screen wide enough to hold a deck the script upgrades that link into an
+ *   inline frame - when the browser goes idle, or the moment somebody presses
+ *   play - and the poster stays underneath until the frame reports it has
+ *   loaded, so nothing flashes. That is what makes a deck affordable above the
+ *   fold, and it means the no-JS path is the link that was there all along.
+ *
+ * Below `inlineFrom` the link is left alone rather than upgraded. An export
+ * narrower than about 400px wraps its own title bar and controls onto two
+ * lines each, which eats the frame and squeezes the slide to a strip; a phone
+ * is better served by the deck opening in a tab of its own, where it gets the
+ * whole screen.
+ *
+ * The height is not an aspect ratio alone: an export draws its own title bar
+ * and control bar at a fixed height, so a pure 16:9 box letterboxes the slide
+ * more and more as the frame narrows. `chrome` is added on top of the ratio,
+ * which keeps the slide itself exactly 16:9 at every width.
  */
 interface Props {
   /** Path to the exported .html deck, e.g. "/decks/my-deck.html". */
   src: string;
   /** Accessible iframe title. */
   title?: string;
-  /** Aspect ratio as a CSS `aspect-ratio` value, e.g. "16 / 9" or "4 / 3". */
+  /** Aspect ratio of the slide area, e.g. "16 / 9" or "4 / 3". */
   ratio?: string;
   /** Max width of the embed; anything valid for CSS width. */
   maxWidth?: string;
+  /** Still of the first slide. Passing one switches on the deferred load. */
+  poster?: string;
+  /** Label on the play button. Required whenever `poster` is passed. */
+  playLabel?: string;
+  /** Fixed px height of the export's own chrome; see `DECK_CHROME_PX`. */
+  chrome?: number;
+  /** Media query from which the poster is upgraded to an inline frame. */
+  inlineFrom?: string;
+  /** Caption link shown when there is no poster. Pass '' to drop it. */
+  openLabel?: string;
 }
 
-const { src, title = 'Deckyard presentation', ratio = '16 / 9', maxWidth = '100%' } = Astro.props;
+const {
+  src,
+  title = 'Deckyard presentation',
+  ratio = '16 / 9',
+  maxWidth = '100%',
+  poster,
+  playLabel = 'Play the presentation',
+  chrome = 0,
+  inlineFrom = '(min-width: 700px)',
+  openLabel = 'Open the presentation',
+} = Astro.props;
+
+// "16 / 9" -> 0.5625, the slide's height as a fraction of the frame's width.
+// A ratio that does not parse falls back to 16:9 rather than collapsing the
+// box to nothing.
+const [ratioW, ratioH] = ratio.split('/').map((part) => Number(part.trim()));
+const heightFactor = ratioW > 0 && ratioH > 0 ? ratioH / ratioW : 9 / 16;
 ---
 
-<figure class="deck-embed" style={`--deck-ratio:${ratio};--deck-max-width:${maxWidth}`}>
-  <iframe
-    class="deck-embed__frame"
-    src={src}
-    title={title}
-    loading="lazy"
-    allow="fullscreen"
-    referrerpolicy="strict-origin-when-cross-origin"></iframe>
-  <figcaption class="deck-embed__fallback">
-    <a href={src} target="_blank" rel="noopener">Open presentatie</a>
-  </figcaption>
+<figure
+  class="deck-embed"
+  style={`--deck-height:${heightFactor};--deck-chrome:${chrome}px;--deck-max-width:${maxWidth}`}
+  data-deck-src={poster ? src : undefined}
+  data-deck-title={poster ? title : undefined}
+  data-deck-inline-from={poster ? inlineFrom : undefined}
+>
+  <div class="deck-embed__stage">
+    {
+      poster ? (
+        <>
+          {/* A link, not a button: it is the whole of the no-JS path and the
+              whole of the phone path, and only becomes "play" once the script
+              has decided the screen can hold a frame. */}
+          <a class="deck-embed__poster" href={src} target="_blank" rel="noopener">
+            <img src={poster} alt="" decoding="async" />
+            <span class="deck-embed__play">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path d="M8 5.5v13l11-6.5z" />
+              </svg>
+              {playLabel}
+            </span>
+          </a>
+          {/* Rendered here rather than created in JS, so it carries this
+              component's style scope. Without a `src` it is an empty
+              about:blank frame costing nothing; the export only starts
+              downloading when the script assigns one. */}
+          <iframe
+            class="deck-embed__frame is-arriving"
+            data-deck-frame
+            title={title}
+            allow="fullscreen"
+            referrerpolicy="strict-origin-when-cross-origin"
+          />
+        </>
+      ) : (
+        <iframe
+          class="deck-embed__frame"
+          src={src}
+          title={title}
+          loading="lazy"
+          allow="fullscreen"
+          referrerpolicy="strict-origin-when-cross-origin"
+        />
+      )
+    }
+  </div>
+  {
+    !poster && openLabel && (
+      <figcaption class="deck-embed__fallback">
+        <a href={src} target="_blank" rel="noopener">
+          {openLabel}
+        </a>
+      </figcaption>
+    )
+  }
 </figure>
+
+<script>
+  // The export is around half a megabyte over the wire, so it is attached after
+  // the page is usable rather than as part of it: on idle, or the moment
+  // somebody presses play. A reader on a metered connection gets it only when
+  // they ask. The poster is removed once the frame reports it has loaded, so
+  // the swap has nothing to flash through.
+  const mountDeck = (figure: HTMLElement, takeFocus: boolean) => {
+    if (figure.dataset.deckMounted) return;
+    figure.dataset.deckMounted = 'true';
+
+    const frame = figure.querySelector<HTMLIFrameElement>('iframe[data-deck-frame]');
+    const poster = figure.querySelector<HTMLElement>('.deck-embed__poster');
+    if (!frame || !poster) return;
+
+    // Listening only now: the empty frame already fired a load for about:blank
+    // when the page parsed, and that one is not the deck.
+    frame.addEventListener('load', () => {
+      frame.classList.remove('is-arriving');
+      poster.remove();
+      // Only after the deck is really there: moving focus into an empty frame
+      // would strand the keyboard.
+      if (takeFocus) frame.focus();
+    });
+    frame.src = figure.dataset.deckSrc ?? '';
+  };
+
+  document.querySelectorAll<HTMLElement>('.deck-embed[data-deck-src]').forEach((figure) => {
+    const poster = figure.querySelector('.deck-embed__poster');
+    if (!poster) return;
+
+    // Narrow screens keep the link they shipped with: an export squeezed below
+    // about 400px wraps its own chrome onto four lines and leaves the slide a
+    // strip, so a tab of its own is the better answer there. Evaluated once, on
+    // load - a phone rotated to landscape is still a phone.
+    const inlineFrom = figure.dataset.deckInlineFrom;
+    if (inlineFrom && !window.matchMedia(inlineFrom).matches) return;
+
+    poster.addEventListener('click', (event) => {
+      event.preventDefault();
+      mountDeck(figure, true);
+    });
+
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } })
+      .connection;
+    if (connection?.saveData) return;
+
+    // Typed as possibly absent on purpose: Safari only shipped it in 17, and
+    // the DOM lib declares it unconditionally, which would make the fallback
+    // look unreachable to the type checker.
+    const idle: typeof window.requestIdleCallback | undefined = window.requestIdleCallback;
+    if (idle) {
+      idle(() => mountDeck(figure, false), { timeout: 4000 });
+    } else {
+      window.setTimeout(() => mountDeck(figure, false), 1500);
+    }
+  });
+</script>
 
 <style>
   .deck-embed {
     margin: 0;
     width: 100%;
     max-width: var(--deck-max-width);
+    /* The stage's height is measured against this box rather than the viewport,
+       so the frame stays correct in a hero column as well as full-bleed. */
+    container-type: inline-size;
   }
-  .deck-embed__frame {
-    display: block;
+
+  /* The slide area is the ratio; the export's own bars are added on top, since
+     they keep their height while the frame narrows. */
+  .deck-embed__stage {
+    position: relative;
     width: 100%;
-    aspect-ratio: var(--deck-ratio);
-    max-width: 100%;
-    border: 0;
+    height: calc(100cqw * var(--deck-height) + var(--deck-chrome));
     border-radius: 12px;
+    overflow: hidden;
     background: #000;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
   }
+
+  .deck-embed__frame,
+  .deck-embed__poster {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  /* ---------- the poster ---------- */
+  .deck-embed__poster {
+    background: none;
+    text-decoration: none;
+    color: inherit;
+  }
+  /* The stage's proportions move with its width, because the export's chrome
+     keeps its height while the slide shrinks; a still cannot match that at
+     every size. Cropping from the right is the harmless direction - the deck
+     sets its type against the left edge and leaves that side empty. */
+  .deck-embed__poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+  }
+  .deck-embed__poster:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  /* The one thing that says the still is a deck and not a picture of one. */
+  .deck-embed__play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1.15rem 0.7rem 1rem;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--green);
+    font-family: var(--display);
+    font-variation-settings:
+      'opsz' 24,
+      'wght' 620;
+    font-size: var(--step--1);
+    white-space: nowrap;
+    box-shadow: 0 6px 24px rgba(16, 40, 27, 0.3);
+    transition: transform var(--dur-micro) var(--ease-out-quint);
+  }
+  .deck-embed__poster:hover .deck-embed__play,
+  .deck-embed__poster:focus-visible .deck-embed__play {
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+
+  /* The frame fades in over the poster it replaces, so a deck that arrives on
+     idle does not blink into the page while somebody is reading beside it. */
+  .deck-embed__frame {
+    transition: opacity var(--dur-component) ease;
+  }
+  /* The empty frame sits above the poster in the stack, so it has to let
+     clicks through until it is the thing on screen. */
+  .deck-embed__frame.is-arriving {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .deck-embed__play,
+    .deck-embed__frame {
+      transition: none;
+    }
+    .deck-embed__poster:hover .deck-embed__play,
+    .deck-embed__poster:focus-visible .deck-embed__play {
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  /* A pill told apart from the still behind it by a background colour only;
+     the user's own palette drops that, so give it an edge of its own. */
+  @media (forced-colors: active) {
+    .deck-embed__play {
+      border: 2px solid currentColor;
+    }
+  }
+
   /* Fallback link is only useful without the iframe (no-JS / print); the
      iframe itself carries the interactive deck. Keep it discreet. */
   .deck-embed__fallback {
@@ -59,7 +313,7 @@ const { src, title = 'Deckyard presentation', ratio = '16 / 9', maxWidth = '100%
     text-align: center;
   }
   @media print {
-    .deck-embed__frame {
+    .deck-embed__stage {
       display: none;
     }
   }

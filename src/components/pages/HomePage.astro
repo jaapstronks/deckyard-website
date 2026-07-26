@@ -6,8 +6,10 @@ import StructuredTeaser from '@/components/marketing/StructuredTeaser.astro';
 import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
+import DeckEmbed from '@/components/ui/DeckEmbed.astro';
 import { ui, localizePath, sandboxUrl, type Lang } from '@/i18n';
 import { withFacts } from '@/lib/facts';
+import { heroDecks, DECK_CHROME_PX } from '@/lib/decks';
 
 interface Props {
   lang: Lang;
@@ -20,6 +22,11 @@ const ogImage = lang === 'nl' ? '/images/og/deckyard-og-nl.png' : '/images/og/de
 
 const compareHref = localizePath('/compare/', lang);
 const structuredHref = localizePath('/structured-slides/', lang);
+
+// The hero deck exists per locale, because a deck is written in one language.
+// A locale without one keeps the centred hero this page has always had, rather
+// than being handed a deck it cannot read; see `src/lib/decks.ts`.
+const heroDeck = heroDecks[lang];
 
 // Pillar icons are fixed per feature; only the title/body come from the
 // translation dictionary. Order matches t.pillars.
@@ -44,22 +51,44 @@ const pillars = t.pillars.map((pillar, i) => ({
 
 <SiteLayout title={t.metaTitle} description={t.metaDescription} ogImage={ogImage}>
   <!-- ============ HERO ============ -->
-  <section class="hero">
+  <!-- With a deck the hero is two columns and reads left-aligned; without one it
+       is the centred column it has always been. The copy is identical either
+       way - only the frame around it changes, so a locale getting its export
+       later needs no second version of any of this. -->
+  <section class:list={['hero', { 'hero--deck': heroDeck }]}>
     <div class="container hero-inner">
-      <p class="kicker kicker--center" data-reveal>{t.heroKicker}</p>
-      <h1 data-reveal data-reveal-delay="80">
-        {t.heroTitleMain}
-        <span class="accent">{t.heroTitleHighlight}</span>
-      </h1>
-      <p class="hero-what" data-reveal data-reveal-delay="140">{t.heroWhatItIs}</p>
-      <p class="lead" data-reveal data-reveal-delay="200">{t.heroLead}</p>
-      <!-- One action in the hero. The launch list has moved to the closing CTA:
-           now that the code is public, "try it" is the thing to ask for here,
-           and an email field competing with it only splits the decision. -->
-      <div class="hero-sandbox" data-reveal data-reveal-delay="260">
-        <Button href={sandboxUrl(lang)} external>{t.sandboxButton}</Button>
-        <p class="hero-sandbox-note">{t.sandboxNote}</p>
+      <div class="hero-copy">
+        <p class:list={['kicker', { 'kicker--center': !heroDeck }]} data-reveal>{t.heroKicker}</p>
+        <h1 data-reveal data-reveal-delay="80">
+          {t.heroTitleMain}
+          <span class="accent">{t.heroTitleHighlight}</span>
+        </h1>
+        <p class="hero-what" data-reveal data-reveal-delay="140">{t.heroWhatItIs}</p>
+        <p class="lead" data-reveal data-reveal-delay="200">{t.heroLead}</p>
+        <!-- One action in the hero. The launch list has moved to the closing CTA:
+             now that the code is public, "try it" is the thing to ask for here,
+             and an email field competing with it only splits the decision. -->
+        <div class="hero-sandbox" data-reveal data-reveal-delay="260">
+          <Button href={sandboxUrl(lang)} external>{t.sandboxButton}</Button>
+          <p class="hero-sandbox-note">{t.sandboxNote}</p>
+        </div>
       </div>
+
+      {
+        heroDeck && (
+          <div class="hero-deck" data-reveal data-reveal-delay="180">
+            <DeckEmbed
+              src={heroDeck.src}
+              poster={heroDeck.poster}
+              title={t.heroDeckTitle}
+              playLabel={t.heroDeckPlay}
+              openLabel={t.heroDeckPlay}
+              chrome={DECK_CHROME_PX}
+            />
+            <p class="hero-deck-note">{t.heroDeckNote}</p>
+          </div>
+        )
+      }
     </div>
   </section>
 
@@ -245,6 +274,49 @@ const pillars = t.pillars.map((pillar, i) => ({
     margin-top: 0.7rem;
     font-size: 0.9rem;
     color: var(--ink-soft);
+  }
+
+  /* ---------- Hero with a deck beside it ----------
+     After the rules above on purpose: `.hero--deck h1` and `.hero h1` have the
+     same specificity, so the one that wins is the one that comes last. */
+
+  /* Left-aligned at every width, not only where the two columns fit: the deck
+     stacks under the copy on a phone, and a centred headline above a
+     left-aligned deck reads as two decisions rather than one. */
+  .hero--deck .hero-inner {
+    max-width: var(--container);
+    text-align: left;
+  }
+  .hero--deck .hero-what,
+  .hero--deck .lead {
+    margin-inline: 0;
+  }
+  .hero-deck {
+    margin-top: var(--space-lg);
+  }
+  .hero-deck-note {
+    margin: 0.9rem 0 0;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--ink-mute);
+    max-width: 42em;
+  }
+
+  @media (min-width: 1000px) {
+    .hero--deck .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      align-items: center;
+      gap: var(--space-xl);
+    }
+    /* The display size is set for a headline running the full container; in
+       half of one it would break after every word. */
+    .hero--deck h1 {
+      font-size: var(--step-5);
+    }
+    .hero-deck {
+      margin-top: 0;
+    }
   }
 
   /* ---------- Feature pillars ---------- */

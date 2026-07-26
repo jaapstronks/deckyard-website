@@ -71,6 +71,14 @@ export interface HomeContent {
    */
   heroWhatItIs: string;
   heroLead: string;
+  /**
+   * The deck beside the headline. Whether a locale actually has one is not a
+   * copy decision - it depends on a translated export existing, so it lives in
+   * `src/lib/decks.ts`. These are the strings that describe it when it does.
+   */
+  heroDeckTitle: string;
+  heroDeckPlay: string;
+  heroDeckNote: string;
   featuresKicker: string;
   featuresTitle: string;
   featuresLead: string;
