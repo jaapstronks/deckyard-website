@@ -76,8 +76,8 @@ export const accessibility: AccessibilityContent = {
       body: 'The field exists, it asks whether the image is meaningful or decorative, and AI can draft a description. Whether that description is any use is a human judgement, every time.',
     },
     {
-      title: 'A custom theme can still fail on contrast',
-      body: 'Pick a background and you get light or dark text against it automatically, but that runs on brightness rather than a measured ratio, and nothing in the theme editor warns you when the pair falls short. Brand living in tokens is what makes it consistent; consistent is not the same as legible, and for now the theme author owns the difference.',
+      title: 'The theme editor measures contrast, it does not enforce it',
+      body: 'Pick a background and you get light or dark text against it automatically; that choice now goes to whichever of the two measures higher, not to whichever looks lighter, and the editor shows the ratio and the WCAG verdict next to the pickers that produced it. It reports rather than blocks: a low-contrast variant can be a deliberate brand decision, and a settings panel is not the place to overrule one. It covers the main colours and the background variants, so your own brand palette, and the judgement about what is legible enough, stay yours.',
     },
     {
       title: 'Video and audio need captions',

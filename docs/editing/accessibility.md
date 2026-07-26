@@ -54,13 +54,17 @@ The presenter mode supports full keyboard navigation:
 
 ## Color Contrast
 
-**Nothing in the theme editor checks contrast, and nothing warns you when a pair falls short.** Plan to test your theme yourself.
+**The theme editor reports contrast, it does not enforce it.** Every color pair it produces carries a ratio and a WCAG verdict, and a theme with a failing pair can still be saved.
 
-What Deckyard does do is derive a text color: pick a background or accent color and you get light or dark text against it automatically. That choice is made on brightness, not on a measured contrast ratio, so a color you pick can land below the WCAG AA threshold of 4.5:1 for body text without anything saying so.
+Deckyard derives a text color for you: pick a background or accent color and you get light or dark text against it automatically. That choice is made by measuring both candidates and taking the higher contrast ratio, so the color that reads wins over the color that looks logical. Because contrast is not symmetric around the middle of the brightness range, mid-light backgrounds get dark text.
 
-The one place contrast is measured is a **slide background image**. The editor samples the region where the title sits, picks whichever of the theme's two text colors reads better over it, and adds a scrim when neither clears the 3:1 target for large text. That happens automatically and is stored on the slide, so exports and PDF renders make the same decision.
+In the theme editor the numbers sit next to the pickers that produced them: a row per background variant, and a readout under the main colors grid for the pairs those four pickers imply. Each shows the ratio and a WCAG 2.2 verdict - fail, AA or AAA - against the threshold for the text size in that role, so buttons and headings are judged as large text at 3:1 and body copy against the stricter 4.5:1. An APCA Lc value is shown beside it as a second reading. WCAG is the verdict, because it is what EN 301 549 and the European Accessibility Act reference; APCA models perceived contrast better, especially light text on dark, but never decides.
 
-When you build a custom theme, check the color pairs against WCAG AA yourself: 4.5:1 for body text, 3:1 for large text. The [reading view](#reading-view) of a published presentation is the easiest surface to test against, because it is plain HTML in whatever contrast checker you already use.
+The ratio is there whether the pair passes or not, so contrast is a property you can steer toward rather than an alarm that only appears once you are already past the line.
+
+Contrast is also measured on a **slide background image**. The editor samples the region where the title sits, picks whichever of the theme's two text colors reads better over it, and adds a scrim when neither clears the 3:1 target for large text. That happens automatically and is stored on the slide, so exports and PDF renders make the same decision.
+
+What the readout does not cover is the brand palette, which carries no verdicts yet. And a verdict on a pair is not a verdict on a deck: the [reading view](#reading-view) of a published presentation is the easiest surface to test the whole thing against, because it is plain HTML in whatever contrast checker you already use.
 
 ## Reading View
 
