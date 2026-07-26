@@ -5,9 +5,9 @@ export const accessibility: AccessibilityContent = {
   metaDescription:
     'Because a Deckyard slide is a typed record rather than a drawing, it projects to real headings, lists and tables. Every published deck has a reading view that works with JavaScript off. Including what this does not fix.',
   heroKicker: 'Accessibility',
-  heroTitle: 'Nobody makes a drawing accessible afterwards',
+  heroTitle: 'A slide deck cannot be made accessible afterwards',
   heroIntro:
-    'A slide on a canvas is shapes at coordinates, and no amount of care at the end turns that into something a screen reader can read out properly. A slide that is a record with typed fields projects to a document: headings that are headings, a sequence that is a numbered list, a table that keeps its header row. That is the whole argument, and the rest of this page is what it does and does not get you.',
+    'PowerPoint and everything shaped like it hands you a drawing: shapes at coordinates, where a heading is text that happens to be bigger. No amount of care at the end turns that into something a screen reader can read out, and it is the same reason a deck is hard to keep on-brand or to generate predictably. Slides need what a web page has: a fixed structure, with fields that know what they are. Back to the drawing board, then - or rather, off it.',
 
   followsTitle: 'What the structure yields',
   followsLead:

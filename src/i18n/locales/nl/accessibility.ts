@@ -5,9 +5,9 @@ export const accessibility: AccessibilityContent = {
   metaDescription:
     'Omdat een Deckyard-slide een getypeerd record is en geen tekening, projecteert hij naar echte koppen, lijsten en tabellen. Elk gepubliceerd deck heeft een leesweergave die werkt met JavaScript uit. Inclusief wat dit níet oplost.',
   heroKicker: 'Toegankelijkheid',
-  heroTitle: 'Een tekening maak je achteraf niet toegankelijk',
+  heroTitle: 'Een slidedeck maak je achteraf niet toegankelijk',
   heroIntro:
-    'Een slide op een canvas is vormen op coördinaten, en geen enkele zorgvuldigheid aan het eind maakt daar iets van dat een screenreader netjes kan voorlezen. Een slide die een record met getypeerde velden is, projecteert naar een document: koppen die koppen zijn, een reeks die een genummerde lijst is, een tabel die zijn kopregel houdt. Dat is het hele argument, en de rest van deze pagina is wat het je wel en niet oplevert.',
+    'PowerPoint en alles wat erop lijkt geeft je een tekening: vormen op coördinaten, waarin een kop tekst is die toevallig groter staat. Geen zorgvuldigheid achteraf maakt daar iets van dat een screenreader fatsoenlijk voorleest, en het is dezelfde reden dat een deck lastig huisstijlvast te houden is en lastig voorspelbaar te genereren. Slides hebben nodig wat een webpagina heeft: een vaste structuur, met velden die weten wat ze zijn. Terug naar de tekentafel dus - of eigenlijk: eraf.',
 
   followsTitle: 'Wat er uit de structuur volgt',
   followsLead:
