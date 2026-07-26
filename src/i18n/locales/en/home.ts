@@ -49,6 +49,27 @@ export const home: HomeContent = {
       body: 'One Docker Compose file, Node and Postgres. Run it on your own servers under your own rules, or wait for our hosted version on European infrastructure.',
     },
   ],
+  aiKicker: 'The part nobody has solved',
+  aiTitle: 'Your people are already letting AI write for the organisation',
+  aiLead:
+    'Not as a policy decision. Somebody had a deck to make on Thursday, pasted the notes into a chat window, and pasted the answer back. It reads fine, it is faster, and it is not going to stop. What nobody can say is whether what came out stays inside the rules the organisation has: the right claims, the right tone, the right look, the things that legally have to be there. Reviewing every deck does not scale, and asking people not to use AI has never once worked.',
+  aiPoints: [
+    {
+      title: 'An agent cannot invent a layout',
+      body: 'There is no layout to invent. It asks which slide types exist, and it fills in the fields of one of them. The design was already decided, by you, in the theme.',
+    },
+    {
+      title: 'A write is checked like any other',
+      body: 'A field with a declared shape validates whatever fills it. A model that produces a timeline with one moment in it, or a quote with nobody to attribute it to, gets the same refusal a person would.',
+    },
+    {
+      title: 'The brand is not in the content',
+      body: 'Colours, fonts and logos live in theme tokens, so there is nothing brand-shaped for a model to get wrong. A generated deck renders in the current house style because that is the only style there is.',
+    },
+  ],
+  aiLimit:
+    'What this does not do is make the text true. A model can still write a confident sentence about a number it invented, and no format catches that. What it can no longer do is hand you something that looks nothing like your organisation, or that quietly breaks the shape everything else is in.',
+  aiCta: 'How that works',
   compareKicker: 'Coming from somewhere else',
   compareTitle: 'How this compares to what you use now',
   compareBody:
@@ -61,6 +82,7 @@ export const home: HomeContent = {
   ctaGithub: 'View on GitHub',
   ctaWaitlistButton: 'Join the launch list',
   sandboxButton: 'Try the live sandbox',
-  sandboxNote: 'No install, no signup: a full Deckyard, running in your browser.',
+  sandboxNote:
+    'No install, no signup. The editor is all of it; AI, uploads and publishing are switched off, because it is public and anonymous.',
   ctaSandboxButton: 'Open the sandbox',
 };

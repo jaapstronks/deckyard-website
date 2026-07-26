@@ -59,6 +59,10 @@ export const structured: StructuredContent = {
     },
   ],
 
+  chainA11yNote:
+    'Voor een groot deel van de organisaties die dit lezen is de eerste van die vier geen extraatje, maar iets waarover ze verantwoording afleggen. Die heeft dus een eigen pagina: wat de projectie echt oplevert, veldtype voor veldtype, en wat het niet oplost.',
+  chainA11yCta: 'Wat de structuur doet voor toegankelijkheid',
+
   compareTitle: 'Hetzelfde deck, twee manieren om het te bewaren',
   compareLead:
     'Dit is geen betoog dat canvassen slecht gemaakt zijn. Het is dat een tekening geen vragen over zichzelf kan beantwoorden, en een record wel.',
@@ -100,7 +104,7 @@ export const structured: StructuredContent = {
 
   ctaTitle: 'Makkelijker te zien dan te lezen',
   ctaBody:
-    'De sandbox is een volledige Deckyard in je browser, zonder installatie en zonder account. Maak een tijdlijn, wissel het thema, kijk wat je gebouwd hebt.',
+    'De sandbox is de Deckyard-editor in je browser, zonder installatie en zonder account. Maak een tijdlijn, wissel het thema, kijk wat je gebouwd hebt. AI, uploads en publiceren staan er uit, want hij is openbaar en anoniem.',
   ctaSandbox: 'Probeer de sandbox',
   ctaDocs: 'Lees de slidetype-referentie',
 

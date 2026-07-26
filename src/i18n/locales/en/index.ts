@@ -8,6 +8,7 @@ import { home } from './home';
 import { install } from './install';
 import { structured } from './structured';
 import { compare } from './compare';
+import { accessibility } from './accessibility';
 import { hosting } from './hosting';
 import { anatomy } from './anatomy';
 import { blogIndex } from './blogIndex';
@@ -24,6 +25,7 @@ export const en: Content = {
   install,
   structured,
   compare,
+  accessibility,
   hosting,
   anatomy,
   blogIndex,

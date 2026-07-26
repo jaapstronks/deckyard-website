@@ -84,7 +84,7 @@ export const compare: CompareContent = {
 
   ctaTitle: 'Makkelijker te beoordelen dan te lezen',
   ctaBody:
-    'De sandbox is een volledige Deckyard in je browser, zonder installatie en zonder account. Maak een slide, wissel van thema, en kijk of de afweging hierboven een is die je wilt maken.',
+    'De sandbox is de Deckyard-editor in je browser, zonder installatie en zonder account. Maak een slide, wissel van thema, en kijk of de afweging hierboven een is die je wilt maken. AI, uploads en publiceren staan er uit, want hij is openbaar en anoniem.',
   ctaSandbox: 'Probeer de live sandbox',
   ctaHow: 'Lees hoe het werkt',
 };

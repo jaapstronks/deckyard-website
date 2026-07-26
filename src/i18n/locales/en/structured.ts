@@ -59,6 +59,10 @@ export const structured: StructuredContent = {
     },
   ],
 
+  chainA11yNote:
+    'For plenty of the organisations reading this, the first of those four is not a nice-to-have but something they have to account for. So it has a page of its own: what the projection actually produces, field type by field type, and what it does not fix.',
+  chainA11yCta: 'What the structure does for accessibility',
+
   compareTitle: 'The same deck, two ways of storing it',
   compareLead:
     'None of this is an argument that canvases are badly made. It is that a drawing cannot answer questions about itself, and a record can.',
@@ -100,7 +104,7 @@ export const structured: StructuredContent = {
 
   ctaTitle: 'Easier to see than to read about',
   ctaBody:
-    'The sandbox is a full Deckyard in your browser, with no install and no account. Make a timeline, switch the theme, look at what you built.',
+    'The sandbox is the Deckyard editor in your browser, with no install and no account. Make a timeline, switch the theme, look at what you built. AI, uploads and publishing are off there, because it is public and anonymous.',
   ctaSandbox: 'Try the live sandbox',
   ctaDocs: 'Read the slide type reference',
 
