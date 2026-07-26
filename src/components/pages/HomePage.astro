@@ -9,7 +9,7 @@ import Button from '@/components/ui/Button.astro';
 import DeckEmbed from '@/components/ui/DeckEmbed.astro';
 import { ui, localizePath, sandboxUrl, type Lang } from '@/i18n';
 import { withFacts } from '@/lib/facts';
-import { heroDecks, DECK_CHROME_PX } from '@/lib/decks';
+import { heroDecks } from '@/lib/decks';
 
 interface Props {
   lang: Lang;
@@ -83,7 +83,6 @@ const pillars = t.pillars.map((pillar, i) => ({
               title={t.heroDeckTitle}
               playLabel={t.heroDeckPlay}
               openLabel={t.heroDeckPlay}
-              chrome={DECK_CHROME_PX}
             />
             <p class="hero-deck-note">{t.heroDeckNote}</p>
           </div>

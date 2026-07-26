@@ -8,23 +8,7 @@
     
     
     
-    <script src="https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js" data-bunny-playerjs="1"></script>
-    <!-- Prism.js for code syntax highlighting -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-typescript.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-java.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-json.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-sql.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-bash.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markdown.min.js"></script>
-    <!-- KaTeX for math rendering -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    
     <style>
 @font-face {
   font-family: 'Bricolage Grotesque';
@@ -11270,6 +11254,30 @@ summary.ghost-icon-btn::-webkit-details-marker {
   border-radius: 999px;
   white-space: nowrap;
 }
+
+/* Background-image section summary. The section is collapsed by default, so
+   the summary carries the state: a thumbnail when a background is set, a quiet
+   "none" chip when it isn't. That replaces the force-open this section used to
+   do — the active setting stays visible without the panel's height. */
+.editor-bg-status {
+  font-weight: 500;
+  font-size: 12px;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  color: hsl(var(--app-text-secondary));
+  background: hsl(var(--app-text-secondary) / 0.1);
+}
+.editor-bg-summary-thumb {
+  width: 34px;
+  height: 20px;
+  margin-left: 8px;
+  vertical-align: middle;
+  object-fit: cover;
+  border-radius: 3px;
+  border: 1px solid hsl(var(--app-border-default));
+}
 .editor-a11y-status.is-auto {
   color: hsl(var(--app-text-secondary));
   background: hsl(var(--app-text-secondary) / 0.1);
@@ -11291,30 +11299,31 @@ summary.ghost-icon-btn::-webkit-details-marker {
   content: '⚠ ';
 }
 
-.editor-form-header {
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--ps-space-3);
-  margin-bottom: var(--ps-space-4);
-  padding: var(--ps-space-3) 0;
-  border-bottom: 1px solid hsl(var(--app-border-subtle));
-}
-
 .editor-form-header-left {
   align-items: center;
   gap: var(--ps-space-3);
   flex-wrap: wrap;
 }
 
-.editor-form-title {
-  margin: 0;
-  padding: 0;
-  border: none;
-  font-size: var(--ps-text-base);
-  font-weight: 700;
+/* Collapse control for the inspector rail. The header row it used to live in
+   (an "INSPECTOR" title beside the already-active Inspector pane tab, ~57px)
+   was dropped in the 2026-07-26 declutter; the button stays, because it has to
+   sit inside the surface it dismisses and hover-only would strand touch. A
+   zero-height slot lets it float over the first field's label band — labels are
+   left-aligned and short, so nothing collides — at no vertical cost. */
+.editor-form-close-slot {
+  display: flex;
+  justify-content: flex-end;
+  height: 0;
+  position: relative;
+  z-index: 2;
+}
+.editor-form-close-btn {
+  color: hsl(var(--app-text-secondary));
+}
+.editor-form-close-btn:hover,
+.editor-form-close-btn:focus-visible {
   color: hsl(var(--app-text-primary));
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
 
 /* Selection-aware inspector: the [This element | Slide] tab bar, shown only
@@ -21228,6 +21237,94 @@ img.share-link-badge {
   height: 32px;
   border-radius: var(--ps-radius-sm);
   border: 1px solid hsl(var(--app-border-subtle));
+}
+
+/* Contrast readout
+   Reports, never blocks: a failing pair is stated plainly and saving stays
+   available. Colour alone never carries the verdict — the level text does. */
+.theme-contrast-rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ps-space-1);
+  margin-top: var(--ps-space-2);
+}
+
+.theme-contrast-badge {
+  display: flex;
+  align-items: center;
+  gap: var(--ps-space-2);
+  font-size: var(--ps-text-xs);
+  min-width: 0;
+}
+
+/* The unused pole on a background still gets measured, but its failure is
+   context rather than a problem, so it recedes instead of shouting. */
+.theme-contrast-badge.is-unused {
+  opacity: 0.55;
+}
+
+.theme-contrast-pair-label {
+  color: hsl(var(--app-text-secondary));
+  flex: 1;
+  min-width: 0;
+}
+
+.theme-contrast-sample {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 22px;
+  flex: none;
+  border-radius: var(--ps-radius-sm);
+  border: 1px solid hsl(var(--app-border-subtle));
+  font-weight: 600;
+  line-height: 1;
+}
+
+.theme-contrast-readout {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--ps-space-2);
+  flex: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.theme-contrast-ratio {
+  font-family: monospace;
+  color: hsl(var(--app-text-secondary));
+}
+
+.theme-contrast-level {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Only failure is tinted. --app-success is a bright 142 70% 45%, which lands
+   around 2.2:1 on the light surface — shipping that inside a contrast checker
+   would be its own bug report. A passing verdict reads fine as plain text; the
+   word "AA" is what carries the meaning either way. */
+.theme-contrast-level[data-level='fail'] {
+  color: hsl(var(--app-danger));
+}
+
+/* APCA is the second opinion, so it sits quieter than the WCAG verdict. */
+.theme-contrast-apca {
+  font-family: monospace;
+  color: hsl(var(--app-text-secondary));
+  cursor: help;
+  white-space: nowrap;
+}
+
+.theme-contrast-apca[data-apca='fail'] {
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+}
+
+/* Inside a variant row the badge trails the two pickers. */
+.theme-variant-row .theme-contrast-badge {
+  align-self: flex-end;
+  padding-bottom: var(--ps-space-1);
 }
 
 /* Fonts section */
@@ -39420,9 +39517,61 @@ html.is-fullscreen .presenter-shell.is-console .deck-stage,
         margin-bottom: 0;
         white-space: nowrap;
       }
+
+      /* ?ui=min — embed-shaped chrome. The topbar and the control row go away
+         and their grid rows collapse to 0, so the scaled stage is the whole
+         frame and a host page can size the iframe with aspect-ratio: 16 / 9
+         alone (no "chrome height" constant to keep in sync). What remains is
+         the 3px progress fill, absolutely positioned so it costs no layout
+         height: it is the only cue that the deck has more slides, it is not
+         interactive, and it cannot wrap. The slide counter is dropped from
+         view but still announced through #srStatus.
+         Keyboard nav (arrows/space/Home/End) and F for fullscreen are
+         untouched — with the buttons gone they are the interaction surface. */
+      html.ui-min .presenter-shell {
+        --presenter-topbar-height: 0px;
+        --presenter-progress-height: 0px;
+      }
+      html.ui-min .presenter-topbar,
+      html.ui-min .ps-standalone-progress-row,
+      html.ui-min .ps-standalone-loop-bar {
+        display: none;
+      }
+      html.ui-min .presenter-progress {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 60;
+        padding: 0;
+        background: transparent;
+        border-top: none;
+        backdrop-filter: none;
+        pointer-events: none;
+      }
+      html.ui-min .presenter-progress-bar {
+        height: 3px;
+        border-radius: 0;
+        background: transparent;
+      }
     </style>
   </head>
   <body class="export-body">
+    <script>
+      // ?ui=min: hide the presenter chrome (see the .ui-min rules above). Read
+      // before the shell renders so an embedded deck never flashes a topbar it
+      // is about to drop. Same param name and meaning as buildEmbedHtml's ui
+      // option, so the two runtimes keep one vocabulary.
+      (function () {
+        var ui = 'default';
+        try {
+          var raw = new URLSearchParams(location.search).get('ui');
+          if (String(raw || '').toLowerCase().trim() === 'min') ui = 'min';
+        } catch (e) {}
+        window.__DECK_UI__ = ui;
+        if (ui === 'min') document.documentElement.classList.add('ui-min');
+      })();
+    </script>
     <a class="skip-link" href="#deck">Skip to slides</a>
     <div class="presenter-shell">
       <header class="presenter-topbar">
@@ -39714,7 +39863,9 @@ html.is-fullscreen .presenter-shell.is-console .deck-stage,
         const BASE_W = 1600;
         const BASE_H = 900;
 
-        // Bunny Stream Player.js support (for video-slide embeds)
+        // Bunny Stream Player.js support (for video-slide embeds). This lazy
+        // loader is the only thing that fetches player.js: a deck without a
+        // Bunny video never touches assets.mediadelivery.net.
         let bunnyPlayerJsPromise = null;
         function ensureBunnyPlayerJs() {
           if (window.playerjs && window.playerjs.Player) return Promise.resolve();
@@ -39885,13 +40036,14 @@ html.is-fullscreen .presenter-shell.is-console .deck-stage,
           if (e.key.toLowerCase() === 'f') { e.preventDefault(); toggleFullscreen(); }
           if (e.key === 'Escape' && document.fullscreenElement) { e.preventDefault(); document.exitFullscreen(); }
         });
-        const m = location.hash.match(/slide=(d+)/);
+        const m = location.hash.match(/slide=(\d+)/);
         if (m) idx = clamp(parseInt(m[1], 10));
         show(idx);
 
         // Auto-advance / loop runtime — driven by deck settings, URL params override.
         // URL params: ?loop=1|0 (autoplay + loop at end), ?autoplay=1|0 (autoplay only),
         // ?interval=N (seconds per slide, 1–300; overrides per-slide + deck defaults).
+        // (?ui=min is handled by the inline script at the top of <body>.)
         (function setupAutoLoop() {
           const cfg = window.__DECK_AUTO_ADVANCE__ || {};
           const baseEnabled = !!cfg.enabled;
@@ -40028,28 +40180,7 @@ html.is-fullscreen .presenter-shell.is-console .deck-stage,
           else updateButton();
         })();
 
-        // Initialize code highlighting with Prism
-        if (typeof Prism !== 'undefined') {
-          const codeBlocks = document.querySelectorAll('.md-code-block code');
-          for (const block of codeBlocks) {
-            try { Prism.highlightElement(block); } catch (e) {}
-          }
-        }
-        // Initialize math rendering with KaTeX
-        if (typeof katex !== 'undefined') {
-          const mathBlocks = document.querySelectorAll('.md-math-block[data-math]');
-          for (const block of mathBlocks) {
-            const latex = block.dataset.math;
-            if (!latex) continue;
-            try { katex.render(latex, block, { displayMode: true, throwOnError: false, errorColor: '#c41a16' }); } catch (e) {}
-          }
-          const mathInlines = document.querySelectorAll('.md-math-inline[data-math]');
-          for (const span of mathInlines) {
-            const latex = span.dataset.math;
-            if (!latex) continue;
-            try { katex.render(latex, span, { displayMode: false, throwOnError: false, errorColor: '#c41a16' }); } catch (e) {}
-          }
-        }
+        
 
         // Lead capture form handling
         function initLeadCaptureForms() {
