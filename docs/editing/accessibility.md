@@ -56,8 +56,34 @@ The presenter mode supports full keyboard navigation:
 
 Themes are designed with sufficient color contrast. When creating custom themes, ensure text remains readable against backgrounds.
 
+## Reading View
+
+Every published presentation also has a **reading view**: the same content projected as a document rather than a fixed 16:9 canvas.
+
+- Reachable at `/reader` after the presentation's public URL (`/p/<id>-<slug>/reader`), and linked from the presentation itself
+- On the open web with no login, like the presentation it belongs to
+- Readable with JavaScript disabled, and with the page's own stylesheet disabled
+
+What it produces:
+
+| Content | Becomes |
+|---------|---------|
+| The presentation | One `<h1>`, plus a table of contents and `<header>` / `<nav>` / `<main>` landmarks |
+| Each slide | An `<h2>`, from the slide's title field or its accessibility title |
+| A collection whose order carries meaning (timeline, process) | An ordered list, `<ol>` |
+| A collection whose order is incidental (cards, columns) | An unordered list, `<ul>` |
+| A table field | A `<table>` with `<thead>` and `<th scope="col">` |
+| An image marked as content | A `<figure>` with its alt text, plus `<figcaption>` when there is a caption |
+| An image marked as decorative | Empty `alt` and `aria-hidden`, so assistive technology skips it |
+| Appearance-only fields (colors, sizes, layout choices) | Nothing: they are not content |
+
+The projection is generated from the declared field vocabulary rather than written per slide type, so a custom slide type appears in the reading view without extra work, and the output cannot drift from the type definitions.
+
+The layout uses relative units and a single column, so it reflows on a narrow screen instead of scaling down. The canvas view is unchanged and remains the presentation surface: these are two projections of the same slide records, not an original and a copy that has to be kept in sync.
+
 ## Related
 
 - [AI Alt-Text](/docs/ai/alt-text)
 - [Themes](/docs/themes/)
 - [Keyboard Shortcuts](/docs/editing/keyboard-shortcuts)
+- [Publishing](/docs/publishing/)

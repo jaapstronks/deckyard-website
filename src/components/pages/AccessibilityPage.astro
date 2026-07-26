@@ -1,0 +1,231 @@
+---
+// Accessibility as its own page. It used to be one of four consequences in the
+// chain on /structured-slides, which is the right place for the *argument* and
+// the wrong place for a reason to buy: for a lot of Dutch public and cultural
+// institutions this is something they have to account for.
+//
+// Every claim here is checkable in the core repo (shared/slide-types/
+// semantic-projection.js and server/export/reader.js), and the limits section is
+// not a disclaimer at the bottom - it is the reason the rest is believable.
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import PageHero from '@/components/layout/PageHero.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import { ui, sandboxUrl, type Lang } from '@/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].accessibility;
+// Docs are English-only, so this link is the same for every locale.
+const docsHref = '/docs/editing/accessibility/';
+---
+
+<SiteLayout title={t.metaTitle} description={t.metaDescription}>
+  <PageHero kicker={t.heroKicker} title={t.heroTitle} intro={t.heroIntro} />
+
+  <!-- ============ what the structure yields ============ -->
+  <Section>
+    <SectionHead title={t.followsTitle} lead={t.followsLead} />
+    <!-- A definition list, because that is what this is: a field type on one
+         side and what it becomes on the other. -->
+    <dl class="yields">
+      {
+        t.follows.map((row, i) => (
+          <div
+            class="yield"
+            data-reveal
+            data-reveal-delay={i === 0 ? undefined : Math.min(i, 4) * 60}
+          >
+            <dt>{row.field}</dt>
+            <dd>{row.result}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </Section>
+
+  <!-- ============ the reading view ============ -->
+  <Section variant="tint">
+    <div class="reader">
+      <div class="reader-copy" data-reveal>
+        <p class="kicker">{t.readerKicker}</p>
+        <h2>{t.readerTitle}</h2>
+        {t.readerBody.map((paragraph) => <p class="reader-para">{paragraph}</p>)}
+      </div>
+      <ul class="reader-points" data-reveal data-reveal-delay="120">
+        {t.readerPoints.map((point) => <li>{point}</li>)}
+      </ul>
+    </div>
+  </Section>
+
+  <!-- ============ and on a phone ============ -->
+  <Section>
+    <div class="phone">
+      <SectionHead title={t.phoneTitle} lead={t.phoneBody} />
+    </div>
+  </Section>
+
+  <!-- ============ what this does not fix ============ -->
+  <Section variant="tint">
+    <SectionHead title={t.limitsTitle} lead={t.limitsLead} />
+    <ul class="limits">
+      {
+        t.limits.map((limit, i) => (
+          <li data-reveal data-reveal-delay={i === 0 ? undefined : i * 70}>
+            <h3>{limit.title}</h3>
+            <p>{limit.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- ============ cta ============ -->
+  <Section variant="dark">
+    <SectionHead title={t.ctaTitle} lead={t.ctaBody} />
+    <div class="a11y-actions" data-reveal data-reveal-delay="100">
+      <Button href={sandboxUrl(lang)} external>{t.ctaSandbox}</Button>
+      <Button href={docsHref} variant="ghost">{t.ctaDocs}</Button>
+    </div>
+  </Section>
+</SiteLayout>
+
+<style>
+  /* ---------- field type -> what it becomes ---------- */
+  .yields {
+    margin: var(--space-lg) 0 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .yield {
+    padding: 1.1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  @media (min-width: 820px) {
+    .yield {
+      display: grid;
+      grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+      gap: var(--space-md);
+      align-items: baseline;
+    }
+  }
+  .yield dt {
+    font-family: var(--display);
+    font-variation-settings:
+      'opsz' 24,
+      'wght' 620;
+    font-size: 1.02rem;
+    color: var(--ink);
+  }
+  .yield dd {
+    margin: 0.3rem 0 0;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+  @media (min-width: 820px) {
+    .yield dd {
+      margin-top: 0;
+    }
+  }
+
+  /* ---------- the reading view ---------- */
+  .reader {
+    display: grid;
+    gap: var(--space-lg);
+  }
+  @media (min-width: 900px) {
+    .reader {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: var(--space-xl);
+      align-items: start;
+    }
+  }
+  .reader-copy h2 {
+    margin: 0.35rem 0 0.8rem;
+  }
+  .reader-para {
+    margin: 0 0 1em;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+  .reader-para:last-child {
+    margin-bottom: 0;
+  }
+  .reader-points {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-md);
+    display: grid;
+    gap: 0.8rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+  .reader-points li {
+    position: relative;
+    padding-left: 1.6rem;
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .reader-points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5em;
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    background: var(--brass-bright);
+  }
+
+  /* ---------- reflow ---------- */
+  .phone {
+    max-width: var(--container-text);
+  }
+
+  /* ---------- limits ---------- */
+  .limits {
+    list-style: none;
+    margin: var(--space-lg) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 800px) {
+    .limits {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+    }
+  }
+  .limits li {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 1.3rem 1.5rem 1.4rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .limits h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+    font-variation-settings: 'wght' 620;
+    letter-spacing: -0.015em;
+  }
+  .limits p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- cta ---------- */
+  .a11y-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

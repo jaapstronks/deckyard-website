@@ -59,6 +59,10 @@ export const structured: StructuredContent = {
     },
   ],
 
+  chainA11yNote:
+    'Voor een groot deel van de organisaties die dit lezen is de eerste van die vier geen extraatje, maar iets waarover ze verantwoording afleggen. Die heeft dus een eigen pagina: wat de projectie echt oplevert, veldtype voor veldtype, en wat het niet oplost.',
+  chainA11yCta: 'Wat de structuur doet voor toegankelijkheid',
+
   compareTitle: 'Hetzelfde deck, twee manieren om het te bewaren',
   compareLead:
     'Dit is geen betoog dat canvassen slecht gemaakt zijn. Het is dat een tekening geen vragen over zichzelf kan beantwoorden, en een record wel.',

@@ -19,6 +19,7 @@ const t = ui[lang].home;
 const ogImage = lang === 'nl' ? '/images/og/deckyard-og-nl.png' : '/images/og/deckyard-og.png';
 
 const compareHref = localizePath('/compare/', lang);
+const structuredHref = localizePath('/structured-slides/', lang);
 
 // Pillar icons are fixed per feature; only the title/body come from the
 // translation dictionary. Order matches t.pillars.
@@ -64,6 +65,38 @@ const pillars = t.pillars.map((pillar, i) => ({
 
   <!-- ============ THE IDEA UNDERNEATH (teaser -> explainer) ============ -->
   <StructuredTeaser lang={lang} />
+
+  <!-- ============ WHAT HAPPENS WHEN AI WRITES FOR YOU ============ -->
+  <!-- The emphasis this site used to put on "hosted in Europe" - a tiebreaker in
+       a crowded field. This problem is less crowded and more urgent, and the
+       typed slide is a structural answer to it rather than a promise. On the dark
+       plate because it is the argument, not a feature; sovereignty stays on the
+       site as a property (the kicker, the footer, /hosting). -->
+  <Section variant="dark">
+    <div class="ai-head">
+      <p class="kicker">{t.aiKicker}</p>
+      <h2>{t.aiTitle}</h2>
+      <p class="lead">{t.aiLead}</p>
+    </div>
+
+    <ul class="ai-points">
+      {
+        t.aiPoints.map((point, i) => (
+          <li data-reveal data-reveal-delay={i === 0 ? undefined : i * 80}>
+            <h3>{point.title}</h3>
+            <p>{point.body}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- The limit, on the page rather than left to be discovered. -->
+    <p class="ai-limit" data-reveal data-reveal-delay="240">{t.aiLimit}</p>
+
+    <div data-reveal data-reveal-delay="280">
+      <Button href={structuredHref} variant="ghost">{t.aiCta}</Button>
+    </div>
+  </Section>
 
   <!-- ============ WHAT SHIPS ============ -->
   <Section variant="tint">
@@ -256,6 +289,69 @@ const pillars = t.pillars.map((pillar, i) => ({
     place-items: center;
     background: var(--green-wash);
     color: var(--green);
+  }
+
+  /* ---------- The AI-control argument ----------
+     On the dark plate. `.section-dark` flips the semantic tokens for headings,
+     leads, kickers and buttons, so those need nothing here - but it does not
+     flip `--card`, `--line` or `--ink-soft`, which are light-surface tokens.
+     The panels below therefore paint their own dark surface rather than reaching
+     for --card and coming out white. */
+
+  .ai-head {
+    max-width: 56ch;
+  }
+  .ai-head h2 {
+    margin: 0.35rem 0 0.8rem;
+  }
+  .ai-head .lead {
+    margin-bottom: 0;
+  }
+
+  .ai-points {
+    list-style: none;
+    margin: var(--space-lg) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 860px) {
+    .ai-points {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.1rem;
+    }
+  }
+  .ai-points li {
+    padding: 1.3rem 1.4rem 1.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .ai-points h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    font-variation-settings: 'wght' 620;
+    letter-spacing: -0.015em;
+    color: var(--heading-fg);
+  }
+  .ai-points p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--lead-fg);
+  }
+
+  /* Not a disclaimer in small print: full size, because the honesty is doing as
+     much work here as the claim above it. Told apart by a rule rather than by a
+     lower opacity - the dimmer note colour is 4.4:1 against the light end of this
+     section's gradient, and a caveat nobody can read is worse than none. */
+  .ai-limit {
+    max-width: 58ch;
+    margin: var(--space-md) 0;
+    padding-left: var(--space-sm);
+    border-left: 2px solid var(--brass-soft);
+    line-height: 1.65;
+    color: var(--lead-fg);
   }
 
   /* ---------- "Coming from another tool" band ---------- */

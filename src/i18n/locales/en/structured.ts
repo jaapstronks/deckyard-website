@@ -59,6 +59,10 @@ export const structured: StructuredContent = {
     },
   ],
 
+  chainA11yNote:
+    'For plenty of the organisations reading this, the first of those four is not a nice-to-have but something they have to account for. So it has a page of its own: what the projection actually produces, field type by field type, and what it does not fix.',
+  chainA11yCta: 'What the structure does for accessibility',
+
   compareTitle: 'The same deck, two ways of storing it',
   compareLead:
     'None of this is an argument that canvases are badly made. It is that a drawing cannot answer questions about itself, and a record can.',

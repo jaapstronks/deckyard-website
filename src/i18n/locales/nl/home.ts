@@ -49,6 +49,27 @@ export const home: HomeContent = {
       body: 'Eén Docker Compose-bestand, Node en Postgres. Draai het op je eigen servers onder je eigen regels, of wacht op onze gehoste versie op Europese infrastructuur.',
     },
   ],
+  aiKicker: 'Het stuk dat niemand heeft opgelost',
+  aiTitle: 'Jullie mensen laten AI nu al voor de organisatie schrijven',
+  aiLead:
+    'Niet als beleidsbesluit. Iemand moest donderdag een deck maken, plakte de aantekeningen in een chatvenster en plakte het antwoord terug. Het leest prima, het gaat sneller, en het gaat niet meer ophouden. Wat niemand kan zeggen, is of wat eruit kwam binnen de regels van de organisatie blijft: de juiste claims, de juiste toon, het juiste beeld, de dingen die er wettelijk in moeten staan. Elk deck nalopen schaalt niet, en mensen vragen om geen AI te gebruiken heeft nog nooit gewerkt.',
+  aiPoints: [
+    {
+      title: 'Een agent kan geen layout verzinnen',
+      body: 'Er is geen layout om te verzinnen. Hij vraagt welke slidetypes bestaan en vult de velden van een van die types. Het ontwerp was al beslist, door jou, in het thema.',
+    },
+    {
+      title: 'Een schrijfactie wordt getoetst als elke andere',
+      body: 'Een veld met een gedeclareerde vorm valideert wat het ook vult. Een model dat een tijdlijn met één moment maakt, of een quote zonder iemand om aan toe te schrijven, krijgt dezelfde weigering als een mens.',
+    },
+    {
+      title: 'De huisstijl zit niet in de inhoud',
+      body: 'Kleuren, fonts en logo’s wonen in themetokens, dus er is niets huisstijl-vormigs dat een model verkeerd kan doen. Een gegenereerd deck rendert in de huidige huisstijl, want er is geen andere.',
+    },
+  ],
+  aiLimit:
+    'Wat dit níet doet, is de tekst waar maken. Een model kan nog steeds een zelfverzekerde zin schrijven over een getal dat het zelf bedacht heeft, en geen formaat vangt dat. Wat het niet meer kan, is je iets geven dat in niets op je organisatie lijkt, of dat stil de vorm breekt waar al het andere in staat.',
+  aiCta: 'Hoe dat werkt',
   compareKicker: 'Je komt ergens vandaan',
   compareTitle: 'Hoe dit zich verhoudt tot wat je nu gebruikt',
   compareBody:

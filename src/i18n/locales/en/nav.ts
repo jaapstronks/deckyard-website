@@ -5,6 +5,7 @@ export const nav: NavContent = {
   blog: 'Blog',
   hosting: 'Hosting',
   compare: 'Compared',
+  accessibility: 'Accessibility',
   changelog: 'Changelog',
   docs: 'Docs',
   github: 'GitHub',

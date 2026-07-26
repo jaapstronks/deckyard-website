@@ -26,6 +26,8 @@ export interface NavContent {
   /** Label for /compare/. In the footer rather than the header: the primary nav
    *  is deliberately four items, and the homepage band is the real entrance. */
   compare: string;
+  /** Label for /accessibility/, in the footer next to the comparison. */
+  accessibility: string;
   docs: string;
   github: string;
   homeAria: string;
@@ -73,6 +75,20 @@ export interface HomeContent {
   featuresTitle: string;
   featuresLead: string;
   pillars: Pillar[];
+  /**
+   * The section about what happens when AI writes on the organisation's behalf.
+   * It sits on the homepage rather than on /structured-slides because it is a
+   * reason to care, not an explanation of the mechanism - and because "hosted in
+   * Europe" is a tiebreaker in a crowded field, while this problem is nobody's
+   * yet. Sovereignty stays on the site as a property; this is the headline.
+   */
+  aiKicker: string;
+  aiTitle: string;
+  aiLead: string;
+  aiPoints: { title: string; body: string }[];
+  /** What the format does not fix. Stated on the page, not left to be found. */
+  aiLimit: string;
+  aiCta: string;
   /** The band that sends someone arriving from another tool to /compare/. */
   compareKicker: string;
   compareTitle: string;
@@ -126,6 +142,9 @@ export interface StructuredContent {
   compareCanvas: string;
   compareRecord: string;
   compareRows: { aspect: string; canvas: string; record: string }[];
+  /** Hands the accessibility half of the chain to its own page. */
+  chainA11yNote: string;
+  chainA11yCta: string;
   ctaTitle: string;
   ctaBody: string;
   ctaSandbox: string;
@@ -327,6 +346,48 @@ export interface CompareContent {
   ctaHow: string;
 }
 
+/**
+ * Accessibility as a page of its own, not the fourth consequence in a chain on
+ * /structured-slides. For Dutch public and cultural institutions this is a legal
+ * obligation and therefore a reason to buy, which a bullet cannot carry.
+ *
+ * Every claim here is checkable against the core repo, and the limits section is
+ * load-bearing: this page says what the format does *not* fix, because a page
+ * about accessibility that overclaims is read by exactly the people who test.
+ */
+export interface AccessibilityContent {
+  metaTitle: string;
+  metaDescription: string;
+  heroKicker: string;
+  heroTitle: string;
+  heroIntro: string;
+
+  /** What the structure yields, field type by field type. */
+  followsTitle: string;
+  followsLead: string;
+  follows: { field: string; result: string }[];
+
+  /** The reading view of a published deck. */
+  readerKicker: string;
+  readerTitle: string;
+  readerBody: string[];
+  readerPoints: string[];
+
+  /** Reflow, i.e. what happens to a 16:9 canvas on a phone. */
+  phoneTitle: string;
+  phoneBody: string;
+
+  /** What this does not do for you. */
+  limitsTitle: string;
+  limitsLead: string;
+  limits: { title: string; body: string }[];
+
+  ctaTitle: string;
+  ctaBody: string;
+  ctaDocs: string;
+  ctaSandbox: string;
+}
+
 /** Everything one locale must provide to be complete. */
 export interface HostingContent {
   metaTitle: string;
@@ -379,6 +440,7 @@ export interface Content extends LocaleMeta {
   install: InstallContent;
   structured: StructuredContent;
   compare: CompareContent;
+  accessibility: AccessibilityContent;
   hosting: HostingContent;
   anatomy: AnatomyContent;
   blogIndex: BlogIndexContent;
