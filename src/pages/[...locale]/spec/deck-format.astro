@@ -1,0 +1,12 @@
+---
+import SpecFormatPage from '@/components/pages/spec/SpecFormatPage.astro';
+import { localeParams, type Lang } from '@/i18n';
+
+export function getStaticPaths() {
+  return localeParams();
+}
+
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<SpecFormatPage lang={lang} />

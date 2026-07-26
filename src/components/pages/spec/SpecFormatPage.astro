@@ -1,0 +1,213 @@
+---
+// /spec/deck-format/ - the envelope, field by field.
+//
+// The field table, the endpoint table and the example JSON come from
+// lib/spec.ts, not from the locale files: the format is the same in every
+// language, and a JSON example duplicated per locale is a JSON example that will
+// eventually disagree with itself. The locale carries the sentences.
+import SpecShell from '@/components/spec/SpecShell.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import CodeBlock from '@/components/spec/CodeBlock.astro';
+import { ui, type Lang } from '@/i18n';
+import {
+  withSpec,
+  EXAMPLE_ENVELOPE,
+  EXAMPLE_SLIDE,
+  ENVELOPE_FIELDS,
+  API_ENDPOINTS,
+  SCHEMA_BASE,
+} from '@/lib/spec';
+import { inlineCode } from '@/lib/inline';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].spec.format;
+const shared = ui[lang].spec.shared;
+
+const prose = (text: string) => inlineCode(withSpec(text));
+---
+
+<SpecShell
+  lang={lang}
+  page="deck-format"
+  title={t.metaTitle}
+  description={t.metaDescription}
+  heroKicker={t.heroKicker}
+  heroTitle={t.heroTitle}
+  heroIntro={t.heroIntro}
+>
+  <!-- ============ the envelope ============ -->
+  <Section>
+    <div class="spec-prose" data-reveal>
+      {t.introBody.map((p) => <p set:html={prose(p)} />)}
+      <h2>{t.envelopeTitle}</h2>
+      {t.envelopeBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+
+    <CodeBlock code={EXAMPLE_ENVELOPE} caption={shared.sourceNote} />
+
+    <div class="spec-tablewrap" data-reveal>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th scope="col">{t.colField}</th>
+            <th scope="col">{t.colType}</th>
+            <th scope="col">{t.colNotes}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            ENVELOPE_FIELDS.map((f) => (
+              <tr>
+                <th scope="row">{f.field}</th>
+                <td>{f.type}</td>
+                <td set:html={prose(t.fieldNotes[f.key] ?? '')} />
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <p class="spec-note" set:html={prose(t.leniency)} />
+  </Section>
+
+  <!-- ============ the identity manifest ============ -->
+  <Section variant="tint">
+    <div class="spec-prose" data-reveal>
+      <h2>{t.manifestTitle}</h2>
+      {t.manifestBody.map((p) => <p set:html={prose(p)} />)}
+
+      <h2>{t.slidesTitle}</h2>
+      {t.slidesBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+    <CodeBlock code={EXAMPLE_SLIDE} />
+  </Section>
+
+  <!-- ============ content schemas + assets ============ -->
+  <Section>
+    <div class="spec-prose" data-reveal>
+      <h2>{t.schemaTitle}</h2>
+      {t.schemaBody.map((p) => <p set:html={prose(p)} />)}
+      <p><code>{SCHEMA_BASE}/slide-types/&lt;type&gt;.schema.json</code></p>
+
+      <h2>{t.assetsTitle}</h2>
+      {t.assetsBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+  </Section>
+
+  <!-- ============ round-trip + degradation ============ -->
+  <Section variant="tint">
+    <SectionHead title={t.roundTripTitle} />
+    <div class="spec-prose" data-reveal>
+      {t.roundTripBody.map((p) => <p set:html={prose(p)} />)}
+      <p set:html={prose(t.degradeLead)} />
+    </div>
+    <dl class="spec-defs">
+      {
+        t.degrade.map((row) => (
+          <div>
+            <dt>{withSpec(row.term)}</dt>
+            <dd set:html={prose(row.def)} />
+          </div>
+        ))
+      }
+    </dl>
+  </Section>
+
+  <!-- ============ versioning ============ -->
+  <Section>
+    <div class="spec-prose" data-reveal>
+      <h2>{t.versioningTitle}</h2>
+      {t.versioningBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+  </Section>
+
+  <!-- ============ the API surface ============ -->
+  <Section variant="tint">
+    <SectionHead title={t.apiTitle} lead={t.apiLead} />
+    <div class="spec-tablewrap" data-reveal>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th scope="col">{t.colMethod}</th>
+            <th scope="col">{t.colEndpoint}</th>
+            <th scope="col">{t.colWhat}</th>
+            <th scope="col">{t.colAuth}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            API_ENDPOINTS.map((e) => (
+              <tr>
+                <td class="is-method">{e.method}</td>
+                <th scope="row">{e.path}</th>
+                <td set:html={prose(t.apiNotes[e.key] ?? '')} />
+                <td>
+                  <span class:list={['auth', { 'is-open': e.open }]}>
+                    {e.open ? t.authOpen : t.authKey}
+                  </span>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Section>
+</SpecShell>
+
+<style>
+  .spec-note {
+    max-width: var(--container-text);
+    margin: var(--space-md) 0 0;
+    padding-left: 1.2rem;
+    border-left: 3px solid var(--brass);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  /* The method column is a label, not prose: narrow, monospaced, unmissable. */
+  .is-method {
+    width: 1%;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--green);
+    white-space: nowrap;
+  }
+
+  /* Open vs authenticated. The word carries it; the colour only reinforces,
+     because a status told apart by a background alone disappears the moment a
+     reader supplies their own palette. */
+  .auth {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--paper-warm);
+    font-family: var(--mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--ink-mute);
+  }
+  .auth.is-open {
+    border-color: color-mix(in oklab, var(--green) 35%, transparent);
+    background: var(--green-wash);
+    color: var(--green);
+  }
+  @media (forced-colors: active) {
+    .auth {
+      border-color: CanvasText;
+    }
+    .auth.is-open {
+      border-color: Highlight;
+      color: Highlight;
+    }
+  }
+</style>

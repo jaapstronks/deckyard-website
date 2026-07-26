@@ -65,6 +65,46 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
       intro: t.structured.dek,
     }),
   },
+  {
+    path: '/spec',
+    card: (t) => ({
+      label: t.spec.index.heroKicker,
+      title: t.spec.index.heroTitle,
+      intro: t.spec.index.heroIntro,
+    }),
+  },
+  {
+    path: '/spec/deck-format',
+    card: (t) => ({
+      label: t.spec.format.heroKicker,
+      title: t.spec.format.heroTitle,
+      intro: t.spec.format.heroIntro,
+    }),
+  },
+  {
+    path: '/spec/deck-bundle',
+    card: (t) => ({
+      label: t.spec.bundle.heroKicker,
+      title: t.spec.bundle.heroTitle,
+      intro: t.spec.bundle.heroIntro,
+    }),
+  },
+  {
+    path: '/spec/schemas',
+    card: (t) => ({
+      label: t.spec.schemas.heroKicker,
+      title: t.spec.schemas.heroTitle,
+      intro: t.spec.schemas.heroIntro,
+    }),
+  },
+  {
+    path: '/spec/slide-types',
+    card: (t) => ({
+      label: t.spec.types.heroKicker,
+      title: t.spec.types.heroTitle,
+      intro: t.spec.types.heroIntro,
+    }),
+  },
 ];
 
 /** Strip the trailing slash so '/hosting/' and '/hosting' are one key. */

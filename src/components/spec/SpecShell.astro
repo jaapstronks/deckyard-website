@@ -1,0 +1,68 @@
+---
+// The frame every /spec/ page sits in: the hero, the body, and the list of the
+// other pages in the section.
+//
+// A spec section is a set, not a pile of pages. Whichever one you land on from a
+// search result should tell you what else is here, so the page list at the foot
+// is part of the frame rather than something each page remembers to add.
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import PageHero from '@/components/layout/PageHero.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import { ui, localizePath, type Lang } from '@/i18n';
+import type { SpecPageId } from '@/i18n/types';
+import { withSpec } from '@/lib/spec';
+import '@/components/spec/spec.css';
+
+interface Props {
+  lang: Lang;
+  /** Which page this is, so it can leave itself out of the list. */
+  page: SpecPageId;
+  title: string;
+  description: string;
+  heroKicker: string;
+  heroTitle: string;
+  heroIntro: string;
+}
+
+const { lang, page, title, description, heroKicker, heroTitle, heroIntro } = Astro.props;
+const t = ui[lang].spec.shared;
+
+/** Route per page id. The ids are the URL segments, bar the index. */
+const HREFS: Record<SpecPageId, string> = {
+  index: '/spec/',
+  'deck-format': '/spec/deck-format/',
+  'deck-bundle': '/spec/deck-bundle/',
+  schemas: '/spec/schemas/',
+  'slide-types': '/spec/slide-types/',
+};
+
+const others = (Object.keys(HREFS) as SpecPageId[]).filter((id) => id !== page);
+---
+
+<SiteLayout title={withSpec(title)} description={withSpec(description)}>
+  <PageHero
+    kicker={withSpec(heroKicker)}
+    title={withSpec(heroTitle)}
+    intro={withSpec(heroIntro)}
+    as="header"
+  />
+
+  <slot />
+
+  <Section variant="dark">
+    <SectionHead title={t.moreTitle} />
+    <ul class="spec-more">
+      {
+        others.map((id) => (
+          <li>
+            <a href={localizePath(HREFS[id], lang)}>
+              <strong>{ui[lang].spec.shared.pages[id].title}</strong>
+              <span>{ui[lang].spec.shared.pages[id].blurb}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+</SiteLayout>

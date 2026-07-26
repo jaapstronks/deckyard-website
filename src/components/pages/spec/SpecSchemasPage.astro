@@ -1,0 +1,84 @@
+---
+// /spec/schemas/ - where the JSON Schemas come from and what they promise.
+//
+// Short on purpose. The interesting claim is that nobody writes these, and that
+// takes four sections to say properly; padding it out would bury it.
+import SpecShell from '@/components/spec/SpecShell.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import CodeBlock from '@/components/spec/CodeBlock.astro';
+import { ui, type Lang } from '@/i18n';
+import { withSpec, EXAMPLE_SCHEMA_ID, API_ENDPOINTS, SCHEMA_BASE } from '@/lib/spec';
+import { inlineCode } from '@/lib/inline';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].spec.schemas;
+const format = ui[lang].spec.format;
+
+const prose = (text: string) => inlineCode(withSpec(text));
+// The routes anyone can call without credentials, which is exactly the schema
+// routes. The export and import endpoints are the deck-format page's business.
+const schemaEndpoints = API_ENDPOINTS.filter((e) => e.open);
+---
+
+<SpecShell
+  lang={lang}
+  page="schemas"
+  title={t.metaTitle}
+  description={t.metaDescription}
+  heroKicker={t.heroKicker}
+  heroTitle={t.heroTitle}
+  heroIntro={t.heroIntro}
+>
+  <Section>
+    <div class="spec-prose" data-reveal>
+      {t.introBody.map((p) => <p set:html={prose(p)} />)}
+      <h2>{t.sourceTitle}</h2>
+      {t.sourceBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+    <CodeBlock
+      code={EXAMPLE_SCHEMA_ID}
+      caption={`${SCHEMA_BASE}/slide-types/quote-slide.schema.json`}
+    />
+  </Section>
+
+  <Section variant="tint">
+    <div class="spec-prose" data-reveal>
+      <h2>{t.idTitle}</h2>
+      {t.idBody.map((p) => <p set:html={prose(p)} />)}
+
+      <h2>{t.contractTitle}</h2>
+      {t.contractBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+  </Section>
+
+  <Section>
+    <SectionHead title={t.fetchTitle} />
+    <div class="spec-prose" data-reveal>
+      {t.fetchBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+    <div class="spec-tablewrap" data-reveal>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th scope="col">{format.colEndpoint}</th>
+            <th scope="col">{format.colWhat}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            schemaEndpoints.map((e) => (
+              <tr>
+                <th scope="row">{e.path}</th>
+                <td set:html={prose(format.apiNotes[e.key] ?? '')} />
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Section>
+</SpecShell>

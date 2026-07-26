@@ -2,6 +2,7 @@
 import type { Content } from '@/i18n/types';
 import { meta } from './meta';
 import { nav } from './nav';
+import { spec } from './spec';
 import { waitlist } from './waitlist';
 import { footer } from './footer';
 import { home } from './home';
@@ -19,6 +20,7 @@ import { changelog } from './changelog';
 export const nl: Content = {
   ...meta,
   nav,
+  spec,
   waitlist,
   footer,
   home,

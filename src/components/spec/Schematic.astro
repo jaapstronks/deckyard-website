@@ -1,0 +1,123 @@
+---
+// One abstract layout glyph. The shapes come from src/lib/schematic.ts (the
+// grammar core's editor speaks); this only paints them.
+//
+// Shapes name a *role*, never a colour, so the four tokens below are the whole
+// palette. A dark surface re-points them and every glyph follows, which is the
+// same contract .section-dark has with the rest of the site.
+import { schematicShapes, schematicKind, VIEW_W, VIEW_H } from '@/lib/schematic';
+import type { SchematicSpec } from '@/lib/schematic';
+
+interface Props {
+  spec: SchematicSpec | null;
+  /**
+   * Describes the glyph for a reader who cannot see it. Omit it and the glyph
+   * is hidden instead - which is right whenever the type's name and description
+   * sit next to it in text, and it usually does.
+   */
+  alt?: string;
+  class?: string;
+}
+
+const { spec, alt, class: className } = Astro.props;
+const shapes = schematicShapes(spec);
+const kind = schematicKind(spec);
+---
+
+<svg
+  class:list={['schematic', className]}
+  viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
+  data-kind={kind}
+  role={alt ? 'img' : undefined}
+  aria-label={alt}
+  aria-hidden={alt ? undefined : 'true'}
+  focusable="false"
+>
+  {
+    shapes.map((s) =>
+      s.t === 'rect' ? (
+        <rect class={`r-${s.role}`} x={s.x} y={s.y} width={s.w} height={s.h} rx={s.rx} />
+      ) : s.t === 'circle' ? (
+        <circle class={`r-${s.role}`} cx={s.cx} cy={s.cy} r={s.r} />
+      ) : s.t === 'path' ? (
+        <path
+          class={`r-${s.role}`}
+          d={s.d}
+          transform={s.transform}
+          stroke-width={s.sw}
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      ) : (
+        <text class={`r-${s.role}`} x={s.x} y={s.y} font-size={s.size} text-anchor={s.anchor}>
+          {s.s}
+        </text>
+      )
+    )
+  }
+</svg>
+
+<style>
+  .schematic {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background: var(--sd-paper, var(--paper));
+    border-radius: var(--radius-sm);
+
+    /* The four roles. Everything a glyph can be made of is one of these. */
+    --sd-fill: color-mix(in oklab, var(--ink) 13%, transparent);
+    --sd-line: color-mix(in oklab, var(--ink) 22%, transparent);
+    --sd-strong: color-mix(in oklab, var(--ink) 42%, transparent);
+    --sd-accent: var(--green);
+    --sd-sky: color-mix(in oklab, var(--ink) 28%, transparent);
+  }
+
+  .r-fill {
+    fill: var(--sd-fill);
+  }
+  .r-line {
+    fill: var(--sd-line);
+  }
+  .r-strong {
+    fill: var(--sd-strong);
+  }
+  .r-accent {
+    fill: var(--sd-accent);
+  }
+  .r-sky {
+    fill: var(--sd-sky);
+  }
+  .r-stroke {
+    fill: none;
+    stroke: var(--sd-strong);
+  }
+  /* An arrow or a ring is drawn as a stroked path in an accent role, so the
+     accent has to reach the stroke as well as the fill. */
+  path.r-accent {
+    fill: none;
+    stroke: var(--sd-accent);
+  }
+
+  text {
+    font-family: var(--display);
+    font-variation-settings: 'wght' 600;
+  }
+
+  /* The palette is built from color-mix over --ink, which the user's own colours
+     replace wholesale in forced-colors mode. Redraw with system roles so the
+     glyph stays a diagram rather than a grey rectangle. */
+  @media (forced-colors: active) {
+    .schematic {
+      --sd-fill: CanvasText;
+      --sd-line: CanvasText;
+      --sd-strong: CanvasText;
+      --sd-accent: Highlight;
+      --sd-sky: GrayText;
+      forced-color-adjust: none;
+      background: Canvas;
+      border: 1px solid CanvasText;
+    }
+  }
+</style>

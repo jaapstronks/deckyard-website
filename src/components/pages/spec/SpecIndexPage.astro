@@ -1,0 +1,201 @@
+---
+// /spec/ - the front door. Answers three questions in order: what is it, why
+// does it exist, and what is settled about it.
+//
+// The "status" section at the foot is the point of the page. A format offered as
+// a standard that will not say what it promises, under what licence, and what is
+// still undecided is a marketing page with a schema attached.
+import SpecShell from '@/components/spec/SpecShell.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import { ui, type Lang } from '@/i18n';
+import { withSpec, CORE_REPO } from '@/lib/spec';
+import { inlineCode } from '@/lib/inline';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].spec.index;
+const shared = ui[lang].spec.shared;
+
+const prose = (text: string) => inlineCode(withSpec(text));
+---
+
+<SpecShell
+  lang={lang}
+  page="index"
+  title={t.metaTitle}
+  description={t.metaDescription}
+  heroKicker={t.heroKicker}
+  heroTitle={t.heroTitle}
+  heroIntro={t.heroIntro}
+>
+  <!-- ============ the two layers ============ -->
+  <Section>
+    <SectionHead title={t.layersTitle} lead={t.layersLead} />
+    <div class="layers">
+      {
+        t.layers.map((layer, i) => (
+          <article class="layer" data-reveal data-reveal-delay={i * 80}>
+            <p class="layer-badge">{layer.badge}</p>
+            <h3>{layer.name}</h3>
+            <p class="layer-what">{layer.what}</p>
+            <p class="layer-body" set:html={prose(layer.body)} />
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- ============ why it is written down ============ -->
+  <Section variant="tint">
+    <div class="spec-prose" data-reveal>
+      <h2>{t.whyTitle}</h2>
+      {t.whyBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+  </Section>
+
+  <!-- ============ the five claims ============ -->
+  <Section>
+    <SectionHead title={t.claimsTitle} lead={t.claimsLead} />
+    <ol class="claims">
+      {
+        t.claims.map((claim, i) => (
+          <li data-reveal data-reveal-delay={Math.min(i, 4) * 60}>
+            <h3>{claim.title}</h3>
+            <p set:html={prose(claim.body)} />
+          </li>
+        ))
+      }
+    </ol>
+  </Section>
+
+  <!-- ============ status ============ -->
+  <Section variant="tint">
+    <SectionHead title={t.statusTitle} lead={t.statusLead} />
+    <dl class="spec-defs">
+      {
+        t.status.map((row) => (
+          <div>
+            <dt>{withSpec(row.term)}</dt>
+            <dd set:html={prose(row.def)} />
+          </div>
+        ))
+      }
+    </dl>
+    <p class="status-open" set:html={prose(t.statusOpen)} />
+    <p class="status-cta">
+      <Button href={CORE_REPO} variant="ghost" external>
+        {shared.codeLabel}
+      </Button>
+    </p>
+  </Section>
+</SpecShell>
+
+<style>
+  /* ---------- the two layers ---------- */
+  /* Side by side, because the whole point is that they are two things and one
+     contains the other. Stacked they read as a sequence of steps. */
+  .layers {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  @media (min-width: 820px) {
+    .layers {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+  }
+  .layer {
+    padding: 1.6rem 1.7rem 1.8rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+  .layer-badge {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass-text);
+  }
+  .layer h3 {
+    margin: 0.6rem 0 0.3rem;
+    font-size: var(--step-2);
+    letter-spacing: -0.02em;
+  }
+  .layer-what {
+    margin: 0 0 1rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--green);
+  }
+  .layer-body {
+    margin: 0;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+
+  /* ---------- claims ---------- */
+  /* Numbered: they are five separate assertions and the reader benefits from
+     being able to point at one of them. */
+  .claims {
+    counter-reset: claim;
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    max-width: 54rem;
+  }
+  .claims li {
+    counter-increment: claim;
+    position: relative;
+    padding: 1.2rem 1.4rem 1.3rem 3.6rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+  }
+  .claims li::before {
+    content: counter(claim);
+    position: absolute;
+    left: 1.4rem;
+    top: 1.25rem;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--brass-text);
+  }
+  .claims h3 {
+    margin: 0 0 0.45rem;
+    font-size: 1.1rem;
+    font-variation-settings: 'wght' 620;
+    letter-spacing: -0.015em;
+  }
+  .claims p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- status ---------- */
+  .status-open {
+    max-width: var(--container-text);
+    margin: var(--space-md) 0 0;
+    padding: 1.1rem 1.3rem;
+    border-left: 3px solid var(--brass);
+    background: var(--card);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  .status-cta {
+    margin: var(--space-md) 0 0;
+  }
+</style>

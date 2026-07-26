@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "sync-docs": "node scripts/sync-docs.js",
+    "sync-slide-types": "node scripts/generate-slide-types.js",
+    "check-slide-types": "node scripts/generate-slide-types.js --check",
     "dev": "npm run sync-docs && astro dev",
     "build": "npm run sync-docs && astro build",
     "preview": "astro preview",

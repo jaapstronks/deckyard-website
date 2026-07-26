@@ -28,6 +28,8 @@ export interface NavContent {
   compare: string;
   /** Label for /accessibility/, in the footer next to the comparison. */
   accessibility: string;
+  /** Label for /spec/, the format written down as a standard. */
+  spec: string;
   docs: string;
   github: string;
   homeAria: string;
@@ -440,8 +442,216 @@ export interface HostingContent {
   contactNote: string[];
 }
 
+/**
+ * The /spec/ section: the deck format written down as a standard rather than as
+ * an implementation detail.
+ *
+ * Only prose lives here. The JSON examples, the endpoint paths, the field names
+ * and the whole slide-type registry are structural and come from src/lib/spec.ts
+ * and src/data/slide-types.json, so the two languages cannot show a different
+ * format. Notes keyed by a field or endpoint name are the exception: those are
+ * copy about structure, so the key is structural and the sentence is not.
+ */
+export interface SpecContent {
+  /** Chrome shared by every page in the section. */
+  shared: {
+    /** Heading above the in-section page list at the foot of each page. */
+    moreTitle: string;
+    /** Per-page titles and one-liners, keyed by page id. */
+    pages: Record<SpecPageId, { title: string; blurb: string }>;
+    /** Note under a code block that the reader can fetch the real thing. */
+    sourceNote: string;
+    /** Label on a link into the core repo. */
+    codeLabel: string;
+  };
+
+  index: {
+    metaTitle: string;
+    metaDescription: string;
+    heroKicker: string;
+    heroTitle: string;
+    heroIntro: string;
+
+    /** The two layers, which is the thing people get wrong first. */
+    layersTitle: string;
+    layersLead: string;
+    layers: { badge: string; name: string; what: string; body: string }[];
+
+    whyTitle: string;
+    whyBody: string[];
+
+    /** What is actually unlike anything else. Five claims, each checkable. */
+    claimsTitle: string;
+    claimsLead: string;
+    claims: { title: string; body: string }[];
+
+    /** Version, licence, stability, conformance - stated, not implied. */
+    statusTitle: string;
+    statusLead: string;
+    status: { term: string; def: string }[];
+    /** Said plainly: some of this is still being decided. */
+    statusOpen: string;
+  };
+
+  format: {
+    metaTitle: string;
+    metaDescription: string;
+    heroKicker: string;
+    heroTitle: string;
+    heroIntro: string;
+    introBody: string[];
+
+    envelopeTitle: string;
+    envelopeBody: string[];
+    colField: string;
+    colType: string;
+    colNotes: string;
+    /** One note per envelope field, keyed by ENVELOPE_FIELDS[].key. */
+    fieldNotes: Record<string, string>;
+    leniency: string;
+
+    manifestTitle: string;
+    manifestBody: string[];
+
+    slidesTitle: string;
+    slidesBody: string[];
+
+    schemaTitle: string;
+    schemaBody: string[];
+
+    assetsTitle: string;
+    assetsBody: string[];
+
+    roundTripTitle: string;
+    roundTripBody: string[];
+    degradeLead: string;
+    degrade: { term: string; def: string }[];
+
+    versioningTitle: string;
+    versioningBody: string[];
+
+    apiTitle: string;
+    apiLead: string;
+    colMethod: string;
+    colEndpoint: string;
+    colWhat: string;
+    colAuth: string;
+    /** Shown per endpoint: the schema routes answer without credentials, the rest do not. */
+    authOpen: string;
+    authKey: string;
+    /** One line per endpoint, keyed by API_ENDPOINTS[].key. */
+    apiNotes: Record<string, string>;
+  };
+
+  bundle: {
+    metaTitle: string;
+    metaDescription: string;
+    heroKicker: string;
+    heroTitle: string;
+    heroIntro: string;
+    introBody: string[];
+
+    layoutTitle: string;
+    layoutBody: string[];
+    /** One note per archive entry, keyed by BUNDLE_ENTRIES[].key. */
+    layoutNotes: Record<string, string>;
+
+    manifestTitle: string;
+    manifestBody: string[];
+    colField: string;
+    colNotes: string;
+    /** One note per manifest field, keyed by MANIFEST_FIELDS[].key. */
+    fieldNotes: Record<string, string>;
+
+    guaranteesTitle: string;
+    guaranteesLead: string;
+    guarantees: { title: string; body: string }[];
+
+    importTitle: string;
+    importBody: string[];
+
+    gapsTitle: string;
+    gapsBody: string[];
+  };
+
+  schemas: {
+    metaTitle: string;
+    metaDescription: string;
+    heroKicker: string;
+    heroTitle: string;
+    heroIntro: string;
+    introBody: string[];
+
+    sourceTitle: string;
+    sourceBody: string[];
+
+    idTitle: string;
+    idBody: string[];
+
+    contractTitle: string;
+    contractBody: string[];
+
+    fetchTitle: string;
+    fetchBody: string[];
+  };
+
+  types: {
+    metaTitle: string;
+    metaDescription: string;
+    heroKicker: string;
+    heroTitle: string;
+    heroIntro: string;
+    /** Copy carries {count} / {audienceCount}; lib/facts.ts fills them in. */
+    stats: { value: string; label: string }[];
+    introBody: string[];
+
+    /** Filter bar. Only rendered when scripting is on, so it never lies. */
+    filterGroupLabel: string;
+    filterAll: string;
+    groupLabels: Record<string, string>;
+    filterAudienceLabel: string;
+    filterAudienceHint: string;
+    /** Announced when filtering changes what the grid shows. */
+    resultCount: string;
+    emptyResult: string;
+
+    /** Card and disclosure. */
+    audienceBadge: string;
+    detailsLabel: string;
+    fieldsTitle: string;
+    colKey: string;
+    colType: string;
+    colRequired: string;
+    colLimit: string;
+    colOptions: string;
+    required: string;
+    optional: string;
+    noLimit: string;
+    itemFieldsNote: string;
+    variantsTitle: string;
+    bestForTitle: string;
+    notForTitle: string;
+    schemaLinkLabel: string;
+    identityLabel: string;
+
+    globalTitle: string;
+    globalBody: string[];
+
+    deprecatedTitle: string;
+    deprecatedBody: string[];
+    deprecatedBadge: string;
+
+    provenanceTitle: string;
+    provenanceBody: string[];
+  };
+}
+
+/** The pages that make up /spec/, in reading order. */
+export type SpecPageId = 'index' | 'deck-format' | 'deck-bundle' | 'schemas' | 'slide-types';
+
 export interface Content extends LocaleMeta {
   nav: NavContent;
+  spec: SpecContent;
   waitlist: WaitlistContent;
   footer: FooterContent;
   home: HomeContent;

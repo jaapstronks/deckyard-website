@@ -46,7 +46,7 @@ Deckyard is an open-source, EU-hosted presentation platform combining AI-powered
 
 Deckyard gives you:
 
-- Full presentation creation with 44 slide types
+- Full presentation creation with <!--gen:slide-type-count-->38<!--/gen:slide-type-count--> slide types
 - AI-powered deck generation using your own API keys
 - Live audience interaction (polls, Q&A) built in
 - Self-hosting option or managed EU cloud
@@ -81,7 +81,7 @@ Deckyard gives you:
 
 ### Current Feature Set
 
-#### Slide Editor (44 slide types)
+#### Slide Editor (<!--gen:slide-type-count-->38<!--/gen:slide-type-count--> slide types)
 
 - Data visualizations
 - Progress visualizations
@@ -202,18 +202,18 @@ The presentation software market splits into several categories:
 
 ### Competitive Matrix
 
-| Feature              | Deckyard    | Slides.com   | Mentimeter | Claper         | Presenton        |
-| -------------------- | ----------- | ------------ | ---------- | -------------- | ---------------- |
-| Slide editor         | ✅ 44 types | ✅ ~15 types | ❌ Limited | ❌ Upload only | ❌ Generate only |
-| AI generation        | ✅ Parallel | ⚠️ Credits   | ❌         | ❌             | ✅               |
-| BYO API key          | ✅          | ❌           | ❌         | N/A            | ✅               |
-| Audience interaction | ✅          | ❌           | ✅         | ✅             | ❌               |
-| Self-hostable        | ✅          | ❌           | ❌         | ✅             | ✅               |
-| EU hosted            | ✅          | ❌           | ❌         | ❌             | ❌               |
-| Open source          | ✅          | ❌           | ❌         | ✅             | ✅               |
-| Team management      | ✅          | Basic        | Basic      | ❌             | ❌               |
-| Analytics            | ✅          | Basic        | Basic      | Basic          | ❌               |
-| Multi-language       | ✅ 10       | ❌           | Partial    | 6              | Limited          |
+| Feature              | Deckyard                                                           | Slides.com   | Mentimeter | Claper         | Presenton        |
+| -------------------- | ------------------------------------------------------------------ | ------------ | ---------- | -------------- | ---------------- |
+| Slide editor         | ✅ <!--gen:slide-type-count-->38<!--/gen:slide-type-count--> types | ✅ ~15 types | ❌ Limited | ❌ Upload only | ❌ Generate only |
+| AI generation        | ✅ Parallel                                                        | ⚠️ Credits   | ❌         | ❌             | ✅               |
+| BYO API key          | ✅                                                                 | ❌           | ❌         | N/A            | ✅               |
+| Audience interaction | ✅                                                                 | ❌           | ✅         | ✅             | ❌               |
+| Self-hostable        | ✅                                                                 | ❌           | ❌         | ✅             | ✅               |
+| EU hosted            | ✅                                                                 | ❌           | ❌         | ❌             | ❌               |
+| Open source          | ✅                                                                 | ❌           | ❌         | ✅             | ✅               |
+| Team management      | ✅                                                                 | Basic        | Basic      | ❌             | ❌               |
+| Analytics            | ✅                                                                 | Basic        | Basic      | Basic          | ❌               |
+| Multi-language       | ✅ 10                                                              | ❌           | Partial    | 6              | Limited          |
 
 ### Deckyard's Unique Position
 
@@ -524,7 +524,7 @@ Why I built it:
 - Frustrated by vendor lock-in and US data residency
 
 Features:
-- 44 slide types including data visualizations
+- <!--gen:slide-type-count-->38<!--/gen:slide-type-count--> slide types including data visualizations
 - AI deck generation (parallel processing, supports OpenAI/Anthropic/Mistral)
 - Live polls and Q&A with real-time results
 - Team management with fine-grained permissions
