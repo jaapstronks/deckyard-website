@@ -82,8 +82,11 @@ to a server or CDN:
   links; uploaded images are inlined as data-URLs.
 - **Externally managed fonts stay network-linked.** Adobe/Monotype/Google
   fonts remain remote; curated/uploaded fonts are inlined.
-- **Code slides pull Prism from a CDN.** The export links jsDelivr for syntax
-  highlighting, so a deck with code on it is not offline-clean either.
+- **Code, math and Bunny video pull their libraries from a CDN.** Since Deckyard
+  1.6.0 those tags are conditional: a deck without any of the three makes zero
+  third-party requests, and a deck with a code block links jsDelivr for Prism
+  plus only the languages it uses. A deck that needs one of them is still not
+  offline-clean.
 
 The viewer runtime in the export handles navigation, keyboard, fullscreen and
 auto-advance itself — the iframe only needs a sensible size and focus, which
