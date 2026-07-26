@@ -7,7 +7,7 @@ export const footer: FooterContent = {
   followBlog: 'Blog',
   followRss: 'RSS-feed',
   productHeading: 'Product',
-  productDocs: 'Documentatie',
+  productDocs: 'Documentatie (Engels)',
   productGithub: 'GitHub',
   productDreamkit: 'Dreamkit',
   metaCopyright: '© {year} Deckyard · Bureau Bolster',

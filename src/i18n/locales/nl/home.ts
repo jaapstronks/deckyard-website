@@ -3,20 +3,21 @@ import type { HomeContent } from '@/i18n/types';
 export const home: HomeContent = {
   metaTitle: 'Deckyard - Open source presentatieplatform van begin tot eind',
   metaDescription:
-    'Het open source presentatieplatform dat je zelf draait. Maken, presenteren, publiceren en samenwerken in één tool - on brand, GDPR-proof, geen lock-in. MIT-licentie, code op GitHub.',
+    'Het open source presentatieplatform dat je zelf draait, in plaats van PowerPoint, Canva of Gamma. Maken, presenteren, publiceren en samenwerken in één tool - on brand, GDPR-proof, geen lock-in. MIT-licentie, code op GitHub.',
   heroKicker: 'Open source · Van begin tot eind · Made in Europe',
   heroTitleMain: 'Presenteren,',
   heroTitleHighlight: 'eindelijk vrij.',
-  heroTagline: 'Open source, van begin tot eind, en van jou.',
+  heroWhatItIs:
+    'Deckyard is een open source presentatieplatform dat je zelf host, in plaats van PowerPoint, Canva of Gamma: je eigen huisstijl, je eigen data, en AI die slides vult in plaats van ze te ontwerpen.',
   heroLead:
-    'Deckyard is een open source presentatieplatform voor elke organisatie die haar eigen werk in handen wil houden. Niet zomaar een slidebouwer: maken, presenteren, publiceren en samenwerken in één webtool die draait op infrastructuur die jij beheert. Elke deck ziet eruit alsof je designafdeling hem maakte, en blijft van jou; van eerste opzet tot live publiek.',
+    'Niet zomaar een slidebouwer: maken, presenteren, publiceren en samenwerken in één webtool die draait op infrastructuur die jij beheert. Elke deck ziet eruit alsof je designafdeling hem maakte, en blijft van jou; van eerste opzet tot live publiek.',
   featuresKicker: 'Onder de motorkap',
   featuresTitle: 'Al gebouwd, nu in de openbaarheid',
   featuresLead:
     'Dit is geen wachtlijst voor een idee. Deckyard is een werkend platform dat dagelijks wordt gebruikt, en de broncode staat nu openbaar op GitHub. Dit is wat je krijgt.',
   pillars: [
     {
-      title: '35+ slidetypes',
+      title: '{count} slidetypes',
       body: 'Grafieken, tijdlijnen, matrices, funnels, KPI’s, galerijen, quotes en meer: gestructureerde layouts die het ontwerp doen, zodat je team alleen nog inhoud typt.',
     },
     {
@@ -48,6 +49,11 @@ export const home: HomeContent = {
       body: 'Eén Docker Compose-bestand, Node en Postgres. Draai het op je eigen servers onder je eigen regels, of wacht op onze gehoste versie op Europese infrastructuur.',
     },
   ],
+  compareKicker: 'Je komt ergens vandaan',
+  compareTitle: 'Hoe dit zich verhoudt tot wat je nu gebruikt',
+  compareBody:
+    'De meeste mensen die dit lezen maken hun decks in PowerPoint, Canva of Gamma. Alle drie zijn ergens goed in, en alle drie kosten je iets. De vergelijking zegt wat, en wanneer Deckyard het verkeerde antwoord is.',
+  compareCta: 'Lees de vergelijking',
   ctaKicker: 'Open source, nu beschikbaar',
   ctaTitle: 'Verken de code, volg de lancering',
   ctaLead:

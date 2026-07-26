@@ -42,6 +42,14 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     }),
   },
   {
+    path: '/compare',
+    card: (t) => ({
+      label: t.compare.heroKicker,
+      title: t.compare.heroTitle,
+      intro: t.compare.heroIntro,
+    }),
+  },
+  {
     path: '/structured-slides',
     card: (t) => ({
       label: t.structured.kicker,

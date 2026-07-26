@@ -1,0 +1,306 @@
+---
+// "What you gain, and what you give up": Deckyard next to PowerPoint, Canva and
+// Gamma. The point of the page is the second column - a comparison in which we
+// win every row is not evidence, and the reader who checks is exactly the
+// reader worth having. Hence no tick matrix, and a section that names the cases
+// where one of the other three is the better tool.
+//
+// The four tools come from `t.alternatives`, so a fifth is one entry in the copy
+// file, and each carries a stable `id` used as the anchor here - and as the slug
+// if a tool ever earns a page of its own.
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import PageHero from '@/components/layout/PageHero.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import Button from '@/components/ui/Button.astro';
+import { ui, localizePath, sandboxUrl, type Lang } from '@/i18n';
+import { withFacts } from '@/lib/facts';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].compare;
+const howHref = localizePath('/structured-slides/', lang);
+
+// The slide-type figure is quoted in our own row, from the one place that holds
+// it: a number the reader can count is a number that has to be right.
+const alternatives = t.alternatives.map((alt) => ({
+  ...alt,
+  strength: withFacts(alt.strength),
+  giveUp: withFacts(alt.giveUp),
+  body: alt.body.map(withFacts),
+}));
+---
+
+<SiteLayout title={t.metaTitle} description={t.metaDescription}>
+  <PageHero kicker={t.heroKicker} title={t.heroTitle} intro={t.heroIntro} />
+
+  <!-- ============ the table ============ -->
+  <Section>
+    <SectionHead title={t.tableTitle} lead={t.tableLead} />
+
+    <!-- Explicit ARIA roles because the narrow-screen rules below turn the rows
+         into stacked blocks, and a `display` change removes a table's exposed
+         semantics in every engine. Spelling the roles out keeps the table a
+         table for a screen reader at both widths. The per-cell labels repeat the
+         column heading for sighted readers once the header row is hidden, so
+         they are aria-hidden: the header cells still carry that job. -->
+    <div class="cmp-wrap" data-reveal data-reveal-delay="80">
+      <table class="cmp" role="table">
+        <thead role="rowgroup">
+          <tr role="row">
+            <th scope="col" role="columnheader">{t.colTool}</th>
+            <th scope="col" role="columnheader">{t.colStrength}</th>
+            <th scope="col" role="columnheader">{t.colGiveUp}</th>
+          </tr>
+        </thead>
+        <tbody role="rowgroup">
+          {
+            alternatives.map((alt) => (
+              <tr role="row" class:list={[{ 'is-self': alt.self }]}>
+                <th scope="row" role="rowheader">
+                  {alt.name}
+                </th>
+                <td role="cell">
+                  <span class="cmp-label" aria-hidden="true">
+                    {t.colStrength}
+                  </span>
+                  {alt.strength}
+                </td>
+                <td role="cell">
+                  <span class="cmp-label" aria-hidden="true">
+                    {t.colGiveUp}
+                  </span>
+                  {alt.giveUp}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Section>
+
+  <!-- ============ the same four, at length ============ -->
+  <Section variant="tint">
+    <SectionHead title={t.readTitle} lead={t.readLead} />
+    <div class="reads">
+      {
+        alternatives.map((alt, i) => (
+          <article
+            class:list={['read', { 'read--self': alt.self }]}
+            id={alt.id}
+            data-reveal
+            data-reveal-delay={i === 0 ? undefined : i * 70}
+          >
+            <h3>{alt.name}</h3>
+            {alt.body.map((paragraph) => (
+              <p>{paragraph}</p>
+            ))}
+          </article>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- ============ when this is the wrong answer ============ -->
+  <Section>
+    <div class="wrong">
+      <SectionHead title={t.wrongTitle} lead={t.wrongLead} />
+      <ul class="wrong-list" data-reveal data-reveal-delay="80">
+        {t.wrong.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </Section>
+
+  <!-- ============ cta ============ -->
+  <Section variant="dark">
+    <SectionHead title={t.ctaTitle} lead={t.ctaBody} />
+    <div class="cmp-actions" data-reveal data-reveal-delay="100">
+      <Button href={sandboxUrl(lang)} external>{t.ctaSandbox}</Button>
+      <Button href={howHref} variant="ghost">{t.ctaHow}</Button>
+    </div>
+  </Section>
+</SiteLayout>
+
+<style>
+  /* ---------- the table ---------- */
+  .cmp-wrap {
+    margin-top: var(--space-lg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--card);
+    overflow: hidden;
+  }
+  .cmp {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .cmp th,
+  .cmp td {
+    text-align: left;
+    vertical-align: top;
+    padding: 1rem 1.2rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .cmp tbody tr:last-child th,
+  .cmp tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .cmp thead th {
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    background: var(--paper-warm);
+  }
+  .cmp tbody th {
+    font-family: var(--display);
+    font-variation-settings:
+      'opsz' 24,
+      'wght' 640;
+    font-size: 1.05rem;
+    white-space: nowrap;
+    color: var(--ink);
+  }
+  .cmp td {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  /* Our own row is marked, not favoured: same two columns, same register. A
+     border rather than a "best" badge, because the row it has to survive is the
+     one on its right. */
+  .cmp tbody tr.is-self {
+    background: var(--green-wash);
+  }
+  .cmp tbody tr.is-self th {
+    color: var(--green);
+  }
+
+  /* The label that appears inside a cell once the header row is gone. */
+  .cmp-label {
+    display: none;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 0.35rem;
+  }
+
+  /* Narrow: stack each tool into a block. Three columns of two-sentence cells
+     do not survive a phone, and a horizontally scrolling prose table is worse
+     than a stack - see the roles on the markup, which keep this a table. */
+  @media (max-width: 860px) {
+    .cmp thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .cmp tbody tr {
+      display: block;
+      border-bottom: 1px solid var(--line);
+    }
+    .cmp tbody tr:last-child {
+      border-bottom: 0;
+    }
+    .cmp tbody th,
+    .cmp tbody td {
+      display: block;
+      border-bottom: 0;
+      padding-block: 0.2rem;
+    }
+    .cmp tbody th {
+      padding-top: 1.1rem;
+      font-size: 1.15rem;
+    }
+    .cmp tbody td:last-child {
+      padding-bottom: 1.2rem;
+    }
+    .cmp-label {
+      display: block;
+    }
+  }
+
+  /* ---------- the long read ---------- */
+  .reads {
+    display: grid;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+  }
+  @media (min-width: 900px) {
+    .reads {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+  }
+  .read {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    box-shadow: var(--shadow-sm);
+    /* An anchor target: /compare/#canva should not land under the header. */
+    scroll-margin-top: var(--space-3xl);
+  }
+  .read--self {
+    border-color: var(--green);
+  }
+  .read h3 {
+    margin: 0 0 0.7rem;
+    font-size: var(--step-2);
+    letter-spacing: -0.015em;
+  }
+  .read p {
+    margin: 0 0 1em;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  .read p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ---------- where it is the wrong answer ---------- */
+  .wrong {
+    max-width: var(--container-text);
+  }
+  .wrong-list {
+    list-style: none;
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .wrong-list li {
+    position: relative;
+    padding-left: 1.6rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .wrong-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    background: var(--brass-bright);
+  }
+
+  /* ---------- cta ---------- */
+  .cmp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

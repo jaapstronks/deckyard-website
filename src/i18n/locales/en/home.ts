@@ -3,20 +3,21 @@ import type { HomeContent } from '@/i18n/types';
 export const home: HomeContent = {
   metaTitle: 'Deckyard - Open source, end-to-end presentation platform',
   metaDescription:
-    'The open source presentation platform you run yourself. Create, present, publish and collaborate in one tool - on brand by default, GDPR-native, no lock-in. MIT licensed, code on GitHub.',
+    'The open source presentation platform you run yourself, in place of PowerPoint, Canva or Gamma. Create, present, publish and collaborate in one tool - on brand by default, GDPR-native, no lock-in. MIT licensed, code on GitHub.',
   heroKicker: 'Open source · End-to-end · Made in Europe',
   heroTitleMain: 'Presentations,',
   heroTitleHighlight: 'set free.',
-  heroTagline: 'Open source, end to end, and yours to run.',
+  heroWhatItIs:
+    'Deckyard is an open source presentation platform you host yourself, in place of PowerPoint, Canva or Gamma: your brand, your data, and AI that fills slides in rather than designing them.',
   heroLead:
-    'Deckyard is an open source presentation platform for organizations that want to own their work. Not just a slide builder: create, present, publish and collaborate in one web-based tool that runs on infrastructure you control. Every deck looks like it came from your design department, and stays yours from first draft to live audience.',
+    'Not just a slide builder: create, present, publish and collaborate in one web-based tool that runs on infrastructure you control. Every deck looks like it came from your design department, and stays yours from first draft to live audience.',
   featuresKicker: 'Under the hood',
   featuresTitle: 'Already built, now in the open',
   featuresLead:
     "This isn't a waitlist for an idea. Deckyard is a working platform in daily use, and the source is now public on GitHub. Here's what ships.",
   pillars: [
     {
-      title: '35+ slide types',
+      title: '{count} slide types',
       body: 'Charts, timelines, matrices, funnels, KPIs, galleries, quotes and more: structured layouts that do the design, so your team only types content.',
     },
     {
@@ -37,7 +38,7 @@ export const home: HomeContent = {
     },
     {
       title: 'Your brand as software',
-      body: 'Fonts, colors, logos and layout rules defined once as a theme. Everyone is on brand automatically; rebrand centrally and every deck follows.',
+      body: 'Fonts, colours, logos and layout rules defined once as a theme. Everyone is on brand automatically; rebrand centrally and every deck follows.',
     },
     {
       title: 'No lock-in',
@@ -48,6 +49,11 @@ export const home: HomeContent = {
       body: 'One Docker Compose file, Node and Postgres. Run it on your own servers under your own rules, or wait for our hosted version on European infrastructure.',
     },
   ],
+  compareKicker: 'Coming from somewhere else',
+  compareTitle: 'How this compares to what you use now',
+  compareBody:
+    'Most people reading this make decks in PowerPoint, Canva or Gamma. All three are good at something, and all three cost you something. The comparison says which, and where Deckyard is the wrong answer.',
+  compareCta: 'Read the comparison',
   ctaKicker: 'Open source, out now',
   ctaTitle: 'Explore the code, follow the launch',
   ctaLead:
