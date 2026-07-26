@@ -13,23 +13,22 @@
  * - **Without one**, the iframe is in the HTML and loads lazily. Right for a
  *   deck further down a page.
  * - **With one**, what ships is a link wrapped around a still of the first
- *   slide, costing a few kilobytes against the export's half a megabyte. On a
+ *   slide, costing a few kilobytes against the export's megabyte and a half. On a
  *   screen wide enough to hold a deck the script upgrades that link into an
  *   inline frame - when the browser goes idle, or the moment somebody presses
  *   play - and the poster stays underneath until the frame reports it has
  *   loaded, so nothing flashes. That is what makes a deck affordable above the
  *   fold, and it means the no-JS path is the link that was there all along.
  *
- * Below `inlineFrom` the link is left alone rather than upgraded. An export
- * narrower than about 400px wraps its own title bar and controls onto two
- * lines each, which eats the frame and squeezes the slide to a strip; a phone
- * is better served by the deck opening in a tab of its own, where it gets the
- * whole screen.
+ * Below `inlineFrom` the link is left alone rather than upgraded. The deck is
+ * legible at that size since Deckyard 1.6.0, but it is still a megabyte and a
+ * half of slides scaled to the width of a hand; a phone is better served by
+ * the deck opening in a tab of its own, where it gets the whole screen.
  *
- * The height is not an aspect ratio alone: an export draws its own title bar
- * and control bar at a fixed height, so a pure 16:9 box letterboxes the slide
- * more and more as the frame narrows. `chrome` is added on top of the ratio,
- * which keeps the slide itself exactly 16:9 at every width.
+ * The frame is asked for `?ui=min`, which is Deckyard 1.6.0 and later: the
+ * export's title bar and control row collapse to zero height, so the frame is
+ * the slide and the stage is a plain aspect ratio. The links out keep the
+ * unmodified URL - a deck opening in a tab of its own wants its controls.
  */
 interface Props {
   /** Path to the exported .html deck, e.g. "/decks/my-deck.html". */
@@ -44,8 +43,6 @@ interface Props {
   poster?: string;
   /** Label on the play button. Required whenever `poster` is passed. */
   playLabel?: string;
-  /** Fixed px height of the export's own chrome; see `DECK_CHROME_PX`. */
-  chrome?: number;
   /** Media query from which the poster is upgraded to an inline frame. */
   inlineFrom?: string;
   /** Caption link shown when there is no poster. Pass '' to drop it. */
@@ -59,22 +56,24 @@ const {
   maxWidth = '100%',
   poster,
   playLabel = 'Play the presentation',
-  chrome = 0,
   inlineFrom = '(min-width: 700px)',
   openLabel = 'Open the presentation',
 } = Astro.props;
 
-// "16 / 9" -> 0.5625, the slide's height as a fraction of the frame's width.
 // A ratio that does not parse falls back to 16:9 rather than collapsing the
 // box to nothing.
 const [ratioW, ratioH] = ratio.split('/').map((part) => Number(part.trim()));
-const heightFactor = ratioW > 0 && ratioH > 0 ? ratioH / ratioW : 9 / 16;
+const stageRatio = ratioW > 0 && ratioH > 0 ? `${ratioW} / ${ratioH}` : '16 / 9';
+
+// Only what goes in the frame is asked for the chrome-less interface; every
+// link out of here opens the deck on its own, where the controls are the point.
+const frameSrc = `${src}${src.includes('?') ? '&' : '?'}ui=min`;
 ---
 
 <figure
   class="deck-embed"
-  style={`--deck-height:${heightFactor};--deck-chrome:${chrome}px;--deck-max-width:${maxWidth}`}
-  data-deck-src={poster ? src : undefined}
+  style={`--deck-ratio:${stageRatio};--deck-max-width:${maxWidth}`}
+  data-deck-src={poster ? frameSrc : undefined}
   data-deck-title={poster ? title : undefined}
   data-deck-inline-from={poster ? inlineFrom : undefined}
 >
@@ -116,7 +115,7 @@ const heightFactor = ratioW > 0 && ratioH > 0 ? ratioH / ratioW : 9 / 16;
       ) : (
         <iframe
           class="deck-embed__frame"
-          src={src}
+          src={frameSrc}
           title={title}
           loading="lazy"
           allow="fullscreen"
@@ -137,7 +136,7 @@ const heightFactor = ratioW > 0 && ratioH > 0 ? ratioH / ratioW : 9 / 16;
 </figure>
 
 <script>
-  // The export is around half a megabyte over the wire, so it is attached after
+  // The export is a megabyte and a half over the wire, so it is attached after
   // the page is usable rather than as part of it: on idle, or the moment
   // somebody presses play. A reader on a metered connection gets it only when
   // they ask. The poster is removed once the frame reports it has loaded, so
@@ -166,10 +165,11 @@ const heightFactor = ratioW > 0 && ratioH > 0 ? ratioH / ratioW : 9 / 16;
     const poster = figure.querySelector('.deck-embed__poster');
     if (!poster) return;
 
-    // Narrow screens keep the link they shipped with: an export squeezed below
-    // about 400px wraps its own chrome onto four lines and leaves the slide a
-    // strip, so a tab of its own is the better answer there. Evaluated once, on
-    // load - a phone rotated to landscape is still a phone.
+    // Narrow screens keep the link they shipped with. Not a layout problem any
+    // more - `?ui=min` scales cleanly all the way down - but a megabyte and a
+    // half of deck on a phone is worth an explicit tap, and the deck reads
+    // better with the screen to itself. Evaluated once, on load: a phone
+    // rotated to landscape is still a phone.
     const inlineFrom = figure.dataset.deckInlineFrom;
     if (inlineFrom && !window.matchMedia(inlineFrom).matches) return;
 
@@ -199,17 +199,14 @@ const heightFactor = ratioW > 0 && ratioH > 0 ? ratioH / ratioW : 9 / 16;
     margin: 0;
     width: 100%;
     max-width: var(--deck-max-width);
-    /* The stage's height is measured against this box rather than the viewport,
-       so the frame stays correct in a hero column as well as full-bleed. */
-    container-type: inline-size;
   }
 
-  /* The slide area is the ratio; the export's own bars are added on top, since
-     they keep their height while the frame narrows. */
+  /* With `?ui=min` the export is the slide and nothing else, so the stage is
+     the ratio - no fixed chrome height to add on top of it. */
   .deck-embed__stage {
     position: relative;
     width: 100%;
-    height: calc(100cqw * var(--deck-height) + var(--deck-chrome));
+    aspect-ratio: var(--deck-ratio);
     border-radius: 12px;
     overflow: hidden;
     background: #000;
@@ -232,10 +229,8 @@ const heightFactor = ratioW > 0 && ratioH > 0 ? ratioH / ratioW : 9 / 16;
     text-decoration: none;
     color: inherit;
   }
-  /* The stage's proportions move with its width, because the export's chrome
-     keeps its height while the slide shrinks; a still cannot match that at
-     every size. Cropping from the right is the harmless direction - the deck
-     sets its type against the left edge and leaves that side empty. */
+  /* The still and the stage are both 16:9 now, so `cover` has nothing to crop;
+     it stays as the safe answer if a deck is ever embedded at another ratio. */
   .deck-embed__poster img {
     width: 100%;
     height: 100%;

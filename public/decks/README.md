@@ -26,24 +26,24 @@ Deckyard instance required.
 Because the file lives in `public/`, Astro serves it verbatim at
 `/decks/<slug>.html` — no import, no build step.
 
-## Sizing: the export brings its own chrome
+## Sizing: `?ui=min` makes the frame a 16:9 box
 
-An export is not a 16:9 box. It draws a 56px title bar above the slide and a
-56px control bar below it, and those keep their height while the frame narrows,
-so an aspect ratio on its own squeezes the slide into a thinner and thinner
-strip. Pass that fixed height as `chrome` and the slide stays exactly 16:9 at
-every width:
+`DeckEmbed` appends `?ui=min` to the URL it puts in the iframe, so the export
+drops its title bar and control row and their layout rows collapse to zero. The
+scaled 1600x900 stage is then the whole frame, and the embed sizes on a plain
+`aspect-ratio` with no constant to keep in sync.
 
-```astro
-<DeckEmbed src="/decks/my-deck.html" chrome={DECK_CHROME_PX} />
-```
+This needs an export from **Deckyard 1.6.0 or later**; an older file ignores the
+parameter and still draws 112px of chrome, which an aspect-ratio box will
+squeeze. The runtime lives inside the file, so "we upgraded Deckyard" is not
+enough - the deck has to be downloaded again.
 
-`DECK_CHROME_PX` lives in `src/lib/decks.ts`. If a future export changes its
-presenter shell, that is the one number to update.
+Links out of the component keep the plain URL on purpose: a deck opening in a
+tab of its own wants its controls back.
 
 ## A deck above the fold: `poster`
 
-A real export is around half a megabyte over the wire, which is too much to put
+A real export is a megabyte and a half over the wire, which is too much to put
 in front of a homepage. Pass a `poster` and the page ships a link wrapped
 around a still of the first slide instead; the script upgrades it to an inline
 frame once the browser is idle, or immediately when somebody presses play.
@@ -52,17 +52,17 @@ Two things follow from that, both deliberate:
 
 - **The no-JS path is the link that was already there**, so nothing needs a
   `<noscript>` copy of the embed.
-- **Below `inlineFrom` (700px by default) the link is left alone.** An export
-  under about 400px wide wraps its own title bar and controls onto two lines
-  each, which eats the frame and leaves the slide a strip. A phone is better
-  served by the deck opening in a tab of its own.
+- **Below `inlineFrom` (700px by default) the link is left alone.** With
+  `?ui=min` this is no longer a layout problem - the slide scales down cleanly -
+  but a megabyte and a half of deck on a phone is worth an explicit tap, and the
+  deck reads better with the screen to itself.
 
-Render a poster at 1320x854 — the frame's width, times 9/16, plus the 112px of
-chrome:
+Render a poster at 1320x743, the frame's width times 9/16, with the same
+`?ui=min` the embed uses so the still has no chrome the frame will not have:
 
 ```sh
-chrome --headless --window-size=1320,854 --virtual-time-budget=4000 \
-  --screenshot=poster.png "file://$PWD/public/decks/<slug>.html"
+chrome --headless --window-size=1320,743 --virtual-time-budget=4000 \
+  --screenshot=poster.png "file://$PWD/public/decks/<slug>.html?ui=min"
 cwebp -q 74 -m 6 -sharp_yuv poster.png -o public/images/hero/deck-poster-<lang>.webp
 ```
 
