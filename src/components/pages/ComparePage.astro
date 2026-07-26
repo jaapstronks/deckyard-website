@@ -1,13 +1,17 @@
 ---
-// "What you gain, and what you give up": Deckyard next to PowerPoint, Canva and
-// Gamma. The point of the page is the second column - a comparison in which we
-// win every row is not evidence, and the reader who checks is exactly the
-// reader worth having. Hence no tick matrix, and a section that names the cases
-// where one of the other three is the better tool.
+// "What you gain, and what you give up": Deckyard next to PowerPoint, Google
+// Slides, Canva and Gamma. The point of the page is the second column - a
+// comparison in which we win every row is not evidence, and the reader who
+// checks is exactly the reader worth having. Hence no tick matrix, and a
+// section that names the cases where one of the others is the better tool.
 //
-// The four tools come from `t.alternatives`, so a fifth is one entry in the copy
+// The tools come from `t.alternatives`, so another one is one entry in the copy
 // file, and each carries a stable `id` used as the anchor here - and as the slug
 // if a tool ever earns a page of its own.
+//
+// The table cells are one sentence each on purpose: the long read below is the
+// only place on the page that carries prose, so the same tool is not explained
+// three times at three lengths.
 import SiteLayout from '@/layouts/SiteLayout.astro';
 import PageHero from '@/components/layout/PageHero.astro';
 import Section from '@/components/layout/Section.astro';
@@ -31,6 +35,22 @@ const alternatives = t.alternatives.map((alt) => ({
   giveUp: withFacts(alt.giveUp),
   body: alt.body.map(withFacts),
 }));
+
+// A mark per row, so the column of names is something to scan rather than read.
+// Deliberately silhouettes and not scores: a tick would turn the table into the
+// kind of matrix this page exists to avoid. They are keyed by the copy's `id`
+// and a tool without one simply gets no mark, so a new entry cannot break the
+// row. Structural data, hence here beside the component rather than in the copy
+// files, which stay text-only.
+const marks: Record<string, string> = {
+  powerpoint:
+    '<rect x="3" y="4.5" width="18" height="12.5" rx="1.5" /><path d="M12 17v3M8.5 20h7" />',
+  'google-slides':
+    '<rect x="3" y="4.5" width="18" height="15" rx="2" /><path d="M10.25 8.9 15.5 12l-5.25 3.1z" />',
+  canva: '<circle cx="12" cy="12" r="8.75" /><circle cx="12" cy="12" r="3.2" />',
+  gamma: '<path d="M13 2.5 4.5 14h6.75l-1 7.5L19 10h-6.75z" />',
+  deckyard: '<rect x="3" y="4" width="18" height="16" rx="2" /><path d="M3 9.25h18M11 9.25V20" />',
+};
 ---
 
 <SiteLayout title={t.metaTitle} description={t.metaDescription}>
@@ -60,7 +80,24 @@ const alternatives = t.alternatives.map((alt) => ({
             alternatives.map((alt) => (
               <tr role="row" class:list={[{ 'is-self': alt.self }]}>
                 <th scope="row" role="rowheader">
-                  {alt.name}
+                  <span class="cmp-tool">
+                    {marks[alt.id] && (
+                      <svg
+                        viewBox="0 0 24 24"
+                        width="17"
+                        height="17"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                        focusable="false"
+                        set:html={marks[alt.id]}
+                      />
+                    )}
+                    {alt.name}
+                  </span>
                 </th>
                 <td role="cell">
                   <span class="cmp-label" aria-hidden="true">
@@ -82,7 +119,7 @@ const alternatives = t.alternatives.map((alt) => ({
     </div>
   </Section>
 
-  <!-- ============ the same four, at length ============ -->
+  <!-- ============ the same tools, at length ============ -->
   <Section variant="tint">
     <SectionHead title={t.readTitle} lead={t.readLead} />
     <div class="reads">
@@ -178,6 +215,21 @@ const alternatives = t.alternatives.map((alt) => ({
     background: var(--green-wash);
   }
   .cmp tbody tr.is-self th {
+    color: var(--green);
+  }
+
+  /* The mark sits with the name rather than in a column of its own: it is an
+     anchor for the eye, and a column would promise data it does not carry. */
+  .cmp-tool {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .cmp-tool svg {
+    flex: none;
+    color: var(--ink-mute);
+  }
+  .is-self .cmp-tool svg {
     color: var(--green);
   }
 
@@ -302,5 +354,19 @@ const alternatives = t.alternatives.map((alt) => ({
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+  }
+
+  /* Our own row is told apart by a wash and our own card by a border colour,
+     and a user-supplied palette drops both. This component repairs the states
+     it paints: a rule where the row starts, which survives the switch to
+     stacked blocks, and a card border thicker than its siblings'. */
+  @media (forced-colors: active) {
+    .cmp tbody tr.is-self th {
+      border-left: 3px solid;
+      padding-left: calc(1.2rem - 3px);
+    }
+    .read--self {
+      border-width: 2px;
+    }
   }
 </style>
