@@ -240,7 +240,7 @@ Import a theme from JSON:
 
 ### Colors
 
-- Ensure sufficient contrast (WCAG AA minimum). The editor does not check this for you: it derives light or dark text from the background on brightness alone, and never warns. See [Color Contrast](/docs/editing/accessibility#color-contrast)
+- Ensure sufficient contrast (WCAG AA minimum). The editor measures it for you: each pair shows its ratio and a WCAG verdict, and the automatic text color goes to whichever candidate measures higher. It reports rather than blocks, so a failing pair can still be saved. See [Color Contrast](/docs/editing/accessibility#color-contrast)
 - Test colors in both light and dark modes
 - Consider colorblind accessibility
 

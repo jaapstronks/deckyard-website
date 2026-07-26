@@ -77,8 +77,8 @@ export const accessibility: AccessibilityContent = {
       body: 'Het veld bestaat, het vraagt of het beeld inhoudelijk of decoratief is, en AI kan een beschrijving opzetten. Of die beschrijving iets waard is, blijft elke keer een menselijk oordeel.',
     },
     {
-      title: 'Een eigen thema kan nog steeds zakken op contrast',
-      body: 'Kies je een achtergrond, dan komt daar automatisch lichte of donkere tekst bij, maar dat gaat op helderheid en niet op een gemeten verhouding, en de theme-editor waarschuwt nergens als de combinatie tekortschiet. Dat de huisstijl in tokens woont maakt hem consistent; consistent is niet hetzelfde als leesbaar, en dat verschil is voorlopig van wie het thema maakt.',
+      title: 'De theme-editor meet contrast, hij dwingt het niet af',
+      body: 'Kies je een achtergrond, dan komt daar automatisch lichte of donkere tekst bij; die keuze gaat nu naar de kleur die het hoogst meet, niet naar de kleur die het lichtst oogt, en de editor toont de verhouding en het WCAG-oordeel naast de kiezers die hem opleveren. Hij rapporteert, hij blokkeert niet: een variant met laag contrast kan een bewuste merkkeuze zijn, en een instellingenpaneel is niet de plek om die te overrulen. Het gaat om de hoofdkleuren en de achtergrondvarianten, dus je eigen merkpalet, en het oordeel over wat leesbaar genoeg is, blijven van jou.',
     },
     {
       title: 'Video en audio hebben ondertiteling nodig',
