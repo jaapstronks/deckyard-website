@@ -48,15 +48,20 @@ const CLAIM_ICONS: SpecIconName[] = ['split', 'braces', 'bot', 'git-branch', 'sh
       {
         t.layers.map((layer, i) => (
           <article class="layer" data-reveal data-reveal-delay={i * 80}>
-            {LAYER_ICONS[i] && (
-              <p class="layer-icon">
-                <SpecIcon name={LAYER_ICONS[i]} size={24} />
-              </p>
-            )}
-            <p class="layer-badge">{layer.badge}</p>
-            <h3>{layer.name}</h3>
-            <p class="layer-what">{layer.what}</p>
-            <p class="layer-body" set:html={prose(layer.body)} />
+            <header class="layer-head">
+              {LAYER_ICONS[i] && (
+                <span class="layer-icon">
+                  <SpecIcon name={LAYER_ICONS[i]} size={24} />
+                </span>
+              )}
+              <div class="layer-heading">
+                <p class="layer-badge">{layer.badge}</p>
+                <h3>{layer.name}</h3>
+              </div>
+            </header>
+            <p class="layer-body">
+              <span class="layer-what">{layer.what}</span> <span set:html={prose(layer.body)} />
+            </p>
           </article>
         ))
       }
@@ -133,6 +138,20 @@ const CLAIM_ICONS: SpecIconName[] = ['split', 'braces', 'bot', 'git-branch', 'sh
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
   }
+  /* The card's four openers - plate, ordinal, name, gloss - used to stack, so a
+     reader met four short things down the left edge with a column of empty card
+     beside them before the first sentence. Two blocks now: the plate beside the
+     ordinal and the name, then the paragraph. The gloss runs into that paragraph
+     as its opening phrase, which is how it reads anyway ("JSON. The data." is
+     the first thing you would say about it), and it cannot fall out of line with
+     the card next to it the way a fourth stacked element does. */
+  .layer-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.15rem;
+  }
   /* The one thing on the card that says "format" versus "package" before a word
      has been read, so it gets a plate of its own rather than riding along with
      the eyebrow as a bullet. A document with code in it, and a sealed box. */
@@ -141,7 +160,6 @@ const CLAIM_ICONS: SpecIconName[] = ['split', 'braces', 'bot', 'git-branch', 'sh
     place-items: center;
     width: 2.75rem;
     height: 2.75rem;
-    margin: 0 0 1rem;
     border-radius: var(--radius-sm);
     background: var(--green-wash);
     color: var(--green);
@@ -152,23 +170,25 @@ const CLAIM_ICONS: SpecIconName[] = ['split', 'braces', 'bot', 'git-branch', 'sh
     }
   }
   .layer-badge {
-    margin: 0;
+    margin: 0 0 0.15rem;
     font-family: var(--mono);
     font-size: var(--step--3);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--brass-text);
   }
+  /* A run-in head: full ink against the paragraph's softer grey, in the mono
+     face the rest of the spec uses for anything that names a format. Not green,
+     which on this site means a link. */
+  .layer-what {
+    font-family: var(--mono);
+    font-size: 0.82em;
+    color: var(--ink);
+  }
   .layer h3 {
-    margin: 0.6rem 0 0.3rem;
+    margin: 0;
     font-size: var(--step-2);
     letter-spacing: -0.02em;
-  }
-  .layer-what {
-    margin: 0 0 1rem;
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    color: var(--green);
   }
   .layer-body {
     margin: 0;
