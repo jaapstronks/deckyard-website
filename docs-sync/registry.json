@@ -10,7 +10,10 @@
       "docPages": [
         "src/pages/[...locale]/spec/index.astro",
         "src/pages/[...locale]/spec/deck-format.astro",
-        "src/pages/[...locale]/spec/schemas.astro"
+        "src/pages/[...locale]/spec/schemas.astro",
+        "docs/reference/deck-format.md",
+        "docs/reference/deck-bundle.md",
+        "docs/reference/schemas.md"
       ],
       "sources": [
         "shared/slide-types/deck.js",
@@ -28,7 +31,8 @@
       "docPages": [
         "src/pages/[...locale]/spec/slide-types.astro",
         "docs/slide-types/index.md",
-        "README.md"
+        "README.md",
+        "docs/reference/slide-types.md"
       ],
       "sources": [
         "shared/slide-types/registry.js",
@@ -1958,7 +1962,8 @@
       "type": "doc",
       "docPages": [
         "src/i18n/locales/en/spec.ts",
-        "src/i18n/locales/nl/spec.ts"
+        "src/i18n/locales/nl/spec.ts",
+        "docs/reference/deck-bundle.md"
       ],
       "sources": [
         "docs/reference/deck-bundle-format.md",
@@ -1975,7 +1980,8 @@
       "docPages": [
         "src/i18n/locales/en/spec.ts",
         "src/i18n/locales/nl/spec.ts",
-        "src/lib/spec.ts"
+        "src/lib/spec.ts",
+        "docs/reference/deck-format.md"
       ],
       "sources": [
         "docs/reference/deck-format.md",

@@ -29,6 +29,7 @@ export const spec: SpecContent = {
     sourceNote:
       'Elk voorbeeld op deze pagina wordt live geserveerd door elke Deckyard-installatie.',
     codeLabel: 'Lees de implementatie',
+    referenceLabel: 'Volledige referentie',
   },
 
   index: {
@@ -129,22 +130,10 @@ export const spec: SpecContent = {
 
     envelopeTitle: 'De envelop',
     envelopeBody: ['Zes velden op het hoogste niveau. Al het andere zit in `slides`.'],
-    colField: 'Veld',
-    colType: 'Type',
-    colNotes: 'Toelichting',
-    fieldNotes: {
-      format: 'Altijd `{magic}`. Het herkenningsteken van het formaat.',
-      version:
-        'Envelopversie, vandaag {version}. Wordt alleen opgehoogd bij een breaking wijziging aan de envelop zelf.',
-      title: 'De titel van het deck, voor mensen.',
-      theme:
-        'De id van het thema waartegen het deck is gemaakt. Een lezer die dat thema niet heeft, valt terug op zijn eigen; de inhoud verandert er niet van.',
-      slideTypes:
-        'Identiteitsmanifest: de kale typesleutel, gekoppeld aan zijn volledige identiteit. Zie hieronder.',
-      slides: 'Geordende lijst slides, elk met een `type` en een `content`-object.',
-    },
     leniency:
       'De envelop is inschikkelijk. Onbekende sleutels op het hoogste niveau worden door een importeur genegeerd en nooit geweigerd, zodat een nieuwere schrijver een veld kan toevoegen dat een oudere lezer simpelweg overslaat.',
+    envelopeRefNote:
+      'Alle zes velden staan uitgeschreven in de documentatie: hun type, en wat een lezer ermee hoort te doen.',
 
     manifestTitle: 'slideTypes: het identiteitsmanifest',
     manifestBody: [
@@ -197,21 +186,8 @@ export const spec: SpecContent = {
     apiTitle: 'Een deck maken en lezen',
     apiLead:
       'De schemaroutes antwoorden zonder inloggegevens, op elke installatie en dus ook in de sandbox, want een gepubliceerd formaatcontract hoort op te halen te zijn. De routes die aan iemands decks zitten doen dat niet, om dezelfde reden waarom jouw documenten niet openbaar zijn.',
-    colMethod: 'Methode',
-    colEndpoint: 'Endpoint',
-    colWhat: 'Wat het doet',
-    colAuth: 'Toegang',
-    authOpen: 'Open',
-    authKey: 'Met sleutel',
-    apiNotes: {
-      deckSchema: 'Het volledige deckschema, live gegenereerd uit de registry.',
-      typeSchema: 'Het contentschema van één slidetype.',
-      typeList: 'Alle typedefinities, inclusief velden.',
-      exportJson: 'De draagbare envelop van één deck.',
-      exportBundle: 'Het zelfdragende pakket, beelden inbegrepen.',
-      importJson: 'De importkant van de envelop.',
-      importBundle: 'De importkant van het pakket.',
-    },
+    apiRefNote:
+      'De vier export- en importroutes, en welke ervan inloggegevens vragen, staan in de documentatie.',
   },
 
   bundle: {
@@ -240,20 +216,9 @@ export const spec: SpecContent = {
     manifestTitle: 'Het manifest',
     manifestBody: [
       'Het manifest is een volledige inventaris van de beelden in het deck. Elk record koppelt de bytes in het archief aan de namen die ze eerder hadden.',
+      'Het veld om te snappen is `sources`: de oorspronkelijke bestandsnamen blijven in het manifest, zodat hash-churn nooit in de leesbare structuur lekt, en meerdere bronnen betekent dat dezelfde bytes vanaf meerdere plekken werden gebruikt.',
     ],
-    colField: 'Veld',
-    colNotes: 'Wat het is',
-    fieldNotes: {
-      ref: 'Waar de bytes in het archief staan, en de waarde die in `deck.json` wordt gebruikt.',
-      id: 'Een integriteits-id in SRI-vorm, `sha256-<base64>`: de stabiele, van een algoritme voorziene identiteit van het bestand.',
-      hash: 'De hexadecimale SHA-256. Het contentadres, gelijk aan de naam in `ref`.',
-      mime: 'Het mediatype van de bytes.',
-      bytes: 'Grootte in bytes.',
-      sources:
-        'De oorspronkelijke bestandsnaam of -namen die naar dit bestand verwezen. Dit is de aparte naamlaag: menselijke namen blijven in het manifest, zodat hash-churn nooit in de leesbare structuur lekt. Meerdere bronnen betekent dat dezelfde bytes vanaf meerdere plekken werden gebruikt.',
-      missingAssets:
-        'Optioneel. Lokale verwijzingen waarvan de bytes bij het bouwen van het pakket niet te lezen waren; die houden hun oorspronkelijke verwijzing in `deck.json`.',
-    },
+    manifestRefNote: 'Elk veld in het manifest staat uitgeschreven in de documentatie.',
 
     guaranteesTitle: 'Wat het pakket garandeert',
     guaranteesLead:
@@ -324,6 +289,7 @@ export const spec: SpecContent = {
     fetchBody: [
       "De schema-endpoints zijn open en vragen geen inloggegevens, op elke installatie en dus ook in de sandbox. Ze worden op het moment van opvragen uit de draaiende registry gegenereerd, dus een installatie met extra slidetypes serveert daar ook schema's voor. Dat is voor die installatie het juiste antwoord, en een goede reden om ze op te halen bij de installatie waar je daadwerkelijk mee praat.",
     ],
+    fetchRefNote: 'De endpoints staan, met een `curl` per stuk, in de documentatie.',
   },
 
   types: {
@@ -394,5 +360,7 @@ export const spec: SpecContent = {
       'Niets op deze pagina is met de hand ingetikt. De lijst, het aantal, de labels, de veldtabellen, de limieten, de layouttekeningen en de "pak dit als"-regels worden uit de Deckyard-core-repo gegenereerd naar een databestand dat deze site leest, en dezelfde bronpaden worden bewaakt, zodat een wijziging in core hier als drift opduikt in plaats van als een pagina die stilletjes verouderde.',
       'Er stond eerst 36 op de ene plek, 38 op de andere en 44 op de derde. Dat is wat een handmatig bijgehouden getal doet.',
     ],
+    referenceNote:
+      'Dezelfde registry als één platte, doorzoekbare tabel - elk veld, elke limiet, elke optie, zonder de tekeningen - staat in de documentatie.',
   },
 };

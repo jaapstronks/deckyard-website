@@ -149,60 +149,9 @@ export const EXAMPLE_SCHEMA_ID = `{
   "additionalProperties": true
 }`;
 
-/**
- * The endpoints that produce and consume a deck.
- *
- * `open` is load-bearing and was checked, not assumed: only the schema routes
- * answer without credentials. Saying "no API key needed" about the rest would be
- * the kind of claim a reader disproves with one curl.
- */
-export const API_ENDPOINTS: {
-  method: string;
-  path: string;
-  key: string;
-  open: boolean;
-}[] = [
-  { method: 'GET', path: '/api/v1/schema/deck.json', key: 'deckSchema', open: true },
-  {
-    method: 'GET',
-    path: '/api/v1/schema/slide-types/:name.json',
-    key: 'typeSchema',
-    open: true,
-  },
-  { method: 'GET', path: '/api/v1/slide-types', key: 'typeList', open: false },
-  {
-    method: 'GET',
-    path: '/api/presentations/:id/export/json',
-    key: 'exportJson',
-    open: false,
-  },
-  {
-    method: 'GET',
-    path: '/api/presentations/:id/export/deck.zip',
-    key: 'exportBundle',
-    open: false,
-  },
-  { method: 'POST', path: '/api/presentations/import/json', key: 'importJson', open: false },
-  { method: 'POST', path: '/api/presentations/import/deck', key: 'importBundle', open: false },
-];
-
-/** The envelope, field by field. Keys resolve to the per-locale note. */
-export const ENVELOPE_FIELDS: { field: string; type: string; key: string }[] = [
-  { field: 'format', type: 'string', key: 'format' },
-  { field: 'version', type: 'integer', key: 'version' },
-  { field: 'title', type: 'string', key: 'title' },
-  { field: 'theme', type: 'string', key: 'theme' },
-  { field: 'slideTypes', type: 'object', key: 'slideTypes' },
-  { field: 'slides', type: 'array', key: 'slides' },
-];
-
-/** The package manifest's asset record, field by field. */
-export const MANIFEST_FIELDS: { field: string; key: string }[] = [
-  { field: 'ref', key: 'ref' },
-  { field: 'id', key: 'id' },
-  { field: 'hash', key: 'hash' },
-  { field: 'mime', key: 'mime' },
-  { field: 'bytes', key: 'bytes' },
-  { field: 'sources', key: 'sources' },
-  { field: 'missingAssets', key: 'missingAssets' },
-];
+// The envelope fields, the manifest fields and the endpoint list used to be
+// tabulated here too. They moved to /docs/reference/, where the site's search
+// can see them: a field table answers "what does field X do", which is a search
+// rather than a page you read start to finish, and Pagefind only indexes the
+// docs. The examples stay, because showing the envelope is a stronger claim
+// than describing it.

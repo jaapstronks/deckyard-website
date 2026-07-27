@@ -118,10 +118,11 @@ in the tab order). Claim either role and you owe the reader those keys; call
 
 ## Documentation Structure
 
-17 categories, 100+ pages:
+18 categories, 100+ pages:
 
 - User: creating, editing, organizing, slide-types, ai, interactions, presenting, publishing, collaboration, libraries, themes, export
 - Admin: admin, configuration, deployment, integrations, developer
+- Format: reference (see below)
 
 ## Common Cross-Repo Tasks
 
@@ -304,6 +305,47 @@ glyph from retired types on purpose.
 
 Copy may use backticks for inline code and nothing else: `src/lib/inline.ts`
 escapes the string first and lets exactly that one construct back in.
+
+### `/spec/` and `docs/reference/` are two halves
+
+The same format, two readers, split by **which question is being answered** and
+not by how polished the prose is:
+
+|                   | Question                              | Read                  | Language |
+| ----------------- | ------------------------------------- | --------------------- | -------- |
+| `/spec/`          | "May I build on this? Is it lock-in?" | once, start to end    | EN + NL  |
+| `docs/reference/` | "What does field `X` do?"             | repeatedly, by search | EN only  |
+
+The deciding argument is search: Starlight puts `data-pagefind-body` only on
+`dist/docs`, so **`/spec/` is not indexed at all**. Somebody searching the
+documentation for "deck format" or "slideTypes" has to land in `docs/reference/`.
+
+So the exhaustive tables (envelope fields, manifest fields, endpoints, every
+slide type's fields) live in `docs/reference/`, and each `/spec/` section ends in
+one sentence plus a `SpecReference` link instead. Every **code block** stays on
+`/spec/`: showing the envelope is a stronger claim than describing it, and
+`/spec/slide-types/` keeps its whole card grid, glyphs included - a card with a
+layout diagram is a different artifact from a naslag table.
+
+`docs/reference/slide-types.md` is **generated** by the same
+`npm run sync-slide-types`, and the other four reference pages carry the format
+constants inside marker spans:
+
+```md
+Always <!--gen:magic-->`slidecreator.deck`<!--/gen:magic-->.
+```
+
+The marker is an HTML comment pair, invisible when rendered, and the generator
+owns what is between them (`markerTokens()` in `scripts/generate-slide-types.js`;
+the token value carries its own backticks or whole fenced block, because a marker
+cannot live _inside_ a code span). `npm run check-slide-types` fails when any of
+it drifts. That is why the reference can state both version numbers without
+anybody having to remember that the schema `$id` carries 3 and the envelope
+carries 1.
+
+**A dirty `../deckyard` working tree will regenerate unreleased constants into
+these pages.** The generator reads core's files, not its git HEAD. Check
+`git -C ../deckyard status` before committing what `sync-slide-types` wrote.
 
 ## Release notes (`/changelog`)
 

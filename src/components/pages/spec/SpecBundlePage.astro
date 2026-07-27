@@ -8,14 +8,9 @@ import SpecShell from '@/components/spec/SpecShell.astro';
 import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import CodeBlock from '@/components/spec/CodeBlock.astro';
+import SpecReference from '@/components/spec/SpecReference.astro';
 import { ui, type Lang } from '@/i18n';
-import {
-  withSpec,
-  EXAMPLE_BUNDLE_LAYOUT,
-  EXAMPLE_MANIFEST,
-  MANIFEST_FIELDS,
-  BUNDLE_ENTRIES,
-} from '@/lib/spec';
+import { withSpec, EXAMPLE_BUNDLE_LAYOUT, EXAMPLE_MANIFEST, BUNDLE_ENTRIES } from '@/lib/spec';
 import { inlineCode } from '@/lib/inline';
 
 interface Props {
@@ -65,26 +60,7 @@ const prose = (text: string) => inlineCode(withSpec(text));
       {t.manifestBody.map((p) => <p set:html={prose(p)} />)}
     </div>
     <CodeBlock code={EXAMPLE_MANIFEST} />
-    <div class="spec-tablewrap" data-reveal>
-      <table class="spec-table">
-        <thead>
-          <tr>
-            <th scope="col">{t.colField}</th>
-            <th scope="col">{t.colNotes}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            MANIFEST_FIELDS.map((f) => (
-              <tr>
-                <th scope="row">{f.field}</th>
-                <td set:html={prose(t.fieldNotes[f.key] ?? '')} />
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
+    <SpecReference lang={lang} href="/docs/reference/deck-bundle/" note={t.manifestRefNote} />
   </Section>
 
   <!-- ============ guarantees ============ -->

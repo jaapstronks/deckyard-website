@@ -221,6 +221,21 @@ export default defineConfig({
             { label: 'Rendering Pipeline', link: '/docs/developer/rendering/' },
           ],
         },
+        // Last, because it is the most technical material here: the file format
+        // itself, field by field. The marketing-register argument for the format
+        // lives at /spec/; this is the half you read with a file open. It sits in
+        // the docs because only the docs are indexed by the site's search, and
+        // "what does field X do" is a search rather than a page you browse to.
+        {
+          label: 'Reference',
+          items: [
+            { label: 'Overview', link: '/docs/reference/' },
+            { label: 'Deck format', link: '/docs/reference/deck-format/' },
+            { label: 'Deck package', link: '/docs/reference/deck-bundle/' },
+            { label: 'Slide types', link: '/docs/reference/slide-types/' },
+            { label: 'JSON Schemas', link: '/docs/reference/schemas/' },
+          ],
+        },
       ],
     }),
   ],

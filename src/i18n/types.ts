@@ -463,6 +463,8 @@ export interface SpecContent {
     sourceNote: string;
     /** Label on a link into the core repo. */
     codeLabel: string;
+    /** Label on the link out of a section into its full docs reference. */
+    referenceLabel: string;
   };
 
   index: {
@@ -503,12 +505,9 @@ export interface SpecContent {
 
     envelopeTitle: string;
     envelopeBody: string[];
-    colField: string;
-    colType: string;
-    colNotes: string;
-    /** One note per envelope field, keyed by ENVELOPE_FIELDS[].key. */
-    fieldNotes: Record<string, string>;
     leniency: string;
+    /** Stands in for the field table, which lives in the (searchable) docs. */
+    envelopeRefNote: string;
 
     manifestTitle: string;
     manifestBody: string[];
@@ -532,15 +531,8 @@ export interface SpecContent {
 
     apiTitle: string;
     apiLead: string;
-    colMethod: string;
-    colEndpoint: string;
-    colWhat: string;
-    colAuth: string;
-    /** Shown per endpoint: the schema routes answer without credentials, the rest do not. */
-    authOpen: string;
-    authKey: string;
-    /** One line per endpoint, keyed by API_ENDPOINTS[].key. */
-    apiNotes: Record<string, string>;
+    /** Stands in for the endpoint table, which lives in the docs. */
+    apiRefNote: string;
   };
 
   bundle: {
@@ -558,10 +550,8 @@ export interface SpecContent {
 
     manifestTitle: string;
     manifestBody: string[];
-    colField: string;
-    colNotes: string;
-    /** One note per manifest field, keyed by MANIFEST_FIELDS[].key. */
-    fieldNotes: Record<string, string>;
+    /** Stands in for the manifest field table, which lives in the docs. */
+    manifestRefNote: string;
 
     guaranteesTitle: string;
     guaranteesLead: string;
@@ -593,6 +583,8 @@ export interface SpecContent {
 
     fetchTitle: string;
     fetchBody: string[];
+    /** Stands in for the endpoint table, which lives in the docs. */
+    fetchRefNote: string;
   };
 
   types: {
@@ -643,6 +635,8 @@ export interface SpecContent {
 
     provenanceTitle: string;
     provenanceBody: string[];
+    /** This page keeps its cards; the flat, searchable table is in the docs. */
+    referenceNote: string;
   };
 }
 

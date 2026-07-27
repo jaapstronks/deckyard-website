@@ -1,23 +1,22 @@
 ---
-// /spec/deck-format/ - the envelope, field by field.
+// /spec/deck-format/ - what the envelope is and what it guarantees.
 //
-// The field table, the endpoint table and the example JSON come from
-// lib/spec.ts, not from the locale files: the format is the same in every
-// language, and a JSON example duplicated per locale is a JSON example that will
-// eventually disagree with itself. The locale carries the sentences.
+// The example JSON comes from lib/spec.ts, not from the locale files: the format
+// is the same in every language, and a JSON example duplicated per locale is a
+// JSON example that will eventually disagree with itself. The locale carries the
+// sentences.
+//
+// The field-by-field tables are deliberately NOT here. They answer "what does
+// field X do", which is a search, and only /docs/ is indexed by the site search.
+// The code blocks stay: "we have a good format, see the docs" is a weaker claim
+// than showing the envelope.
 import SpecShell from '@/components/spec/SpecShell.astro';
 import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import CodeBlock from '@/components/spec/CodeBlock.astro';
+import SpecReference from '@/components/spec/SpecReference.astro';
 import { ui, type Lang } from '@/i18n';
-import {
-  withSpec,
-  EXAMPLE_ENVELOPE,
-  EXAMPLE_SLIDE,
-  ENVELOPE_FIELDS,
-  API_ENDPOINTS,
-  SCHEMA_BASE,
-} from '@/lib/spec';
+import { withSpec, EXAMPLE_ENVELOPE, EXAMPLE_SLIDE, SCHEMA_BASE } from '@/lib/spec';
 import { inlineCode } from '@/lib/inline';
 
 interface Props {
@@ -49,30 +48,8 @@ const prose = (text: string) => inlineCode(withSpec(text));
 
     <CodeBlock code={EXAMPLE_ENVELOPE} caption={shared.sourceNote} />
 
-    <div class="spec-tablewrap" data-reveal>
-      <table class="spec-table">
-        <thead>
-          <tr>
-            <th scope="col">{t.colField}</th>
-            <th scope="col">{t.colType}</th>
-            <th scope="col">{t.colNotes}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            ENVELOPE_FIELDS.map((f) => (
-              <tr>
-                <th scope="row">{f.field}</th>
-                <td>{f.type}</td>
-                <td set:html={prose(t.fieldNotes[f.key] ?? '')} />
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
-
     <p class="spec-note" set:html={prose(t.leniency)} />
+    <SpecReference lang={lang} href="/docs/reference/deck-format/" note={t.envelopeRefNote} />
   </Section>
 
   <!-- ============ the identity manifest ============ -->
@@ -129,34 +106,7 @@ const prose = (text: string) => inlineCode(withSpec(text));
   <!-- ============ the API surface ============ -->
   <Section variant="tint">
     <SectionHead title={t.apiTitle} lead={t.apiLead} />
-    <div class="spec-tablewrap" data-reveal>
-      <table class="spec-table">
-        <thead>
-          <tr>
-            <th scope="col">{t.colMethod}</th>
-            <th scope="col">{t.colEndpoint}</th>
-            <th scope="col">{t.colWhat}</th>
-            <th scope="col">{t.colAuth}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            API_ENDPOINTS.map((e) => (
-              <tr>
-                <td class="is-method">{e.method}</td>
-                <th scope="row">{e.path}</th>
-                <td set:html={prose(t.apiNotes[e.key] ?? '')} />
-                <td>
-                  <span class:list={['auth', { 'is-open': e.open }]}>
-                    {e.open ? t.authOpen : t.authKey}
-                  </span>
-                </td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
+    <SpecReference lang={lang} href="/docs/reference/deck-format/" note={t.apiRefNote} />
   </Section>
 </SpecShell>
 
@@ -169,45 +119,5 @@ const prose = (text: string) => inlineCode(withSpec(text));
     font-size: 0.95rem;
     line-height: 1.65;
     color: var(--ink-soft);
-  }
-  /* The method column is a label, not prose: narrow, monospaced, unmissable. */
-  .is-method {
-    width: 1%;
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
-    color: var(--green);
-    white-space: nowrap;
-  }
-
-  /* Open vs authenticated. The word carries it; the colour only reinforces,
-     because a status told apart by a background alone disappears the moment a
-     reader supplies their own palette. */
-  .auth {
-    display: inline-block;
-    padding: 0.15rem 0.5rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--paper-warm);
-    font-family: var(--mono);
-    font-size: 0.66rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    color: var(--ink-mute);
-  }
-  .auth.is-open {
-    border-color: color-mix(in oklab, var(--green) 35%, transparent);
-    background: var(--green-wash);
-    color: var(--green);
-  }
-  @media (forced-colors: active) {
-    .auth {
-      border-color: CanvasText;
-    }
-    .auth.is-open {
-      border-color: Highlight;
-      color: Highlight;
-    }
   }
 </style>

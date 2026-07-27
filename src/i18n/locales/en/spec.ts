@@ -27,6 +27,7 @@ export const spec: SpecContent = {
     },
     sourceNote: 'Every example on this page is served live by any Deckyard instance.',
     codeLabel: 'Read the implementation',
+    referenceLabel: 'Full reference',
   },
 
   index: {
@@ -127,22 +128,10 @@ export const spec: SpecContent = {
 
     envelopeTitle: 'The envelope',
     envelopeBody: ['Six top-level fields. Everything else about a deck lives inside `slides`.'],
-    colField: 'Field',
-    colType: 'Type',
-    colNotes: 'Notes',
-    fieldNotes: {
-      format: 'Always `{magic}`. The sentinel that identifies the format.',
-      version:
-        'Envelope version, {version} today. Bumped only for a breaking change to the envelope itself.',
-      title: 'The human title of the deck.',
-      theme:
-        'The theme id the deck was authored against. A reader that does not have that theme falls back to its own; the content is unaffected.',
-      slideTypes:
-        'Identity manifest: the bare type key mapped to its qualified identity. See below.',
-      slides: 'Ordered list of slides, each one a `type` and a `content` object.',
-    },
     leniency:
       'The envelope is lenient. Unknown top-level keys are ignored by an importer, never rejected, so a newer producer can add a field that an older reader simply skips.',
+    envelopeRefNote:
+      'Each of the six fields, its type and what a reader should do with it, is written out in the documentation.',
 
     manifestTitle: 'slideTypes: the identity manifest',
     manifestBody: [
@@ -195,21 +184,8 @@ export const spec: SpecContent = {
     apiTitle: 'Producing and consuming a deck',
     apiLead:
       "The schema routes answer without credentials on any instance, including the sandbox, because a published format contract should be fetchable. The routes that touch somebody's decks do not, for the same reason your documents are not public.",
-    colMethod: 'Method',
-    colEndpoint: 'Endpoint',
-    colWhat: 'What it does',
-    colAuth: 'Access',
-    authOpen: 'Open',
-    authKey: 'Authenticated',
-    apiNotes: {
-      deckSchema: 'The whole deck schema, generated live from the registry.',
-      typeSchema: 'The content schema for one slide type.',
-      typeList: 'Every slide-type definition, fields included.',
-      exportJson: 'The portable envelope for one deck.',
-      exportBundle: 'The self-contained package, assets embedded.',
-      importJson: 'The import side of the envelope.',
-      importBundle: 'The import side of the package.',
-    },
+    apiRefNote:
+      'The four export and import routes, and which of them need credentials, are listed in the documentation.',
   },
 
   bundle: {
@@ -238,20 +214,9 @@ export const spec: SpecContent = {
     manifestTitle: 'The manifest',
     manifestBody: [
       "The manifest is a complete inventory of the deck's assets. Each record ties the bytes in the archive to the names they used to have.",
+      'The one worth understanding is `sources`: the original filenames stay in the manifest, so hash churn never leaks into the readable structure, and several sources means the same bytes were referenced from several places.',
     ],
-    colField: 'Field',
-    colNotes: 'What it is',
-    fieldNotes: {
-      ref: 'Where the bytes live in the archive, and the value used inside `deck.json`.',
-      id: 'An integrity id in SRI form, `sha256-<base64>`: the stable, algorithm-tagged identity of the asset.',
-      hash: 'The hex SHA-256. The content address, matching the name in `ref`.',
-      mime: 'The media type of the bytes.',
-      bytes: 'Size in bytes.',
-      sources:
-        'The original filename or filenames that mapped to this asset. This is the separate name layer: human names stay in the manifest, so hash churn never leaks into the readable structure. Several sources means the same bytes were referenced from several places.',
-      missingAssets:
-        'Optional. Local references whose bytes could not be read when the package was built; they keep their original reference inside `deck.json`.',
-    },
+    manifestRefNote: 'Every manifest field is written out in the documentation.',
 
     guaranteesTitle: 'What the package guarantees',
     guaranteesLead: 'Four properties, each one enforced by the reader rather than assumed.',
@@ -321,6 +286,7 @@ export const spec: SpecContent = {
     fetchBody: [
       'The schema endpoints are public and unauthenticated on any instance, including the sandbox. They are generated at request time from the running registry, so an instance carrying extra slide types will serve schemas for those too - which is the correct answer for that instance, and a good reason to fetch from the instance you are actually talking to.',
     ],
+    fetchRefNote: 'The endpoints, with a `curl` for each, are in the documentation.',
   },
 
   types: {
@@ -391,5 +357,7 @@ export const spec: SpecContent = {
       'Nothing on this page was typed out by hand. The list, the count, the labels, the field tables, the limits, the layout glyphs and the "reach for it when" lines are generated from the Deckyard core repository into a data file this site reads, and the same source paths are watched so that a change in core shows up as drift here rather than as a page that quietly went out of date.',
       'It used to say 36 in one place, 38 in another and 44 in a third. That is what a hand-maintained number does.',
     ],
+    referenceNote:
+      'The same registry as one flat, searchable table - every field, limit and option, without the diagrams - is in the documentation.',
   },
 };

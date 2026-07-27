@@ -13,6 +13,7 @@ import SpecShell from '@/components/spec/SpecShell.astro';
 import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import Schematic from '@/components/spec/Schematic.astro';
+import SpecReference from '@/components/spec/SpecReference.astro';
 import { ui, type Lang } from '@/i18n';
 import { withSpec, liveSchemaUrl, LIVE_INSTANCE } from '@/lib/spec';
 import { withFacts } from '@/lib/facts';
@@ -273,6 +274,7 @@ const limitOf = (f: SlideTypeField) => (f.maxLength ? String(f.maxLength) : t.no
       {t.provenanceBody.map((p) => <p set:html={prose(p)} />)}
       <p><code>{LIVE_INSTANCE}/api/v1/schema/slide-types/&lt;type&gt;.json</code></p>
     </div>
+    <SpecReference lang={lang} href="/docs/reference/slide-types/" note={t.referenceNote} />
   </Section>
 </SpecShell>
 

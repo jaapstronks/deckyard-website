@@ -35,10 +35,18 @@ const CORE_ROOT = path.resolve(REPO_ROOT, '..', 'deckyard');
 const OUT_FILE = 'src/data/slide-types.json';
 const FORMAT_FILE = 'src/data/deck-format.json';
 
-/** Files carrying a slide-type count inside marker spans (see applyCountMarkers). */
-const COUNT_MARKER_FILES = ['README.md', 'docs/slide-types/index.md'];
-const MARKER_OPEN = '<!--gen:slide-type-count-->';
-const MARKER_CLOSE = '<!--/gen:slide-type-count-->';
+/** The exhaustive slide-type reference in the docs, written whole (see buildSlideTypeDoc). */
+export const DOC_TYPES_FILE = 'docs/reference/slide-types.md';
+
+/** Hand-written files carrying generated facts inside marker spans (see applyMarkers). */
+export const MARKER_FILES = [
+  'README.md',
+  'docs/slide-types/index.md',
+  'docs/reference/index.md',
+  'docs/reference/deck-format.md',
+  'docs/reference/deck-bundle.md',
+  'docs/reference/schemas.md',
+];
 
 /** Core modules this script reads. Mirrored in docs-sync/registry.json. */
 const CORE_SOURCES = {
@@ -215,23 +223,285 @@ async function buildFormatData() {
 }
 
 // ---------------------------------------------------------------------------
-// Count markers
+// Markers
+//
+// A hand-written page can still carry a generated fact. The marker is an HTML
+// comment pair, invisible in rendered markdown, so the prose keeps reading as
+// prose and the value inside it is owned by this script:
+//
+//   Deckyard ships <!--gen:slide-type-count-->38<!--/gen:slide-type-count--> types
+//
+// The token value is the *rendered snippet*, backticks and fenced blocks
+// included, because a marker cannot live inside a code span or a fence: an HTML
+// comment there would show up as text. So the marker wraps the whole snippet and
+// the value carries its own formatting.
 // ---------------------------------------------------------------------------
 
+/** Every fact a hand-written page may claim, keyed by marker name. */
+export function markerTokens(data, format) {
+  const schemaBase = `${format.schemaBaseUri}/v${format.schemaVersion}`;
+  const code = (s) => `\`${s}\``;
+  // A fenced block sits on its own lines, so the marker pair needs blank lines
+  // around it or the fence glues itself to the surrounding paragraph.
+  const fence = (lang, body) => `\n\n\`\`\`${lang}\n${body}\n\`\`\`\n\n`;
+
+  return {
+    'slide-type-count': String(data.count),
+    'slide-type-active-count': String(data.activeCount),
+    magic: code(format.magic),
+    mime: code(format.mime),
+    'envelope-version': String(format.envelopeVersion),
+    'bundle-version': String(format.bundleVersion),
+    'schema-version': String(format.schemaVersion),
+    'schema-url-type': code(`${schemaBase}/slide-types/<type>.schema.json`),
+    'schema-url-deck': code(`${schemaBase}/deck.schema.json`),
+    'example-envelope': fence('json', exampleEnvelope(format)),
+    'example-manifest': fence('json', exampleManifest(format)),
+    'example-bundle-layout': fence('', exampleBundleLayout(format)),
+    'example-schema': fence('json', exampleSchema(format)),
+  };
+}
+
 /**
- * Replace the number inside every count-marker span in `text`. The marker is an
- * HTML comment pair, so it is invisible in rendered markdown and the prose keeps
- * reading as prose:
- *
- *   Deckyard ships <!--gen:slide-type-count-->38<!--/gen:slide-type-count--> types
+ * Replace the content of every marker span this script knows about. Markers it
+ * does not know are left alone; a page may carry a marker for a fact that is
+ * introduced later, and silently blanking it would be worse than ignoring it.
  */
-function applyCountMarkers(text, count) {
-  const re = new RegExp(`${escapeRe(MARKER_OPEN)}[\\s\\S]*?${escapeRe(MARKER_CLOSE)}`, 'g');
-  return text.replace(re, `${MARKER_OPEN}${count}${MARKER_CLOSE}`);
+export function applyMarkers(text, tokens) {
+  let out = text;
+  for (const [name, value] of Object.entries(tokens)) {
+    const open = `<!--gen:${name}-->`;
+    const close = `<!--/gen:${name}-->`;
+    const re = new RegExp(`${escapeRe(open)}[\\s\\S]*?${escapeRe(close)}`, 'g');
+    out = out.replace(re, `${open}${value}${close}`);
+  }
+  return out;
 }
 
 function escapeRe(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+// ---------------------------------------------------------------------------
+// Examples
+//
+// The same JSON the /spec/ pages show (src/lib/spec.ts), built from the same
+// generated constants. A magic string typed into an example beside a table that
+// says something else is worse than a stale page: it is a page arguing with
+// itself.
+// ---------------------------------------------------------------------------
+
+function exampleEnvelope(format) {
+  return `{
+  "format": "${format.magic}",
+  "version": ${format.envelopeVersion},
+  "title": "My deck",
+  "theme": "default",
+  "slideTypes": { "title-slide": "core/title-slide" },
+  "slides": [
+    { "type": "title-slide", "content": { "title": "Hello", "background": "lime" } }
+  ]
+}`;
+}
+
+function exampleBundleLayout(format) {
+  return `mimetype               First entry, STORED (uncompressed). Content:
+                       "${format.mime}". Lets the archive be
+                       identified by magic number.
+manifest.json          Package metadata + the asset inventory (see below).
+deck.json              The portable deck (as from presentationToDeck), with
+                       every asset ref rewritten to a bundle ref.
+assets/<sha256>.<ext>  The asset bytes, content-addressed by SHA-256 of the
+                       content. Identical bytes are stored once (dedup).`;
+}
+
+function exampleManifest(format) {
+  return `{
+  "format": "${format.magic}",
+  "bundleVersion": ${format.bundleVersion},
+  "mimetype": "${format.mime}",
+  "deck": "deck.json",
+  "assets": [
+    {
+      "ref": "assets/e2e9…445a.png",
+      "id": "sha256-4unkYiBMX+HF…",
+      "hash": "e2e9…445a",
+      "mime": "image/png",
+      "bytes": 1265204,
+      "sources": ["/uploads/photo-1a2b.png"]
+    }
+  ],
+  "missingAssets": ["/uploads/gone.png"]
+}`;
+}
+
+function exampleSchema(format) {
+  const schemaBase = `${format.schemaBaseUri}/v${format.schemaVersion}`;
+  return `{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "${schemaBase}/slide-types/quote-slide.schema.json",
+  "title": "quote-slide slide content",
+  "type": "object",
+  "properties": {
+    "quote": { "type": "string", "maxLength": 400 },
+    "attribution": { "type": "string", "maxLength": 160 }
+  },
+  "required": ["quote"],
+  "additionalProperties": true
+}`;
+}
+
+// ---------------------------------------------------------------------------
+// The docs reference page
+//
+// /spec/slide-types/ shows the same registry as a set of cards with layout
+// glyphs: an argument, read once. This is the other half of that - a flat table
+// per type, read by somebody who is holding a `content` object and wants to know
+// what may go in it. It exists in the docs rather than beside the spec because
+// only the docs are indexed by the site's search, and "what does field X do" is
+// a search, not a page you browse to.
+// ---------------------------------------------------------------------------
+
+/** Picker groups in the order the reference walks them. */
+const GROUP_LABELS = {
+  basic: 'Basics',
+  media: 'Media',
+  layouts: 'Layouts',
+  data: 'Data',
+  interaction: 'Interaction',
+  other: 'Other',
+};
+
+/** A markdown table cell: pipes break the row, newlines break the table. */
+function cell(value) {
+  return String(value ?? '')
+    .replace(/\r?\n/g, ' ')
+    .replace(/\|/g, '\\|')
+    .trim();
+}
+
+function fieldRow(field) {
+  const limit = Number.isFinite(field.maxLength) ? String(field.maxLength) : '—';
+  const options = field.options?.length
+    ? field.options.map((o) => `\`${o.value}\``).join(', ')
+    : '—';
+  return `| \`${cell(field.key)}\` | ${cell(field.label)} | \`${cell(field.type)}\` | ${
+    field.required ? 'Yes' : 'No'
+  } | ${limit} | ${options} |`;
+}
+
+function fieldTable(fields) {
+  const lines = [
+    '| Key | Label | Type | Required | Limit | Options |',
+    '| --- | --- | --- | --- | --- | --- |',
+    ...fields.map(fieldRow),
+  ];
+  // A repeater's shape matters more than the fact that it repeats, so each one
+  // gets its item fields spelled out under the table rather than an "items" row
+  // that tells the reader nothing.
+  for (const field of fields) {
+    if (!field.itemFields?.length) continue;
+    lines.push('', `Each item in \`${field.key}\`:`, '', ...fieldTable(field.itemFields));
+  }
+  return lines;
+}
+
+function typeSection(type) {
+  const lines = [`### ${type.label} — \`${type.name}\``, ''];
+
+  const meta = [`Identity \`${type.id}\``];
+  if (type.audience) meta.push('the audience takes part');
+  if (type.deprecated) meta.push('**retired**');
+  lines.push(`${meta.join(' · ')}.`, '');
+
+  // The picker's one-liner, not the AI catalogue's. The catalogue's prose is
+  // written at a model ("USE THIS AS A LAST RESORT") and reads as prompt
+  // engineering on a page a person is reading; /spec/slide-types/ is where the
+  // "reach for it when" material belongs.
+  if (type.description) lines.push(`${type.description}.`, '');
+
+  if (type.fields.length) {
+    lines.push(...fieldTable(type.fields), '');
+  } else {
+    lines.push('No type-specific fields; it carries the global fields only.', '');
+  }
+
+  if (type.layoutVariants.length) {
+    const variants = type.layoutVariants.map((v) => `\`${v.id}\` (${v.label})`).join(', ');
+    lines.push(`Layout variants: ${variants}.`, '');
+  }
+
+  return lines;
+}
+
+export function buildSlideTypeDoc(data, format) {
+  const schemaBase = `${format.schemaBaseUri}/v${format.schemaVersion}`;
+  const active = data.types.filter((t) => !t.deprecated);
+  const retired = data.types.filter((t) => t.deprecated);
+
+  const lines = [
+    '---',
+    'title: "Slide types"',
+    'description: "Every built-in slide type with its fields, types, limits and options. Generated from the core registry."',
+    '---',
+    '',
+    '<!-- GENERATED by scripts/generate-slide-types.js from ../deckyard. Do not edit by hand. -->',
+    '',
+    `Deckyard ships ${data.count} built-in slide types: ${data.activeCount} offered when you add a slide,`,
+    `and ${data.deprecatedCount} retired ones that still render, because a deck that stops opening`,
+    'is a deck you have lost.',
+    '',
+    'This page is the exhaustive field list, generated from the same registry that',
+    'builds the editor form, runs validation and generates the JSON Schemas. For the',
+    'same types as a visual catalogue with layout diagrams, see',
+    '[the slide-type spec](/spec/slide-types/); for a guided tour of what each one is',
+    'for, see [Slide Types](/docs/slide-types/).',
+    '',
+    '## Reading the tables',
+    '',
+    "- **Key** is the property name inside a slide's `content` object.",
+    '- **Required** means the importer will not blank it; an absent or empty value',
+    '  falls back to the type default.',
+    '- **Limit** is the maximum length in characters, where the type declares one.',
+    '- **Options** lists the accepted values of an enumerated field.',
+    '- Every type also accepts the [global fields](#fields-every-type-carries) below.',
+    '',
+    `Each type's JSON Schema is served at`,
+    `\`${schemaBase}/slide-types/<type>.schema.json\` — see`,
+    '[JSON Schemas](/docs/reference/schemas/) for how to fetch it.',
+    '',
+    '## Fields every type carries',
+    '',
+    `The ${data.globalFields.length} accessibility, background and logo fields below are added to every slide`,
+    `type rather than declared on each one. They are listed here once instead of ${data.count} times.`,
+    '',
+    ...fieldTable(data.globalFields),
+    '',
+  ];
+
+  for (const group of data.groups) {
+    const inGroup = active.filter((t) => t.group === group);
+    if (!inGroup.length) continue;
+    lines.push(`## ${GROUP_LABELS[group] ?? group}`, '');
+    for (const type of inGroup) lines.push(...typeSection(type));
+  }
+
+  if (retired.length) {
+    lines.push(
+      '## Retired types',
+      '',
+      'These are no longer offered when you add a slide, but they still render and',
+      'still import. An unknown type degrades to a placeholder; a retired one does',
+      'not have to.',
+      ''
+    );
+    for (const type of retired) lines.push(...typeSection(type));
+  }
+
+  return `${lines
+    .join('\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trimEnd()}\n`;
 }
 
 // ---------------------------------------------------------------------------
@@ -241,15 +511,19 @@ function escapeRe(s) {
 /** Every file this script owns -> the content it should have. */
 async function buildAllFiles() {
   const data = await buildData();
+  const format = await buildFormatData();
   const out = new Map();
   // Two-space indent plus a trailing newline is what prettier writes for JSON,
   // so `npm run format:check` stays green on a freshly generated file.
   out.set(OUT_FILE, `${JSON.stringify(data, null, 2)}\n`);
-  out.set(FORMAT_FILE, `${JSON.stringify(await buildFormatData(), null, 2)}\n`);
-  for (const rel of COUNT_MARKER_FILES) {
+  out.set(FORMAT_FILE, `${JSON.stringify(format, null, 2)}\n`);
+  out.set(DOC_TYPES_FILE, buildSlideTypeDoc(data, format));
+
+  const tokens = markerTokens(data, format);
+  for (const rel of MARKER_FILES) {
     const abs = path.join(REPO_ROOT, rel);
     if (!fs.existsSync(abs)) continue;
-    out.set(rel, applyCountMarkers(fs.readFileSync(abs, 'utf8'), data.count));
+    out.set(rel, applyMarkers(fs.readFileSync(abs, 'utf8'), tokens));
   }
   return out;
 }
