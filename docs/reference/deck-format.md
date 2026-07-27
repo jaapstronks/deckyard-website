@@ -28,7 +28,7 @@ guarantees and what is still open, see [the format spec](/spec/deck-format/).
 
 ```json
 {
-  "format": "slidecreator.deck",
+  "format": "deckyard.deck",
   "version": 1,
   "title": "My deck",
   "theme": "default",
@@ -43,7 +43,7 @@ guarantees and what is still open, see [the format spec](/spec/deck-format/).
 
 | Field        | Type    | Notes                                                                                                                                                          |
 | ------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `format`     | string  | Always <!--gen:magic-->`slidecreator.deck`<!--/gen:magic-->. The magic sentinel that identifies the format.                                                     |
+| `format`     | string  | Always <!--gen:magic-->`deckyard.deck`<!--/gen:magic-->. The magic sentinel that identifies the format. A conforming reader also accepts the historical `slidecreator.deck` (see [Legacy sentinel](#legacy-sentinel)). |
 | `version`    | integer | Format version. <!--gen:envelope-version-->1<!--/gen:envelope-version--> today. Bumped only on a breaking envelope change (see [Versioning](#versioning)).      |
 | `title`      | string  | Human title of the deck.                                                                                                                                       |
 | `theme`      | string  | Theme id the deck was authored against (e.g. `"default"`). A reader that lacks the theme falls back to its own default; content is unaffected.                  |
@@ -160,6 +160,24 @@ Deliberate lossy edges (they degrade, they do not crash):
 
 The two numbers are different on purpose and have already drifted apart. Do not
 read the `$id` version as the envelope version.
+
+## Legacy sentinel
+
+Until 1.7.0 the `format` field was written as `slidecreator.deck`, and the
+package media type as `application/vnd.slidecreator.deck`. That name predates the
+product: it was invented in the commit that first added JSON export, before this
+was called Deckyard.
+
+- **Producers** write only the current sentinel. Nothing emits the old value any
+  more, and nothing needs to.
+- **Readers** accept both, permanently. Decks and packages carrying the old
+  sentinel exist and will keep turning up; a reader that rejects them has not
+  implemented this format.
+- **The file extension never changed.** A package downloads as `<title>.deck`
+  either way, so nothing on disk needs renaming.
+
+The only thing that has to change anywhere is tooling of your own that matches on
+the `format` field: teach it both values.
 
 ## Producing and consuming a deck
 

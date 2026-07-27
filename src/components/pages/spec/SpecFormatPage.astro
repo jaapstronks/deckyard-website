@@ -55,6 +55,10 @@ const prose = (text: string) => inlineCode(withSpec(text));
     <CodeBlock code={EXAMPLE_ENVELOPE} caption={shared.sourceNote} />
 
     <p class="spec-note" set:html={prose(t.leniency)} />
+    <!-- Beside the leniency note rather than under Versioning: both say what a
+         reader has to tolerate, and this one is the difference between opening
+         the decks that exist and opening the decks we happen to write today. -->
+    <p class="spec-note" set:html={prose(t.legacySentinel)} />
     <SpecReference lang={lang} href="/docs/reference/deck-format/" note={t.envelopeRefNote} />
   </Section>
 
@@ -119,15 +123,3 @@ const prose = (text: string) => inlineCode(withSpec(text));
     <SpecReference lang={lang} href="/docs/reference/deck-format/" note={t.apiRefNote} />
   </Section>
 </SpecShell>
-
-<style>
-  .spec-note {
-    max-width: var(--container-text);
-    margin: var(--space-md) 0 0;
-    padding-left: 1.2rem;
-    border-left: 3px solid var(--brass);
-    font-size: 0.95rem;
-    line-height: 1.65;
-    color: var(--ink-soft);
-  }
-</style>

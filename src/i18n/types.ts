@@ -504,6 +504,12 @@ export interface SpecContent {
     envelopeTitle: string;
     envelopeBody: string[];
     leniency: string;
+    /**
+     * The value a reader must keep accepting besides the one it is shown. Part
+     * of the contract rather than a footnote: a second implementation that takes
+     * only the current sentinel rejects decks that exist in the world.
+     */
+    legacySentinel: string;
     /** Stands in for the field table, which lives in the (searchable) docs. */
     envelopeRefNote: string;
 
@@ -546,6 +552,8 @@ export interface SpecContent {
     layoutBody: string[];
     /** One note per archive entry, keyed by BUNDLE_ENTRIES[].key. */
     layoutNotes: Record<string, string>;
+    /** The media type a reader must keep accepting; see `format.legacySentinel`. */
+    legacySentinel: string;
 
     manifestTitle: string;
     manifestBody: string[];

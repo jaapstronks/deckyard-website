@@ -23,7 +23,7 @@ see [the package spec](/spec/deck-bundle/). For the deck it carries, see
 
 ```
 mimetype               First entry, STORED (uncompressed). Content:
-                       "application/vnd.slidecreator.deck". Lets the archive be
+                       "application/vnd.deckyard.deck". Lets the archive be
                        identified by magic number.
 manifest.json          Package metadata + the asset inventory (see below).
 deck.json              The portable deck (as from presentationToDeck), with
@@ -34,8 +34,11 @@ assets/<sha256>.<ext>  The asset bytes, content-addressed by SHA-256 of the
 
 <!--/gen:example-bundle-layout-->
 
-The media type is <!--gen:mime-->`application/vnd.slidecreator.deck`<!--/gen:mime-->.
-It sits in the vendor tree and is not IANA-registered.
+The media type is <!--gen:mime-->`application/vnd.deckyard.deck`<!--/gen:mime-->.
+It sits in the vendor tree and is not IANA-registered. Packages written before
+1.7.0 carry `application/vnd.slidecreator.deck`, which a reader keeps accepting
+for good; see [Legacy sentinel](/docs/reference/deck-format/#legacy-sentinel).
+The file extension is unaffected either way.
 
 ## `manifest.json`
 
@@ -43,9 +46,9 @@ It sits in the vendor tree and is not IANA-registered.
 
 ```json
 {
-  "format": "slidecreator.deck",
+  "format": "deckyard.deck",
   "bundleVersion": 1,
-  "mimetype": "application/vnd.slidecreator.deck",
+  "mimetype": "application/vnd.deckyard.deck",
   "deck": "deck.json",
   "assets": [
     {
