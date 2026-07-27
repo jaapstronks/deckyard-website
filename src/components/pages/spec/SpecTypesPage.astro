@@ -1,0 +1,704 @@
+---
+// /spec/slide-types/ - the registry, as a grid of cards.
+//
+// Every type on this page comes out of src/data/slide-types.json, generated from
+// the core registry. Nothing here is transcribed, which is the whole point: the
+// last hand-maintained version of this list said 36 in one place, 38 in another
+// and 44 in a third.
+//
+// Detail is a native <details> disclosure rather than a modal or a route. It
+// keeps the grid scannable, needs no JavaScript to open, and a reader who lands
+// here from a search engine gets the whole registry in one document.
+import SpecShell from '@/components/spec/SpecShell.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import Schematic from '@/components/spec/Schematic.astro';
+import SpecReference from '@/components/spec/SpecReference.astro';
+import { ui, type Lang } from '@/i18n';
+import { withSpec, liveSchemaUrl, LIVE_INSTANCE } from '@/lib/spec';
+import { withFacts } from '@/lib/facts';
+import { inlineCode } from '@/lib/inline';
+import {
+  slideTypes,
+  globalFields,
+  deprecatedTypes,
+  SLIDE_TYPE_GROUPS,
+  type SlideType,
+  type SlideTypeField,
+} from '@/lib/slideTypes';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].spec.types;
+
+const prose = (text: string) => inlineCode(withSpec(text));
+const active = slideTypes.filter((type) => !type.deprecated);
+
+/** Groups that actually hold an active type, in the editor's own order. */
+const groups = SLIDE_TYPE_GROUPS.filter((g) => active.some((type) => type.group === g));
+
+/** A field's limit, or an em rule when it has none. */
+const limitOf = (f: SlideTypeField) => (f.maxLength ? String(f.maxLength) : t.noLimit);
+---
+
+<SpecShell
+  lang={lang}
+  page="slide-types"
+  title={t.metaTitle}
+  description={t.metaDescription}
+  heroKicker={t.heroKicker}
+  heroTitle={t.heroTitle}
+  heroIntro={t.heroIntro}
+>
+  <!-- ============ the framing ============ -->
+  <Section>
+    <dl class="ty-stats" data-reveal>
+      {
+        t.stats.map((s) => (
+          <div>
+            <dt>{withFacts(s.value)}</dt>
+            <dd>{s.label}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <div class="spec-prose ty-intro" data-reveal data-reveal-delay="80">
+      {t.introBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+  </Section>
+
+  <!-- ============ the registry ============ -->
+  <Section variant="tint" id="registry">
+    <!-- The toolbar only exists with scripting on. Rendering filter buttons that
+         do nothing is worse than not offering them: without them the page is a
+         complete list, which is a fine thing to be. -->
+    <div class="ty-toolbar" data-types-toolbar hidden>
+      <div class="ty-filter">
+        <span class="ty-filter-label" id="ty-group-label">{t.filterGroupLabel}</span>
+        <div class="ty-chips" role="radiogroup" aria-labelledby="ty-group-label" data-group-filter>
+          <button type="button" role="radio" aria-checked="true" data-group="all">
+            {t.filterAll}
+          </button>
+          {
+            groups.map((g) => (
+              <button type="button" role="radio" aria-checked="false" data-group={g}>
+                {t.groupLabels[g]}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="ty-filter ty-filter--toggle">
+        <button type="button" class="ty-toggle" aria-pressed="false" data-audience-filter>
+          {t.filterAudienceLabel}
+        </button>
+        <p class="ty-hint">{t.filterAudienceHint}</p>
+      </div>
+
+      <!-- The template lives on the element rather than in the script so the
+           sentence stays in the locale files with the rest of the copy. -->
+      <p class="ty-count" role="status" data-types-count data-template={t.resultCount}></p>
+    </div>
+
+    <ul class="ty-grid" data-types-grid>
+      {
+        active.map((type: SlideType) => (
+          <li class="ty-item" data-group={type.group} data-audience={String(type.audience)}>
+            <details class="ty-card">
+              <summary>
+                <Schematic spec={type.schematic} class="ty-glyph" />
+                <span class="ty-head">
+                  <span class="ty-label">{type.label}</span>
+                  {type.audience && <span class="ty-badge">{t.audienceBadge}</span>}
+                </span>
+                <code class="ty-key">{type.name}</code>
+                {type.description && <span class="ty-desc">{type.description}</span>}
+                <span class="ty-more">{t.detailsLabel}</span>
+              </summary>
+
+              <div class="ty-detail">
+                {type.fields.length > 0 && (
+                  <>
+                    <h3>{t.fieldsTitle}</h3>
+                    <div class="spec-tablewrap">
+                      <table class="spec-table ty-fields">
+                        <thead>
+                          <tr>
+                            <th scope="col">{t.colKey}</th>
+                            <th scope="col">{t.colType}</th>
+                            <th scope="col">{t.colRequired}</th>
+                            <th scope="col">{t.colLimit}</th>
+                            <th scope="col">{t.colOptions}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {type.fields.map((f) => (
+                            <tr>
+                              <th scope="row">{f.key}</th>
+                              <td>{f.type}</td>
+                              <td>{f.required ? t.required : t.optional}</td>
+                              <td>{limitOf(f)}</td>
+                              <td>
+                                {f.options ? (
+                                  f.options.map((o) => o.value).join(', ')
+                                ) : f.itemFields ? (
+                                  <>
+                                    {t.itemFieldsNote}{' '}
+                                    {f.itemFields.map((sub) => sub.key).join(', ')}
+                                  </>
+                                ) : (
+                                  t.noLimit
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                )}
+
+                {type.layoutVariants.length > 0 && (
+                  <>
+                    <h3>{t.variantsTitle}</h3>
+                    <ul class="ty-variants">
+                      {type.layoutVariants.map((v) => (
+                        <li>
+                          <Schematic spec={v.schematic ?? type.schematic} />
+                          <span>{v.label}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+
+                {(type.bestFor.length > 0 || type.notFor.length > 0) && (
+                  <div class="ty-fit">
+                    {type.bestFor.length > 0 && (
+                      <div>
+                        <h3>{t.bestForTitle}</h3>
+                        <ul>
+                          {type.bestFor.map((line) => (
+                            <li>{line}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {type.notFor.length > 0 && (
+                      <div>
+                        <h3>{t.notForTitle}</h3>
+                        <ul>
+                          {type.notFor.map((line) => (
+                            <li>{line}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                <p class="ty-meta">
+                  <span>
+                    {t.identityLabel}: <code>{type.id}</code>
+                  </span>
+                  <a href={liveSchemaUrl(type.name)} target="_blank" rel="noopener">
+                    {t.schemaLinkLabel}
+                  </a>
+                </p>
+              </div>
+            </details>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="ty-empty" data-types-empty hidden>{t.emptyResult}</p>
+  </Section>
+
+  <!-- ============ the shared fields ============ -->
+  <Section>
+    <SectionHead title={t.globalTitle} />
+    <div class="spec-prose" data-reveal>
+      {t.globalBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+    <div class="spec-tablewrap" data-reveal>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th scope="col">{t.colKey}</th>
+            <th scope="col">{t.colType}</th>
+            <th scope="col">{t.colOptions}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            globalFields.map((f) => (
+              <tr>
+                <th scope="row">{f.key}</th>
+                <td>{f.type}</td>
+                <td>{f.options ? f.options.map((o) => o.value).join(', ') : t.noLimit}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </Section>
+
+  <!-- ============ retired types ============ -->
+  <Section variant="tint">
+    <SectionHead title={t.deprecatedTitle} />
+    <div class="spec-prose" data-reveal>
+      {t.deprecatedBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+    <ul class="ty-retired" data-reveal>
+      {
+        deprecatedTypes.map((type) => (
+          <li>
+            <code>{type.name}</code>
+            <span>{type.label}</span>
+            <span class="ty-badge ty-badge--retired">{t.deprecatedBadge}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+
+  <!-- ============ provenance ============ -->
+  <Section>
+    <div class="spec-prose" data-reveal>
+      <h2>{t.provenanceTitle}</h2>
+      {t.provenanceBody.map((p) => <p set:html={prose(p)} />)}
+      <p><code>{LIVE_INSTANCE}/api/v1/schema/slide-types/&lt;type&gt;.json</code></p>
+    </div>
+    <SpecReference lang={lang} href="/docs/reference/slide-types/" note={t.referenceNote} />
+  </Section>
+</SpecShell>
+
+<script>
+  import { initRovingIn } from '@/lib/roving';
+
+  // Filtering: a category radiogroup and an audience toggle, ANDed. Both write
+  // to the same apply(), which also updates the status line - the only thing
+  // telling a screen-reader user that pressing a button changed the list.
+  function initTypeFilters() {
+    const toolbar = document.querySelector<HTMLElement>('[data-types-toolbar]');
+    const grid = document.querySelector<HTMLElement>('[data-types-grid]');
+    if (!toolbar || !grid || toolbar.dataset.bound) return;
+    toolbar.dataset.bound = 'true';
+    toolbar.hidden = false;
+
+    const groupBar = toolbar.querySelector<HTMLElement>('[data-group-filter]');
+    const audienceBtn = toolbar.querySelector<HTMLButtonElement>('[data-audience-filter]');
+    const countEl = toolbar.querySelector<HTMLElement>('[data-types-count]');
+    const emptyEl = document.querySelector<HTMLElement>('[data-types-empty]');
+    const items = Array.from(grid.querySelectorAll<HTMLElement>('.ty-item'));
+    const template = countEl?.dataset.template ?? '';
+
+    let group = 'all';
+    let audienceOnly = false;
+
+    const apply = () => {
+      let shown = 0;
+      for (const item of items) {
+        const matches =
+          (group === 'all' || item.dataset.group === group) &&
+          (!audienceOnly || item.dataset.audience === 'true');
+        item.hidden = !matches;
+        if (matches) shown += 1;
+      }
+      if (countEl) countEl.textContent = template.replace('{n}', String(shown));
+      if (emptyEl) emptyEl.hidden = shown > 0;
+    };
+
+    groupBar?.addEventListener('click', (event) => {
+      const btn = (event.target as HTMLElement).closest<HTMLButtonElement>('[role="radio"]');
+      if (!btn) return;
+      for (const other of groupBar.querySelectorAll('[role="radio"]')) {
+        other.setAttribute('aria-checked', String(other === btn));
+      }
+      group = btn.dataset.group ?? 'all';
+      apply();
+    });
+
+    audienceBtn?.addEventListener('click', () => {
+      audienceOnly = !audienceOnly;
+      audienceBtn.setAttribute('aria-pressed', String(audienceOnly));
+      apply();
+    });
+
+    // The bar claims role="radiogroup", which promises arrow keys and one stop
+    // in the tab order. initRovingIn scans a subtree for the roles it handles.
+    initRovingIn(toolbar);
+    apply();
+  }
+
+  initTypeFilters();
+  document.addEventListener('astro:page-load', initTypeFilters);
+</script>
+
+<style>
+  /* ---------- the stat row ---------- */
+  .ty-stats {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .ty-stats > div {
+    flex: 1 1 13rem;
+    min-width: 0;
+    padding: 1rem 1.4rem;
+    border-right: 1px solid var(--line);
+  }
+  .ty-stats > div:first-child {
+    padding-left: 0;
+  }
+  .ty-stats > div:last-child {
+    border-right: 0;
+  }
+  .ty-stats dt {
+    font-family: var(--display);
+    font-variation-settings: 'wght' 660;
+    font-size: 2rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--green);
+    font-variant-numeric: tabular-nums;
+  }
+  .ty-stats dd {
+    margin: 0.45rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    line-height: 1.5;
+    color: var(--ink-mute);
+  }
+  .ty-intro {
+    margin-top: var(--space-lg);
+  }
+
+  /* ---------- toolbar ---------- */
+  .ty-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 1.2rem 2rem;
+    margin-bottom: var(--space-lg);
+  }
+  .ty-filter-label,
+  .ty-hint {
+    display: block;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .ty-hint {
+    max-width: 22rem;
+    margin: 0.5rem 0 0;
+    text-transform: none;
+    letter-spacing: 0;
+    font-family: var(--body);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .ty-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.55rem;
+  }
+  .ty-chips button,
+  .ty-toggle {
+    font-family: var(--body);
+    font-size: 0.88rem;
+    padding: 0.35rem 0.85rem;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition:
+      border-color var(--dur-micro) ease,
+      background-color var(--dur-micro) ease;
+  }
+  .ty-toggle {
+    margin-top: 0.55rem;
+  }
+  .ty-chips button:hover,
+  .ty-toggle:hover {
+    border-color: var(--green-bright);
+  }
+  /* Selected state is a filled pill AND a bolder weight, because a state told
+     apart only by a background colour vanishes when a reader brings their own. */
+  .ty-chips button[aria-checked='true'],
+  .ty-toggle[aria-pressed='true'] {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+    font-weight: 600;
+  }
+  .ty-count {
+    margin: 0;
+    align-self: flex-end;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    color: var(--ink-mute);
+  }
+  @media (forced-colors: active) {
+    .ty-chips button[aria-checked='true'],
+    .ty-toggle[aria-pressed='true'] {
+      border-color: Highlight;
+      border-width: 3px;
+    }
+  }
+
+  /* ---------- the grid ---------- */
+  .ty-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  }
+  /* An open card takes the full row: its field table needs the width, and a card
+     that grows inside one grid cell pushes its neighbours around. */
+  .ty-item:has(details[open]) {
+    grid-column: 1 / -1;
+  }
+
+  .ty-card {
+    height: 100%;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .ty-card[open] {
+    border-color: var(--green-bright);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .ty-card summary {
+    display: grid;
+    gap: 0.4rem;
+    padding: 0.9rem 1rem 1rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .ty-card summary::-webkit-details-marker {
+    display: none;
+  }
+  .ty-card summary:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: -2px;
+  }
+
+  .ty-glyph {
+    margin-bottom: 0.35rem;
+    border: 1px solid var(--line);
+  }
+  /* An open card takes the full row for its field table, and a 16:9 glyph that
+     followed it to full width would be half a screen tall. So the header turns
+     sideways: the glyph keeps a sane size on the left, the naming beside it. */
+  @media (min-width: 640px) {
+    .ty-card[open] summary {
+      grid-template-columns: 15rem 1fr;
+      grid-template-rows: auto auto auto auto;
+      column-gap: 1.3rem;
+      align-items: start;
+      padding-bottom: 1.2rem;
+    }
+    .ty-card[open] .ty-glyph {
+      grid-row: 1 / -1;
+      margin-bottom: 0;
+    }
+    .ty-card[open] .ty-head,
+    .ty-card[open] .ty-key,
+    .ty-card[open] .ty-desc,
+    .ty-card[open] .ty-more {
+      grid-column: 2;
+    }
+    .ty-card[open] .ty-more {
+      align-self: end;
+    }
+  }
+  .ty-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .ty-label {
+    font-family: var(--display);
+    font-variation-settings: 'wght' 620;
+    font-size: 1.02rem;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .ty-key {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--brass-text);
+    overflow-wrap: anywhere;
+  }
+  .ty-desc {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--ink-mute);
+  }
+  .ty-more {
+    margin-top: 0.2rem;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+  .ty-card[open] .ty-more::after {
+    content: ' ▾';
+  }
+
+  .ty-badge {
+    flex: none;
+    padding: 0.1rem 0.45rem;
+    border: 1px solid color-mix(in oklab, var(--green) 30%, transparent);
+    border-radius: 999px;
+    background: var(--green-wash);
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--green);
+  }
+  .ty-badge--retired {
+    border-color: var(--line);
+    background: var(--paper-warm);
+    color: var(--ink-mute);
+  }
+
+  /* ---------- the disclosure body ---------- */
+  .ty-detail {
+    padding: 0 1rem 1.2rem;
+    border-top: 1px solid var(--line);
+  }
+  .ty-detail h3 {
+    margin: 1.3rem 0 0;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .ty-detail .spec-tablewrap {
+    margin-top: 0.7rem;
+  }
+  .ty-fields {
+    min-width: 30rem;
+  }
+
+  .ty-variants {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    margin: 0.8rem 0 0;
+    padding: 0;
+  }
+  .ty-variants li {
+    width: 8.5rem;
+  }
+  .ty-variants span {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    color: var(--ink-mute);
+  }
+
+  .ty-fit {
+    display: grid;
+    gap: 1rem 2rem;
+    margin-top: 0.4rem;
+  }
+  @media (min-width: 700px) {
+    .ty-fit {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .ty-fit ul {
+    margin: 0.6rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .ty-fit li {
+    font-size: 0.88rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .ty-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+    margin: 1.4rem 0 0;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.82rem;
+    color: var(--ink-mute);
+  }
+  .ty-meta code {
+    font-family: var(--mono);
+    font-size: 0.8em;
+    color: var(--ink-soft);
+  }
+
+  .ty-empty {
+    margin: var(--space-md) 0 0;
+    color: var(--ink-mute);
+  }
+
+  /* ---------- retired ---------- */
+  .ty-retired {
+    list-style: none;
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+    max-width: 40rem;
+  }
+  .ty-retired li {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 0.9rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+  .ty-retired code {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--brass-text);
+  }
+  .ty-retired span:not(.ty-badge) {
+    flex: 1;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ty-chips button,
+    .ty-toggle {
+      transition: none;
+    }
+  }
+</style>

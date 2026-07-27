@@ -22,16 +22,19 @@ Restore presentations from Deckyard's portable JSON export format.
 
 A new presentation is created with all content from the JSON file.
 
-## JSON Format
+## The format
 
-Deckyard's JSON format preserves:
+The file is a deck envelope: a title, a theme, the slide-type identity manifest
+and an ordered array of slides. It carries no server ids or timestamps, so it
+imports cleanly into any instance.
 
-- All slide content and types
-- Both language versions (NL and EN)
-- Speaker notes
-- Metadata and settings
+Field-by-field, that is the [deck format reference](/docs/reference/deck-format/).
+If your deck has images you want to travel with it, export a
+[deck package](/docs/reference/deck-bundle/) instead - the JSON on its own still
+points at images on the instance it came from.
 
 ## Related
 
 - [Export to JSON](/docs/export/)
+- [Deck format reference](/docs/reference/deck-format/)
 - [Version History](/docs/collaboration/versions/)

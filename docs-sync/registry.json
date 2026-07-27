@@ -4,6 +4,47 @@
   "note": "Hand-maintained. See README.md. Bootstrapped by seed-registry.mjs; run check-staleness.mjs --update to set baseline hashes.",
   "artifacts": [
     {
+      "id": "data-deck-format-constants",
+      "type": "doc",
+      "path": "src/data/deck-format.json",
+      "docPages": [
+        "src/pages/[...locale]/spec/index.astro",
+        "src/pages/[...locale]/spec/deck-format.astro",
+        "src/pages/[...locale]/spec/schemas.astro",
+        "docs/reference/deck-format.md",
+        "docs/reference/deck-bundle.md",
+        "docs/reference/schemas.md"
+      ],
+      "sources": [
+        "shared/slide-types/deck.js",
+        "shared/slide-types/json-schema.js",
+        "shared/slide-types/schema-version.js",
+        "server/export/deck-bundle.js"
+      ],
+      "sourceHash": "6e8840fd817f4c88",
+      "lang": "en"
+    },
+    {
+      "id": "data-slide-type-registry",
+      "type": "doc",
+      "path": "src/data/slide-types.json",
+      "docPages": [
+        "src/pages/[...locale]/spec/slide-types.astro",
+        "docs/slide-types/index.md",
+        "README.md",
+        "docs/reference/slide-types.md"
+      ],
+      "sources": [
+        "shared/slide-types/registry.js",
+        "shared/slide-types/types/",
+        "client/views/editor/slide-type-schematics.js",
+        "client/views/editor/slide-type-picker/data.js",
+        "server/utils/ai/slide-catalog/"
+      ],
+      "sourceHash": "25911338fd5d7bcc",
+      "lang": "en"
+    },
+    {
       "id": "doc-admin",
       "type": "doc",
       "docPages": [
@@ -685,6 +726,26 @@
       "recipe": null
     },
     {
+      "id": "shot-deck-settings",
+      "type": "screenshot",
+      "path": "public/images/screenshots/deck-settings.png",
+      "docPages": [
+        "docs/editing/index.md"
+      ],
+      "sources": [
+        "client/views/editor/inspector-panes.js",
+        "client/views/editor/inspector-resize.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "client/views/editor/editor-controller.js",
+        "client/views/editor/slide-list.js"
+      ],
+      "sourceHash": "d966388962f02eec",
+      "lang": "en",
+      "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
       "id": "shot-deck-settings-dialog",
       "type": "screenshot",
       "path": "public/images/screenshots/deck-settings-dialog.png",
@@ -736,46 +797,6 @@
       "recipe": null
     },
     {
-      "id": "shot-deck-settings",
-      "type": "screenshot",
-      "path": "public/images/screenshots/deck-settings.png",
-      "docPages": [
-        "docs/editing/index.md"
-      ],
-      "sources": [
-        "client/views/editor/inspector-panes.js",
-        "client/views/editor/inspector-resize.js",
-        "client/views/editor/editor-form/",
-        "client/views/editor/editor-form.js",
-        "client/views/editor/editor-controller.js",
-        "client/views/editor/slide-list.js"
-      ],
-      "sourceHash": "d966388962f02eec",
-      "lang": "en",
-      "capturedAt": "2026-01-30",
-      "recipe": null
-    },
-    {
-      "id": "shot-editor-full-context",
-      "type": "screenshot",
-      "path": "public/images/screenshots/editor-full-context.png",
-      "docPages": [
-        "docs/editing/preview.md"
-      ],
-      "sources": [
-        "client/views/editor/inspector-panes.js",
-        "client/views/editor/inspector-resize.js",
-        "client/views/editor/editor-form/",
-        "client/views/editor/editor-form.js",
-        "client/views/editor/editor-controller.js",
-        "client/views/editor/slide-list.js"
-      ],
-      "sourceHash": "d966388962f02eec",
-      "lang": "en",
-      "capturedAt": "2026-07-23",
-      "recipe": null
-    },
-    {
       "id": "shot-editor-full",
       "type": "screenshot",
       "path": "public/images/screenshots/editor-full.png",
@@ -798,6 +819,26 @@
         "module": "../deckyard/capture/recipes/editor-full.js",
         "hash": "575372a2227df504"
       }
+    },
+    {
+      "id": "shot-editor-full-context",
+      "type": "screenshot",
+      "path": "public/images/screenshots/editor-full-context.png",
+      "docPages": [
+        "docs/editing/preview.md"
+      ],
+      "sources": [
+        "client/views/editor/inspector-panes.js",
+        "client/views/editor/inspector-resize.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "client/views/editor/editor-controller.js",
+        "client/views/editor/slide-list.js"
+      ],
+      "sourceHash": "d966388962f02eec",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
+      "recipe": null
     },
     {
       "id": "shot-editor-overview",
@@ -1084,11 +1125,12 @@
       "recipe": null
     },
     {
-      "id": "shot-integrations-webhooks-rss",
+      "id": "shot-integrations-webhooks",
       "type": "screenshot",
-      "path": "public/images/screenshots/integrations-webhooks-rss.png",
+      "path": "public/images/screenshots/integrations-webhooks.png",
       "docPages": [
-        "docs/publishing/rss-feeds.md"
+        "docs/publishing/rss-feeds.md",
+        "docs/integrations/webhooks.md"
       ],
       "sources": [
         "server/routes/api/publish.js",
@@ -1102,12 +1144,11 @@
       "recipe": null
     },
     {
-      "id": "shot-integrations-webhooks",
+      "id": "shot-integrations-webhooks-rss",
       "type": "screenshot",
-      "path": "public/images/screenshots/integrations-webhooks.png",
+      "path": "public/images/screenshots/integrations-webhooks-rss.png",
       "docPages": [
-        "docs/publishing/rss-feeds.md",
-        "docs/integrations/webhooks.md"
+        "docs/publishing/rss-feeds.md"
       ],
       "sources": [
         "server/routes/api/publish.js",
@@ -1142,11 +1183,11 @@
       "recipe": null
     },
     {
-      "id": "shot-lead-capture-editor-full",
+      "id": "shot-lead-capture-editor",
       "type": "screenshot",
-      "path": "public/images/screenshots/lead-capture-editor-full.png",
+      "path": "public/images/screenshots/lead-capture-editor.png",
       "docPages": [
-        "docs/interactions/feedback.md"
+        "docs/interactions/lead-capture.md"
       ],
       "sources": [
         "client/lib/slide-runtime/",
@@ -1160,11 +1201,11 @@
       "recipe": null
     },
     {
-      "id": "shot-lead-capture-editor",
+      "id": "shot-lead-capture-editor-full",
       "type": "screenshot",
-      "path": "public/images/screenshots/lead-capture-editor.png",
+      "path": "public/images/screenshots/lead-capture-editor-full.png",
       "docPages": [
-        "docs/interactions/lead-capture.md"
+        "docs/interactions/feedback.md"
       ],
       "sources": [
         "client/lib/slide-runtime/",
@@ -1347,22 +1388,6 @@
       "recipe": null
     },
     {
-      "id": "shot-presenter-mode-slide",
-      "type": "screenshot",
-      "path": "public/images/screenshots/presenter-mode-slide.png",
-      "docPages": [
-        "docs/presenter/highlighter.md"
-      ],
-      "sources": [
-        "client/views/presenter/",
-        "server/routes/api/present-sessions.js"
-      ],
-      "sourceHash": "0968f4c546ecc0f6",
-      "lang": "en",
-      "capturedAt": "2026-07-23",
-      "recipe": null
-    },
-    {
       "id": "shot-presenter-mode",
       "type": "screenshot",
       "path": "public/images/screenshots/presenter-mode.png",
@@ -1376,6 +1401,22 @@
       "sourceHash": "0968f4c546ecc0f6",
       "lang": "en",
       "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-presenter-mode-slide",
+      "type": "screenshot",
+      "path": "public/images/screenshots/presenter-mode-slide.png",
+      "docPages": [
+        "docs/presenter/highlighter.md"
+      ],
+      "sources": [
+        "client/views/presenter/",
+        "server/routes/api/present-sessions.js"
+      ],
+      "sourceHash": "0968f4c546ecc0f6",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
       "recipe": null
     },
     {
@@ -1577,25 +1618,6 @@
       "recipe": null
     },
     {
-      "id": "shot-slide-library-overview",
-      "type": "screenshot",
-      "path": "public/images/screenshots/slide-library-overview.png",
-      "docPages": [
-        "docs/libraries/index.md"
-      ],
-      "sources": [
-        "client/lib/slide-library/",
-        "client/lib/slide-collections/",
-        "client/views/editor/image-library/",
-        "server/routes/api/slide-library.js",
-        "server/routes/api/image-library.js"
-      ],
-      "sourceHash": "3a1b1f31e9675087",
-      "lang": "en",
-      "capturedAt": "2026-07-23",
-      "recipe": null
-    },
-    {
       "id": "shot-slide-library",
       "type": "screenshot",
       "path": "public/images/screenshots/slide-library.png",
@@ -1612,6 +1634,25 @@
       "sourceHash": "3a1b1f31e9675087",
       "lang": "en",
       "capturedAt": "2026-01-30",
+      "recipe": null
+    },
+    {
+      "id": "shot-slide-library-overview",
+      "type": "screenshot",
+      "path": "public/images/screenshots/slide-library-overview.png",
+      "docPages": [
+        "docs/libraries/index.md"
+      ],
+      "sources": [
+        "client/lib/slide-library/",
+        "client/lib/slide-collections/",
+        "client/views/editor/image-library/",
+        "server/routes/api/slide-library.js",
+        "server/routes/api/image-library.js"
+      ],
+      "sourceHash": "3a1b1f31e9675087",
+      "lang": "en",
+      "capturedAt": "2026-07-23",
       "recipe": null
     },
     {
@@ -1915,6 +1956,42 @@
       "lang": "en",
       "capturedAt": "2026-07-23",
       "recipe": null
+    },
+    {
+      "id": "spec-deck-bundle",
+      "type": "doc",
+      "docPages": [
+        "src/i18n/locales/en/spec.ts",
+        "src/i18n/locales/nl/spec.ts",
+        "docs/reference/deck-bundle.md"
+      ],
+      "sources": [
+        "docs/reference/deck-bundle-format.md",
+        "server/export/deck-bundle.js",
+        "shared/slide-types/deck-assets.js",
+        "server/routes/api/presentations/import-deck.js"
+      ],
+      "sourceHash": "d079f77a2836d913",
+      "lang": "en"
+    },
+    {
+      "id": "spec-deck-format",
+      "type": "doc",
+      "docPages": [
+        "src/i18n/locales/en/spec.ts",
+        "src/i18n/locales/nl/spec.ts",
+        "src/lib/spec.ts",
+        "docs/reference/deck-format.md"
+      ],
+      "sources": [
+        "docs/reference/deck-format.md",
+        "shared/slide-types/deck.js",
+        "shared/slide-types/deck-assets.js",
+        "shared/slide-types/json-schema.js",
+        "server/routes/public-api/v1/index.js"
+      ],
+      "sourceHash": "4928338286df5b9f",
+      "lang": "en"
     }
   ]
 }

@@ -1,0 +1,28 @@
+---
+// One icon from the spec set. Decoration in the strict sense: every icon here
+// sits beside a heading that already says the same thing, so it is hidden from
+// assistive technology rather than given a label nobody asked for.
+import { SPEC_ICONS, type SpecIconName } from '@/components/spec/icons';
+
+interface Props {
+  name: SpecIconName;
+  /** Rendered size in px. The paths are drawn on a 24x24 box. */
+  size?: number;
+}
+
+const { name, size = 20 } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 24 24"
+  width={size}
+  height={size}
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.6"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+  set:html={SPEC_ICONS[name]}
+/>

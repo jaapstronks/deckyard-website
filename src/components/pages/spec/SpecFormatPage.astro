@@ -1,0 +1,133 @@
+---
+// /spec/deck-format/ - what the envelope is and what it guarantees.
+//
+// The example JSON comes from lib/spec.ts, not from the locale files: the format
+// is the same in every language, and a JSON example duplicated per locale is a
+// JSON example that will eventually disagree with itself. The locale carries the
+// sentences.
+//
+// The field-by-field tables are deliberately NOT here. They answer "what does
+// field X do", which is a search, and only /docs/ is indexed by the site search.
+// The code blocks stay: "we have a good format, see the docs" is a weaker claim
+// than showing the envelope.
+import SpecShell from '@/components/spec/SpecShell.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import CodeBlock from '@/components/spec/CodeBlock.astro';
+import SpecReference from '@/components/spec/SpecReference.astro';
+import { ui, type Lang } from '@/i18n';
+import {
+  withSpec,
+  EXAMPLE_ENVELOPE,
+  EXAMPLE_SLIDE,
+  EXAMPLE_ROUNDTRIP,
+  SCHEMA_BASE,
+} from '@/lib/spec';
+import { inlineCode } from '@/lib/inline';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].spec.format;
+const shared = ui[lang].spec.shared;
+
+const prose = (text: string) => inlineCode(withSpec(text));
+---
+
+<SpecShell
+  lang={lang}
+  page="deck-format"
+  title={t.metaTitle}
+  description={t.metaDescription}
+  heroKicker={t.heroKicker}
+  heroTitle={t.heroTitle}
+  heroIntro={t.heroIntro}
+>
+  <!-- ============ the envelope ============ -->
+  <Section>
+    <div class="spec-prose" data-reveal>
+      {t.introBody.map((p) => <p set:html={prose(p)} />)}
+      <h2>{t.envelopeTitle}</h2>
+      {t.envelopeBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+
+    <CodeBlock code={EXAMPLE_ENVELOPE} caption={shared.sourceNote} />
+
+    <p class="spec-note" set:html={prose(t.leniency)} />
+    <SpecReference lang={lang} href="/docs/reference/deck-format/" note={t.envelopeRefNote} />
+  </Section>
+
+  <!-- ============ the identity manifest ============ -->
+  <Section variant="tint">
+    <div class="spec-prose" data-reveal>
+      <h2>{t.manifestTitle}</h2>
+      {t.manifestBody.map((p) => <p set:html={prose(p)} />)}
+
+      <h2>{t.slidesTitle}</h2>
+      {t.slidesBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+    <CodeBlock code={EXAMPLE_SLIDE} />
+  </Section>
+
+  <!-- ============ content schemas + assets ============ -->
+  <Section>
+    <div class="spec-prose" data-reveal>
+      <h2>{t.schemaTitle}</h2>
+      {t.schemaBody.map((p) => <p set:html={prose(p)} />)}
+      <p><code>{SCHEMA_BASE}/slide-types/&lt;type&gt;.schema.json</code></p>
+
+      <h2>{t.assetsTitle}</h2>
+      {t.assetsBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+  </Section>
+
+  <!-- ============ round-trip + degradation ============ -->
+  <Section variant="tint">
+    <SectionHead title={t.roundTripTitle} />
+    <div class="spec-prose" data-reveal>
+      {t.roundTripBody.map((p) => <p set:html={prose(p)} />)}
+      <p set:html={prose(t.degradeLead)} />
+    </div>
+    <dl class="spec-defs">
+      {
+        t.degrade.map((row) => (
+          <div>
+            <dt>{withSpec(row.term)}</dt>
+            <dd set:html={prose(row.def)} />
+          </div>
+        ))
+      }
+    </dl>
+  </Section>
+
+  <!-- ============ versioning ============ -->
+  <Section>
+    <div class="spec-prose" data-reveal>
+      <h2>{t.versioningTitle}</h2>
+      {t.versioningBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+  </Section>
+
+  <!-- ============ the API surface ============ -->
+  <Section variant="tint">
+    <SectionHead title={t.apiTitle} lead={t.apiLead} />
+    <div class="spec-prose" data-reveal>
+      {t.apiBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+    <CodeBlock code={EXAMPLE_ROUNDTRIP} label="curl" />
+    <SpecReference lang={lang} href="/docs/reference/deck-format/" note={t.apiRefNote} />
+  </Section>
+</SpecShell>
+
+<style>
+  .spec-note {
+    max-width: var(--container-text);
+    margin: var(--space-md) 0 0;
+    padding-left: 1.2rem;
+    border-left: 3px solid var(--brass);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+</style>

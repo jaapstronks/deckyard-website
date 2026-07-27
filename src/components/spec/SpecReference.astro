@@ -1,0 +1,43 @@
+---
+// The hand-off from the spec to the documentation.
+//
+// /spec/ argues that the format is worth building on; it is read once, start to
+// finish, by somebody deciding. The exhaustive field tables answer a different
+// question ("what does field X do") which is a search, not a read - and only the
+// docs are indexed by the site's search. So the tables live there and each
+// section here ends in one sentence and a door.
+//
+// The URL is a prop rather than a copy string: a route is structure, and a
+// translator should not be able to change where a link goes.
+import { ui, type Lang } from '@/i18n';
+
+interface Props {
+  lang: Lang;
+  /** Absolute docs path. Docs are English-only, so it is not localized. */
+  href: string;
+  /** The one sentence that replaces the table. */
+  note: string;
+}
+
+const { lang, href, note } = Astro.props;
+const label = ui[lang].spec.shared.referenceLabel;
+---
+
+<p class="spec-ref" data-reveal>
+  {note}{' '}
+  <a href={href}>{label}<span aria-hidden="true"> →</span></a>
+</p>
+
+<style>
+  .spec-ref {
+    max-width: var(--container-text);
+    margin: var(--space-md) 0 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  .spec-ref a {
+    font-variation-settings: 'wght' 600;
+    white-space: nowrap;
+  }
+</style>

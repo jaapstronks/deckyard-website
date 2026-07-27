@@ -1,0 +1,29 @@
+---
+// A literal block: JSON, an archive listing, a schema. Not highlighted, because
+// what these show is shape, and colouring the shape in adds nothing to it.
+//
+// The <pre> is focusable so a keyboard reader can scroll a block that overflows
+// its column - a scroll container that only a mouse can reach is a scroll
+// container half the readers cannot use.
+import { withSpec } from '@/lib/spec';
+
+interface Props {
+  code: string;
+  caption?: string;
+  /** Names the block for a screen reader when it is scrollable. */
+  label?: string;
+}
+
+const { code, caption, label } = Astro.props;
+// A region has to be named to be worth announcing; an unnamed one is just noise
+// in the landmark list, so the role only appears when there is a name for it.
+const name = label ?? caption;
+---
+
+<figure class="spec-code">
+  <pre
+    tabindex="0"
+    role={name ? 'region' : undefined}
+    aria-label={name ? withSpec(name) : undefined}><code>{withSpec(code)}</code></pre>
+  {caption && <figcaption>{withSpec(caption)}</figcaption>}
+</figure>

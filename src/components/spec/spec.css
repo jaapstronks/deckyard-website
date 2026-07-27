@@ -1,0 +1,227 @@
+/* Chrome shared by the pages under /spec/.
+ *
+ * Astro can only scope a style block to its own template, so anything two of
+ * these components both paint has to live in a plain co-located file - the same
+ * arrangement components/marketing/anatomy/anatomy.css uses. Everything owned by
+ * exactly one component stays in that component's own <style>.
+ *
+ * Unlayered, like every component style on the site, so it outranks the global
+ * layers without needing a specificity fight.
+ */
+
+/* ---------- prose ---------- */
+
+.spec-prose {
+  max-width: var(--container-text);
+}
+.spec-prose > h2 {
+  font-size: var(--step-3);
+  margin: 0 0 0.7rem;
+}
+.spec-prose > h3 {
+  font-size: 1.2rem;
+  margin: 2rem 0 0.6rem;
+}
+.spec-prose p {
+  margin: 0 0 1.1em;
+  color: var(--ink-soft);
+}
+.spec-prose p:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- inline code, in prose and in tables ---------- */
+
+.spec-prose code,
+.spec-table code,
+.spec-defs code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: var(--paper-warm);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+/* ---------- code blocks ---------- */
+
+.spec-code {
+  margin: 1.6rem 0 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--green-deep);
+  overflow: hidden;
+}
+.spec-code pre {
+  margin: 0;
+  padding: 1.1rem 1.3rem;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: #e8e4d8;
+  tab-size: 2;
+}
+.spec-code figcaption {
+  padding: 0.6rem 1.3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--mono);
+  font-size: var(--step--3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(232, 228, 216, 0.62);
+}
+/* The block paints its own dark plate inside a light section, so it owes the
+   focus ring a colour that survives on it - the same repair .section-dark does
+   for everything it contains. */
+.spec-code {
+  --focus-ring: var(--brass-bright);
+}
+
+/* ---------- tables ---------- */
+
+.spec-tablewrap {
+  margin: 1.6rem 0 0;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--card);
+}
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 34rem;
+}
+.spec-table th,
+.spec-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.75rem 1.05rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+.spec-table thead th {
+  font-family: var(--mono);
+  font-size: var(--step--3);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  background: var(--paper-warm);
+}
+.spec-table tbody th {
+  font-family: var(--mono);
+  font-weight: 400;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.spec-table tbody tr:last-child th,
+.spec-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ---------- definition rows ---------- */
+
+.spec-defs {
+  margin: 1.6rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+.spec-defs > div {
+  display: grid;
+  gap: 0.2rem 1.4rem;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid var(--line);
+}
+@media (min-width: 720px) {
+  .spec-defs > div {
+    grid-template-columns: 13rem 1fr;
+  }
+}
+.spec-defs dt {
+  font-family: var(--body);
+  font-weight: 620;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+.spec-defs dd {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ---------- the section's own page list ---------- */
+
+.spec-more {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1.8rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+@media (min-width: 760px) {
+  .spec-more {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.spec-more a {
+  display: block;
+  height: 100%;
+  padding: 1.1rem 1.3rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--card);
+  text-decoration: none;
+  transition:
+    border-color var(--dur-micro) ease,
+    transform var(--dur-micro) var(--ease-out-quint);
+}
+.spec-more a:hover {
+  border-color: var(--green-bright);
+  transform: translateY(-2px);
+}
+.spec-more strong {
+  display: block;
+  font-family: var(--display);
+  font-variation-settings: 'wght' 620;
+  font-size: 1.05rem;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.spec-more span {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--ink-mute);
+}
+@media (prefers-reduced-motion: reduce) {
+  .spec-more a {
+    transition: none;
+  }
+  .spec-more a:hover {
+    transform: none;
+  }
+}
+
+/* A dark section flips the surface tokens; these three read the raw paper
+   colours, so they need pointing at the dark equivalents rather than being
+   overridden rule by rule. */
+.section-dark .spec-more a {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.section-dark .spec-more a:hover {
+  border-color: var(--brass-soft);
+}
+.section-dark .spec-more strong {
+  color: #fff;
+}
+.section-dark .spec-more span {
+  color: rgba(242, 239, 230, 0.7);
+}

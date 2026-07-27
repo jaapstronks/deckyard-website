@@ -150,13 +150,13 @@
   /* Outlined variant, used on dark sections next to a primary. */
   .btn-ghost {
     background: transparent;
-    color: var(--brass-soft);
-    border: 1.5px solid var(--brass-soft);
+    color: var(--btn-ghost-fg);
+    border: 1.5px solid var(--btn-ghost-border);
     box-shadow: none;
   }
   .btn-ghost:hover {
-    background: var(--brass-soft);
-    color: var(--green-deep);
+    background: var(--btn-ghost-bg-hover);
+    color: var(--btn-ghost-fg-hover);
     translate: 0 -2px;
   }
   .btn-ghost:active {
@@ -199,6 +199,14 @@
     --btn-primary-bg: var(--brass-bright);
     --btn-primary-fg: var(--green-deep);
     --btn-primary-bg-hover: var(--brass-soft);
+
+    /* Brass goes back to being a fill here: --brass-soft is 9.8:1 on this
+       green, which is what the ghost button was drawn against in the first
+       place. The dark CTA band looks exactly as it did. */
+    --btn-ghost-fg: var(--brass-soft);
+    --btn-ghost-border: var(--brass-soft);
+    --btn-ghost-bg-hover: var(--brass-soft);
+    --btn-ghost-fg-hover: var(--green-deep);
 
     --field-bg: rgba(255, 255, 255, 0.08);
     --field-fg: #fff;
