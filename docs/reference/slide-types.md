@@ -25,7 +25,7 @@ for, see [Slide Types](/docs/slide-types/).
 - Every type also accepts the [global fields](#fields-every-type-carries) below.
 
 Each type's JSON Schema is served at
-`https://deckyard.app/schema/v3/slide-types/<type>.schema.json` — see
+`https://deckyard.eu/schema/v3/slide-types/<type>.schema.json` — see
 [JSON Schemas](/docs/reference/schemas/) for how to fetch it.
 
 ## Fields every type carries
@@ -250,6 +250,7 @@ An embedded video.
 | `source` | Video URL or Bunny ID (YouTube/Vimeo URL, Bunny embed URL, or Bunny video UUID) | `string` | Yes | 400 | — |
 | `background` | Background | `enum` | No | — | `lime`, `mist` |
 | `autoplay` | Autoplay | `enum` | No | — | `off`, `on` |
+| `watchUrl` | Watch link for the PDF export | `string` | No | 400 | — |
 | `bunnyLibraryId` | Bunny library ID | `string` | No | 20 | — |
 
 ### Image blocks — `team-cards-slide`
@@ -791,6 +792,7 @@ A data table.
 | `colCount` | Columns | `enum` | No | — | `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10` |
 | `rows` | Rows | `items` | No | — | — |
 | `tableStyle` | Table style | `enum` | No | — | `plain`, `panel`, `soft` |
+| `cornerCell` | Top-left cell | `enum` | No | — | `label`, `header` |
 | `background` | Background | `enum` | No | — | `lime`, `mist` |
 
 Each item in `rows`:

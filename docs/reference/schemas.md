@@ -39,7 +39,7 @@ actually talking to rather than from a copy.
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://deckyard.app/schema/v3/slide-types/quote-slide.schema.json",
+  "$id": "https://deckyard.eu/schema/v3/slide-types/quote-slide.schema.json",
   "title": "quote-slide slide content",
   "type": "object",
   "properties": {
@@ -58,8 +58,8 @@ actually talking to rather than from a copy.
 Schemas are versioned by their `$id`, which carries the major version in its
 path:
 
-- Per type: <!--gen:schema-url-type-->`https://deckyard.app/schema/v3/slide-types/<type>.schema.json`<!--/gen:schema-url-type-->
-- Whole deck: <!--gen:schema-url-deck-->`https://deckyard.app/schema/v3/deck.schema.json`<!--/gen:schema-url-deck-->
+- Per type: <!--gen:schema-url-type-->`https://deckyard.eu/schema/v3/slide-types/<type>.schema.json`<!--/gen:schema-url-type-->
+- Whole deck: <!--gen:schema-url-deck-->`https://deckyard.eu/schema/v3/deck.schema.json`<!--/gen:schema-url-deck-->
 
 **Two version numbers, do not conflate them.** The version in the `$id` is the
 **content-shape** version, currently

@@ -4,6 +4,6 @@
   "envelopeVersion": 1,
   "mime": "application/vnd.deckyard.deck",
   "bundleVersion": 1,
-  "schemaBaseUri": "https://deckyard.app/schema",
+  "schemaBaseUri": "https://deckyard.eu/schema",
   "schemaVersion": 3
 }

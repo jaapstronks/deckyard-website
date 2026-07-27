@@ -1,0 +1,940 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deckyard.eu/schema/v3/slide-types/content-columns-slide.schema.json",
+  "title": "content-columns-slide slide content",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Title"
+    },
+    "subheading": {
+      "type": "string",
+      "maxLength": 200,
+      "title": "Subheading"
+    },
+    "bottomSubheading": {
+      "type": "string",
+      "maxLength": 200,
+      "title": "Bottom subheading"
+    },
+    "columnCount": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        ""
+      ],
+      "title": "Number of columns"
+    },
+    "col1Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 1 title"
+    },
+    "col1Text": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 1 text"
+    },
+    "col1Image": {
+      "type": "string",
+      "title": "Column 1 image"
+    },
+    "col1ImageFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Column 1 image fit"
+    },
+    "col1ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 1 image focus X"
+    },
+    "col1ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 1 image focus Y"
+    },
+    "col1Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Column 1 image alt text"
+    },
+    "col1BlockCount": {
+      "type": "string",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        ""
+      ],
+      "title": "Column 1 text blocks"
+    },
+    "col1Block1Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 1 block 1 title"
+    },
+    "col1Block1Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 1 block 1 body"
+    },
+    "col1Block2Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 1 block 2 title"
+    },
+    "col1Block2Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 1 block 2 body"
+    },
+    "col1Block3Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 1 block 3 title"
+    },
+    "col1Block3Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 1 block 3 body"
+    },
+    "col1Block4Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 1 block 4 title"
+    },
+    "col1Block4Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 1 block 4 body"
+    },
+    "col1Block5Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 1 block 5 title"
+    },
+    "col1Block5Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 1 block 5 body"
+    },
+    "col2Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 2 title"
+    },
+    "col2Text": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 2 text"
+    },
+    "col2Image": {
+      "type": "string",
+      "title": "Column 2 image"
+    },
+    "col2ImageFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Column 2 image fit"
+    },
+    "col2ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 2 image focus X"
+    },
+    "col2ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 2 image focus Y"
+    },
+    "col2Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Column 2 image alt text"
+    },
+    "col2BlockCount": {
+      "type": "string",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        ""
+      ],
+      "title": "Column 2 text blocks"
+    },
+    "col2Block1Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 2 block 1 title"
+    },
+    "col2Block1Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 2 block 1 body"
+    },
+    "col2Block2Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 2 block 2 title"
+    },
+    "col2Block2Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 2 block 2 body"
+    },
+    "col2Block3Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 2 block 3 title"
+    },
+    "col2Block3Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 2 block 3 body"
+    },
+    "col2Block4Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 2 block 4 title"
+    },
+    "col2Block4Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 2 block 4 body"
+    },
+    "col2Block5Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 2 block 5 title"
+    },
+    "col2Block5Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 2 block 5 body"
+    },
+    "col3Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 3 title"
+    },
+    "col3Text": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 3 text"
+    },
+    "col3Image": {
+      "type": "string",
+      "title": "Column 3 image"
+    },
+    "col3ImageFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Column 3 image fit"
+    },
+    "col3ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 3 image focus X"
+    },
+    "col3ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 3 image focus Y"
+    },
+    "col3Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Column 3 image alt text"
+    },
+    "col3BlockCount": {
+      "type": "string",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        ""
+      ],
+      "title": "Column 3 text blocks"
+    },
+    "col3Block1Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 3 block 1 title"
+    },
+    "col3Block1Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 3 block 1 body"
+    },
+    "col3Block2Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 3 block 2 title"
+    },
+    "col3Block2Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 3 block 2 body"
+    },
+    "col3Block3Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 3 block 3 title"
+    },
+    "col3Block3Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 3 block 3 body"
+    },
+    "col3Block4Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 3 block 4 title"
+    },
+    "col3Block4Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 3 block 4 body"
+    },
+    "col3Block5Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 3 block 5 title"
+    },
+    "col3Block5Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 3 block 5 body"
+    },
+    "col4Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 4 title"
+    },
+    "col4Text": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 4 text"
+    },
+    "col4Image": {
+      "type": "string",
+      "title": "Column 4 image"
+    },
+    "col4ImageFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Column 4 image fit"
+    },
+    "col4ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 4 image focus X"
+    },
+    "col4ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 4 image focus Y"
+    },
+    "col4Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Column 4 image alt text"
+    },
+    "col4BlockCount": {
+      "type": "string",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        ""
+      ],
+      "title": "Column 4 text blocks"
+    },
+    "col4Block1Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 4 block 1 title"
+    },
+    "col4Block1Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 4 block 1 body"
+    },
+    "col4Block2Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 4 block 2 title"
+    },
+    "col4Block2Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 4 block 2 body"
+    },
+    "col4Block3Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 4 block 3 title"
+    },
+    "col4Block3Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 4 block 3 body"
+    },
+    "col4Block4Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 4 block 4 title"
+    },
+    "col4Block4Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 4 block 4 body"
+    },
+    "col4Block5Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 4 block 5 title"
+    },
+    "col4Block5Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 4 block 5 body"
+    },
+    "col5Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 5 title"
+    },
+    "col5Text": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 5 text"
+    },
+    "col5Image": {
+      "type": "string",
+      "title": "Column 5 image"
+    },
+    "col5ImageFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Column 5 image fit"
+    },
+    "col5ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 5 image focus X"
+    },
+    "col5ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 5 image focus Y"
+    },
+    "col5Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Column 5 image alt text"
+    },
+    "col5BlockCount": {
+      "type": "string",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        ""
+      ],
+      "title": "Column 5 text blocks"
+    },
+    "col5Block1Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 5 block 1 title"
+    },
+    "col5Block1Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 5 block 1 body"
+    },
+    "col5Block2Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 5 block 2 title"
+    },
+    "col5Block2Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 5 block 2 body"
+    },
+    "col5Block3Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 5 block 3 title"
+    },
+    "col5Block3Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 5 block 3 body"
+    },
+    "col5Block4Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 5 block 4 title"
+    },
+    "col5Block4Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 5 block 4 body"
+    },
+    "col5Block5Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 5 block 5 title"
+    },
+    "col5Block5Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 5 block 5 body"
+    },
+    "col6Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 6 title"
+    },
+    "col6Text": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 6 text"
+    },
+    "col6Image": {
+      "type": "string",
+      "title": "Column 6 image"
+    },
+    "col6ImageFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Column 6 image fit"
+    },
+    "col6ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 6 image focus X"
+    },
+    "col6ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 6 image focus Y"
+    },
+    "col6Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Column 6 image alt text"
+    },
+    "col6BlockCount": {
+      "type": "string",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        ""
+      ],
+      "title": "Column 6 text blocks"
+    },
+    "col6Block1Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 6 block 1 title"
+    },
+    "col6Block1Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 6 block 1 body"
+    },
+    "col6Block2Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 6 block 2 title"
+    },
+    "col6Block2Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 6 block 2 body"
+    },
+    "col6Block3Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 6 block 3 title"
+    },
+    "col6Block3Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 6 block 3 body"
+    },
+    "col6Block4Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 6 block 4 title"
+    },
+    "col6Block4Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 6 block 4 body"
+    },
+    "col6Block5Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 6 block 5 title"
+    },
+    "col6Block5Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 6 block 5 body"
+    },
+    "col7Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 7 title"
+    },
+    "col7Text": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 7 text"
+    },
+    "col7Image": {
+      "type": "string",
+      "title": "Column 7 image"
+    },
+    "col7ImageFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Column 7 image fit"
+    },
+    "col7ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 7 image focus X"
+    },
+    "col7ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Column 7 image focus Y"
+    },
+    "col7Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Column 7 image alt text"
+    },
+    "col7BlockCount": {
+      "type": "string",
+      "enum": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        ""
+      ],
+      "title": "Column 7 text blocks"
+    },
+    "col7Block1Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 7 block 1 title"
+    },
+    "col7Block1Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 7 block 1 body"
+    },
+    "col7Block2Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 7 block 2 title"
+    },
+    "col7Block2Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 7 block 2 body"
+    },
+    "col7Block3Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 7 block 3 title"
+    },
+    "col7Block3Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 7 block 3 body"
+    },
+    "col7Block4Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 7 block 4 title"
+    },
+    "col7Block4Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 7 block 4 body"
+    },
+    "col7Block5Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Column 7 block 5 title"
+    },
+    "col7Block5Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Column 7 block 5 body"
+    },
+    "a11yTitle": {
+      "type": "string",
+      "maxLength": 140,
+      "title": "Accessibility title",
+      "description": "Optional. Screen readers announce this when the slide becomes active. Prefer a short, descriptive phrase."
+    },
+    "a11ySummary": {
+      "type": "string",
+      "maxLength": 280,
+      "title": "Accessibility summary",
+      "description": "Optional extra context for screen readers (announced after the title). Keep it brief."
+    },
+    "slideBgImage": {
+      "type": "string",
+      "title": "Background image",
+      "description": "Optional. Fills the whole slide behind the content. Large images are resized automatically; use the focus control to pick which part stays visible when cropped."
+    },
+    "slideBgFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Background fit"
+    },
+    "slideBgFocusX": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Background focus X"
+    },
+    "slideBgFocusY": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Background focus Y"
+    },
+    "slideBgOverlay": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "none",
+        "light",
+        "dark",
+        "gradient-top",
+        "gradient-bottom",
+        ""
+      ],
+      "title": "Background overlay",
+      "description": "Auto adds a subtle scrim only when the image is too busy for readable text. Gradient options darken one edge behind the text."
+    },
+    "slideBgText": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "light",
+        "dark",
+        ""
+      ],
+      "title": "Text colour",
+      "description": "Auto picks the theme text colour with the best contrast for the background image. Light/dark force it. (Legacy \"default\" is treated as the theme default.)"
+    },
+    "slideLogo": {
+      "type": "string",
+      "enum": [
+        "none",
+        "top-right",
+        ""
+      ],
+      "title": "Theme logo",
+      "description": "Show the active theme logo in a corner of this slide."
+    }
+  },
+  "additionalProperties": true
+}

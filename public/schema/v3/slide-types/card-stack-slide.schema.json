@@ -1,0 +1,230 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deckyard.eu/schema/v3/slide-types/card-stack-slide.schema.json",
+  "title": "card-stack-slide slide content",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Title"
+    },
+    "subheading": {
+      "type": "string",
+      "maxLength": 200,
+      "title": "Subheading"
+    },
+    "cardCount": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        ""
+      ],
+      "title": "Cards"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 40,
+            "title": "Title"
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 900,
+            "title": "Body"
+          }
+        },
+        "additionalProperties": true
+      },
+      "minItems": 1,
+      "maxItems": 6,
+      "title": "Cards"
+    },
+    "card1Title": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Card 1 title"
+    },
+    "card1Label": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Card 1 label"
+    },
+    "card1Body": {
+      "type": "string",
+      "maxLength": 900,
+      "title": "Card 1 body (Markdown)"
+    },
+    "card2Title": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Card 2 title"
+    },
+    "card2Label": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Card 2 label"
+    },
+    "card2Body": {
+      "type": "string",
+      "maxLength": 900,
+      "title": "Card 2 body (Markdown)"
+    },
+    "card3Title": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Card 3 title"
+    },
+    "card3Label": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Card 3 label"
+    },
+    "card3Body": {
+      "type": "string",
+      "maxLength": 900,
+      "title": "Card 3 body (Markdown)"
+    },
+    "card4Title": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Card 4 title"
+    },
+    "card4Label": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Card 4 label"
+    },
+    "card4Body": {
+      "type": "string",
+      "maxLength": 900,
+      "title": "Card 4 body (Markdown)"
+    },
+    "card5Title": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Card 5 title"
+    },
+    "card5Label": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Card 5 label"
+    },
+    "card5Body": {
+      "type": "string",
+      "maxLength": 900,
+      "title": "Card 5 body (Markdown)"
+    },
+    "card6Title": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Card 6 title"
+    },
+    "card6Label": {
+      "type": "string",
+      "maxLength": 40,
+      "title": "Card 6 label"
+    },
+    "card6Body": {
+      "type": "string",
+      "maxLength": 900,
+      "title": "Card 6 body (Markdown)"
+    },
+    "a11yTitle": {
+      "type": "string",
+      "maxLength": 140,
+      "title": "Accessibility title",
+      "description": "Optional. Screen readers announce this when the slide becomes active. Prefer a short, descriptive phrase."
+    },
+    "a11ySummary": {
+      "type": "string",
+      "maxLength": 280,
+      "title": "Accessibility summary",
+      "description": "Optional extra context for screen readers (announced after the title). Keep it brief."
+    },
+    "slideBgImage": {
+      "type": "string",
+      "title": "Background image",
+      "description": "Optional. Fills the whole slide behind the content. Large images are resized automatically; use the focus control to pick which part stays visible when cropped."
+    },
+    "slideBgFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Background fit"
+    },
+    "slideBgFocusX": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Background focus X"
+    },
+    "slideBgFocusY": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Background focus Y"
+    },
+    "slideBgOverlay": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "none",
+        "light",
+        "dark",
+        "gradient-top",
+        "gradient-bottom",
+        ""
+      ],
+      "title": "Background overlay",
+      "description": "Auto adds a subtle scrim only when the image is too busy for readable text. Gradient options darken one edge behind the text."
+    },
+    "slideBgText": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "light",
+        "dark",
+        ""
+      ],
+      "title": "Text colour",
+      "description": "Auto picks the theme text colour with the best contrast for the background image. Light/dark force it. (Legacy \"default\" is treated as the theme default.)"
+    },
+    "slideLogo": {
+      "type": "string",
+      "enum": [
+        "none",
+        "top-right",
+        ""
+      ],
+      "title": "Theme logo",
+      "description": "Show the active theme logo in a corner of this slide."
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "title"
+  ]
+}

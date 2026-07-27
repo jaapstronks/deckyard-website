@@ -105,7 +105,7 @@ export const spec: SpecContent = {
       },
       {
         term: 'Implementatie',
-        def: 'De referentie-implementatie is Deckyard zelf, onder MIT. Voor het lezen of schrijven van dit formaat heb je geen toestemming, sleutel of vergoeding nodig.',
+        def: 'De referentie-implementatie is Deckyard zelf, onder MIT. De spectekst heeft een eigen licentie, CC0-1.0, zodat een tweede implementatie de formuleringen zonder te vragen in een eigen document kan overnemen. Voor het lezen of schrijven van dit formaat heb je geen toestemming, sleutel of vergoeding nodig.',
       },
       {
         term: 'Conformiteit',
@@ -281,7 +281,8 @@ export const spec: SpecContent = {
     idBody: [
       "Schema's zijn geversioneerd via hun `$id`, die de hoofdversie in het pad draagt. Er is een schema per type en een schema voor het hele deck, onderscheiden op slidetype.",
       'Let op één ding: die versie is de versie van de contentvorm ({schemaVersion}), niet de envelopversie ({version}). Het zijn twee assen, en dat is precies waarom ze uit elkaar lopen.',
-      "Het domein in de `$id` verwijst op dit moment niet naar de schema's die het noemt. Formeel hoeft een JSON Schema `$id` niet op te halen te zijn, hij is een identificatie, maar voor een formaat dat als standaard wordt aangeboden hoort dat wel. Dat is een bekend gat, geen vergissing.",
+      'Allebei zijn ze op te halen. `{schemaBase}/deck.schema.json` is het hele deck, `{schemaBase}/slide-types/<type>.schema.json` is één type, en `{schemaBase}/index.json` geeft je de lijst. Formeel hoeft een JSON Schema `$id` niet op te halen te zijn, hij is een identificatie; voor een formaat dat je aan anderen aanbiedt als standaard hoort dat toch.',
+      'Onder een gepubliceerd versiepad wordt nooit iets teruggetrokken. Een slidetype dat met pensioen gaat, houdt het schema waarmee het gepubliceerd is, want het deck van iemand anders noemt het nog steeds.',
     ],
 
     contractTitle: 'Contracten, geen poortwachters',
@@ -292,7 +293,8 @@ export const spec: SpecContent = {
 
     fetchTitle: 'Ze ophalen',
     fetchBody: [
-      "De schema-endpoints zijn open en vragen geen inloggegevens, op elke installatie en dus ook in de sandbox. Ze worden op het moment van opvragen uit de draaiende registry gegenereerd, dus een installatie met extra slidetypes serveert daar ook schema's voor. Dat is voor die installatie het juiste antwoord, en een goede reden om ze op te halen bij de installatie waar je daadwerkelijk mee praat.",
+      'Er zijn twee plekken om ze op te halen, en het verschil doet ertoe. De bestanden onder `{schemaBase}` zijn de gepubliceerde: de kern-slidetypes, op de URL die hun `$id` noemt, vast per schemaversie.',
+      "De schema-endpoints op een draaiende installatie zijn net zo open en vragen ook geen inloggegevens, ook in de sandbox, en die worden op het moment van opvragen uit de registry van die installatie gegenereerd. Een installatie met extra slidetypes serveert daar dus ook schema's voor. Dat is voor die installatie het juiste antwoord, en een goede reden om ze op te halen bij de installatie waar je daadwerkelijk mee praat.",
     ],
     fetchRefNote: 'De endpoints staan, met een `curl` per stuk, in de documentatie.',
   },

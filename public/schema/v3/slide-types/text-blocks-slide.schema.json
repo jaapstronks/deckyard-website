@@ -1,0 +1,462 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deckyard.eu/schema/v3/slide-types/text-blocks-slide.schema.json",
+  "title": "text-blocks-slide slide content",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Title"
+    },
+    "subheading": {
+      "type": "string",
+      "maxLength": 200,
+      "title": "Subheading"
+    },
+    "bottomSubheading": {
+      "type": "string",
+      "maxLength": 200,
+      "title": "Bottom subheading"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 120,
+            "title": "Row heading"
+          },
+          "color": {
+            "type": "string",
+            "enum": [
+              "yellow",
+              "black",
+              ""
+            ],
+            "title": "Color"
+          },
+          "arrow": {
+            "type": "string",
+            "enum": [
+              "none",
+              "down",
+              "up",
+              ""
+            ],
+            "title": "Arrow after row"
+          },
+          "blocks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "maxLength": 80,
+                  "title": "Title"
+                },
+                "body": {
+                  "type": "string",
+                  "maxLength": 500,
+                  "title": "Body"
+                }
+              },
+              "additionalProperties": true
+            },
+            "minItems": 1,
+            "maxItems": 6,
+            "title": "Blocks"
+          }
+        },
+        "additionalProperties": true
+      },
+      "minItems": 1,
+      "maxItems": 4,
+      "title": "Rows"
+    },
+    "row1Count": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        ""
+      ],
+      "title": "Row 1 blocks"
+    },
+    "row1Color": {
+      "type": "string",
+      "enum": [
+        "yellow",
+        "black",
+        ""
+      ],
+      "title": "Row 1 color"
+    },
+    "row1Block1Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 1 Block 1 title"
+    },
+    "row1Block1Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 1 Block 1 body"
+    },
+    "row1Block2Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 1 Block 2 title"
+    },
+    "row1Block2Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 1 Block 2 body"
+    },
+    "row1Block3Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 1 Block 3 title"
+    },
+    "row1Block3Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 1 Block 3 body"
+    },
+    "row1Block4Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 1 Block 4 title"
+    },
+    "row1Block4Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 1 Block 4 body"
+    },
+    "row1Block5Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 1 Block 5 title"
+    },
+    "row1Block5Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 1 Block 5 body"
+    },
+    "row1Block6Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 1 Block 6 title"
+    },
+    "row1Block6Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 1 Block 6 body"
+    },
+    "arrow1": {
+      "type": "string",
+      "enum": [
+        "none",
+        "down",
+        "up",
+        ""
+      ],
+      "title": "Arrow after row 1"
+    },
+    "row2Enabled": {
+      "type": "string",
+      "enum": [
+        "no",
+        "yes",
+        ""
+      ],
+      "title": "Row 2"
+    },
+    "row2Title": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Row 2 heading"
+    },
+    "row2Count": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        ""
+      ],
+      "title": "Row 2 blocks"
+    },
+    "row2Color": {
+      "type": "string",
+      "enum": [
+        "yellow",
+        "black",
+        ""
+      ],
+      "title": "Row 2 color"
+    },
+    "row2Block1Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 2 Block 1 title"
+    },
+    "row2Block1Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 2 Block 1 body"
+    },
+    "row2Block2Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 2 Block 2 title"
+    },
+    "row2Block2Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 2 Block 2 body"
+    },
+    "row2Block3Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 2 Block 3 title"
+    },
+    "row2Block3Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 2 Block 3 body"
+    },
+    "row2Block4Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 2 Block 4 title"
+    },
+    "row2Block4Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 2 Block 4 body"
+    },
+    "row2Block5Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 2 Block 5 title"
+    },
+    "row2Block5Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 2 Block 5 body"
+    },
+    "row2Block6Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 2 Block 6 title"
+    },
+    "row2Block6Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 2 Block 6 body"
+    },
+    "arrow2": {
+      "type": "string",
+      "enum": [
+        "none",
+        "down",
+        "up",
+        ""
+      ],
+      "title": "Arrow after row 2"
+    },
+    "row3Enabled": {
+      "type": "string",
+      "enum": [
+        "no",
+        "yes",
+        ""
+      ],
+      "title": "Row 3"
+    },
+    "row3Title": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Row 3 heading"
+    },
+    "row3Count": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        ""
+      ],
+      "title": "Row 3 blocks"
+    },
+    "row3Color": {
+      "type": "string",
+      "enum": [
+        "yellow",
+        "black",
+        ""
+      ],
+      "title": "Row 3 color"
+    },
+    "row3Block1Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 3 Block 1 title"
+    },
+    "row3Block1Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 3 Block 1 body"
+    },
+    "row3Block2Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 3 Block 2 title"
+    },
+    "row3Block2Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 3 Block 2 body"
+    },
+    "row3Block3Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 3 Block 3 title"
+    },
+    "row3Block3Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 3 Block 3 body"
+    },
+    "row3Block4Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 3 Block 4 title"
+    },
+    "row3Block4Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 3 Block 4 body"
+    },
+    "row3Block5Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 3 Block 5 title"
+    },
+    "row3Block5Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 3 Block 5 body"
+    },
+    "row3Block6Title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Row 3 Block 6 title"
+    },
+    "row3Block6Body": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Row 3 Block 6 body"
+    },
+    "a11yTitle": {
+      "type": "string",
+      "maxLength": 140,
+      "title": "Accessibility title",
+      "description": "Optional. Screen readers announce this when the slide becomes active. Prefer a short, descriptive phrase."
+    },
+    "a11ySummary": {
+      "type": "string",
+      "maxLength": 280,
+      "title": "Accessibility summary",
+      "description": "Optional extra context for screen readers (announced after the title). Keep it brief."
+    },
+    "slideBgImage": {
+      "type": "string",
+      "title": "Background image",
+      "description": "Optional. Fills the whole slide behind the content. Large images are resized automatically; use the focus control to pick which part stays visible when cropped."
+    },
+    "slideBgFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Background fit"
+    },
+    "slideBgFocusX": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Background focus X"
+    },
+    "slideBgFocusY": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Background focus Y"
+    },
+    "slideBgOverlay": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "none",
+        "light",
+        "dark",
+        "gradient-top",
+        "gradient-bottom",
+        ""
+      ],
+      "title": "Background overlay",
+      "description": "Auto adds a subtle scrim only when the image is too busy for readable text. Gradient options darken one edge behind the text."
+    },
+    "slideBgText": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "light",
+        "dark",
+        ""
+      ],
+      "title": "Text colour",
+      "description": "Auto picks the theme text colour with the best contrast for the background image. Light/dark force it. (Legacy \"default\" is treated as the theme default.)"
+    },
+    "slideLogo": {
+      "type": "string",
+      "enum": [
+        "none",
+        "top-right",
+        ""
+      ],
+      "title": "Theme logo",
+      "description": "Show the active theme logo in a corner of this slide."
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "title"
+  ]
+}
