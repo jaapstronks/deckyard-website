@@ -34,16 +34,18 @@ with fields: a type, a title, a list of items, a source. Not a picture of a
 list, but a list. Not a drawing that happens to look like a timeline, but a
 timeline that knows its own dates.
 
-<Figure caption="The same slide, twice. Drag the handle: on the left is what the room sees, on the right is <b>everything the file actually holds</b> - an eyebrow, a title, and an array of items with a date and a label each.">
+<Figure
+  width="mid"
+  caption="One slide, wiped. On the left it is typeset: a display face, a line of dates, a rule. On the right is <b>what the file holds</b> - keys, quoted values, and the three moments written out as what they really are, an array of three objects with the same two fields each. (An allotment association, not us. The content is somebody else's, on purpose.)"
+>
   <XraySlide
-    eyebrow="Q3 REVIEW"
-    title="Three things we shipped this quarter"
+    eyebrow="Allotment association"
+    title="How the garden year is planned"
     items={[
-      { date: 'February', label: 'Live polls' },
-      { date: 'May', label: 'Deck bundles' },
-      { date: 'July', label: 'The format, published' },
+      { date: 'March', label: 'Seed swap' },
+      { date: 'June', label: 'Open garden' },
+      { date: 'September', label: 'Harvest supper' },
     ]}
-    fields={{ eyebrow: 'eyebrow', title: 'title', items: 'items[]' }}
     leftLabel="what the room sees"
     rightLabel="what the file holds"
     sliderLabel="Wipe between the rendered slide and the record behind it"
@@ -105,25 +107,25 @@ extra work. And there is finally something to program against.
 <Figure caption="One record, four types. Nothing is re-typed between these panels: the same three items are rendered by whichever type is selected, and each one says which fields it read. <b>The content did not change. Only the type did.</b>">
   <TypeSwap
     id="typeswap-en"
-    title="Three things we shipped this quarter"
+    title="How the garden year is planned"
     items={[
       {
-        date: 'February',
-        label: 'Live polls',
-        detail: 'Ask the room a question, see the answer on the slide.',
-        value: 12,
+        date: 'March',
+        label: 'Seed swap',
+        detail: 'Everyone brings what they saved and takes what they need.',
+        value: 40,
       },
       {
-        date: 'May',
-        label: 'Deck bundles',
-        detail: 'The whole deck in one file, fonts and images included.',
-        value: 34,
+        date: 'June',
+        label: 'Open garden',
+        detail: 'The gates stay open all weekend, tea in the shed.',
+        value: 120,
       },
       {
-        date: 'July',
-        label: 'The format, published',
-        detail: 'Schemas, a MIME type, and permission to build on it.',
-        value: 21,
+        date: 'September',
+        label: 'Harvest supper',
+        detail: 'One long table, everything on it grown inside the fence.',
+        value: 85,
       },
     ]}
     types={[
@@ -170,7 +172,7 @@ smaller and much more reliable job.
         note: 'The type decides the whole picture, not one part of it.',
       },
       {
-        text: '  "title": "Three things we shipped this quarter",',
+        text: '  "title": "How the garden year is planned",',
         region: 'title',
         note: 'A title, not a text box that happens to sit at the top.',
       },
@@ -180,17 +182,17 @@ smaller and much more reliable job.
         note: 'A list. The renderer decides where the dates land.',
       },
       {
-        text: '    { "date": "February", "title": "Live polls" },',
+        text: '    { "date": "March", "title": "Seed swap" },',
         region: 'items',
         note: 'A list. The renderer decides where the dates land.',
       },
       {
-        text: '    { "date": "May", "title": "Deck bundles" },',
+        text: '    { "date": "June", "title": "Open garden" },',
         region: 'items',
         note: 'A list. The renderer decides where the dates land.',
       },
       {
-        text: '    { "date": "July", "title": "The format, published" }',
+        text: '    { "date": "September", "title": "Harvest supper" }',
         region: 'items',
         note: 'A list. The renderer decides where the dates land.',
       },
@@ -198,12 +200,12 @@ smaller and much more reliable job.
       { text: '}' },
     ]}
     slide={{
-      eyebrow: 'Q3 REVIEW',
-      title: 'Three things we shipped this quarter',
+      eyebrow: 'Allotment association',
+      title: 'How the garden year is planned',
       items: [
-        { date: 'February', title: 'Live polls' },
-        { date: 'May', title: 'Deck bundles' },
-        { date: 'July', title: 'The format, published' },
+        { date: 'March', title: 'Seed swap' },
+        { date: 'June', title: 'Open garden' },
+        { date: 'September', title: 'Harvest supper' },
       ],
     }}
   />

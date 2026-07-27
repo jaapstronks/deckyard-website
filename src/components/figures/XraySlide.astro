@@ -1,24 +1,28 @@
 ---
-// The x-ray: one slide, wiped between what the audience sees and what the file
-// actually holds.
+// The x-ray: one slide, wiped between what a room sees and what the file holds.
 //
-// The trick is that there is no "before" and no "after" here. Both halves are
-// the *same* markup rendered twice, so their geometry cannot drift apart; the
-// second copy only swaps the skin and pins a field name to each region. That
-// is also the argument the figure is making - the pretty slide and the record
-// are one object, not a picture and a description of it.
+// The two halves are deliberately *not* the same drawing with two colour
+// schemes. The front is typeset - a display face, a body face, no code
+// anywhere. The back is the record: monospace, keys, quotes, braces, and the
+// items as what they actually are, an array of three of the same shape. A
+// reader who has never thought about a file format should be able to tell the
+// two apart at a glance, which is the entire job of this figure.
 //
-// Without JavaScript the handle stays where the server put it and both halves
-// are on screen, which is the whole point already; the script only moves it.
+// What keeps it one slide rather than two pictures is the geometry. Both
+// plates use the same fixed grid rows, so the eyebrow, the title and the items
+// occupy exactly the same three rectangles no matter what is typeset inside
+// them, and the wipe cuts between regions instead of through a word.
+//
+// Field names are not copy: `eyebrow`, `title`, `items`, `date` and `label`
+// are the format's, identical in every language, so they are written here
+// rather than passed in.
 import './figures.css';
 
 interface Props {
   eyebrow: string;
   title: string;
   items: { date: string; label: string }[];
-  /** Field names pinned to each region in the data half. */
-  fields: { eyebrow: string; title: string; items: string };
-  /** Corner labels, left and right of the seam. */
+  /** Corner labels, one per plate. */
   leftLabel: string;
   rightLabel: string;
   sliderLabel: string;
@@ -26,47 +30,72 @@ interface Props {
   initial?: number;
 }
 
-const {
-  eyebrow,
-  title,
-  items,
-  fields,
-  leftLabel,
-  rightLabel,
-  sliderLabel,
-  initial = 52,
-} = Astro.props;
-
-const modes = ['rendered', 'data'] as const;
+const { eyebrow, title, items, leftLabel, rightLabel, sliderLabel, initial = 40 } = Astro.props;
 ---
 
 <div class="xray" data-xray style={`--x:${initial}%`}>
+  <div class="xr-plate xr-plate--rendered">
+    <span class="xr-corner">{leftLabel}</span>
+
+    <p class="xr-eyebrow">{eyebrow}</p>
+    <p class="xr-title">{title}</p>
+    <ol class="xr-items">
+      {
+        items.map((it) => (
+          <li>
+            <span class="xr-date">{it.date}</span>
+            <span class="xr-moment">{it.label}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+
   {
-    modes.map((mode) => (
-      <div
-        class:list={['xr-plate', `xr-plate--${mode}`]}
-        aria-hidden={mode === 'data' ? 'true' : undefined}
-      >
-        <span class="xr-corner" aria-hidden="true">
-          {mode === 'rendered' ? leftLabel : rightLabel}
-        </span>
-        <p class="xr-eyebrow" data-field={fields.eyebrow}>
-          {eyebrow}
-        </p>
-        <p class="xr-title" data-field={fields.title}>
-          {title}
-        </p>
-        <ol class="xr-items" data-field={fields.items}>
-          {items.map((it) => (
-            <li>
-              <span class="xr-date">{it.date}</span>
-              <span class="xr-moment">{it.label}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
-    ))
+    /* The record repeats the copy, so it is one thing said twice to a screen
+      reader. The rendered plate is the accessible copy; the caption says what
+      the other half is. */
   }
+  <div class="xr-plate xr-plate--data" aria-hidden="true">
+    <span class="xr-corner">{rightLabel}</span>
+
+    <p class="xr-field xr-line">
+      <span class="xr-key">eyebrow:</span>
+      <span class="xr-str">"{eyebrow}"</span>
+    </p>
+    <p class="xr-field xr-line">
+      <span class="xr-key">title:</span>
+      <span class="xr-str">"{title}"</span>
+    </p>
+
+    {
+      /* Commas are drawn by CSS rather than written into the markup: a comma as
+        a sibling element picks up the whitespace around it and renders as
+        `"June" ,`. As a ::after it sits tight against what it follows. */
+    }
+    <div class="xr-field xr-array">
+      <span class="xr-punc"><span class="xr-key">items:</span> [</span>
+      <ol class="xr-cells">
+        {
+          items.map((it) => (
+            <li>
+              <span class="xr-punc">{'{'}</span>
+              <span class="xr-pairs">
+                <span class="xr-pair">
+                  <span class="xr-key">date:</span> <span class="xr-str">"{it.date}"</span>
+                </span>
+                <span class="xr-pair">
+                  <span class="xr-key">label:</span> <span class="xr-str">"{it.label}"</span>
+                </span>
+              </span>
+              <span class="xr-punc xr-brace-close">{'}'}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <span class="xr-punc xr-close">]</span>
+    </div>
+  </div>
 
   <input
     class="xr-range"
@@ -110,16 +139,19 @@ const modes = ['rendered', 'data'] as const;
     touch-action: pan-y;
   }
 
-  /* ---------- one geometry ----------
-     Both skins share every size here. Only the first plate is in flow; it is
-     what gives the figure its height, and the second is laid over it. */
+  /* ---------- one geometry, two typesettings ----------
+     Fixed rows rather than content-driven ones. That is what lets the front be
+     set in a display face and the back in monospace without the two halves
+     drifting apart: whatever goes in a row, the row is the same rectangle on
+     both plates, and the seam always falls between regions. */
   .xr-plate {
     position: relative;
     aspect-ratio: 16 / 9;
-    padding: 5.4cqi;
-    display: flex;
-    flex-direction: column;
-    font-family: var(--body);
+    padding: 7cqi 5cqi 5cqi;
+    display: grid;
+    grid-template-rows: 4cqi 1fr 21cqi;
+    gap: 3cqi;
+    overflow: hidden;
   }
   .xr-plate--data {
     position: absolute;
@@ -128,114 +160,155 @@ const modes = ['rendered', 'data'] as const;
     clip-path: inset(0 0 0 var(--x));
   }
 
+  /* ---------- front: what a room sees ----------
+     No monospace anywhere. A slide is typeset, and the point of the wipe is
+     lost if both halves look like a terminal. */
+  .xr-plate--rendered {
+    background: var(--card);
+    color: var(--ink);
+    font-family: var(--body);
+  }
   .xr-eyebrow {
     margin: 0;
-    font-family: var(--mono);
+    align-self: center;
     font-size: 1.9cqi;
-    letter-spacing: 0.14em;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
+    color: var(--green-bright);
   }
   .xr-title {
-    margin: 0.3em 0 0;
+    margin: 0;
     font-family: var(--display);
-    font-size: 5cqi;
+    font-size: 5.2cqi;
     font-variation-settings: 'wght' 620;
     font-weight: 700;
     line-height: 1.06;
     letter-spacing: -0.025em;
     text-wrap: balance;
-    /* Shared, not set on the data skin alone: the two plates have to wrap
-       identically or the wipe stops being one slide. This is also what leaves
-       room for the field tag in the corner. */
-    max-width: 76%;
+    max-width: 84%;
   }
+  /* The rail sits on the nodes' centre line and the nodes hang off the top of
+     each item, so the two are derived from the same pair of numbers rather
+     than eyeballed apart. */
   .xr-items {
     list-style: none;
     display: grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
-    gap: 2cqi;
-    margin: auto 0 0;
-    padding: 0;
+    margin: 0;
+    padding: 2.2cqi 0 0;
+    align-self: end;
+    position: relative;
+  }
+  .xr-items::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: calc(2.2cqi + 0.7cqi - 1px);
+    height: 2px;
+    background: var(--sage);
+  }
+  .xr-items li {
+    position: relative;
+    padding-right: 2.5cqi;
+  }
+  .xr-items li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1.4cqi;
+    height: 1.4cqi;
+    border-radius: 50%;
+    background: var(--green-bright);
+    box-shadow: 0 0 0 0.7cqi var(--card);
   }
   .xr-date {
     display: block;
-    font-family: var(--mono);
+    margin-top: 3.6cqi;
     font-size: 2.1cqi;
-    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: var(--green-bright);
   }
   .xr-moment {
     display: block;
-    margin-top: 0.25em;
+    margin-top: 0.3em;
     font-family: var(--display);
-    font-size: 2.1cqi;
+    font-size: 2.3cqi;
     font-variation-settings: 'wght' 600;
     font-weight: 700;
     line-height: 1.15;
   }
 
-  /* ---------- skin one: what the room sees ---------- */
-  .xr-plate--rendered {
-    background: var(--card);
-    color: var(--ink);
-  }
-  .xr-plate--rendered .xr-eyebrow {
-    color: var(--green-bright);
-  }
-  .xr-plate--rendered .xr-date {
-    color: var(--green-bright);
-  }
-  .xr-plate--rendered .xr-items {
-    position: relative;
-    padding-top: 2.6cqi;
-  }
-  .xr-plate--rendered .xr-items::before {
-    content: '';
-    position: absolute;
-    inset-inline: 0;
-    top: 2cqi;
-    height: 2px;
-    background: var(--sage);
-  }
-
-  /* ---------- skin two: what the file holds ----------
-     Same boxes, drawn as boxes. The field name is absolutely positioned so
-     naming a region cannot move it. */
+  /* ---------- back: what the file holds ----------
+     Monospace throughout, keys and quotes visible, and the items written out
+     as the array they are: three objects of the same shape, comma separated.
+     A dashed box marks each region; the fixed rows guarantee two of them can
+     never touch. */
   .xr-plate--data {
     background: var(--green-deep);
     color: #cfe0d4;
+    font-family: var(--mono);
+    font-size: 1.7cqi;
+    line-height: 1.5;
   }
-  .xr-plate--data [data-field] {
-    position: relative;
-    outline: 1px dashed rgba(219, 163, 35, 0.55);
-    outline-offset: 1.1cqi;
+  .xr-field {
+    margin: 0;
+    outline: 1px dashed rgba(219, 163, 35, 0.4);
+    outline-offset: 0.9cqi;
     border-radius: 2px;
   }
-  /* Tags hang off the right, because the left of this plate is the half the
-     wipe is usually covering: a name anchored there is invisible for most
-     positions of the handle. */
-  .xr-plate--data [data-field]::after {
-    content: attr(data-field);
-    position: absolute;
-    right: 0;
-    bottom: calc(100% + 1.4cqi);
-    font-family: var(--mono);
-    font-size: 1.6cqi;
-    letter-spacing: 0.04em;
-    text-transform: none;
-    color: var(--brass-soft);
-    white-space: nowrap;
+  .xr-plate--data .xr-field:first-of-type {
+    align-self: center;
   }
-  /* The top two regions have nothing above them to hang a tag off, so those
-     two sit on their own top line instead. */
-  .xr-plate--data .xr-eyebrow::after,
-  .xr-plate--data .xr-title::after {
-    bottom: auto;
-    top: 0;
+  .xr-line .xr-str::after {
+    content: ',';
+    color: #7f9a88;
   }
-  .xr-plate--data .xr-eyebrow,
-  .xr-plate--data .xr-date {
+  .xr-key {
     color: var(--brass-soft);
+  }
+  .xr-str {
+    color: #dceadf;
+  }
+  .xr-punc {
+    color: #7f9a88;
+  }
+
+  .xr-array {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    align-content: start;
+  }
+  .xr-cells {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 2.5cqi;
+    margin: 0.6cqi 0 0;
+    padding: 0 0 0 2ch;
+    font-size: 1.45cqi;
+  }
+  .xr-cells li {
+    display: grid;
+    align-content: start;
+  }
+  .xr-pairs {
+    display: grid;
+    padding-left: 2ch;
+  }
+  /* Every comma in this half is drawn, not written. See the note in the
+     template: a comma as its own element inherits the whitespace between
+     elements and drifts a space away from the value it belongs to. */
+  .xr-pairs .xr-pair:not(:last-child) .xr-str::after,
+  .xr-cells li:not(:last-child) .xr-brace-close::after {
+    content: ',';
+    color: #7f9a88;
+  }
+  .xr-close {
+    align-self: end;
   }
 
   /* ---------- the handle ----------
@@ -244,19 +317,19 @@ const modes = ['rendered', 'data'] as const;
      else, instead of a second copy of the same sum in a clip-path. */
   .xr-corner {
     position: absolute;
-    top: 2.2cqi;
+    top: 2.4cqi;
     font-family: var(--mono);
-    font-size: 1.6cqi;
+    font-size: 1.5cqi;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     pointer-events: none;
   }
   .xr-plate--rendered .xr-corner {
-    left: 2.6cqi;
+    left: 5cqi;
     color: var(--ink-mute);
   }
   .xr-plate--data .xr-corner {
-    right: 2.6cqi;
+    right: 5cqi;
     color: var(--brass-soft);
   }
 
@@ -306,7 +379,7 @@ const modes = ['rendered', 'data'] as const;
     background: var(--brass-bright);
     box-shadow: var(--shadow-sm);
   }
-  /* Two chevrons, so the grip says "drag me" without a label. */
+  /* Two bars, so the grip says "drag me" without a label. */
   .xr-grip::before {
     content: '';
     position: absolute;
@@ -325,8 +398,11 @@ const modes = ['rendered', 'data'] as const;
   /* Dashes, tints and a brass seam all vanish under a forced palette; the
      regions keep a border that survives it. */
   @media (forced-colors: active) {
-    .xr-plate--data [data-field] {
+    .xr-field {
       outline-color: CanvasText;
+    }
+    .xr-items li::before {
+      background: CanvasText;
     }
     .xr-seam {
       background: CanvasText;

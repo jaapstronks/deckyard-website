@@ -35,16 +35,18 @@ slide is een record met velden: een type, een titel, een lijst met items, een
 bron. Geen plaatje van een lijst, maar een lijst. Geen tekening die toevallig op
 een tijdlijn lijkt, maar een tijdlijn die zijn eigen datums kent.
 
-<Figure caption="Dezelfde slide, twee keer. Sleep de handgreep: links wat de zaal ziet, rechts <b>alles wat er werkelijk in het bestand staat</b> - een bovenregel, een titel, en een reeks items met elk een datum en een label.">
+<Figure
+  width="mid"
+  caption="Eén slide, weggeveegd. Links is hij gezet: een display-letter, een regel datums, een lijn. Rechts staat <b>wat het bestand bevat</b> - sleutels, waarden tussen aanhalingstekens, en de drie momenten uitgeschreven als wat ze werkelijk zijn: een reeks van drie objecten met elk dezelfde twee velden. (Een volkstuinvereniging, niet wij. De inhoud is met opzet van iemand anders.)"
+>
   <XraySlide
-    eyebrow="KWARTAALREVIEW"
-    title="Drie dingen die we dit kwartaal hebben opgeleverd"
+    eyebrow="Volkstuinvereniging"
+    title="Hoe het tuinjaar wordt ingedeeld"
     items={[
-      { date: 'februari', label: 'Live polls' },
-      { date: 'mei', label: 'Deck-bundels' },
-      { date: 'juli', label: 'Het formaat, gepubliceerd' },
+      { date: 'maart', label: 'Zaadruil' },
+      { date: 'juni', label: 'Open tuin' },
+      { date: 'september', label: 'Oogstmaaltijd' },
     ]}
-    fields={{ eyebrow: 'eyebrow', title: 'title', items: 'items[]' }}
     leftLabel="wat de zaal ziet"
     rightLabel="wat het bestand bevat"
     sliderLabel="Schuif tussen de gerenderde slide en het record erachter"
@@ -107,25 +109,25 @@ tegenaan te programmeren.
 <Figure caption="Eén record, vier types. Er wordt tussen deze panelen niets opnieuw ingetypt: dezelfde drie items worden gerenderd door het type dat je kiest, en elk paneel zegt welke velden het heeft gelezen. <b>De inhoud veranderde niet. Alleen het type.</b>">
   <TypeSwap
     id="typeswap-nl"
-    title="Drie dingen die we dit kwartaal hebben opgeleverd"
+    title="Hoe het tuinjaar wordt ingedeeld"
     items={[
       {
-        date: 'februari',
-        label: 'Live polls',
-        detail: 'Stel de zaal een vraag, zie het antwoord op de slide.',
-        value: 12,
+        date: 'maart',
+        label: 'Zaadruil',
+        detail: 'Iedereen brengt wat hij bewaard heeft en neemt mee wat hij nodig heeft.',
+        value: 40,
       },
       {
-        date: 'mei',
-        label: 'Deck-bundels',
-        detail: 'Het hele deck in één bestand, fonts en beeld erbij.',
-        value: 34,
+        date: 'juni',
+        label: 'Open tuin',
+        detail: 'Het hek staat het hele weekend open, thee in het schuurtje.',
+        value: 120,
       },
       {
-        date: 'juli',
-        label: 'Het formaat, gepubliceerd',
-        detail: "Schema's, een MIME-type en toestemming om erop te bouwen.",
-        value: 21,
+        date: 'september',
+        label: 'Oogstmaaltijd',
+        detail: 'Eén lange tafel, alles erop gegroeid binnen het hek.',
+        value: 85,
       },
     ]}
     types={[
@@ -173,7 +175,7 @@ betrouwbaardere opdracht.
         note: 'Het type bepaalt het hele plaatje, niet één onderdeel ervan.',
       },
       {
-        text: '  "title": "Drie dingen die we dit kwartaal hebben opgeleverd",',
+        text: '  "title": "Hoe het tuinjaar wordt ingedeeld",',
         region: 'title',
         note: 'Een titel, geen tekstvak dat toevallig bovenaan staat.',
       },
@@ -183,17 +185,17 @@ betrouwbaardere opdracht.
         note: 'Een lijst. De renderer bepaalt waar de datums landen.',
       },
       {
-        text: '    { "date": "februari", "title": "Live polls" },',
+        text: '    { "date": "maart", "title": "Zaadruil" },',
         region: 'items',
         note: 'Een lijst. De renderer bepaalt waar de datums landen.',
       },
       {
-        text: '    { "date": "mei", "title": "Deck-bundels" },',
+        text: '    { "date": "juni", "title": "Open tuin" },',
         region: 'items',
         note: 'Een lijst. De renderer bepaalt waar de datums landen.',
       },
       {
-        text: '    { "date": "juli", "title": "Het formaat, gepubliceerd" }',
+        text: '    { "date": "september", "title": "Oogstmaaltijd" }',
         region: 'items',
         note: 'Een lijst. De renderer bepaalt waar de datums landen.',
       },
@@ -205,12 +207,12 @@ betrouwbaardere opdracht.
       { text: '}' },
     ]}
     slide={{
-      eyebrow: 'KWARTAALREVIEW',
-      title: 'Drie dingen die we dit kwartaal hebben opgeleverd',
+      eyebrow: 'Volkstuinvereniging',
+      title: 'Hoe het tuinjaar wordt ingedeeld',
       items: [
-        { date: 'februari', title: 'Live polls' },
-        { date: 'mei', title: 'Deck-bundels' },
-        { date: 'juli', title: 'Het formaat, gepubliceerd' },
+        { date: 'maart', title: 'Zaadruil' },
+        { date: 'juni', title: 'Open tuin' },
+        { date: 'september', title: 'Oogstmaaltijd' },
       ],
     }}
   />

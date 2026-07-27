@@ -47,7 +47,7 @@ each one is a reader who would otherwise get nothing.
 
 | Component           | Shows                                                             |
 | ------------------- | ----------------------------------------------------------------- |
-| `Figure.astro`      | The frame: width bleed out of the reading column, plus caption    |
+| `Figure.astro`      | The frame: caption, plus `width` (`text` / `mid` / `wide`)        |
 | `XraySlide.astro`   | One slide wiped between what the room sees and what the file has  |
 | `TypeSwap.astro`    | One record rendered by four slide types, each naming what it read |
 | `ContrastLab.astro` | Title dragged over a photo, contrast measured live on both panels |

@@ -10,21 +10,28 @@ import './figures.css';
 
 interface Props {
   caption: string;
-  /** Narrow figures stay inside the reading column instead of bleeding wide. */
-  narrow?: boolean;
+  /**
+   * How far out of the 700px reading column the figure bleeds. `wide` is the
+   * default; `mid` for a figure that reads better a little smaller; `text` to
+   * stay inside the column with the prose.
+   */
+  width?: 'text' | 'mid' | 'wide';
   class?: string;
 }
 
-const { caption, narrow = false, class: className } = Astro.props;
+const { caption, width = 'wide', class: className } = Astro.props;
 ---
 
-<figure class:list={['fig', { 'fig--narrow': narrow }, className]}>
+<figure class:list={['fig', `fig--${width}`, className]}>
   <slot />
   <figcaption set:html={caption} />
 </figure>
 
 <style>
-  .fig--narrow {
+  .fig--mid {
+    --fig-w: min(820px, calc(100vw - 2 * var(--gutter)));
+  }
+  .fig--text {
     --fig-w: 100%;
     margin-inline: 0;
   }
