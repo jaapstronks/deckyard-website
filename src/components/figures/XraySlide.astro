@@ -1,0 +1,339 @@
+---
+// The x-ray: one slide, wiped between what the audience sees and what the file
+// actually holds.
+//
+// The trick is that there is no "before" and no "after" here. Both halves are
+// the *same* markup rendered twice, so their geometry cannot drift apart; the
+// second copy only swaps the skin and pins a field name to each region. That
+// is also the argument the figure is making - the pretty slide and the record
+// are one object, not a picture and a description of it.
+//
+// Without JavaScript the handle stays where the server put it and both halves
+// are on screen, which is the whole point already; the script only moves it.
+import './figures.css';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  items: { date: string; label: string }[];
+  /** Field names pinned to each region in the data half. */
+  fields: { eyebrow: string; title: string; items: string };
+  /** Corner labels, left and right of the seam. */
+  leftLabel: string;
+  rightLabel: string;
+  sliderLabel: string;
+  /** Where the seam starts, in percent. */
+  initial?: number;
+}
+
+const {
+  eyebrow,
+  title,
+  items,
+  fields,
+  leftLabel,
+  rightLabel,
+  sliderLabel,
+  initial = 52,
+} = Astro.props;
+
+const modes = ['rendered', 'data'] as const;
+---
+
+<div class="xray" data-xray style={`--x:${initial}%`}>
+  {
+    modes.map((mode) => (
+      <div
+        class:list={['xr-plate', `xr-plate--${mode}`]}
+        aria-hidden={mode === 'data' ? 'true' : undefined}
+      >
+        <span class="xr-corner" aria-hidden="true">
+          {mode === 'rendered' ? leftLabel : rightLabel}
+        </span>
+        <p class="xr-eyebrow" data-field={fields.eyebrow}>
+          {eyebrow}
+        </p>
+        <p class="xr-title" data-field={fields.title}>
+          {title}
+        </p>
+        <ol class="xr-items" data-field={fields.items}>
+          {items.map((it) => (
+            <li>
+              <span class="xr-date">{it.date}</span>
+              <span class="xr-moment">{it.label}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    ))
+  }
+
+  <input
+    class="xr-range"
+    type="range"
+    min="0"
+    max="100"
+    step="1"
+    value={initial}
+    aria-label={sliderLabel}
+  />
+  <div class="xr-seam" aria-hidden="true"><span class="xr-grip"></span></div>
+</div>
+
+<script>
+  // The handle writes one custom property; the clip and the seam both read it,
+  // so there is a single source of truth for where the wipe sits.
+  function initXray() {
+    document.querySelectorAll<HTMLElement>('[data-xray]').forEach((root) => {
+      const range = root.querySelector<HTMLInputElement>('.xr-range');
+      if (!range || root.dataset.xrayBound) return;
+      root.dataset.xrayBound = 'true';
+      const paint = () => root.style.setProperty('--x', `${range.value}%`);
+      range.addEventListener('input', paint);
+      paint();
+    });
+  }
+  initXray();
+  document.addEventListener('astro:page-load', initXray);
+</script>
+
+<style>
+  /* The container, not the plate: an element cannot query its own
+     container-type, so the cqi sizes below have to resolve against the parent.
+     Same reason .slide-shell exists in ui/Slide.astro. */
+  .xray {
+    position: relative;
+    container-type: inline-size;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    touch-action: pan-y;
+  }
+
+  /* ---------- one geometry ----------
+     Both skins share every size here. Only the first plate is in flow; it is
+     what gives the figure its height, and the second is laid over it. */
+  .xr-plate {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    padding: 5.4cqi;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--body);
+  }
+  .xr-plate--data {
+    position: absolute;
+    inset: 0;
+    /* Everything to the right of the handle. */
+    clip-path: inset(0 0 0 var(--x));
+  }
+
+  .xr-eyebrow {
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 1.9cqi;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .xr-title {
+    margin: 0.3em 0 0;
+    font-family: var(--display);
+    font-size: 5cqi;
+    font-variation-settings: 'wght' 620;
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    /* Shared, not set on the data skin alone: the two plates have to wrap
+       identically or the wipe stops being one slide. This is also what leaves
+       room for the field tag in the corner. */
+    max-width: 76%;
+  }
+  .xr-items {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 2cqi;
+    margin: auto 0 0;
+    padding: 0;
+  }
+  .xr-date {
+    display: block;
+    font-family: var(--mono);
+    font-size: 2.1cqi;
+    font-variant-numeric: tabular-nums;
+  }
+  .xr-moment {
+    display: block;
+    margin-top: 0.25em;
+    font-family: var(--display);
+    font-size: 2.1cqi;
+    font-variation-settings: 'wght' 600;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  /* ---------- skin one: what the room sees ---------- */
+  .xr-plate--rendered {
+    background: var(--card);
+    color: var(--ink);
+  }
+  .xr-plate--rendered .xr-eyebrow {
+    color: var(--green-bright);
+  }
+  .xr-plate--rendered .xr-date {
+    color: var(--green-bright);
+  }
+  .xr-plate--rendered .xr-items {
+    position: relative;
+    padding-top: 2.6cqi;
+  }
+  .xr-plate--rendered .xr-items::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 2cqi;
+    height: 2px;
+    background: var(--sage);
+  }
+
+  /* ---------- skin two: what the file holds ----------
+     Same boxes, drawn as boxes. The field name is absolutely positioned so
+     naming a region cannot move it. */
+  .xr-plate--data {
+    background: var(--green-deep);
+    color: #cfe0d4;
+  }
+  .xr-plate--data [data-field] {
+    position: relative;
+    outline: 1px dashed rgba(219, 163, 35, 0.55);
+    outline-offset: 1.1cqi;
+    border-radius: 2px;
+  }
+  /* Tags hang off the right, because the left of this plate is the half the
+     wipe is usually covering: a name anchored there is invisible for most
+     positions of the handle. */
+  .xr-plate--data [data-field]::after {
+    content: attr(data-field);
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 1.4cqi);
+    font-family: var(--mono);
+    font-size: 1.6cqi;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    color: var(--brass-soft);
+    white-space: nowrap;
+  }
+  /* The top two regions have nothing above them to hang a tag off, so those
+     two sit on their own top line instead. */
+  .xr-plate--data .xr-eyebrow::after,
+  .xr-plate--data .xr-title::after {
+    bottom: auto;
+    top: 0;
+  }
+  .xr-plate--data .xr-eyebrow,
+  .xr-plate--data .xr-date {
+    color: var(--brass-soft);
+  }
+
+  /* ---------- the handle ----------
+     One corner label per plate rather than two floating over both: the data
+     plate's clip then hides the left label exactly where it hides everything
+     else, instead of a second copy of the same sum in a clip-path. */
+  .xr-corner {
+    position: absolute;
+    top: 2.2cqi;
+    font-family: var(--mono);
+    font-size: 1.6cqi;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .xr-plate--rendered .xr-corner {
+    left: 2.6cqi;
+    color: var(--ink-mute);
+  }
+  .xr-plate--data .xr-corner {
+    right: 2.6cqi;
+    color: var(--brass-soft);
+  }
+
+  /* A range, not a pointer handler: clicking anywhere on a range moves the
+     thumb there and keeps dragging, and arrows, Home and End arrive for free.
+     It is invisible and covers the figure, so the whole slide is the handle. */
+  .xr-range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+  }
+  .xr-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 44px;
+    height: 100%;
+  }
+  .xr-range::-moz-range-thumb {
+    width: 44px;
+    height: 100%;
+    border: 0;
+  }
+
+  .xr-seam {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--x);
+    width: 2px;
+    background: var(--brass-bright);
+    pointer-events: none;
+  }
+  .xr-grip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--brass-bright);
+    box-shadow: var(--shadow-sm);
+  }
+  /* Two chevrons, so the grip says "drag me" without a label. */
+  .xr-grip::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(var(--green-deep), var(--green-deep)) 11px 50% / 2px 12px no-repeat,
+      linear-gradient(var(--green-deep), var(--green-deep)) 21px 50% / 2px 12px no-repeat;
+  }
+  /* The input is transparent, so the ring has to be drawn on the thing the
+     reader is actually looking at. */
+  .xr-range:focus-visible ~ .xr-seam .xr-grip {
+    outline: 3px solid var(--green);
+    outline-offset: 3px;
+  }
+
+  /* Dashes, tints and a brass seam all vanish under a forced palette; the
+     regions keep a border that survives it. */
+  @media (forced-colors: active) {
+    .xr-plate--data [data-field] {
+      outline-color: CanvasText;
+    }
+    .xr-seam {
+      background: CanvasText;
+    }
+    .xr-grip {
+      background: Canvas;
+      border: 2px solid CanvasText;
+    }
+  }
+</style>

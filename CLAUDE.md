@@ -259,6 +259,27 @@ Other rules:
 - Structural data (slide-type field vocabularies, theme tokens) is **not** copy:
   it lives beside the component, e.g. `components/marketing/anatomy/data.ts`.
 
+## Blog figures, and why MDX exists here
+
+A post that has to **show** something rather than describe it is `.mdx` and
+embeds a component from `src/components/figures/`; every other post stays `.md`.
+That is the only reason `@astrojs/mdx` is installed, and the collection glob
+takes `{md,mdx}` so the extension is not part of a post's URL.
+
+Full contract in `src/components/figures/README.md`. The three that bite:
+
+1. **The caption is required and carries the argument alone.** `Figure` takes
+   it as a prop. It is what reaches RSS, print, and anybody who cannot operate
+   the figure - if the caption needs the figure to make sense, the figure is
+   decoration.
+2. **Static first.** With the script blocked a figure shows a meaningful state,
+   never an empty frame: the wipe stays where the server put it, the first
+   panel of a switcher is open.
+3. **Copy comes in as props**, because a figure belongs to a post and a post
+   belongs to one language. The component holds no sentences; the `.mdx` file
+   does, once per language. Structural data is not copy and may stay in the
+   component.
+
 ## The `/spec/` section
 
 Five pages under `src/pages/[...locale]/spec/` that put the deck format on the

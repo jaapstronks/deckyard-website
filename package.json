@@ -15,6 +15,7 @@
     "verify": "npm run format:check && npm run check && npm run build"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4.3.14",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.0",
     "@astrojs/starlight": "^0.35.0",

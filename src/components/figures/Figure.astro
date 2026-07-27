@@ -1,0 +1,31 @@
+---
+// The frame every blog figure sits in: the width bleed out of the reading
+// column, and the caption.
+//
+// The caption is required, and not for tidiness. A figure here is an argument
+// the reader can operate, and a reader in an RSS client, in print, or with the
+// script blocked gets the caption and nothing else. If the caption does not
+// make the point on its own, the figure is decoration.
+import './figures.css';
+
+interface Props {
+  caption: string;
+  /** Narrow figures stay inside the reading column instead of bleeding wide. */
+  narrow?: boolean;
+  class?: string;
+}
+
+const { caption, narrow = false, class: className } = Astro.props;
+---
+
+<figure class:list={['fig', { 'fig--narrow': narrow }, className]}>
+  <slot />
+  <figcaption set:html={caption} />
+</figure>
+
+<style>
+  .fig--narrow {
+    --fig-w: 100%;
+    margin-inline: 0;
+  }
+</style>
