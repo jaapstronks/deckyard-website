@@ -123,6 +123,16 @@
     --btn-primary-fg: #fff;
     --btn-primary-bg-hover: var(--green-bright);
 
+    /* The ghost button was written for the dark CTA band and hard-coded
+       --brass-soft, which is 1.3:1 on tint and 1.5:1 on paper - the same trap
+       --brass-text exists for. It is a surface token like the rest: brass as a
+       glyph on light (4.5:1 on tint, 4.9:1 on paper, and the border clears
+       1.4.11 at the same value), brass as a fill on dark. */
+    --btn-ghost-fg: var(--brass-text);
+    --btn-ghost-border: var(--brass-text);
+    --btn-ghost-bg-hover: var(--brass-bright);
+    --btn-ghost-fg-hover: var(--green-deep);
+
     --field-bg: var(--card);
     --field-fg: var(--ink);
     --field-border: var(--line);
