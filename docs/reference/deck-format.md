@@ -170,14 +170,15 @@ was called Deckyard.
 
 - **Producers** write only the current sentinel. Nothing emits the old value any
   more, and nothing needs to.
-- **Readers** accept both, permanently. Decks and packages carrying the old
-  sentinel exist and will keep turning up; a reader that rejects them has not
-  implemented this format.
+- **Readers** accept both. Not because a body of files carrying the old value is
+  known to exist — Deckyard is new enough that there may be none — but because a
+  rename is a poor reason for a file not to open, and accepting one extra
+  constant costs nothing.
 - **The file extension never changed.** A package downloads as `<title>.deck`
   either way, so nothing on disk needs renaming.
 
-The only thing that has to change anywhere is tooling of your own that matches on
-the `format` field: teach it both values.
+If you have tooling of your own that matches on the `format` field, teach it both
+values.
 
 ## Producing and consuming a deck
 

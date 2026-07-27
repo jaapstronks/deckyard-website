@@ -131,7 +131,7 @@ export const spec: SpecContent = {
     leniency:
       'De envelop is inschikkelijk. Onbekende sleutels op het hoogste niveau worden door een importeur genegeerd en nooit geweigerd, zodat een nieuwere schrijver een veld kan toevoegen dat een oudere lezer simpelweg overslaat.',
     legacySentinel:
-      'Een conforme lezer accepteert in `format` één waarde meer dan hij ooit te zien krijgt: `slidecreator.deck`, het herkenningsteken dat tot 1.7.0 geschreven werd, van voordat het formaat de naam van zijn uitgever kreeg. Van een schrijver wordt niets gevraagd; die schrijft `{magic}` en verder niets. Het oude teken accepteren is een blijvende verplichting, want er bestaan decks in de wereld die het dragen, en een lezer die die weigert heeft dit formaat niet geïmplementeerd.',
+      'Voor 1.7.0 stond in dit veld `slidecreator.deck`, een naam van voordat het product zo heette. Niets schrijft dat nog; een lezer accepteert het toch, want een hernoeming hoort nooit de reden te zijn dat een bestand niet opengaat.',
     envelopeRefNote:
       'Alle zes velden staan uitgeschreven in de documentatie: hun type, en wat een lezer ermee hoort te doen.',
 
@@ -216,7 +216,7 @@ export const spec: SpecContent = {
         'De bytes van de beelden, geadresseerd op de SHA-256 van hun eigen inhoud. Identieke bytes worden één keer opgeslagen.',
     },
     legacySentinel:
-      'Het mediatype heeft dezelfde geschiedenis als het herkenningsteken in de envelop: pakketten van voor 1.7.0 dragen `application/vnd.slidecreator.deck`, en een lezer die wil openen wat er bestaat accepteert allebei. Een schrijver zet er alleen `{mime}` in. De bestandsextensie is nooit veranderd, dus een pakket op schijf is hoe dan ook een `.deck`.',
+      'Het mediatype heeft dezelfde geschiedenis als het herkenningsteken in de envelop: een pakket van voor 1.7.0 draagt `application/vnd.slidecreator.deck`, en een lezer neemt allebei. Een schrijver zet er alleen `{mime}` in. De bestandsextensie is nooit veranderd, dus een pakket op schijf is hoe dan ook een `.deck`.',
 
     manifestTitle: 'Het manifest',
     manifestBody: [

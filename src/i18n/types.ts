@@ -505,9 +505,10 @@ export interface SpecContent {
     envelopeBody: string[];
     leniency: string;
     /**
-     * The value a reader must keep accepting besides the one it is shown. Part
-     * of the contract rather than a footnote: a second implementation that takes
-     * only the current sentinel rejects decks that exist in the world.
+     * The value a reader keeps accepting besides the one it is shown. Not
+     * justified by files in the wild - nothing has been installed long enough
+     * for those to exist - but by the cheapness of accepting one more constant
+     * against the cost of a rename being why something will not open.
      */
     legacySentinel: string;
     /** Stands in for the field table, which lives in the (searchable) docs. */
