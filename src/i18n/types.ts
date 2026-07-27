@@ -491,8 +491,6 @@ export interface SpecContent {
     statusTitle: string;
     statusLead: string;
     status: { term: string; def: string }[];
-    /** Said plainly: some of this is still being decided. */
-    statusOpen: string;
   };
 
   format: {
@@ -531,6 +529,7 @@ export interface SpecContent {
 
     apiTitle: string;
     apiLead: string;
+    apiBody: string[];
     /** Stands in for the endpoint table, which lives in the docs. */
     apiRefNote: string;
   };

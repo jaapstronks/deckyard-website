@@ -91,7 +91,7 @@ export const spec: SpecContent = {
     ],
 
     statusTitle: 'Status',
-    statusLead: 'What is settled, what is promised, and what is still being decided.',
+    statusLead: 'What is settled, what is promised, and how far the conformance goes today.',
     status: [
       {
         term: 'Envelope version',
@@ -110,8 +110,6 @@ export const spec: SpecContent = {
         def: 'A committed example deck and a round-trip test in the core repo act as a conformance fixture today. Publishing them as a downloadable kit is the next step.',
       },
     ],
-    statusOpen:
-      'Two things are honestly still open: the format sentinel is `{magic}`, a project name Deckyard no longer uses anywhere else, and the schema `$id` domain does not currently serve the schemas it names. Both are on the list. Saying so seemed better than letting you find out.',
   },
 
   format: {
@@ -184,6 +182,9 @@ export const spec: SpecContent = {
     apiTitle: 'Producing and consuming a deck',
     apiLead:
       "The schema routes answer without credentials on any instance, including the sandbox, because a published format contract should be fetchable. The routes that touch somebody's decks do not, for the same reason your documents are not public.",
+    apiBody: [
+      'Export produces either layer; import takes either one back. Nothing in that round trip is tied to one installation, which is the only test of a portable format that means anything: a deck your instance wrote opens on an instance that has never seen it.',
+    ],
     apiRefNote:
       'The four export and import routes, and which of them need credentials, are listed in the documentation.',
   },

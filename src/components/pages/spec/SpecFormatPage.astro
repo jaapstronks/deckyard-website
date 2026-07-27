@@ -16,7 +16,13 @@ import SectionHead from '@/components/layout/SectionHead.astro';
 import CodeBlock from '@/components/spec/CodeBlock.astro';
 import SpecReference from '@/components/spec/SpecReference.astro';
 import { ui, type Lang } from '@/i18n';
-import { withSpec, EXAMPLE_ENVELOPE, EXAMPLE_SLIDE, SCHEMA_BASE } from '@/lib/spec';
+import {
+  withSpec,
+  EXAMPLE_ENVELOPE,
+  EXAMPLE_SLIDE,
+  EXAMPLE_ROUNDTRIP,
+  SCHEMA_BASE,
+} from '@/lib/spec';
 import { inlineCode } from '@/lib/inline';
 
 interface Props {
@@ -106,6 +112,10 @@ const prose = (text: string) => inlineCode(withSpec(text));
   <!-- ============ the API surface ============ -->
   <Section variant="tint">
     <SectionHead title={t.apiTitle} lead={t.apiLead} />
+    <div class="spec-prose" data-reveal>
+      {t.apiBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+    <CodeBlock code={EXAMPLE_ROUNDTRIP} label="curl" />
     <SpecReference lang={lang} href="/docs/reference/deck-format/" note={t.apiRefNote} />
   </Section>
 </SpecShell>

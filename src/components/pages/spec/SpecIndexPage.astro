@@ -3,12 +3,14 @@
 // does it exist, and what is settled about it.
 //
 // The "status" section at the foot is the point of the page. A format offered as
-// a standard that will not say what it promises, under what licence, and what is
-// still undecided is a marketing page with a schema attached.
+// a standard that will not say what it promises, under what licence, and how far
+// its conformance goes is a marketing page with a schema attached.
 import SpecShell from '@/components/spec/SpecShell.astro';
 import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
+import SpecIcon from '@/components/spec/SpecIcon.astro';
+import type { SpecIconName } from '@/components/spec/icons';
 import { ui, type Lang } from '@/i18n';
 import { withSpec, CORE_REPO } from '@/lib/spec';
 import { inlineCode } from '@/lib/inline';
@@ -21,6 +23,13 @@ const t = ui[lang].spec.index;
 const shared = ui[lang].spec.shared;
 
 const prose = (text: string) => inlineCode(withSpec(text));
+
+// Icons by position, because the copy carries no ids and both lists are a fixed
+// ordered set - their order IS the structure, in every language. Structural, so
+// it sits here rather than in the locale files. A shorter array simply leaves
+// the tail without an icon instead of breaking the card.
+const LAYER_ICONS: SpecIconName[] = ['file-code', 'package'];
+const CLAIM_ICONS: SpecIconName[] = ['split', 'braces', 'bot', 'git-branch', 'shield-check'];
 ---
 
 <SpecShell
@@ -39,6 +48,11 @@ const prose = (text: string) => inlineCode(withSpec(text));
       {
         t.layers.map((layer, i) => (
           <article class="layer" data-reveal data-reveal-delay={i * 80}>
+            {LAYER_ICONS[i] && (
+              <p class="layer-icon">
+                <SpecIcon name={LAYER_ICONS[i]} size={24} />
+              </p>
+            )}
             <p class="layer-badge">{layer.badge}</p>
             <h3>{layer.name}</h3>
             <p class="layer-what">{layer.what}</p>
@@ -64,6 +78,10 @@ const prose = (text: string) => inlineCode(withSpec(text));
       {
         t.claims.map((claim, i) => (
           <li data-reveal data-reveal-delay={Math.min(i, 4) * 60}>
+            <p class="claim-mark">
+              {CLAIM_ICONS[i] && <SpecIcon name={CLAIM_ICONS[i]} size={18} />}
+              <span>{String(i + 1).padStart(2, '0')}</span>
+            </p>
             <h3>{claim.title}</h3>
             <p set:html={prose(claim.body)} />
           </li>
@@ -85,7 +103,6 @@ const prose = (text: string) => inlineCode(withSpec(text));
         ))
       }
     </dl>
-    <p class="status-open" set:html={prose(t.statusOpen)} />
     <p class="status-cta">
       <Button href={CORE_REPO} variant="ghost" external>
         {shared.codeLabel}
@@ -116,6 +133,24 @@ const prose = (text: string) => inlineCode(withSpec(text));
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
   }
+  /* The one thing on the card that says "format" versus "package" before a word
+     has been read, so it gets a plate of its own rather than riding along with
+     the eyebrow as a bullet. A document with code in it, and a sealed box. */
+  .layer-icon {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin: 0 0 1rem;
+    border-radius: var(--radius-sm);
+    background: var(--green-wash);
+    color: var(--green);
+  }
+  @media (forced-colors: active) {
+    .layer-icon {
+      border: 1px solid CanvasText;
+    }
+  }
   .layer-badge {
     margin: 0;
     font-family: var(--mono);
@@ -145,7 +180,6 @@ const prose = (text: string) => inlineCode(withSpec(text));
   /* Numbered: they are five separate assertions and the reader benefits from
      being able to point at one of them. */
   .claims {
-    counter-reset: claim;
     list-style: none;
     margin: 2rem 0 0;
     padding: 0;
@@ -154,21 +188,27 @@ const prose = (text: string) => inlineCode(withSpec(text));
     max-width: 54rem;
   }
   .claims li {
-    counter-increment: claim;
-    position: relative;
-    padding: 1.2rem 1.4rem 1.3rem 3.6rem;
+    padding: 1.2rem 1.4rem 1.3rem;
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
   }
-  .claims li::before {
-    content: counter(claim);
-    position: absolute;
-    left: 1.4rem;
-    top: 1.25rem;
+  /* The number stays: five separate assertions, and a reader benefits from
+     being able to point at one of them. It rides with the icon as a single
+     mark rather than as a second thing competing for the same corner. */
+  .claim-mark {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.7rem;
     font-family: var(--mono);
-    font-size: 0.82rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
     color: var(--brass-text);
+  }
+  .claim-mark :global(svg) {
+    flex: 0 0 auto;
+    color: var(--green);
   }
   .claims h3 {
     margin: 0 0 0.45rem;
@@ -184,17 +224,6 @@ const prose = (text: string) => inlineCode(withSpec(text));
   }
 
   /* ---------- status ---------- */
-  .status-open {
-    max-width: var(--container-text);
-    margin: var(--space-md) 0 0;
-    padding: 1.1rem 1.3rem;
-    border-left: 3px solid var(--brass);
-    background: var(--card);
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-    font-size: 0.95rem;
-    line-height: 1.65;
-    color: var(--ink-soft);
-  }
   .status-cta {
     margin: var(--space-md) 0 0;
   }

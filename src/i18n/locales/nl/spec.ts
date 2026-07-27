@@ -93,7 +93,7 @@ export const spec: SpecContent = {
     ],
 
     statusTitle: 'Status',
-    statusLead: 'Wat vaststaat, wat we beloven, en wat nog open is.',
+    statusLead: 'Wat vaststaat, wat we beloven, en hoe ver de conformiteit vandaag reikt.',
     status: [
       {
         term: 'Envelopversie',
@@ -112,8 +112,6 @@ export const spec: SpecContent = {
         def: 'Een meegeleverd voorbeelddeck en een round-triptest in de core-repo werken vandaag al als conformiteitsfixture. Die publiceren als downloadbare set is de volgende stap.',
       },
     ],
-    statusOpen:
-      "Twee dingen staan eerlijk gezegd nog open: het herkenningsteken van het formaat is `{magic}`, een projectnaam die Deckyard nergens anders meer gebruikt, en het domein in de schema-`$id` serveert de schema's die het noemt op dit moment niet. Beide staan op de lijst. Het leek ons beter om dat hier te zeggen dan het je zelf te laten ontdekken.",
   },
 
   format: {
@@ -186,6 +184,9 @@ export const spec: SpecContent = {
     apiTitle: 'Een deck maken en lezen',
     apiLead:
       'De schemaroutes antwoorden zonder inloggegevens, op elke installatie en dus ook in de sandbox, want een gepubliceerd formaatcontract hoort op te halen te zijn. De routes die aan iemands decks zitten doen dat niet, om dezelfde reden waarom jouw documenten niet openbaar zijn.',
+    apiBody: [
+      'Export levert allebei de lagen op; import neemt ze allebei weer aan. Niets in dat rondje is aan één installatie gebonden, en dat is de enige test van een draagbaar formaat die iets zegt: een deck dat jouw installatie schreef, opent op een installatie die het nooit gezien heeft.',
+    ],
     apiRefNote:
       'De vier export- en importroutes, en welke ervan inloggegevens vragen, staan in de documentatie.',
   },

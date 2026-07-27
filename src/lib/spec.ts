@@ -1,12 +1,12 @@
 // The constants the spec pages are written against, and the examples they show.
 //
 // WHY ONE FILE
-// Two of these are live questions rather than settled facts. The magic string is
-// `slidecreator.deck` - an old project name the product no longer uses anywhere
-// else - and the schema `$id` domain is deckyard.app, while the site is
-// deckyard.eu. Both may change. Because every page reads them from here and no
-// copy string spells either out, changing one is a one-line edit in core rather
-// than a sweep through two languages of prose.
+// Two of these are live questions rather than settled facts. The magic string
+// still carries an old project name, and the schema `$id` domain is
+// deckyard.app while the site is deckyard.eu. Both are being changed in core.
+// Because every page reads them from here and no copy string spells either out,
+// a rename is `npm run sync-slide-types` rather than a sweep through two
+// languages of prose.
 //
 // WHY THEY ARE GENERATED
 // They are not typed here either. src/data/deck-format.json is written out of
@@ -135,6 +135,30 @@ export const EXAMPLE_MANIFEST = `{
   ],
   "missingAssets": ["/uploads/gone.png"]
 }`;
+
+/**
+ * The round trip, as four commands.
+ *
+ * This carries what the endpoint table's Access column used to carry, and more
+ * plainly: three of these need a key and one does not. It is also the only claim
+ * on the page a reader can check in ten seconds, which is worth more than a
+ * tabulated list of paths.
+ */
+export const EXAMPLE_ROUNDTRIP = `# The portable envelope
+curl -H "Authorization: Bearer $TOKEN" \\
+  https://your-instance/api/presentations/42/export/json > deck.json
+
+# The same deck with its images inside it
+curl -H "Authorization: Bearer $TOKEN" \\
+  https://your-instance/api/presentations/42/export/deck.zip > deck.deck
+
+# Read either one back, on an instance that has never seen the first
+curl -X POST -H "Authorization: Bearer $TOKEN" \\
+  --data-binary @deck.deck \\
+  https://other-instance/api/presentations/import/deck
+
+# The content contract itself needs no credentials at all
+curl ${LIVE_INSTANCE}/api/v1/schema/deck.json`;
 
 export const EXAMPLE_SCHEMA_ID = `{
   "$schema": "https://json-schema.org/draft/2020-12/schema",
