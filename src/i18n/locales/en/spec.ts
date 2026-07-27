@@ -103,7 +103,7 @@ export const spec: SpecContent = {
       },
       {
         term: 'Implementation',
-        def: 'The reference implementation is Deckyard itself, MIT-licensed. Nothing about reading or writing this format requires permission, a key, or a fee.',
+        def: 'The reference implementation is Deckyard itself, MIT-licensed. The specification text carries its own licence, CC0-1.0, so a second implementation can lift the wording into its own document without asking. Nothing about reading or writing this format requires permission, a key, or a fee.',
       },
       {
         term: 'Conformance',
@@ -278,7 +278,8 @@ export const spec: SpecContent = {
     idBody: [
       'Schemas are versioned by their `$id`, which carries the major version in its path. A per-type schema and a whole-deck schema, discriminated by slide type, are both published.',
       'Worth catching: that version is the version of the content shape ({schemaVersion}), not the envelope version ({version}). They are two axes, which is exactly why they have drifted apart.',
-      'The `$id` domain does not currently resolve to the schemas it names. A JSON Schema `$id` is an identifier and is not formally required to be fetchable, but for a format offered as a standard it ought to be, and that is a known gap rather than an oversight.',
+      'Both resolve. `{schemaBase}/deck.schema.json` is the whole deck, `{schemaBase}/slide-types/<type>.schema.json` is one type, and `{schemaBase}/index.json` hands you the list. A JSON Schema `$id` is an identifier and is not formally required to be fetchable; a format offered to other people as a standard should be anyway.',
+      'Nothing under a published version path is ever withdrawn. A slide type that is retired keeps the schema it was published with, because somebody else’s deck still names it.',
     ],
 
     contractTitle: 'Contracts, not gatekeepers',
@@ -289,7 +290,8 @@ export const spec: SpecContent = {
 
     fetchTitle: 'Fetching them',
     fetchBody: [
-      'The schema endpoints are public and unauthenticated on any instance, including the sandbox. They are generated at request time from the running registry, so an instance carrying extra slide types will serve schemas for those too - which is the correct answer for that instance, and a good reason to fetch from the instance you are actually talking to.',
+      'There are two places to get them, and the difference matters. The files under `{schemaBase}` are the published ones: the core slide types, at the URL their `$id` names, frozen per schema version.',
+      'The schema endpoints on a running instance are public and unauthenticated too, including on the sandbox, and they are generated at request time from that instance’s registry. So an instance carrying extra slide types serves schemas for those as well - which is the correct answer for that instance, and a good reason to fetch from the one you are actually talking to.',
     ],
     fetchRefNote: 'The endpoints, with a `curl` for each, are in the documentation.',
   },

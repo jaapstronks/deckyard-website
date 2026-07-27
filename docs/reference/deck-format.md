@@ -105,8 +105,8 @@ from the same `fields[]` registry that drives validation and the editor — one
 source, no hand-synced copy. The schemas are served live and are versioned by
 `$id`:
 
-- Per-type: <!--gen:schema-url-type-->`https://deckyard.app/schema/v3/slide-types/<type>.schema.json`<!--/gen:schema-url-type-->
-- Whole deck (discriminated by `type`): <!--gen:schema-url-deck-->`https://deckyard.app/schema/v3/deck.schema.json`<!--/gen:schema-url-deck-->
+- Per-type: <!--gen:schema-url-type-->`https://deckyard.eu/schema/v3/slide-types/<type>.schema.json`<!--/gen:schema-url-type-->
+- Whole deck (discriminated by `type`): <!--gen:schema-url-deck-->`https://deckyard.eu/schema/v3/deck.schema.json`<!--/gen:schema-url-deck-->
 - Reflected at runtime alongside `GET /api/v1/slide-types`.
 
 Schemas are **lenient contracts, not gates**: `additionalProperties` is allowed

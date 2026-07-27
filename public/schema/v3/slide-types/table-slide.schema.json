@@ -1,0 +1,225 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deckyard.eu/schema/v3/slide-types/table-slide.schema.json",
+  "title": "table-slide slide content",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Title"
+    },
+    "caption": {
+      "type": "string",
+      "maxLength": 240,
+      "title": "Caption"
+    },
+    "headerRow": {
+      "type": "string",
+      "enum": [
+        "on",
+        "off",
+        ""
+      ],
+      "title": "Header row"
+    },
+    "animateByCell": {
+      "type": "string",
+      "enum": [
+        "off",
+        "on",
+        ""
+      ],
+      "title": "Animate by cell"
+    },
+    "colCount": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        ""
+      ],
+      "title": "Columns"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "c1": {
+            "type": "string",
+            "maxLength": 400,
+            "title": "C1"
+          },
+          "c2": {
+            "type": "string",
+            "maxLength": 400,
+            "title": "C2"
+          },
+          "c3": {
+            "type": "string",
+            "maxLength": 400,
+            "title": "C3"
+          },
+          "c4": {
+            "type": "string",
+            "maxLength": 400,
+            "title": "C4"
+          },
+          "c5": {
+            "type": "string",
+            "maxLength": 400,
+            "title": "C5"
+          },
+          "c6": {
+            "type": "string",
+            "maxLength": 400,
+            "title": "C6"
+          },
+          "c7": {
+            "type": "string",
+            "maxLength": 400,
+            "title": "C7"
+          },
+          "c8": {
+            "type": "string",
+            "maxLength": 400,
+            "title": "C8"
+          },
+          "c9": {
+            "type": "string",
+            "maxLength": 400,
+            "title": "C9"
+          },
+          "c10": {
+            "type": "string",
+            "maxLength": 400,
+            "title": "C10"
+          }
+        },
+        "additionalProperties": true
+      },
+      "maxItems": 40,
+      "title": "Rows"
+    },
+    "tableStyle": {
+      "type": "string",
+      "enum": [
+        "plain",
+        "panel",
+        "soft",
+        ""
+      ],
+      "title": "Table style"
+    },
+    "cornerCell": {
+      "type": "string",
+      "enum": [
+        "label",
+        "header",
+        ""
+      ],
+      "title": "Top-left cell",
+      "description": "Which band the top-left corner cell belongs to. \"label\" (default) keeps it the label-column colour, so it reads as the head of the first column (the historical look). \"header\" gives it the header-row colour instead, so the entire top row is one colour. Orthogonal to Table style — works with every style."
+    },
+    "background": {
+      "type": "string",
+      "title": "Background"
+    },
+    "a11yTitle": {
+      "type": "string",
+      "maxLength": 140,
+      "title": "Accessibility title",
+      "description": "Optional. Screen readers announce this when the slide becomes active. Prefer a short, descriptive phrase."
+    },
+    "a11ySummary": {
+      "type": "string",
+      "maxLength": 280,
+      "title": "Accessibility summary",
+      "description": "Optional extra context for screen readers (announced after the title). Keep it brief."
+    },
+    "slideBgImage": {
+      "type": "string",
+      "title": "Background image",
+      "description": "Optional. Fills the whole slide behind the content. Large images are resized automatically; use the focus control to pick which part stays visible when cropped."
+    },
+    "slideBgFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Background fit"
+    },
+    "slideBgFocusX": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Background focus X"
+    },
+    "slideBgFocusY": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Background focus Y"
+    },
+    "slideBgOverlay": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "none",
+        "light",
+        "dark",
+        "gradient-top",
+        "gradient-bottom",
+        ""
+      ],
+      "title": "Background overlay",
+      "description": "Auto adds a subtle scrim only when the image is too busy for readable text. Gradient options darken one edge behind the text."
+    },
+    "slideBgText": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "light",
+        "dark",
+        ""
+      ],
+      "title": "Text colour",
+      "description": "Auto picks the theme text colour with the best contrast for the background image. Light/dark force it. (Legacy \"default\" is treated as the theme default.)"
+    },
+    "slideLogo": {
+      "type": "string",
+      "enum": [
+        "none",
+        "top-right",
+        ""
+      ],
+      "title": "Theme logo",
+      "description": "Show the active theme logo in a corner of this slide."
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "title"
+  ]
+}

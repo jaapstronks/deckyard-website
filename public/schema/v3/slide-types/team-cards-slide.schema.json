@@ -1,0 +1,1483 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deckyard.eu/schema/v3/slide-types/team-cards-slide.schema.json",
+  "title": "team-cards-slide slide content",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Title (optional)"
+    },
+    "subheading": {
+      "type": "string",
+      "maxLength": 220,
+      "title": "Subheading"
+    },
+    "bottomSubheading": {
+      "type": "string",
+      "maxLength": 200,
+      "title": "Bottom subheading"
+    },
+    "background": {
+      "type": "string",
+      "title": "Background"
+    },
+    "textPosition": {
+      "type": "string",
+      "enum": [
+        "below",
+        "split",
+        ""
+      ],
+      "title": "Text position"
+    },
+    "imageShape": {
+      "type": "string",
+      "enum": [
+        "rounded",
+        "square",
+        "circle",
+        ""
+      ],
+      "title": "Image shape"
+    },
+    "imageAspect": {
+      "type": "string",
+      "enum": [
+        "square",
+        "original",
+        ""
+      ],
+      "title": "Image aspect"
+    },
+    "showPhotoFrame": {
+      "type": "string",
+      "enum": [
+        "off",
+        "on",
+        ""
+      ],
+      "title": "Show photo frame"
+    },
+    "columnSplit": {
+      "type": "string",
+      "enum": [
+        "",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "title": "Column split"
+    },
+    "subheading2": {
+      "type": "string",
+      "maxLength": 220,
+      "title": "Right group subheading"
+    },
+    "cardCount": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+        "25",
+        ""
+      ],
+      "title": "Number of cards"
+    },
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "string",
+            "title": "Photo"
+          },
+          "alt": {
+            "type": "string",
+            "maxLength": 180,
+            "title": "Photo alt text"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 80,
+            "title": "Title"
+          },
+          "byline": {
+            "type": "string",
+            "maxLength": 120,
+            "title": "Caption"
+          },
+          "linkedin": {
+            "type": "string",
+            "maxLength": 300,
+            "title": "LinkedIn URL"
+          }
+        },
+        "additionalProperties": true
+      },
+      "minItems": 0,
+      "maxItems": 25,
+      "title": "Members"
+    },
+    "card1Image": {
+      "type": "string",
+      "title": "Card 1 photo"
+    },
+    "card1Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 1 photo alt text (optional)"
+    },
+    "card1ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 1 image focus X"
+    },
+    "card1ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 1 image focus Y"
+    },
+    "card1Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 1 name"
+    },
+    "card1Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 1 byline"
+    },
+    "card1Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 1 LinkedIn URL"
+    },
+    "card2Image": {
+      "type": "string",
+      "title": "Card 2 photo"
+    },
+    "card2Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 2 photo alt text (optional)"
+    },
+    "card2ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 2 image focus X"
+    },
+    "card2ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 2 image focus Y"
+    },
+    "card2Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 2 name"
+    },
+    "card2Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 2 byline"
+    },
+    "card2Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 2 LinkedIn URL"
+    },
+    "card3Image": {
+      "type": "string",
+      "title": "Card 3 photo"
+    },
+    "card3Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 3 photo alt text (optional)"
+    },
+    "card3ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 3 image focus X"
+    },
+    "card3ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 3 image focus Y"
+    },
+    "card3Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 3 name"
+    },
+    "card3Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 3 byline"
+    },
+    "card3Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 3 LinkedIn URL"
+    },
+    "card4Image": {
+      "type": "string",
+      "title": "Card 4 photo"
+    },
+    "card4Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 4 photo alt text (optional)"
+    },
+    "card4ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 4 image focus X"
+    },
+    "card4ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 4 image focus Y"
+    },
+    "card4Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 4 name"
+    },
+    "card4Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 4 byline"
+    },
+    "card4Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 4 LinkedIn URL"
+    },
+    "card5Image": {
+      "type": "string",
+      "title": "Card 5 photo"
+    },
+    "card5Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 5 photo alt text (optional)"
+    },
+    "card5ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 5 image focus X"
+    },
+    "card5ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 5 image focus Y"
+    },
+    "card5Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 5 name"
+    },
+    "card5Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 5 byline"
+    },
+    "card5Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 5 LinkedIn URL"
+    },
+    "card6Image": {
+      "type": "string",
+      "title": "Card 6 photo"
+    },
+    "card6Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 6 photo alt text (optional)"
+    },
+    "card6ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 6 image focus X"
+    },
+    "card6ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 6 image focus Y"
+    },
+    "card6Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 6 name"
+    },
+    "card6Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 6 byline"
+    },
+    "card6Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 6 LinkedIn URL"
+    },
+    "card7Image": {
+      "type": "string",
+      "title": "Card 7 photo"
+    },
+    "card7Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 7 photo alt text (optional)"
+    },
+    "card7ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 7 image focus X"
+    },
+    "card7ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 7 image focus Y"
+    },
+    "card7Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 7 name"
+    },
+    "card7Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 7 byline"
+    },
+    "card7Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 7 LinkedIn URL"
+    },
+    "card8Image": {
+      "type": "string",
+      "title": "Card 8 photo"
+    },
+    "card8Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 8 photo alt text (optional)"
+    },
+    "card8ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 8 image focus X"
+    },
+    "card8ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 8 image focus Y"
+    },
+    "card8Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 8 name"
+    },
+    "card8Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 8 byline"
+    },
+    "card8Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 8 LinkedIn URL"
+    },
+    "card9Image": {
+      "type": "string",
+      "title": "Card 9 photo"
+    },
+    "card9Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 9 photo alt text (optional)"
+    },
+    "card9ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 9 image focus X"
+    },
+    "card9ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 9 image focus Y"
+    },
+    "card9Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 9 name"
+    },
+    "card9Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 9 byline"
+    },
+    "card9Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 9 LinkedIn URL"
+    },
+    "card10Image": {
+      "type": "string",
+      "title": "Card 10 photo"
+    },
+    "card10Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 10 photo alt text (optional)"
+    },
+    "card10ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 10 image focus X"
+    },
+    "card10ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 10 image focus Y"
+    },
+    "card10Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 10 name"
+    },
+    "card10Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 10 byline"
+    },
+    "card10Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 10 LinkedIn URL"
+    },
+    "card11Image": {
+      "type": "string",
+      "title": "Card 11 photo"
+    },
+    "card11Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 11 photo alt text (optional)"
+    },
+    "card11ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 11 image focus X"
+    },
+    "card11ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 11 image focus Y"
+    },
+    "card11Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 11 name"
+    },
+    "card11Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 11 byline"
+    },
+    "card11Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 11 LinkedIn URL"
+    },
+    "card12Image": {
+      "type": "string",
+      "title": "Card 12 photo"
+    },
+    "card12Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 12 photo alt text (optional)"
+    },
+    "card12ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 12 image focus X"
+    },
+    "card12ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 12 image focus Y"
+    },
+    "card12Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 12 name"
+    },
+    "card12Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 12 byline"
+    },
+    "card12Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 12 LinkedIn URL"
+    },
+    "card13Image": {
+      "type": "string",
+      "title": "Card 13 photo"
+    },
+    "card13Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 13 photo alt text (optional)"
+    },
+    "card13ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 13 image focus X"
+    },
+    "card13ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 13 image focus Y"
+    },
+    "card13Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 13 name"
+    },
+    "card13Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 13 byline"
+    },
+    "card13Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 13 LinkedIn URL"
+    },
+    "card14Image": {
+      "type": "string",
+      "title": "Card 14 photo"
+    },
+    "card14Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 14 photo alt text (optional)"
+    },
+    "card14ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 14 image focus X"
+    },
+    "card14ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 14 image focus Y"
+    },
+    "card14Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 14 name"
+    },
+    "card14Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 14 byline"
+    },
+    "card14Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 14 LinkedIn URL"
+    },
+    "card15Image": {
+      "type": "string",
+      "title": "Card 15 photo"
+    },
+    "card15Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 15 photo alt text (optional)"
+    },
+    "card15ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 15 image focus X"
+    },
+    "card15ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 15 image focus Y"
+    },
+    "card15Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 15 name"
+    },
+    "card15Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 15 byline"
+    },
+    "card15Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 15 LinkedIn URL"
+    },
+    "card16Image": {
+      "type": "string",
+      "title": "Card 16 photo"
+    },
+    "card16Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 16 photo alt text (optional)"
+    },
+    "card16ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 16 image focus X"
+    },
+    "card16ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 16 image focus Y"
+    },
+    "card16Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 16 name"
+    },
+    "card16Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 16 byline"
+    },
+    "card16Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 16 LinkedIn URL"
+    },
+    "card17Image": {
+      "type": "string",
+      "title": "Card 17 photo"
+    },
+    "card17Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 17 photo alt text (optional)"
+    },
+    "card17ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 17 image focus X"
+    },
+    "card17ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 17 image focus Y"
+    },
+    "card17Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 17 name"
+    },
+    "card17Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 17 byline"
+    },
+    "card17Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 17 LinkedIn URL"
+    },
+    "card18Image": {
+      "type": "string",
+      "title": "Card 18 photo"
+    },
+    "card18Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 18 photo alt text (optional)"
+    },
+    "card18ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 18 image focus X"
+    },
+    "card18ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 18 image focus Y"
+    },
+    "card18Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 18 name"
+    },
+    "card18Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 18 byline"
+    },
+    "card18Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 18 LinkedIn URL"
+    },
+    "card19Image": {
+      "type": "string",
+      "title": "Card 19 photo"
+    },
+    "card19Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 19 photo alt text (optional)"
+    },
+    "card19ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 19 image focus X"
+    },
+    "card19ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 19 image focus Y"
+    },
+    "card19Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 19 name"
+    },
+    "card19Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 19 byline"
+    },
+    "card19Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 19 LinkedIn URL"
+    },
+    "card20Image": {
+      "type": "string",
+      "title": "Card 20 photo"
+    },
+    "card20Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 20 photo alt text (optional)"
+    },
+    "card20ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 20 image focus X"
+    },
+    "card20ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 20 image focus Y"
+    },
+    "card20Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 20 name"
+    },
+    "card20Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 20 byline"
+    },
+    "card20Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 20 LinkedIn URL"
+    },
+    "card21Image": {
+      "type": "string",
+      "title": "Card 21 photo"
+    },
+    "card21Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 21 photo alt text (optional)"
+    },
+    "card21ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 21 image focus X"
+    },
+    "card21ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 21 image focus Y"
+    },
+    "card21Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 21 name"
+    },
+    "card21Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 21 byline"
+    },
+    "card21Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 21 LinkedIn URL"
+    },
+    "card22Image": {
+      "type": "string",
+      "title": "Card 22 photo"
+    },
+    "card22Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 22 photo alt text (optional)"
+    },
+    "card22ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 22 image focus X"
+    },
+    "card22ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 22 image focus Y"
+    },
+    "card22Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 22 name"
+    },
+    "card22Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 22 byline"
+    },
+    "card22Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 22 LinkedIn URL"
+    },
+    "card23Image": {
+      "type": "string",
+      "title": "Card 23 photo"
+    },
+    "card23Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 23 photo alt text (optional)"
+    },
+    "card23ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 23 image focus X"
+    },
+    "card23ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 23 image focus Y"
+    },
+    "card23Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 23 name"
+    },
+    "card23Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 23 byline"
+    },
+    "card23Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 23 LinkedIn URL"
+    },
+    "card24Image": {
+      "type": "string",
+      "title": "Card 24 photo"
+    },
+    "card24Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 24 photo alt text (optional)"
+    },
+    "card24ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 24 image focus X"
+    },
+    "card24ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 24 image focus Y"
+    },
+    "card24Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 24 name"
+    },
+    "card24Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 24 byline"
+    },
+    "card24Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 24 LinkedIn URL"
+    },
+    "card25Image": {
+      "type": "string",
+      "title": "Card 25 photo"
+    },
+    "card25Alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Card 25 photo alt text (optional)"
+    },
+    "card25ImageFocusX": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 25 image focus X"
+    },
+    "card25ImageFocusY": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Card 25 image focus Y"
+    },
+    "card25Name": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Card 25 name"
+    },
+    "card25Byline": {
+      "type": "string",
+      "maxLength": 120,
+      "title": "Card 25 byline"
+    },
+    "card25Linkedin": {
+      "type": "string",
+      "maxLength": 300,
+      "title": "Card 25 LinkedIn URL"
+    },
+    "a11yTitle": {
+      "type": "string",
+      "maxLength": 140,
+      "title": "Accessibility title",
+      "description": "Optional. Screen readers announce this when the slide becomes active. Prefer a short, descriptive phrase."
+    },
+    "a11ySummary": {
+      "type": "string",
+      "maxLength": 280,
+      "title": "Accessibility summary",
+      "description": "Optional extra context for screen readers (announced after the title). Keep it brief."
+    },
+    "slideBgImage": {
+      "type": "string",
+      "title": "Background image",
+      "description": "Optional. Fills the whole slide behind the content. Large images are resized automatically; use the focus control to pick which part stays visible when cropped."
+    },
+    "slideBgFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Background fit"
+    },
+    "slideBgFocusX": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Background focus X"
+    },
+    "slideBgFocusY": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Background focus Y"
+    },
+    "slideBgOverlay": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "none",
+        "light",
+        "dark",
+        "gradient-top",
+        "gradient-bottom",
+        ""
+      ],
+      "title": "Background overlay",
+      "description": "Auto adds a subtle scrim only when the image is too busy for readable text. Gradient options darken one edge behind the text."
+    },
+    "slideBgText": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "light",
+        "dark",
+        ""
+      ],
+      "title": "Text colour",
+      "description": "Auto picks the theme text colour with the best contrast for the background image. Light/dark force it. (Legacy \"default\" is treated as the theme default.)"
+    },
+    "slideLogo": {
+      "type": "string",
+      "enum": [
+        "none",
+        "top-right",
+        ""
+      ],
+      "title": "Theme logo",
+      "description": "Show the active theme logo in a corner of this slide."
+    }
+  },
+  "additionalProperties": true
+}

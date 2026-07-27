@@ -274,11 +274,19 @@ Two things are load-bearing:
   live in `src/data/deck-format.json`, generated from core; `src/lib/spec.ts`
   reads them and exposes `withSpec()`, which substitutes `{magic}`, `{mime}`,
   `{schemaBase}`, `{version}` and `{schemaVersion}` into copy strings. Two of
-  these are unsettled (the sentinel is still `slidecreator.deck`; the `$id`
-  domain does not serve the schemas it names), so changing one has to be a
-  one-liner, not a sweep through two languages.
+  these have already moved once (the sentinel was `slidecreator.deck`; the `$id`
+  domain was `deckyard.app`), and both arrived as a one-liner instead of a sweep
+  through two languages. Keep it that way.
   **Beware two version numbers**: the schema `$id` carries the _content_ schema
   version (3), not the envelope version (1). Do not conflate them.
+- **The schemas are served from this repo**, at the URL their own `$id` claims.
+  `sync-slide-types` writes `public/schema/v<schemaVersion>/` - `deck.schema.json`,
+  one file per core slide type, and an `index.json` directory document - so
+  `https://deckyard.eu/schema/v3/deck.schema.json` resolves. Two rules: **core
+  types only** (a fork checkout's `custom/slide-types/` must never be published
+  on deckyard.eu), and **nothing under a published version path is ever deleted**,
+  including the schema of a retired type. Only a schema-version bump opens a new
+  directory.
 - **The whole slide-type registry is generated.** `npm run sync-slide-types`
   imports `../deckyard`'s registry, schematic map, picker data and AI catalogue
   and writes `src/data/slide-types.json` + `src/data/deck-format.json`, and fills

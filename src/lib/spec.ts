@@ -1,12 +1,13 @@
 // The constants the spec pages are written against, and the examples they show.
 //
 // WHY ONE FILE
-// Two of these are live questions rather than settled facts. The magic string
-// still carries an old project name, and the schema `$id` domain is
-// deckyard.app while the site is deckyard.eu. Both are being changed in core.
-// Because every page reads them from here and no copy string spells either out,
-// a rename is `npm run sync-slide-types` rather than a sweep through two
-// languages of prose.
+// Two of these used to be live questions rather than settled facts: the magic
+// string carried an old project name, and the schema `$id` pointed at
+// deckyard.app while the site is deckyard.eu. Core has since settled both, and
+// each one arrived here as `npm run sync-slide-types` rather than a sweep
+// through two languages of prose, because every page reads them from here and
+// no copy string spells either out. Keep it that way; nothing about the format
+// has stopped being able to move.
 //
 // WHY THEY ARE GENERATED
 // They are not typed here either. src/data/deck-format.json is written out of

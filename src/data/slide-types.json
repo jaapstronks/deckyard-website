@@ -754,6 +754,22 @@
           ]
         },
         {
+          "key": "cornerCell",
+          "label": "Top-left cell",
+          "type": "enum",
+          "required": false,
+          "options": [
+            {
+              "value": "label",
+              "label": "Label column"
+            },
+            {
+              "value": "header",
+              "label": "Header row"
+            }
+          ]
+        },
+        {
           "key": "background",
           "label": "Background",
           "type": "enum",
@@ -1823,6 +1839,13 @@
               "label": "on"
             }
           ]
+        },
+        {
+          "key": "watchUrl",
+          "label": "Watch link for the PDF export",
+          "type": "string",
+          "required": false,
+          "maxLength": 400
         },
         {
           "key": "bunnyLibraryId",
