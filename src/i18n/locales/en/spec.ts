@@ -128,6 +128,8 @@ export const spec: SpecContent = {
     envelopeBody: ['Six top-level fields. Everything else about a deck lives inside `slides`.'],
     leniency:
       'The envelope is lenient. Unknown top-level keys are ignored by an importer, never rejected, so a newer producer can add a field that an older reader simply skips.',
+    legacySentinel:
+      'Before 1.7.0 this field said `slidecreator.deck`, a name that predates the product. Nothing writes it any more; a reader accepts it anyway, because a rename should never be the reason a file will not open.',
     envelopeRefNote:
       'Each of the six fields, its type and what a reader should do with it, is written out in the documentation.',
 
@@ -211,6 +213,8 @@ export const spec: SpecContent = {
       assets:
         'The asset bytes, addressed by the SHA-256 of their own content. Identical bytes are stored once.',
     },
+    legacySentinel:
+      'The media type has the same history as the sentinel in the envelope: a package written before 1.7.0 declares `application/vnd.slidecreator.deck`, and a reader takes both. A writer emits `{mime}` only. The file extension never changed, so a package on disk is a `.deck` either way.',
 
     manifestTitle: 'The manifest',
     manifestBody: [

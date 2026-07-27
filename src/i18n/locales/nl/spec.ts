@@ -130,6 +130,8 @@ export const spec: SpecContent = {
     envelopeBody: ['Zes velden op het hoogste niveau. Al het andere zit in `slides`.'],
     leniency:
       'De envelop is inschikkelijk. Onbekende sleutels op het hoogste niveau worden door een importeur genegeerd en nooit geweigerd, zodat een nieuwere schrijver een veld kan toevoegen dat een oudere lezer simpelweg overslaat.',
+    legacySentinel:
+      'Voor 1.7.0 stond in dit veld `slidecreator.deck`, een naam van voordat het product zo heette. Niets schrijft dat nog; een lezer accepteert het toch, want een hernoeming hoort nooit de reden te zijn dat een bestand niet opengaat.',
     envelopeRefNote:
       'Alle zes velden staan uitgeschreven in de documentatie: hun type, en wat een lezer ermee hoort te doen.',
 
@@ -213,6 +215,8 @@ export const spec: SpecContent = {
       assets:
         'De bytes van de beelden, geadresseerd op de SHA-256 van hun eigen inhoud. Identieke bytes worden één keer opgeslagen.',
     },
+    legacySentinel:
+      'Het mediatype heeft dezelfde geschiedenis als het herkenningsteken in de envelop: een pakket van voor 1.7.0 draagt `application/vnd.slidecreator.deck`, en een lezer neemt allebei. Een schrijver zet er alleen `{mime}` in. De bestandsextensie is nooit veranderd, dus een pakket op schijf is hoe dan ook een `.deck`.',
 
     manifestTitle: 'Het manifest',
     manifestBody: [

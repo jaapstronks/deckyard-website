@@ -225,3 +225,18 @@
 .section-dark .spec-more span {
   color: rgba(242, 239, 230, 0.7);
 }
+
+/* An aside to the thing above it: the leniency rule, the legacy sentinel. It
+   lived in the format page's own <style> until the package page needed one too
+   and got unstyled prose instead, which is the moment a rule stops belonging to
+   one component. Astro can only scope a style to its own template, so anything
+   two spec pages share has to sit here. */
+.spec-note {
+  max-width: var(--container-text);
+  margin: var(--space-md) 0 0;
+  padding-left: 1.2rem;
+  border-left: 3px solid var(--brass);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}

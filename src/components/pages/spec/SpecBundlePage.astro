@@ -51,6 +51,7 @@ const prose = (text: string) => inlineCode(withSpec(text));
         ))
       }
     </dl>
+    <p class="spec-note" set:html={prose(t.legacySentinel)} />
   </Section>
 
   <!-- ============ manifest ============ -->

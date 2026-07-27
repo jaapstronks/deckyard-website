@@ -504,6 +504,13 @@ export interface SpecContent {
     envelopeTitle: string;
     envelopeBody: string[];
     leniency: string;
+    /**
+     * The value a reader keeps accepting besides the one it is shown. Not
+     * justified by files in the wild - nothing has been installed long enough
+     * for those to exist - but by the cheapness of accepting one more constant
+     * against the cost of a rename being why something will not open.
+     */
+    legacySentinel: string;
     /** Stands in for the field table, which lives in the (searchable) docs. */
     envelopeRefNote: string;
 
@@ -546,6 +553,8 @@ export interface SpecContent {
     layoutBody: string[];
     /** One note per archive entry, keyed by BUNDLE_ENTRIES[].key. */
     layoutNotes: Record<string, string>;
+    /** The media type a reader must keep accepting; see `format.legacySentinel`. */
+    legacySentinel: string;
 
     manifestTitle: string;
     manifestBody: string[];
