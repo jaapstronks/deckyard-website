@@ -1,0 +1,287 @@
+---
+title: 'Presentation software is broken, and AI is making it worse'
+intro: 'Every presentation tool has a generate button now, and the decks coming out of them are worse than the ones people made by hand. That is not the model failing. That is what happens when you point a language model at a file format that can only hold pictures.'
+translationKey: 'presentation-software-broken'
+pubDate: 2026-07-24
+category: 'Opinion'
+tags: ['ai', 'deck format', 'structured content', 'opinion']
+draft: true
+---
+
+import Figure from '@/components/figures/Figure.astro';
+import XraySlide from '@/components/figures/XraySlide.astro';
+import TypeSwap from '@/components/figures/TypeSwap.astro';
+import ContrastLab from '@/components/figures/ContrastLab.astro';
+import FieldMap from '@/components/figures/FieldMap.astro';
+
+Four generated decks have landed in my inbox this month. Every one of them had
+a slide with eleven bullet points on it. Every one of them put white text on the
+bright half of a stock photograph. Every one of them was, in the strict
+technical sense, a sequence of pictures of sentences. And not one of them could
+have been rescued by a better prompt.
+
+The easy conclusion is that the AI is bad at making slides. I think that is
+wrong, and the real answer is more annoying: it did exactly what we asked. We
+pointed it at a file format that cannot hold anything except a drawing, and it
+drew.
+
+## The generate button is aimed at the wrong thing
+
+Open any deck in any of the big three and look at what is actually in the file.
+A slide is a rectangle with things floating on it. A text box here, an image
+there, each one carrying a position, a size and a font, and that is the entire
+contents. The file does not know that the box at the top is a title. It does not
+know that the five lines underneath are a list. It certainly does not know that
+the white text you just dropped is sitting on the one part of the photograph
+that is also white.
+
+So when a model generates a deck, there is nothing for it to fill in. There is
+only a canvas to cover. Nothing can check the result, because there is no claim
+to check: no field that says "this is a title and titles are one line", no rule
+that says "this type takes at most five items", no way to ask whether the text
+is legible against what is behind it. The output is unreviewable by
+construction. We have automated the production of things nobody can inspect,
+which is a strange thing to be excited about.
+
+<Figure
+  width="mid"
+  caption="Drag the handle. On the left a slide is typeset: a display face, a line of dates, a rule. On the right is <b>what the file holds when it holds something</b> - keys, quoted values, and the three moments written out as the array they are. A canvas file has none of this. It has coordinates. (The content is an allotment association, deliberately not us.)"
+>
+  <XraySlide
+    eyebrow="Allotment association"
+    title="How the garden year is planned"
+    items={[
+      { date: 'March', label: 'Seed swap' },
+      { date: 'June', label: 'Open garden' },
+      { date: 'September', label: 'Harvest supper' },
+    ]}
+    leftLabel="what the room sees"
+    rightLabel="what the file holds"
+    sliderLabel="Wipe between the rendered slide and the record behind it"
+  />
+</Figure>
+
+## It was already a mess. AI industrialised it.
+
+Let us be honest about the starting point, because "AI made presentations worse"
+is only half a sentence. Presentations were already bad.
+
+Walls of text, because nothing anywhere knows how many lines fit on a slide. A
+house style reinvented from scratch on every slide, because the house style is a
+habit rather than a rule the file can enforce. Bullets that all arrive at once,
+because the setting that reveals them one at a time has been buried three
+dialogs deep for thirty years and approximately nobody has found it. Titles laid
+over the bright half of a photograph, because no tool in this category has ever
+measured that, not once, not for anybody.
+
+And then the part nobody even complains about, because it has always been this
+way: a deck is inaccessible by construction. A drawing has no semantics, so
+there is nothing to hand a screen reader. A deck is a file rather than a URL, so
+the web gets a download link if it gets anything. This is the medium
+organisations use to say what they think, and it ships as a picture book that
+half the audience cannot read.
+
+None of that is because the people making decks are lazy. It is because the tool
+knows nothing, and a tool that knows nothing cannot stop anything. Point a
+generator at it and you do not get better slides. You get the same slides, much
+faster, in industrial quantities.
+
+<Figure caption="Drag the title across the photo, or focus it and use the arrow keys. Left is a canvas: it will cheerfully let you put white text on a white lemon and say nothing. Right is the same title on the same photo from a record that knows the two overlap, so the renderer puts a scrim behind it and <b>the ratio has a floor</b>. Both numbers are measured off the actual pixels. One of these tools can be wrong. The other one cannot.">
+  <ContrastLab
+    image="/images/library/stand-saturday-morning.jpg"
+    imageAlt="A basket of lemons on a market table"
+    text="Everything we grew this year"
+    canvasLabel="On a canvas"
+    typedLabel="From a record"
+    ratioLabel="contrast against white"
+    dragLabel="Drag the title across the photo, or use the arrow keys"
+    passLabel="passes AA"
+    failLabel="fails AA"
+  />
+</Figure>
+
+The web-first tools of the last few years do parts of this properly, and some of
+them do it beautifully. But it is always one piece of the puzzle, and the format
+underneath still belongs to them.
+
+## Slides should be data, not drawings
+
+Here is the whole idea, and it is not complicated. A slide is a record with
+fields: a type, a title, a list of items, a source. Not a picture of a list, but
+a list. Not a drawing that happens to resemble a timeline, but a timeline that
+knows its own dates.
+
+Give a slide a type and every complaint above stops being a personality trait
+and becomes a solvable problem. The type knows how many items it holds, so the
+wall of text can be refused before it is a wall. The house style is a render
+rule rather than a decision taken forty times per deck. Revealing items one at a
+time is behaviour of the type, not a checkbox somebody has to find. Contrast is
+measurable, so it can be guaranteed instead of hoped for. Semantics exist, so
+accessibility and the web stop being extra work. And there is finally something
+to program against.
+
+<Figure caption="One record, four types. Nothing is re-typed between these panels: the same three items are rendered by whichever type is chosen, and each panel says which fields it read. <b>The content did not change. Only the type did.</b> Try doing that to a canvas.">
+  <TypeSwap
+    id="typeswap-en"
+    title="How the garden year is planned"
+    items={[
+      {
+        date: 'March',
+        label: 'Seed swap',
+        detail: 'Everyone brings what they saved and takes what they need.',
+        value: 40,
+      },
+      {
+        date: 'June',
+        label: 'Open garden',
+        detail: 'The gates stay open all weekend, tea in the shed.',
+        value: 120,
+      },
+      {
+        date: 'September',
+        label: 'Harvest supper',
+        detail: 'One long table, everything on it grown inside the fence.',
+        value: 85,
+      },
+    ]}
+    types={[
+      { id: 'bullets', tab: 'Bullets', reads: 'reads items[].label' },
+      { id: 'timeline', tab: 'Timeline', reads: 'reads items[].date and items[].label' },
+      { id: 'cards', tab: 'Cards', reads: 'reads items[].label and items[].detail' },
+      { id: 'chart', tab: 'Chart', reads: 'reads items[].label and items[].value' },
+    ]}
+    groupLabel="Render the same record as a different slide type"
+  />
+</Figure>
+
+There is a real trade here and it should be said out loud: you give up the
+canvas. You cannot put that box exactly there, at that angle, because there is
+no there. What you get instead is a deck that is consistent without anyone
+policing it, legible without anyone checking it, and automatable without anyone
+scraping it off a screen. If your work genuinely needs a free canvas, use a
+canvas, and enjoy it. Most decks are not that. Most decks are a title and some
+items, hand-drawn for the four hundredth time by somebody who would rather be
+doing something else.
+
+## Now put the AI back in
+
+This is the part that convinced me, and it is why I am not writing an
+anti-AI post. I use this every day.
+
+A normal evening now: "insert a slide after slide 12 with the milestones from
+that Notion database." It fetches the data and adds a timeline slide. Or: "make
+a slide with the faces of the advisory board", and because the media library is
+connected, that arrives complete, in one go, correctly cropped, with the names
+under the right faces.
+
+That works because of the structure, not because of the model. The model is not
+drawing a picture of a timeline. It is filling in a record, which is then
+validated before it is allowed onto a slide. That is a much smaller job and a
+far more reliable one, and it is the difference between an assistant that helps
+and a slop machine that produces eleven bullet points.
+
+<Figure caption="Point at a line of the record and the part of the slide it drives lights up; point at the slide and the line lights up. This is what an assistant is actually writing, and what your own script would write instead. <b>Not one coordinate anywhere.</b>">
+  <FieldMap
+    id="fieldmap-en"
+    codeLabel="The record behind the slide"
+    hint="Point at a line, or at the slide."
+    lines={[
+      { text: '{' },
+      {
+        text: '  "type": "timeline",',
+        region: '*',
+        note: 'The type decides the whole picture, not one part of it.',
+      },
+      {
+        text: '  "title": "How the garden year is planned",',
+        region: 'title',
+        note: 'A title, not a text box that happens to sit at the top.',
+      },
+      {
+        text: '  "items": [',
+        region: 'items',
+        note: 'A list. The renderer decides where the dates land.',
+      },
+      {
+        text: '    { "date": "March", "title": "Seed swap" },',
+        region: 'items',
+        note: 'A list. The renderer decides where the dates land.',
+      },
+      {
+        text: '    { "date": "June", "title": "Open garden" },',
+        region: 'items',
+        note: 'A list. The renderer decides where the dates land.',
+      },
+      {
+        text: '    { "date": "September", "title": "Harvest supper" }',
+        region: 'items',
+        note: 'A list. The renderer decides where the dates land.',
+      },
+      { text: '  ]', region: 'items', note: 'A list. The renderer decides where the dates land.' },
+      { text: '}' },
+    ]}
+    slide={{
+      eyebrow: 'Allotment association',
+      title: 'How the garden year is planned',
+      items: [
+        { date: 'March', title: 'Seed swap' },
+        { date: 'June', title: 'Open garden' },
+        { date: 'September', title: 'Harvest supper' },
+      ],
+    }}
+  />
+</Figure>
+
+And if you want nothing to do with AI, the same door is open and it is the same
+door. It is an API. Write the script yourself, on a cron, from your own systems.
+The assistant is a client here, not the foundation. That distinction matters,
+because a foundation you cannot replace is just a landlord.
+
+## While we are at it, it should be yours
+
+There is a second thing that falls out of this, and it is the one I actually
+care about on the days when the typography does not keep me up.
+
+Presentations are where organisations say what they think, out loud, on the
+record. That material currently lives on infrastructure nobody in the building
+has seen, in a format nobody in the building can open without the vendor, under
+terms nobody in the building negotiated. We have all quietly agreed that this is
+fine. It is not fine, and the good news is that it stopped being necessary. You
+can wire your own things together now. Your own server, your own media library,
+your own database, your own model if you want one. I go further into that in
+[Where your slides actually live](/blog/where-your-slides-actually-live/).
+
+## The size of the ambition, since we are being honest
+
+Two decisions follow, and only one of them is obvious.
+
+Open source is the obvious one. Read every line, run it on your own server,
+change what does not suit you, ask nobody.
+
+The [spec](/spec/) is the one that matters more. An application can be
+abandoned. A documented format with published schemas can be picked up and
+implemented by somebody else. That is the actual promise against lock-in, and it
+is why the deck format has its own section on this site instead of a paragraph
+in the manual.
+
+I am aware of how that sounds. This is an attempt to put a standard underneath
+something that three of the largest companies on earth already have a format
+for, from a project with, at the time of writing, exactly one GitHub star, which
+is mine. Whether it works is a genuinely open question.
+
+Fine. I am putting a stake in the ground anyway, because I use this every day
+and it is simply better, and because the alternative is another decade of
+industrially generated picture books that nobody can read and nobody can check.
+
+## Tell me I am wrong
+
+I would like to know whether the thing that bothers me bothers you. Maybe you
+have made peace with it. Maybe you have built something in this direction
+already and I have missed it, in which case please point me at it.
+
+If not: trying it is one line in a terminal. There is one star on the
+repository, mine, and it would be nice to have a second one. And if you think
+this argument is wrong, say so, at length, in an email. I would rather hear it
+than not.
+
+Let's build some cool shit.
