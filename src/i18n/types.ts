@@ -30,11 +30,6 @@
 // open the page.
 // ---------------------------------------------------------------------------
 
-export interface Pillar {
-  title: string;
-  body: string;
-}
-
 /** Locale-level scalars, not page copy. */
 export interface LocaleMeta {
   /** Value for <html lang>. */
@@ -44,15 +39,44 @@ export interface LocaleMeta {
   skipToContent: string;
 }
 
+/**
+ * The site frame's labels.
+ *
+ * The primary nav answers one question - *what is this, and does it check out* -
+ * and everything else is a footer column. That rule is what decides the five:
+ *
+ *   How it works · Compared · Format spec · Docs · Blog · GitHub
+ *
+ * It is why `hosting` is no longer among them. Hosting is a commercial door, it
+ * stood first in the row, and it was answering a question nobody has yet on a
+ * site where the product itself was not in the nav at all. It now sits beside
+ * the install widget on the homepage (install it yourself / have it run for
+ * you), on /features, and in the footer.
+ *
+ * And it is why `features` is not among them either, which is the closer call.
+ * The inventory is a real page and a launch visitor does look for it - but a nav
+ * offering both "How it works" and "Features" asks the reader to guess which one
+ * holds what they want, and the homepage hands the whole thing over in an index
+ * band with a link per group. So: one door to the idea in the nav, the inventory
+ * one scroll down and first in the footer.
+ */
 export interface NavContent {
   sandbox: string;
   blog: string;
+  /**
+   * Label for /structured-slides/. The route says `structured-slides`, which is
+   * the implementation's word for it; the nav says what the page is.
+   */
+  howItWorks: string;
+  /** Label for /features/, the full inventory. Footer, and the homepage index. */
+  features: string;
   changelog: string;
+  /** Label for /hosting/. Footer and the homepage install section, not the nav. */
   hosting: string;
-  /** Label for /compare/. In the footer rather than the header: the primary nav
-   *  is deliberately four items, and the homepage band is the real entrance. */
+  /** Label for /compare/. */
   compare: string;
-  /** Label for /accessibility/, in the footer next to the comparison. */
+  /** Label for /accessibility/. In the footer's meta row, where a statement of
+   *  conformance belongs, rather than in a column of product pages. */
   accessibility: string;
   /** Label for /spec/, the format written down as a standard. */
   spec: string;
@@ -73,12 +97,30 @@ export interface WaitlistContent {
   note: string;
 }
 
+/**
+ * The footer.
+ *
+ * Three columns rather than two, each answering one question, because the old
+ * "Product" column had grown into a bin: the inventory, the comparison, the
+ * accessibility statement, the docs, the source and the studio that makes it,
+ * in one list of six with nothing in common but not being the blog.
+ *
+ *   Product   what is it        how it works · features · compared · format spec
+ *   Run it    how do I have it  docs · hosting · GitHub
+ *   Follow    is it alive       blog · changelog · RSS
+ *
+ * The accessibility statement and the studio link moved to the meta row beside
+ * the copyright, which is where a reader looks for a statement of conformance
+ * and who made this - and not among the pages that describe the product.
+ */
 export interface FooterContent {
   tagline: string;
   followHeading: string;
   followBlog: string;
   followRss: string;
   productHeading: string;
+  /** Heading of the middle column: getting an instance of your own. */
+  runHeading: string;
   productDocs: string;
   productGithub: string;
   productDreamkit: string;
@@ -121,10 +163,98 @@ export interface HomeContent {
   heroDeckTitle: string;
   heroDeckPlay: string;
   heroDeckNote: string;
+  /**
+   * The two arrows the embed paints over the frame. They are the only visible
+   * proof the deck is a deck, so they are labelled for a screen reader even
+   * though the glyph is all a sighted reader gets.
+   */
+  heroDeckPrev: string;
+  heroDeckNext: string;
+  /**
+   * The slide-type showcase. Its claim is that a deck is made of a known set of
+   * pieces, so the copy names the pieces ("a timeline, a comparison, some
+   * numbers") before it names the figure. `{count}` is substituted by
+   * `withFacts`, so the number is never typed here.
+   *
+   * @budget typesLead 35 words
+   */
+  typesKicker: string;
+  typesTitle: string;
+  typesLead: string;
+  /** Accessible name of the scrollable strip, for a reader who lands on it. */
+  typesRailLabel: string;
+  /** Marks the types where the room answers rather than watches. */
+  typesAudienceLabel: string;
+  /** On the card that ends the run, under the figure itself. */
+  typesAllLabel: string;
+  typesCta: string;
+  /**
+   * The deck-format section: the anti-lock-in argument, made by showing the
+   * file. Two paragraphs beside one code block, and no third - the field tables
+   * are in /docs/reference/ and the full envelope is on /spec/deck-format/.
+   *
+   * Copy may name a key in backticks (`$id`), which src/lib/inline.ts lets
+   * through, and may carry the `{magic}` / `{version}` / `{schemaBase}` /
+   * `{schemaVersion}` placeholders, which withSpec() substitutes. Never spell a
+   * format constant out here: two of them have moved once already.
+   *
+   * @budget 40 words per paragraph
+   */
+  formatKicker: string;
+  formatTitle: string;
+  formatBody: string[];
+  formatCodeCaption: string;
+  formatCta: string;
+  formatSchemaCta: string;
+  /**
+   * The promoted showcase: the one section on the homepage that argues with a
+   * photograph of the product rather than with a drawing of it. S4 left the slot
+   * empty on purpose - the marketing images at the time were a violet render
+   * with a zero-vote poll and a QR pointing at a fork - and deckyard's capture
+   * harness has since filled it.
+   *
+   * It is the room rather than the editor, of the two candidates that had a
+   * usable image. "A slide is named fields" is already made twice above; "the
+   * room answers" was a claim with nothing behind it.
+   *
+   * Two `alt` rules, and neither is style:
+   *
+   * - **Never invite the reader to scan the code.** The QR in the join shot
+   *   still encodes the capture instance, because re-encoding it would produce a
+   *   scannable code pointing at a deck nobody hosts. Naming it is fine;
+   *   "scan it" is a promise the picture cannot keep. (The slide's own copy says
+   *   "scan the QR code" - that is inside the image and cannot be written away.)
+   * - **Describe what is in the frame, including the numbers.** The whole claim
+   *   is that the result is real, so "a poll with results" throws away the
+   *   evidence for a reader who cannot see the picture.
+   *
+   * @budget roomLead 45 words
+   */
+  roomKicker: string;
+  roomTitle: string;
+  roomLead: string;
+  roomCta: string;
+  roomPollAlt: string;
+  roomPollCaption: string;
+  roomJoinAlt: string;
+  roomJoinCaption: string;
+  /**
+   * The band that hands the rest of the product to /features/. It used to be
+   * eight cards with an icon each - the tallest section on the page, a list
+   * pretending to be an argument, and not one link out of it. Three of the eight
+   * had by then been absorbed by the slide-type rail, the format callout and the
+   * AI section, and the other five wanted more room than a card rather than
+   * less.
+   *
+   * The list itself is not copy: it is read off `features.groups`, so the
+   * homepage and /features/ cannot name a different set of things.
+   *
+   * @budget featuresLead 30 words
+   */
   featuresKicker: string;
   featuresTitle: string;
   featuresLead: string;
-  pillars: Pillar[];
+  featuresCta: string;
   /**
    * The section about what happens when AI writes on the organisation's behalf.
    * It sits on the homepage rather than on /structured-slides because it is a
@@ -147,6 +277,37 @@ export interface HomeContent {
    * @budget 50 words per paragraph
    */
   aiLead: string[];
+  /**
+   * The figure beside that lead: where the decisions live.
+   *
+   * The claim the panels below make - the model does not design anything - is a
+   * claim about *what was already settled before it ran*, and that is a diagram
+   * rather than a sentence. One panel of fixed things, one panel of the fields
+   * left open, an arrow between them, and a caption that says what the request
+   * therefore is. It also gave the lead its right-hand column back; it used to
+   * be two long paragraphs with half a section of nothing beside them.
+   *
+   * Values are illustrative but not invented: `fixed[].key` names real files,
+   * the count and the schema version are substituted from the generated data,
+   * and `open[]` is the field list `timeline-slide` actually declares - the
+   * slide the teaser two sections up draws.
+   *
+   * @budget foot 40 words, note 8 words each
+   */
+  aiFigure: {
+    fixedLabel: string;
+    fixed: { key: string; note: string }[];
+    openLabel: string;
+    open: { key: string; value: string }[];
+    foot: string;
+  };
+  /**
+   * The three panels. The first one carries the load, so it says what the model
+   * *does* (picks a declared type, fills its fields) rather than what it cannot
+   * do: "an agent cannot invent a layout" was read as a claim about the limits
+   * of models, which is not the argument. The argument is that nothing is asking
+   * it to invent one.
+   */
   aiPoints: { title: string; body: string }[];
   /**
    * What the format does not fix. Stated on the page, not left to be found.
@@ -155,6 +316,20 @@ export interface HomeContent {
    */
   aiLimit: string;
   aiCta: string;
+  /**
+   * The other door out of the install section: have it run for you.
+   *
+   * Hosting used to be the first item in the header nav, in front of a product
+   * the nav never named. It reads as an offer here and as a price list there:
+   * the reader has just been shown the one line that installs it, so "or don't"
+   * is an answer to a question they now have. It stays one sentence and a ghost
+   * link - /hosting is the page that makes the argument, and this is not a
+   * second pitch for it.
+   *
+   * @budget hostedNote 30 words
+   */
+  hostedNote: string;
+  hostedCta: string;
   /** The band that sends someone arriving from another tool to /compare/. */
   compareKicker: string;
   compareTitle: string;
@@ -177,6 +352,60 @@ export interface HomeContent {
    */
   sandboxNote: string;
   ctaSandboxButton: string;
+}
+
+/**
+ * /features/ - the full inventory, and the destination that made deleting the
+ * eight homepage pillar cards safe rather than lossy.
+ *
+ * The homepage argues; this page lists. Everything the pillars used to claim in
+ * a card with an icon lives here as a group with its items and a link into the
+ * documentation, which is where somebody who wants the detail was always going.
+ *
+ * `id` is structural: it keys the docs link in FeaturesPage.astro, so a href is
+ * not typed into two languages. Reordering the array reorders the page; a group
+ * whose id the component does not know gets no "read more" link rather than a
+ * dead one.
+ */
+export interface FeaturesContent {
+  metaTitle: string;
+  metaDescription: string;
+  heroKicker: string;
+  heroTitle: string;
+  heroIntro: string;
+
+  groups: {
+    /** Structural. Keys the docs href in the component. */
+    id: string;
+    /** Kicker above the group heading. */
+    label: string;
+    title: string;
+    /**
+     * What the group is about, before the items list it.
+     *
+     * @budget 35 words
+     */
+    body: string;
+    /**
+     * One line for the homepage list, where this group is a link and not a
+     * section. Read by HomePage.astro, so the two pages cannot drift apart.
+     *
+     * @budget 14 words
+     */
+    teaser: string;
+    /** Label on the link into the docs. */
+    moreLabel: string;
+    /**
+     * @budget 25 words per body
+     */
+    items: { title: string; body: string }[];
+  }[];
+
+  /** The closing band: you run this yourself. */
+  runTitle: string;
+  runBody: string;
+  runHosting: string;
+  runDocs: string;
 }
 
 export interface InstallContent {
@@ -722,6 +951,7 @@ export interface Content extends LocaleMeta {
   waitlist: WaitlistContent;
   footer: FooterContent;
   home: HomeContent;
+  features: FeaturesContent;
   install: InstallContent;
   structured: StructuredContent;
   compare: CompareContent;

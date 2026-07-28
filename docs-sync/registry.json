@@ -811,13 +811,13 @@
         "client/views/editor/editor-controller.js",
         "client/views/editor/slide-list.js"
       ],
-      "sourceHash": "d966388962f02eec",
+      "sourceHash": "29a9f0f1eec335a5",
       "lang": "en",
-      "capturedAt": "2026-07-24",
+      "capturedAt": "2026-07-28",
       "recipe": {
         "id": "editor-full",
         "module": "../deckyard/capture/recipes/editor-full.js",
-        "hash": "575372a2227df504"
+        "hash": "3a379005aaf6c6dd"
       }
     },
     {
@@ -1238,6 +1238,138 @@
       "lang": "en",
       "capturedAt": "2026-01-30",
       "recipe": null
+    },
+    {
+      "id": "shot-marketing-editor-form-en",
+      "type": "screenshot",
+      "path": "public/images/marketing/editor-form-en.png",
+      "docPages": [],
+      "sources": [
+        "client/views/editor/bulk-edit-modal.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "shared/slide-types/types/funnel-slide",
+        "shared/slide-types/types/funnel-slide.js",
+        "client/styles/slides/01-layout-and-title/90-funnel-slide.css"
+      ],
+      "sourceHash": "8322385ad2182b29",
+      "lang": "en",
+      "capturedAt": "2026-07-28",
+      "recipe": {
+        "id": "editor-form-en",
+        "module": "../deckyard/capture/recipes/editor-form-en.js",
+        "hash": "52c21ac01b354052"
+      }
+    },
+    {
+      "id": "shot-marketing-editor-form-nl",
+      "type": "screenshot",
+      "path": "public/images/marketing/editor-form-nl.png",
+      "docPages": [],
+      "sources": [
+        "client/views/editor/bulk-edit-modal.js",
+        "client/views/editor/editor-form/",
+        "client/views/editor/editor-form.js",
+        "shared/slide-types/types/funnel-slide",
+        "shared/slide-types/types/funnel-slide.js",
+        "client/styles/slides/01-layout-and-title/90-funnel-slide.css"
+      ],
+      "sourceHash": "8322385ad2182b29",
+      "lang": "nl",
+      "capturedAt": "2026-07-28",
+      "recipe": {
+        "id": "editor-form-nl",
+        "module": "../deckyard/capture/recipes/editor-form-nl.js",
+        "hash": "bbc942136b9fe540"
+      }
+    },
+    {
+      "id": "shot-marketing-join-screen-en",
+      "type": "screenshot",
+      "path": "public/images/marketing/join-screen-en.png",
+      "docPages": [],
+      "sources": [
+        "client/lib/slide-runtime/follow-invite-runtime.js",
+        "client/lib/slide-runtime/slide-render.js",
+        "shared/slide-types/types/follow-invite-slide",
+        "shared/slide-types/types/follow-invite-slide.js",
+        "client/styles/slides/03-components/15-follow-invite.css",
+        "server/routes/api/present-sessions.js"
+      ],
+      "sourceHash": "48a90c0450656566",
+      "lang": "en",
+      "capturedAt": "2026-07-28",
+      "recipe": {
+        "id": "join-screen-en",
+        "module": "../deckyard/capture/recipes/join-screen-en.js",
+        "hash": "53a832e65e33c534"
+      }
+    },
+    {
+      "id": "shot-marketing-join-screen-nl",
+      "type": "screenshot",
+      "path": "public/images/marketing/join-screen-nl.png",
+      "docPages": [],
+      "sources": [
+        "client/lib/slide-runtime/follow-invite-runtime.js",
+        "client/lib/slide-runtime/slide-render.js",
+        "shared/slide-types/types/follow-invite-slide",
+        "shared/slide-types/types/follow-invite-slide.js",
+        "client/styles/slides/03-components/15-follow-invite.css",
+        "server/routes/api/present-sessions.js"
+      ],
+      "sourceHash": "48a90c0450656566",
+      "lang": "nl",
+      "capturedAt": "2026-07-28",
+      "recipe": {
+        "id": "join-screen-nl",
+        "module": "../deckyard/capture/recipes/join-screen-nl.js",
+        "hash": "e4ec5c23d3df9b9d"
+      }
+    },
+    {
+      "id": "shot-marketing-poll-live-en",
+      "type": "screenshot",
+      "path": "public/images/marketing/poll-live-en.png",
+      "docPages": [],
+      "sources": [
+        "client/lib/slide-runtime/poll.js",
+        "client/lib/slide-runtime/slide-render.js",
+        "shared/slide-types/types/poll-slide",
+        "shared/slide-types/types/poll-slide.js",
+        "client/styles/slides/03-components/10-poll.css",
+        "server/storage/interactions.js"
+      ],
+      "sourceHash": "d2bd827a80b0fafc",
+      "lang": "en",
+      "capturedAt": "2026-07-28",
+      "recipe": {
+        "id": "poll-live-en",
+        "module": "../deckyard/capture/recipes/poll-live-en.js",
+        "hash": "acbfb948d036136a"
+      }
+    },
+    {
+      "id": "shot-marketing-poll-live-nl",
+      "type": "screenshot",
+      "path": "public/images/marketing/poll-live-nl.png",
+      "docPages": [],
+      "sources": [
+        "client/lib/slide-runtime/poll.js",
+        "client/lib/slide-runtime/slide-render.js",
+        "shared/slide-types/types/poll-slide",
+        "shared/slide-types/types/poll-slide.js",
+        "client/styles/slides/03-components/10-poll.css",
+        "server/storage/interactions.js"
+      ],
+      "sourceHash": "d2bd827a80b0fafc",
+      "lang": "nl",
+      "capturedAt": "2026-07-28",
+      "recipe": {
+        "id": "poll-live-nl",
+        "module": "../deckyard/capture/recipes/poll-live-nl.js",
+        "hash": "e98931856e1ad00e"
+      }
     },
     {
       "id": "shot-new-from-content-dialog",
@@ -1709,13 +1841,13 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "107fd7b44f33527d",
+      "sourceHash": "29ba4aec6ac6d783",
       "lang": "en",
-      "capturedAt": "2026-07-24",
+      "capturedAt": "2026-07-28",
       "recipe": {
         "id": "slide-type-picker-new",
         "module": "../deckyard/capture/recipes/slide-type-picker-new.js",
-        "hash": "b6a249bc21fd58d9"
+        "hash": "3fea3b6043e8d1aa"
       }
     },
     {
@@ -1872,13 +2004,13 @@
         "shared/theme-normalize.js",
         "shared/theme-fonts.js"
       ],
-      "sourceHash": "583435b00591a1a6",
+      "sourceHash": "e20aa56db2e9370a",
       "lang": "en",
-      "capturedAt": "2026-07-24",
+      "capturedAt": "2026-07-28",
       "recipe": {
         "id": "theme-editor-full",
         "module": "../deckyard/capture/recipes/theme-editor-full.js",
-        "hash": "2da93939a472ccd3"
+        "hash": "cc36a819e80ed4c0"
       }
     },
     {

@@ -1,0 +1,86 @@
+---
+// Variant B of the promoted block S4 left empty: what happens in the room.
+//
+// Two shots side by side, because the claim needs both halves to be a claim: a
+// poll with a real, uneven result is only interesting once you can see how the
+// room got in, and the join screen on its own is a QR code with nothing behind
+// it. Together they are the loop - ask, join, answer - and neither is a diagram
+// of it.
+//
+// The shots are pictures of the slide, not of the presenter view: the presenter
+// toolbar is a different argument (notes, timer, next slide) and belongs to
+// tranche 2. What is in frame here is what the room sees.
+import Section from '@/components/layout/Section.astro';
+import Screenshot from '@/components/ui/Screenshot.astro';
+import Button from '@/components/ui/Button.astro';
+import { ui, type Lang } from '@/i18n';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].home;
+---
+
+<Section>
+  <div class="room-head">
+    <div class="room-head-copy" data-reveal>
+      <p class="kicker">{t.roomKicker}</p>
+      <h2>{t.roomTitle}</h2>
+      <p class="lead">{t.roomLead}</p>
+    </div>
+    <div class="room-head-cta" data-reveal data-reveal-delay="80">
+      <Button href="/docs/presenter/" variant="ghost">{t.roomCta}</Button>
+    </div>
+  </div>
+
+  <div class="room-shots">
+    <div data-reveal data-reveal-delay="120">
+      <Screenshot name="poll-live" lang={lang} alt={t.roomPollAlt} caption={t.roomPollCaption} />
+    </div>
+    <div data-reveal data-reveal-delay="200">
+      <Screenshot name="join-screen" lang={lang} alt={t.roomJoinAlt} caption={t.roomJoinCaption} />
+    </div>
+  </div>
+</Section>
+
+<style>
+  /* Same head shape as the slide-type rail and the features index: copy left,
+     one door right. Three sections in a row putting the button under the lead
+     would read as a stack of buttons. */
+  .room-head {
+    display: grid;
+    gap: var(--space-sm);
+  }
+  @media (min-width: 860px) {
+    .room-head {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-lg);
+      align-items: end;
+    }
+  }
+  .room-head-copy {
+    max-width: 54ch;
+  }
+  .room-head-copy h2 {
+    margin: 0.35rem 0 0.6rem;
+  }
+  .room-head-copy .lead {
+    margin-bottom: 0;
+  }
+
+  .room-shots {
+    display: grid;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+  }
+  /* Both shots are 16:9, so side by side they line up without either being
+     cropped. Below this width they stack: at half of 620px a poll bar chart is
+     four grey lines. */
+  @media (min-width: 760px) {
+    .room-shots {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+    }
+  }
+</style>

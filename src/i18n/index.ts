@@ -20,7 +20,7 @@ import type { Content, DeepPartial } from '@/i18n/types';
 import { en } from '@/i18n/locales/en';
 import { nl } from '@/i18n/locales/nl';
 
-export type { Content, Pillar } from '@/i18n/types';
+export type { Content } from '@/i18n/types';
 
 /** Display names are shown in the language switcher, in their own language. */
 export const languages = {

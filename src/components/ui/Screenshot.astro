@@ -1,0 +1,92 @@
+---
+// One marketing screenshot, framed.
+//
+// Everything under public/ is copied out byte for byte - there is no
+// astro:assets pipeline for it - so the two things astro:assets would have done
+// are done here instead: a smaller derivative is served rather than the 2x
+// capture source (scripts/derive-marketing-images.js), and `width`/`height` come
+// off that derivative so the browser reserves the right box before the bytes
+// arrive. Both numbers are read from the manifest, never typed here.
+//
+// `alt` is a required prop and has no default. It is copy, so it lives in
+// src/i18n/locales/<lang>/, and a shot used on two pages describes itself the
+// same way in both because both read the same string.
+//
+// The frame is a hairline and a shadow rather than a fake browser window: these
+// are pictures of an application, and drawing a chrome around them would imply a
+// tab bar and a URL the shot deliberately does not have.
+import { shot, type ShotName } from '@/lib/shots';
+import type { Lang } from '@/i18n';
+
+interface Props {
+  name: ShotName;
+  lang: Lang;
+  alt: string;
+  /** Optional line under the frame. Names the artifact, not the picture. */
+  caption?: string;
+  /** The first shot on a page may be worth fetching eagerly. */
+  eager?: boolean;
+  class?: string;
+}
+
+const { name, lang, alt, caption, eager = false, class: className } = Astro.props;
+const src = shot(name, lang);
+---
+
+<figure class:list={['shot', className]}>
+  <picture>
+    <source srcset={src.webp} type="image/webp" />
+    <img
+      src={src.png}
+      alt={alt}
+      width={src.width}
+      height={src.height}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+    />
+  </picture>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .shot {
+    margin: 0;
+    min-width: 0;
+  }
+
+  .shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--shot-border, var(--line));
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .shot figcaption {
+    margin-top: 0.7rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: var(--shot-caption-fg, var(--ink-mute));
+  }
+
+  /* `.section-dark` flips the semantic tokens for headings, leads and buttons,
+     but not `--line` or `--ink-mute`: those are light-surface tokens, and
+     nothing outside a component knows this figure exists. So the figure
+     re-points its own two, the same way the install widget's terminal re-points
+     the focus ring. The caption lands on --lead-fg rather than a dimmer note
+     colour because it is 0.72rem mono, which is where 4.5:1 starts to matter. */
+  :global(.section-dark) .shot {
+    --shot-border: rgba(255, 255, 255, 0.18);
+    --shot-caption-fg: rgba(242, 239, 230, 0.82);
+  }
+
+  /* A screenshot told apart from the page by a hairline disappears when the
+     reader supplies the palette. */
+  @media (forced-colors: active) {
+    .shot img {
+      border-color: CanvasText;
+    }
+  }
+</style>

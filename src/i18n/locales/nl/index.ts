@@ -6,6 +6,7 @@ import { spec } from './spec';
 import { waitlist } from './waitlist';
 import { footer } from './footer';
 import { home } from './home';
+import { features } from './features';
 import { install } from './install';
 import { structured } from './structured';
 import { compare } from './compare';
@@ -24,6 +25,7 @@ export const nl: Content = {
   waitlist,
   footer,
   home,
+  features,
   install,
   structured,
   compare,

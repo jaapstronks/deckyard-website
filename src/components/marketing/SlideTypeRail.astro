@@ -1,0 +1,258 @@
+---
+// Homepage showcase for the slide-type registry.
+//
+// The claim is "a deck is made of a known set of pieces", not "look how many
+// there are". The count is the evidence, not the point - which is why the glyphs
+// come first and the figure only appears in the lead and on the card that ends
+// the run.
+//
+// Everything drawn here is derived. The types come from src/lib/featuredTypes.ts
+// (a curated order, checked against the registry at build time), the labels from
+// core's registry, and the pictures from the same `{ kind, cells, align }` spec
+// the editor's own picker draws. Nothing about a slide type is transcribed into
+// this component, so a rename in core moves the label here without anybody
+// editing copy.
+//
+// Two things this deliberately is not:
+//
+//  - **Not the PNGs in public/images/slide-types/.** The colour objection has
+//    gone - those are renders of the then-default violet theme, and the default
+//    is now the site's own green - but the choice does not turn on colour. The
+//    schematic is the more honest picture: it says "this is a shape with named
+//    regions", which is the argument, where a screenshot says "this is a slide
+//    somebody made". The 38 also still carry placeholder content, and no recipe
+//    re-renders them; that would be a briefing to deckyard, not a swap here.
+//  - **Not a grid of all of them.** A complete list is what /spec/slide-types/
+//    is for. A row that runs off the edge of the screen makes the "and there are
+//    more" point without a sentence, and costs one section instead of six rows.
+import Section from '@/components/layout/Section.astro';
+import Schematic from '@/components/spec/Schematic.astro';
+import Button from '@/components/ui/Button.astro';
+import { ui, localizePath, type Lang } from '@/i18n';
+import { withFacts } from '@/lib/facts';
+import { featuredTypes } from '@/lib/featuredTypes';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].home;
+
+const href = localizePath('/spec/slide-types/', lang);
+const types = featuredTypes();
+---
+
+<Section variant="tint">
+  <div class="rail-head">
+    <div class="rail-head-copy">
+      <p class="kicker">{t.typesKicker}</p>
+      <h2>{t.typesTitle}</h2>
+      <p class="lead">{withFacts(t.typesLead)}</p>
+    </div>
+    <div class="rail-head-cta">
+      <Button href={href} variant="ghost">{withFacts(t.typesCta)}</Button>
+    </div>
+  </div>
+
+  <!-- A scrollable region is a keyboard trap unless it can take focus, so the
+       strip is a labelled group with a tab stop: arrow keys then scroll it. It
+       is not a tablist or a radiogroup - nothing here is selected, so claiming
+       either role would promise keys (Home/End, roving focus) that a plain
+       scroller does not deliver. See src/lib/roving.ts for when it would. -->
+  <div
+    class="rail"
+    tabindex="0"
+    role="group"
+    aria-label={withFacts(t.typesRailLabel)}
+    data-reveal
+    data-reveal-delay="80"
+  >
+    <ul class="rail-track">
+      {
+        types.map((type) => (
+          <li class:list={['rail-card', { 'rail-card--audience': type.audience }]}>
+            <Schematic spec={type.schematic} class="rail-glyph" />
+            <p class="rail-label">{type.label}</p>
+            {type.audience && <p class="rail-note">{t.typesAudienceLabel}</p>}
+          </li>
+        ))
+      }
+
+      <li class="rail-card rail-card--all">
+        <a href={href}>
+          <span class="rail-all-count">{withFacts('{count}')}</span>
+          <span class="rail-all-label">{t.typesAllLabel}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</Section>
+
+<style>
+  /* ---------- the heading, with the way out beside it ----------
+     The lead is held to a reading measure, which on a wide screen leaves the
+     right half of the row empty. The link to the full registry goes there
+     rather than under the strip: it is the section's one action, and a reader
+     who has decided after the first sentence should not have to scroll past
+     thirteen cards to find it. */
+
+  .rail-head {
+    display: grid;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+  @media (min-width: 860px) {
+    .rail-head {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: var(--space-lg);
+    }
+  }
+  .rail-head-copy {
+    max-width: 46ch;
+  }
+  .rail-head-copy h2 {
+    margin: 0.35rem 0 0.7rem;
+  }
+  .rail-head-copy .lead {
+    margin-bottom: 0;
+  }
+  .rail-head-cta {
+    /* Sit on the lead's last baseline rather than on the grid line, so the
+       button reads as belonging to the paragraph beside it. */
+    padding-bottom: 0.15rem;
+  }
+
+  /* ---------- the strip ----------
+     Bleeds to both edges of the viewport rather than stopping at the container,
+     because a run of cards that ends flush with the text above it reads as a
+     finished row of fourteen. Cut off by the screen it reads as a shelf that
+     continues, which is the true statement and the reason the copy never has to
+     say "and 25 more". */
+
+  .rail {
+    /* Where the first card sits: the container's own left edge, so the shelf
+       starts under the heading rather than at the screen edge. */
+    --rail-inset: max(var(--gutter), calc(50vw - var(--container) / 2));
+
+    /* Escape the container: full viewport width, re-indented by that inset. */
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    padding-inline: var(--rail-inset);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    /* The snapport, not the padding box. Without this the first card snaps to
+       the scroll container's own edge, which scrolls the inset out of view and
+       leaves the shelf starting at x=0 with its first card clipped. */
+    scroll-padding-inline: var(--rail-inset);
+    /* Room for the focus ring and the cards' own shadow, which a plain overflow
+       container would clip. */
+    padding-block: 0.5rem 1.25rem;
+    scrollbar-width: thin;
+  }
+  .rail:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  .rail-track {
+    display: flex;
+    gap: 0.9rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: max-content;
+  }
+
+  .rail-card {
+    flex: 0 0 auto;
+    width: 13.5rem;
+    scroll-snap-align: start;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 0.7rem 0.7rem 0.8rem;
+    box-shadow: var(--shadow-sm);
+  }
+  @media (max-width: 560px) {
+    .rail-card {
+      width: 11rem;
+    }
+  }
+
+  .rail-glyph {
+    border: 1px solid var(--line);
+  }
+
+  .rail-label {
+    margin: 0.65rem 0 0;
+    font-family: var(--display);
+    font-variation-settings: 'wght' 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+
+  /* The types where the audience answers rather than watches. Told apart by a
+     word as well as by the border colour: a state carried only by a colour is
+     gone for a reader who supplies their own palette, and was never there for
+     one who cannot see it. */
+  .rail-note {
+    margin: 0.2rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--brass-text);
+  }
+  .rail-card--audience {
+    border-color: color-mix(in oklab, var(--brass) 45%, var(--line));
+  }
+
+  /* ---------- the card that ends the run ---------- */
+
+  .rail-card--all {
+    padding: 0;
+    background: var(--green-wash);
+    border-color: color-mix(in oklab, var(--green) 30%, var(--line));
+    box-shadow: none;
+  }
+  .rail-card--all a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--green);
+    border-radius: inherit;
+  }
+  .rail-all-count {
+    font-family: var(--display);
+    font-size: var(--step-4);
+    font-variation-settings:
+      'opsz' 40,
+      'wght' 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .rail-all-label {
+    margin-top: 0.35rem;
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+  .rail-card--all a:hover .rail-all-label {
+    text-decoration: underline;
+  }
+
+  /* The green plate and the brass border are both colour-only signals. Give the
+     two special cards a shape the user's own palette keeps. */
+  @media (forced-colors: active) {
+    .rail-card--audience,
+    .rail-card--all {
+      border-width: 2px;
+    }
+  }
+</style>

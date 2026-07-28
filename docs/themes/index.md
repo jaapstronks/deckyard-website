@@ -45,14 +45,24 @@ Note: Changing themes may affect the visual appearance of existing slides. Revie
 
 ## Built-in Themes
 
-Deckyard includes several built-in themes:
+Six themes ship in `themes/`. Only one of them is Deckyard's own; the rest are
+neutral archetypes meant to be picked, forked or ignored.
 
-| Theme | Style | Heading Font | Body Font |
-|-------|-------|-------------|-----------|
-| Deckyard | Purple, rounded | Bricolage Grotesque | Inter |
-| Warm | Terracotta, earthy | Instrument Serif | DM Sans |
-| Sage | Green, elegant | Playfair Display | DM Sans |
-| Dark | Dark backgrounds | Space Grotesk | Inter |
+Note that the **id** and the **label** are not the same string: the id is what a
+deck stores and what `DEFAULT_THEME` takes, the label is only what the UI shows.
+
+| id | label | Accent | Heading font | Body font |
+|----|-------|--------|--------------|-----------|
+| `brand` | Forest | Forest green `#254d38` with brass `#b8860f` on warm paper — **the default** | Bricolage Grotesque | Inter |
+| `deckyard` | Deckyard | Violet `#7c3aed` — was the default until the brand theme landed | Bricolage Grotesque | Inter |
+| `corporate` | Boardroom | Blue `#2563eb` | Archivo | Manrope |
+| `editorial` | Editorial | Carmine `#9f1239` | Fraunces | Work Sans |
+| `midnight` | Midnight | Cyan `#38bdf8` on near-black | Space Grotesk | Inter |
+| `playful` | Sunset | Orange `#ea580c` | Poppins | Nunito |
+
+The default is `brand` because a theme is meant to be *your* house style rather
+than the product's: Deckyard's own colours live in one theme among six, not in
+the fallback everyone inherits by accident.
 
 ## Creating Custom Themes
 

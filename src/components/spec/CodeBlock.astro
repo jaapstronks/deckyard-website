@@ -27,3 +27,43 @@ const name = label ?? caption;
     aria-label={name ? withSpec(name) : undefined}><code>{withSpec(code)}</code></pre>
   {caption && <figcaption>{withSpec(caption)}</figcaption>}
 </figure>
+
+<style>
+  /* These rules used to sit in spec.css, which only SpecShell imports - so the
+     first use outside /spec/ (the homepage's format section) rendered a bare
+     <figure><pre> with no plate, no border and no monospace. A component that
+     silently loses its appearance depending on which page it is on is not a
+     component, so it owns its own look now. */
+
+  .spec-code {
+    margin: 1.6rem 0 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--green-deep);
+    overflow: hidden;
+
+    /* The block paints its own dark plate inside a light section, so it owes
+       the focus ring a colour that survives on it - the same repair
+       .section-dark does for everything it contains. */
+    --focus-ring: var(--brass-bright);
+  }
+  .spec-code pre {
+    margin: 0;
+    padding: 1.1rem 1.3rem;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: #e8e4d8;
+    tab-size: 2;
+  }
+  .spec-code figcaption {
+    padding: 0.6rem 1.3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(232, 228, 216, 0.62);
+  }
+</style>

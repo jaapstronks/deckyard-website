@@ -1,0 +1,30 @@
+{
+  "poll-live-nl": {
+    "png": "/images/marketing/poll-live-nl-1200.png",
+    "webp": "/images/marketing/poll-live-nl-1200.webp",
+    "width": 1200,
+    "height": 675,
+    "slot": 600
+  },
+  "poll-live-en": {
+    "png": "/images/marketing/poll-live-en-1200.png",
+    "webp": "/images/marketing/poll-live-en-1200.webp",
+    "width": 1200,
+    "height": 675,
+    "slot": 600
+  },
+  "join-screen-nl": {
+    "png": "/images/marketing/join-screen-nl-1200.png",
+    "webp": "/images/marketing/join-screen-nl-1200.webp",
+    "width": 1200,
+    "height": 675,
+    "slot": 600
+  },
+  "join-screen-en": {
+    "png": "/images/marketing/join-screen-en-1200.png",
+    "webp": "/images/marketing/join-screen-en-1200.webp",
+    "width": 1200,
+    "height": 675,
+    "slot": 600
+  }
+}

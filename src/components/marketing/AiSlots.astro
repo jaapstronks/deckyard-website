@@ -1,0 +1,174 @@
+---
+// The AI argument, as a picture: what is already decided, and what is left for
+// the model to say.
+//
+// It exists because the section it sits in used to be two long paragraphs in a
+// half-width column with an empty half beside them, and the claim underneath
+// ("the model does not design anything") is a claim about *where the decisions
+// live*. That is a diagram, not a sentence: one panel of things that were fixed
+// before the model ran, one panel of the handful of fields it fills in, and an
+// arrow between them.
+//
+// Nothing here is a fresh assertion. The type count comes from the core
+// registry via withFacts, the schema version from the format constants via
+// withSpec, and the field names are the ones /spec/slide-types/ publishes for
+// timeline-slide - the same slide the teaser two sections up draws.
+import { ui, type Lang } from '@/i18n';
+import { withFacts } from '@/lib/facts';
+import { withSpec } from '@/lib/spec';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].home.aiFigure;
+
+/** Copy may quote the type count and the schema version; neither is typed. */
+const sub = (copy: string) => withSpec(withFacts(copy));
+---
+
+<figure class="aif" data-reveal data-reveal-delay="160">
+  <div class="aif-panel aif-panel--fixed">
+    <p class="aif-label">
+      <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" focusable="false">
+        <path
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          d="M7 10V7a5 5 0 0 1 10 0v3M5 10h14v10H5z"></path>
+      </svg>
+      {t.fixedLabel}
+    </p>
+    <ul>
+      {
+        t.fixed.map((row) => (
+          <li>
+            <span class="aif-key">{sub(row.key)}</span>
+            <span class="aif-note">{sub(row.note)}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <p class="aif-join" aria-hidden="true">↓</p>
+
+  <div class="aif-panel aif-panel--open">
+    <p class="aif-label">{t.openLabel}</p>
+    <ul>
+      {
+        t.open.map((row) => (
+          <li>
+            <span class="aif-key">{row.key}</span>
+            <span class="aif-val">{row.value}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <figcaption>{t.foot}</figcaption>
+</figure>
+
+<style>
+  /* On the dark plate, so the panels paint their own surface: `--card` and
+     `--line` are light-surface tokens and `.section-dark` does not flip them.
+     Same two values as `.ai-points` below it, on purpose - this is the same
+     material, one step earlier in the argument. */
+  .aif {
+    margin: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .aif-panel {
+    padding: 0.95rem 1.05rem 1.05rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.06);
+  }
+  /* The one that is left open reads as the live one: a brass edge on the side,
+     which is the same signal `.ai-limit` uses two blocks down. */
+  .aif-panel--open {
+    border-color: rgba(217, 164, 65, 0.45);
+  }
+
+  .aif-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0 0 0.7rem;
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(242, 239, 230, 0.62);
+  }
+  .aif-panel--open .aif-label {
+    color: var(--brass-bright);
+  }
+  .aif-label svg {
+    flex: 0 0 auto;
+  }
+
+  .aif ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .aif li {
+    display: grid;
+    gap: 0.1rem 0.7rem;
+  }
+  /* Key beside value once there is room for both; stacked before that, because a
+     7rem key column next to a wrapped value is two columns of ragged text.
+     7.25rem is set by the longest key, `deck.schema.json`: a track narrower than
+     its content does not widen, it spends the gap, and the two words touched. */
+  @media (min-width: 420px) {
+    .aif li {
+      grid-template-columns: 7.25rem minmax(0, 1fr);
+      align-items: baseline;
+    }
+  }
+
+  .aif-key {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: rgba(242, 239, 230, 0.92);
+  }
+  .aif-note {
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: rgba(242, 239, 230, 0.62);
+  }
+  .aif-val {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    color: var(--brass-bright);
+  }
+
+  .aif-join {
+    margin: 0;
+    text-align: center;
+    font-size: 0.9rem;
+    line-height: 1;
+    color: rgba(242, 239, 230, 0.5);
+  }
+
+  .aif figcaption {
+    margin-top: 0.35rem;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: rgba(242, 239, 230, 0.72);
+  }
+
+  /* Told apart by a border colour, which is exactly what a forced palette takes
+     away: name the open panel in text there instead. */
+  @media (forced-colors: active) {
+    .aif-panel--open {
+      border-width: 3px;
+    }
+  }
+</style>

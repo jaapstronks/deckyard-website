@@ -41,6 +41,28 @@ enough - the deck has to be downloaded again.
 Links out of the component keep the plain URL on purpose: a deck opening in a
 tab of its own wants its controls back.
 
+## The arrows: a remote control, not a second viewer
+
+`?ui=min` also takes the export's Previous/Next row, and a deck with nothing to
+press reads as a picture of a deck. So `DeckEmbed` paints two arrows of its own
+over the frame and each one clicks the export's `#btnPrev` / `#btnNext` inside
+it - the same buttons the hidden row would have shown. Clamping at the ends, the
+progress fill, the `#slide=` history entry and the screen-reader announcement all
+stay the export's job; the site only mirrors `disabled` back onto its own
+buttons so the last slide still says so.
+
+Two things this costs, both of them handled by hiding the arrows rather than
+showing dead ones:
+
+- **Two ids from the export.** An export older than 1.6.0 has no `?ui=min` and
+  draws its own controls anyway, so it needs no arrows from us.
+- **Same origin.** A deck served from `public/` is same-origin by construction,
+  which is what makes reading the frame legal. Point `src` at another host and
+  the arrows stay hidden - the frame cannot be read from here.
+
+The keyboard contract is unchanged: with the frame focused, the export's own
+arrows/Space/Home/End/F still work.
+
 ## A deck above the fold: `poster`
 
 A real export is a megabyte and a half over the wire, which is too much to put

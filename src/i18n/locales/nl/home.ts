@@ -15,54 +15,66 @@ export const home: HomeContent = {
   heroDeckPlay: 'Start de presentatie',
   heroDeckNote:
     'Geen screenshot: een echt deck, geëxporteerd uit Deckyard en met één tag in deze pagina gezet.',
-  featuresKicker: 'Onder de motorkap',
-  featuresTitle: 'Al gebouwd, nu in de openbaarheid',
-  featuresLead:
-    'Dit is geen wachtlijst voor een idee. Deckyard is een werkend platform dat dagelijks wordt gebruikt, en de broncode staat nu openbaar op GitHub. Dit is wat je krijgt.',
-  pillars: [
-    {
-      title: '{count} slidetypes',
-      body: 'Grafieken, tijdlijnen, matrices, funnels, KPI’s, galerijen, quotes en meer: gestructureerde layouts die het ontwerp doen, zodat je team alleen nog inhoud typt.',
-    },
-    {
-      title: 'AI op jouw voorwaarden',
-      body: 'Mensen grijpen naar AI om decks op te zetten; Deckyard geeft jou de regie. Gebruik je eigen API-sleutel, stel de prompts bij, of stuur het aan vanuit je eigen tools via MCP. Geen verplichte LLM, geen lock-in: gebruik zoveel of zo weinig als je wilt.',
-    },
-    {
-      title: 'Echte samenwerking',
-      body: 'Nodig medewerkers uit met fijnmazige rechten, reageer live op slides, werk samen zonder conflicten, en draai wijzigingen terug met versiegeschiedenis.',
-    },
-    {
-      title: 'Publiceer overal',
-      body: 'Zet een deck met één klik online, deel hem met een link, of embed hem op je eigen site met de JS-SDK. Social previews krijg je er gratis bij.',
-    },
-    {
-      title: 'Live publiek',
-      body: 'Polls, Likert-schalen, gemodereerde Q&A, feedback en leadcapture op de slides zelf; analytics per slide vertellen je achteraf wat aankwam.',
-    },
-    {
-      title: 'Je merk als software',
-      body: 'Fonts, kleuren, logo’s en layoutregels leg je één keer vast als thema. Iedereen is automatisch on brand; verander het merk centraal en elke deck volgt.',
-    },
-    {
-      title: 'Geen lock-in',
-      body: 'Exporteer op elk moment naar PDF, PowerPoint, zelfstandige HTML, PNG of JSON. Je decks zijn documenten die je bezit, geen records in de cloud van iemand anders.',
-    },
-    {
-      title: 'Zelf hosten in een middag',
-      body: 'Eén Docker Compose-bestand, Node en Postgres. Draai het op je eigen servers onder je eigen regels, of wacht op onze gehoste versie op Europese infrastructuur.',
-    },
+  heroDeckPrev: 'Vorige slide',
+  heroDeckNext: 'Volgende slide',
+  typesKicker: 'De onderdelen',
+  typesTitle: 'Elke deck bestaat uit dezelfde handvol dingen',
+  typesLead:
+    'Een tijdlijn, een vergelijking, wat cijfers, een vraag aan de zaal. Deckyard levert er {count} als gedeclareerde types, zodat je kiest wat je bedoelt in plaats van het te tekenen.',
+  typesRailLabel: 'Een selectie uit de {count} slidetypes',
+  typesAudienceLabel: 'de zaal antwoordt',
+  typesAllLabel: 'slidetypes, met hun velden',
+  typesCta: 'Bekijk alle {count}',
+  formatKicker: 'Geen lock-in, opgeschreven',
+  formatTitle: 'Je deck is een bestand dat je kunt lezen',
+  formatBody: [
+    'Een deck is JSON. Het noemt het formaat waarin het staat, de versie van dat formaat, en een gedeclareerd type voor elke slide. Daar hoeft geen Deckyard te draaien om het te begrijpen.',
+    'En het formaat is gepubliceerd in plaats van beschreven: het JSON Schema staat op de URL die z’n eigen `$id` noemt, dus iedereen kan een deck ertegen valideren zonder het ons eerst te vragen.',
   ],
+  formatCodeCaption: 'De envelop, ingekort',
+  formatCta: 'Lees de formaatspecificatie',
+  formatSchemaCta: 'Bekijk de schema’s',
+  roomKicker: 'In de zaal',
+  roomTitle: 'Het deck vraagt, en de zaal antwoordt',
+  roomLead:
+    'Een poll is een slidetype, geen tweede tool die er los naast hangt. Jij presenteert, de zaal komt binnen op een kort adres met een code, en de antwoorden landen op de slide waar iedereen al naar kijkt.',
+  roomCta: 'Hoe presenteren werkt',
+  roomPollAlt:
+    'Een pollslide tijdens een presentatie. Vier antwoorden, de balken ongelijk: 31 van de 47 stemmen op de derde optie, met het lopende totaal eronder.',
+  roomPollCaption: 'poll-slide, tijdens de presentatie',
+  roomJoinAlt:
+    'De uitnodigingsslide op het grote scherm: een QR-code naast het adres deckyard.eu/go en een toegangscode van vijf letters.',
+  roomJoinCaption: 'follow-invite-slide, op het grote scherm',
+  featuresKicker: 'De rest',
+  featuresTitle: 'En dan is er nog alles eromheen',
+  featuresLead:
+    'Het deck maken is de ene helft. De andere helft is je huisstijl, je team, de zaal waar je staat, en het ding er achteraf weer uit krijgen.',
+  featuresCta: 'Bekijk alle functies',
   aiKicker: 'Het stuk dat niemand heeft opgelost',
   aiTitle: 'Jullie mensen laten AI nu al voor de organisatie schrijven',
   aiLead: [
-    'Niet als beleidsbesluit. Iemand moest donderdag een deck maken, plakte de aantekeningen in een chatvenster en plakte het antwoord terug. Het leest prima, het gaat sneller, en het gaat niet meer ophouden.',
-    'Wat niemand kan zeggen, is of wat eruit kwam binnen de regels van de organisatie blijft: de juiste claims, de juiste toon, het juiste beeld, de dingen die er wettelijk in moeten staan. Elk deck nalopen schaalt niet, en mensen vragen om geen AI te gebruiken heeft nog nooit gewerkt.',
+    'Niet als beleidsbesluit. Iemand moest donderdag een deck maken, plakte de aantekeningen in een chatvenster en plakte het antwoord terug. Het gaat sneller, en het gaat niet meer ophouden.',
+    'Wat niemand kan zeggen, is of wat terugkwam binnen de regels van de organisatie blijft: de juiste claims, het juiste beeld, de dingen die er wettelijk in moeten staan. Elk deck nalopen schaalt niet, en mensen vragen om geen AI te gebruiken heeft nog nooit gewerkt.',
   ],
+  aiFigure: {
+    fixedLabel: 'Ligt vast voordat het draait',
+    fixed: [
+      { key: 'slidetypes', note: '{count} gedeclareerde vormen met benoemde velden' },
+      { key: 'theme.json', note: 'kleuren, fonts, logo’s, ruimte' },
+      { key: 'deck.schema.json', note: 'gepubliceerd als v{schemaVersion}: wat valideert' },
+    ],
+    openLabel: 'Blijft over voor het model',
+    open: [
+      { key: 'type', value: 'timeline-slide' },
+      { key: 'title', value: '"Waar het geld heenging"' },
+      { key: 'items', value: '4 x { date, title }' },
+    ],
+    foot: 'De vraag is dus "vul deze velden in", niet "ontwerp een slide". Een kleinere vraag, een goedkoper antwoord, en niets meer om fout te doen dat het thema niet al had beslist.',
+  },
   aiPoints: [
     {
-      title: 'Een agent kan geen layout verzinnen',
-      body: 'Er is geen layout om te verzinnen. Hij vraagt welke slidetypes bestaan en vult de velden van een van die types. Het ontwerp was al beslist, door jou, in het thema.',
+      title: 'Het vult velden, het ontwerpt niet',
+      body: 'De layout is niet aan het model. Het vraagt welke slidetypes er zijn, kiest er een, en vult de velden die dat type declareert. Het ontwerp was al beslist voordat het draaide, door jou, in het thema.',
     },
     {
       title: 'Een schrijfactie wordt getoetst als elke andere',
@@ -76,6 +88,9 @@ export const home: HomeContent = {
   aiLimit:
     'Wat dit níet doet, is de tekst waar maken. Een model kan nog steeds een zelfverzekerde zin schrijven over een getal dat het zelf bedacht heeft, en geen formaat vangt dat. Wat het niet meer kan, is je iets geven dat in niets op je organisatie lijkt, of dat stil de vorm breekt waar al het andere in staat.',
   aiCta: 'Hoe dat werkt',
+  hostedNote:
+    'Of laat het draaien: een eigen instance op je eigen domein, gehost in Europa, op dezelfde code. De hosting is wat de ontwikkeling betaalt.',
+  hostedCta: 'Hoe hosting werkt',
   compareKicker: 'Je komt ergens vandaan',
   compareTitle: 'Hoe dit zich verhoudt tot wat je nu gebruikt',
   compareBody:

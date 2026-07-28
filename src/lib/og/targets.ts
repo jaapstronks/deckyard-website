@@ -34,6 +34,14 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     card: (t) => ({ label: t.nav.changelog, title: t.changelog.title, intro: t.changelog.intro }),
   },
   {
+    path: '/features',
+    card: (t) => ({
+      label: t.features.heroKicker,
+      title: t.features.heroTitle,
+      intro: t.features.heroIntro,
+    }),
+  },
+  {
     path: '/hosting',
     card: (t) => ({
       label: t.hosting.heroKicker,

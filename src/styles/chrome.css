@@ -24,7 +24,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 64px;
+    height: var(--header-h);
   }
 
   .brand {
@@ -61,6 +61,12 @@
   }
   /* inline-flex + min-height rather than bare text: a nav link's hit area is
      its line box, which at this size is under the 24px WCAG 2.5.8 asks for. */
+  /* A label is one word to the reader even when it is three to the layout: the
+     bar is `--header-h` tall and a link that wraps grows out of it rather than
+     pushing anything. Before S5 every label was a single word and nothing could
+     wrap; "How it works" / "Hoe het werkt" broke into two lines at 780px and
+     into three at 740px. With nowrap the row keeps its natural width instead,
+     which is what the drawer breakpoint below is now set from. */
   .site-nav a {
     display: inline-flex;
     align-items: center;
@@ -69,6 +75,7 @@
     font-weight: 550;
     font-size: 0.95rem;
     text-decoration: none;
+    white-space: nowrap;
     color: var(--ink-soft);
   }
   .site-nav a:hover,
@@ -235,9 +242,19 @@
 
   /* ---------- Mobile drawer ----------
      Collapse the nav links + language switcher into a hamburger drawer.
-     Logo and the CTA stay visible in the bar. */
+     Logo and the CTA stay visible in the bar.
 
-  @media (max-width: 700px) {
+     940px, not the 700px this was when the nav held four one-word labels. S5
+     put five in it, two of them phrases, and measured where the row stops
+     fitting beside the brand and the CTA: 860px in Dutch, 780px in English.
+     940 clears the longer of the two with room for a label that grows.
+
+     `.nav-gh-label` in SiteHeader.astro carries the same number - the GitHub
+     link is a bare mark in the bar and a mark plus its label in the drawer, so
+     the two have to switch together. Media queries cannot read a custom
+     property, so it is written twice on purpose; move both. */
+
+  @media (max-width: 940px) {
     .nav-toggle {
       display: inline-flex;
     }
@@ -390,6 +407,7 @@
     border-top: 1px solid rgba(242, 239, 230, 0.14);
     display: flex;
     flex-wrap: wrap;
+    align-items: baseline;
     gap: 10px 30px;
     justify-content: space-between;
     font-family: var(--mono);
@@ -398,6 +416,25 @@
     letter-spacing: 0.12em;
     /* 0.5 landed on 4.45:1 - just under the bar for text this small. */
     color: rgba(242, 239, 230, 0.62);
+  }
+  /* The legal row: the accessibility statement and the studio. A list rather
+     than two loose links, because they are two items of one kind, and it keeps
+     them together when the row wraps instead of stranding one under the
+     copyright. Underlined, unlike the columns above: at this size, uppercase and
+     letterspaced, a link told apart from its neighbours by brightness alone is
+     not told apart at all. */
+  .footer-meta-links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    margin: 0;
+    padding: 0;
+  }
+  .footer-meta-links a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: from-font;
   }
 
   /* The footer is a dark plate, so the ring flips the way .section-dark does. */
