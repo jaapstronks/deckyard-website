@@ -1,18 +1,4 @@
 {
-  "editor-form-nl": {
-    "png": "/images/marketing/editor-form-nl-2240.png",
-    "webp": "/images/marketing/editor-form-nl-2240.webp",
-    "width": 2240,
-    "height": 1400,
-    "slot": 1120
-  },
-  "editor-form-en": {
-    "png": "/images/marketing/editor-form-en-2240.png",
-    "webp": "/images/marketing/editor-form-en-2240.webp",
-    "width": 2240,
-    "height": 1400,
-    "slot": 1120
-  },
   "poll-live-nl": {
     "png": "/images/marketing/poll-live-nl-1200.png",
     "webp": "/images/marketing/poll-live-nl-1200.webp",
