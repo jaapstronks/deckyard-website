@@ -93,6 +93,9 @@
     /* ---- Measure ---- */
     --container: 1120px;
     --container-text: 700px;
+    /* Height of the sticky header. Read by anything that has to clear it -
+       a `position: sticky` column, a scroll-margin on an anchor target. */
+    --header-h: 64px;
   }
 
   /* ---- Surface semantics ----

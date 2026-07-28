@@ -30,11 +30,6 @@
 // open the page.
 // ---------------------------------------------------------------------------
 
-export interface Pillar {
-  title: string;
-  body: string;
-}
-
 /** Locale-level scalars, not page copy. */
 export interface LocaleMeta {
   /** Value for <html lang>. */
@@ -47,6 +42,9 @@ export interface LocaleMeta {
 export interface NavContent {
   sandbox: string;
   blog: string;
+  /** Label for /features/, the full inventory. Header placement is S5's call;
+   *  for now it is the first item in the footer's product column. */
+  features: string;
   changelog: string;
   hosting: string;
   /** Label for /compare/. In the footer rather than the header: the primary nav
@@ -157,10 +155,23 @@ export interface HomeContent {
   formatCodeCaption: string;
   formatCta: string;
   formatSchemaCta: string;
+  /**
+   * The band that hands the rest of the product to /features/. It used to be
+   * eight cards with an icon each - the tallest section on the page, a list
+   * pretending to be an argument, and not one link out of it. Three of the eight
+   * had by then been absorbed by the slide-type rail, the format callout and the
+   * AI section, and the other five wanted more room than a card rather than
+   * less.
+   *
+   * The list itself is not copy: it is read off `features.groups`, so the
+   * homepage and /features/ cannot name a different set of things.
+   *
+   * @budget featuresLead 30 words
+   */
   featuresKicker: string;
   featuresTitle: string;
   featuresLead: string;
-  pillars: Pillar[];
+  featuresCta: string;
   /**
    * The section about what happens when AI writes on the organisation's behalf.
    * It sits on the homepage rather than on /structured-slides because it is a
@@ -213,6 +224,60 @@ export interface HomeContent {
    */
   sandboxNote: string;
   ctaSandboxButton: string;
+}
+
+/**
+ * /features/ - the full inventory, and the destination that made deleting the
+ * eight homepage pillar cards safe rather than lossy.
+ *
+ * The homepage argues; this page lists. Everything the pillars used to claim in
+ * a card with an icon lives here as a group with its items and a link into the
+ * documentation, which is where somebody who wants the detail was always going.
+ *
+ * `id` is structural: it keys the docs link in FeaturesPage.astro, so a href is
+ * not typed into two languages. Reordering the array reorders the page; a group
+ * whose id the component does not know gets no "read more" link rather than a
+ * dead one.
+ */
+export interface FeaturesContent {
+  metaTitle: string;
+  metaDescription: string;
+  heroKicker: string;
+  heroTitle: string;
+  heroIntro: string;
+
+  groups: {
+    /** Structural. Keys the docs href in the component. */
+    id: string;
+    /** Kicker above the group heading. */
+    label: string;
+    title: string;
+    /**
+     * What the group is about, before the items list it.
+     *
+     * @budget 35 words
+     */
+    body: string;
+    /**
+     * One line for the homepage list, where this group is a link and not a
+     * section. Read by HomePage.astro, so the two pages cannot drift apart.
+     *
+     * @budget 14 words
+     */
+    teaser: string;
+    /** Label on the link into the docs. */
+    moreLabel: string;
+    /**
+     * @budget 25 words per body
+     */
+    items: { title: string; body: string }[];
+  }[];
+
+  /** The closing band: you run this yourself. */
+  runTitle: string;
+  runBody: string;
+  runHosting: string;
+  runDocs: string;
 }
 
 export interface InstallContent {
@@ -758,6 +823,7 @@ export interface Content extends LocaleMeta {
   waitlist: WaitlistContent;
   footer: FooterContent;
   home: HomeContent;
+  features: FeaturesContent;
   install: InstallContent;
   structured: StructuredContent;
   compare: CompareContent;

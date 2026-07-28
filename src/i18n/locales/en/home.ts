@@ -32,44 +32,11 @@ export const home: HomeContent = {
   formatCodeCaption: 'The envelope, shortened',
   formatCta: 'Read the format spec',
   formatSchemaCta: 'See the schemas',
-  featuresKicker: 'Under the hood',
-  featuresTitle: 'Already built, now in the open',
+  featuresKicker: 'Everything else',
+  featuresTitle: 'And then there is everything around the slide',
   featuresLead:
-    "This isn't a waitlist for an idea. Deckyard is a working platform in daily use, and the source is now public on GitHub. Here's what ships.",
-  pillars: [
-    {
-      title: '{count} slide types',
-      body: 'Charts, timelines, matrices, funnels, KPIs, galleries, quotes and more: structured layouts that do the design, so your team only types content.',
-    },
-    {
-      title: 'AI on your terms',
-      body: 'People reach for AI to draft decks; Deckyard puts you in control of it. Bring your own API key, tune the prompts, or drive it from your own tools over MCP. No forced LLM, no lock-in: use as much or as little as you want.',
-    },
-    {
-      title: 'Real collaboration',
-      body: 'Invite collaborators with granular permissions, comment on slides in real time, edit together without conflicts, and roll back with version history.',
-    },
-    {
-      title: 'Publish anywhere',
-      body: 'Put a deck on the web in one click, share it with a link, or embed it in your own site with the JS SDK. Social preview images come free.',
-    },
-    {
-      title: 'Live audiences',
-      body: 'Polls, Likert scales, moderated Q&A, feedback and lead capture on the slides themselves; per-slide analytics tell you afterwards what landed.',
-    },
-    {
-      title: 'Your brand as software',
-      body: 'Fonts, colours, logos and layout rules defined once as a theme. Everyone is on brand automatically; rebrand centrally and every deck follows.',
-    },
-    {
-      title: 'No lock-in',
-      body: 'Export to PDF, PowerPoint, self-contained HTML, PNG or JSON at any time. Your decks are documents you own, never records in someone else’s cloud.',
-    },
-    {
-      title: 'Self-host in an afternoon',
-      body: 'One Docker Compose file, Node and Postgres. Run it on your own servers under your own rules, or wait for our hosted version on European infrastructure.',
-    },
-  ],
+    'Making the deck is one half. The other half is your brand, your team, the room you present to, and getting the thing out again afterwards.',
+  featuresCta: 'See all features',
   aiKicker: 'The part nobody has solved',
   aiTitle: 'Your people are already letting AI write for the organisation',
   aiLead: [

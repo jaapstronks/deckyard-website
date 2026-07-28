@@ -10,7 +10,6 @@ import SectionHead from '@/components/layout/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
 import DeckEmbed from '@/components/ui/DeckEmbed.astro';
 import { ui, localizePath, sandboxUrl, type Lang } from '@/i18n';
-import { withFacts } from '@/lib/facts';
 import { heroDecks } from '@/lib/decks';
 
 interface Props {
@@ -24,31 +23,17 @@ const ogImage = lang === 'nl' ? '/images/og/deckyard-og-nl.png' : '/images/og/de
 
 const compareHref = localizePath('/compare/', lang);
 const structuredHref = localizePath('/structured-slides/', lang);
+const featuresHref = localizePath('/features/', lang);
+
+// The "everything else" band lists the groups of /features/ rather than a copy
+// of them: one source, so the two pages cannot name a different set of things,
+// and a seventh group appears here without anybody editing this file.
+const featureGroups = ui[lang].features.groups;
 
 // The hero deck exists per locale, because a deck is written in one language.
 // A locale without one keeps the centred hero this page has always had, rather
 // than being handed a deck it cannot read; see `src/lib/decks.ts`.
 const heroDeck = heroDecks[lang];
-
-// Pillar icons are fixed per feature; only the title/body come from the
-// translation dictionary. Order matches t.pillars.
-const icons = [
-  '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
-  '<path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/><circle cx="12" cy="12" r="4"/>',
-  '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
-  '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3Z"/>',
-  '<path d="M3 11h4l3 8 4-16 3 8h4"/>',
-  '<circle cx="13.5" cy="6.5" r="1"/><circle cx="17.5" cy="10.5" r="1"/><circle cx="8.5" cy="7.5" r="1"/><circle cx="6.5" cy="12.5" r="1"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.9 0 1.8-.7 1.8-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.9.7-1.7 1.7-1.7H17c2.8 0 5-2.2 5-5C22 6 17.5 2 12 2Z"/>',
-  '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
-  '<rect x="2" y="3" width="20" height="7" rx="2"/><rect x="2" y="14" width="20" height="7" rx="2"/><path d="M6 6.5h.01M6 17.5h.01"/>',
-];
-// `{count}` in the copy is the slide-type figure, substituted from one place so
-// the number cannot differ between here and /structured-slides.
-const pillars = t.pillars.map((pillar, i) => ({
-  ...pillar,
-  title: withFacts(pillar.title),
-  icon: icons[i] ?? icons[0],
-}));
 ---
 
 <SiteLayout title={t.metaTitle} description={t.metaDescription} ogImage={ogImage}>
@@ -145,33 +130,39 @@ const pillars = t.pillars.map((pillar, i) => ({
        two of them used to be the same page twice. -->
   <FormatCallout lang={lang} />
 
-  <!-- ============ WHAT SHIPS ============ -->
-  <Section variant="tint">
-    <SectionHead center kicker={t.featuresKicker} title={t.featuresTitle} lead={t.featuresLead} />
+  <!-- ============ AND EVERYTHING ELSE ============ -->
+  <!-- This was eight cards with an icon each: the tallest section on the page,
+       nothing demonstrated, and not one link out of it. By the time the rail,
+       the format callout and the AI section had each taken one of its claims and
+       actually shown it, what was left was an index - so it is an index, and the
+       page it indexes is /features/.
 
-    <div class="pillars">
+       The rows are read off features.groups rather than restated here, so the
+       homepage cannot advertise a group that page does not have. -->
+  <Section variant="tint">
+    <div class="rest-head">
+      <div class="rest-head-copy" data-reveal>
+        <p class="kicker">{t.featuresKicker}</p>
+        <h2>{t.featuresTitle}</h2>
+        <p class="lead">{t.featuresLead}</p>
+      </div>
+      <div class="rest-head-cta" data-reveal data-reveal-delay="80">
+        <Button href={featuresHref} variant="ghost">{t.featuresCta}</Button>
+      </div>
+    </div>
+
+    <ul class="rest-list">
       {
-        pillars.map((pillar, i) => (
-          <div class="pillar" data-reveal data-reveal-delay={i === 0 ? undefined : i * 60}>
-            <div class="pillar-icon" aria-hidden="true">
-              <svg
-                width="22"
-                height="22"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                set:html={pillar.icon}
-              />
-            </div>
-            <h3>{pillar.title}</h3>
-            <p>{pillar.body}</p>
-          </div>
+        featureGroups.map((group, i) => (
+          <li data-reveal data-reveal-delay={i === 0 ? undefined : Math.min(i, 4) * 60}>
+            <a href={`${featuresHref}#${group.id}`}>
+              <span class="rest-label">{group.label}</span>
+              <span class="rest-teaser">{group.teaser}</span>
+            </a>
+          </li>
         ))
       }
-    </div>
+    </ul>
   </Section>
 
   <!-- ============ COMING FROM ANOTHER TOOL ============ -->
@@ -337,48 +328,131 @@ const pillars = t.pillars.map((pillar, i) => ({
     }
   }
 
-  /* ---------- Feature pillars ---------- */
+  /* ---------- "And everything else": the index into /features/ ----------
+     The head puts the CTA beside the copy rather than under it, the same shape
+     the slide-type rail uses - in a section whose body is a list of links, a
+     button on its own line reads as a tenth link. */
 
-  .pillars {
+  .rest-head {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-sm);
   }
-  @media (max-width: 1080px) {
-    .pillars {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+  @media (min-width: 860px) {
+    .rest-head {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-lg);
+      align-items: end;
     }
   }
-  @media (max-width: 860px) {
-    .pillars {
-      grid-template-columns: 1fr;
-    }
+  .rest-head-copy {
+    max-width: 54ch;
   }
-
-  .pillar {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    padding: var(--space-sm);
-    box-shadow: var(--shadow-sm);
+  .rest-head-copy h2 {
+    margin: 0.35rem 0 0.6rem;
   }
-  .pillar h3 {
-    margin-top: 14px;
-  }
-  .pillar p {
-    color: var(--ink-soft);
+  .rest-head-copy .lead {
     margin-bottom: 0;
-    font-size: 0.92rem;
   }
 
-  .pillar-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 12px;
+  /* Rows rather than cards. Eight cards is what this section used to be, and a
+     card says "read me"; these are meant to be scanned and clicked past. */
+  .rest-list {
+    list-style: none;
+    margin: var(--space-lg) 0 0;
+    padding: 0;
     display: grid;
-    place-items: center;
-    background: var(--green-wash);
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+  @media (min-width: 760px) {
+    .rest-list {
+      grid-template-columns: 1fr 1fr;
+      column-gap: var(--space-lg);
+    }
+  }
+
+  /* label | teaser | arrow. The label column is sized by its content and the
+     teaser takes what is left: with `1fr auto` the long teasers squeezed every
+     label onto two lines and then overlapped them. */
+  .rest-list a {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 0.25rem var(--space-sm);
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    color: inherit;
+  }
+  /* Two rows on a phone: label and arrow on the first, teaser under both. The
+     arrow is placed rather than flowed - auto-placement puts it after the
+     full-width teaser, i.e. on a line of its own. */
+  @media (max-width: 620px) {
+    .rest-list a {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+    .rest-teaser {
+      grid-area: 2 / 1 / 3 / -1;
+    }
+    .rest-list a::after {
+      grid-area: 1 / 2 / 2 / 3;
+    }
+  }
+
+  .rest-label {
+    font-family: var(--display);
+    font-variation-settings:
+      'opsz' 24,
+      'wght' 620;
+    font-size: 1.05rem;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    text-wrap: nowrap;
+  }
+  .rest-teaser {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    min-width: 0;
+  }
+  /* On the row rather than on the label: at the end of a row it reads as "this
+     goes somewhere", where after the words it reads as punctuation. */
+  .rest-list a::after {
+    content: '→';
+    font-size: 0.95rem;
+    color: var(--brass-text);
+    transition: transform var(--dur-micro) var(--ease-settle);
+  }
+
+  .rest-list a:hover .rest-label,
+  .rest-list a:focus-visible .rest-label {
     color: var(--green);
+  }
+  .rest-list a:hover::after {
+    transform: translateX(3px);
+  }
+  .rest-list a:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rest-list a::after {
+      transition: none;
+    }
+    .rest-list a:hover::after {
+      transform: none;
+    }
+  }
+
+  /* Told apart by a colour change alone, the hover and focus states vanish when
+     the reader supplies the palette. */
+  @media (forced-colors: active) {
+    .rest-list a:hover .rest-label,
+    .rest-list a:focus-visible .rest-label {
+      text-decoration: underline;
+    }
   }
 
   /* ---------- The AI-control argument ----------
