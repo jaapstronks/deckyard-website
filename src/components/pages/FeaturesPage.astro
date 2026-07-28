@@ -33,7 +33,10 @@ const t = ui[lang].features;
 // locale. `/docs/ai/` and `/docs/integrations/` have no index page, hence the
 // deeper targets for those two.
 const DOCS: Record<string, string> = {
-  making: '/docs/creating/',
+  // `editing`, not `creating`: the group is about the form you fill in, and
+  // `/docs/creating/` is about getting a deck to exist at all (import, paste,
+  // duplicate). The link label says "editing" in both languages.
+  making: '/docs/editing/',
   brand: '/docs/themes/',
   ai: '/docs/ai/getting-started/',
   together: '/docs/collaboration/',
