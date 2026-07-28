@@ -32,9 +32,14 @@
 
 /* ---------- inline code, in prose and in tables ---------- */
 
+/* `.spec-note` belongs in this list, not only in the one that follows it: the
+   longest unbreakable token on the whole spec section - the MIME type - lives in
+   a note, and a browser does not break at a dot. Without `anywhere` it pushed
+   /spec/deck-bundle/ 27px wider than a 320px viewport. */
 .spec-prose code,
 .spec-table code,
-.spec-defs code {
+.spec-defs code,
+.spec-note code {
   font-family: var(--mono);
   font-size: 0.86em;
   padding: 0.1em 0.35em;
