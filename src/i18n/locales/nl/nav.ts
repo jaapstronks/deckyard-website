@@ -2,6 +2,7 @@ import type { NavContent } from '@/i18n/types';
 
 export const nav: NavContent = {
   sandbox: 'Probeer',
+  howItWorks: 'Hoe het werkt',
   features: 'Functies',
   blog: 'Blog',
   hosting: 'Hosting',

@@ -12,6 +12,9 @@ const blogHref = localizePath('/blog/', lang);
 const changelogHref = localizePath('/changelog/', lang);
 const featuresHref = localizePath('/features/', lang);
 const compareHref = localizePath('/compare/', lang);
+const structuredHref = localizePath('/structured-slides/', lang);
+const specHref = localizePath('/spec/', lang);
+const hostingHref = localizePath('/hosting/', lang);
 const accessibilityHref = localizePath('/accessibility/', lang);
 const rssHref = localizePath('/rss.xml', lang);
 const copyright = t.metaCopyright.replace('{year}', String(year));
@@ -25,7 +28,32 @@ const copyright = t.metaCopyright.replace('{year}', String(year));
         <p class="footer-tag">{t.tagline}</p>
       </div>
 
+      <!-- Three columns, one question each; see the note on FooterContent for
+           why the old two-column shape stopped working. Product leads with the
+           two pages the header nav does not carry, so the footer is where
+           /features stops depending on one band on the homepage. -->
       <div class="footer-links">
+        <div>
+          <h2 class="footer-heading">{t.productHeading}</h2>
+          <ul>
+            <li><a href={structuredHref}>{ui[lang].nav.howItWorks}</a></li>
+            <li><a href={featuresHref}>{ui[lang].nav.features}</a></li>
+            <li><a href={compareHref}>{ui[lang].nav.compare}</a></li>
+            <li><a href={specHref}>{ui[lang].nav.spec}</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="footer-heading">{t.runHeading}</h2>
+          <ul>
+            <li><a href="/docs/creating/">{t.productDocs}</a></li>
+            <li><a href={hostingHref}>{ui[lang].nav.hosting}</a></li>
+            <li>
+              <a href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noreferrer"
+                >{t.productGithub}</a
+              >
+            </li>
+          </ul>
+        </div>
         <div>
           <h2 class="footer-heading">{t.followHeading}</h2>
           <ul>
@@ -34,28 +62,20 @@ const copyright = t.metaCopyright.replace('{year}', String(year));
             <li><a href={rssHref}>{t.followRss}</a></li>
           </ul>
         </div>
-        <div>
-          <h2 class="footer-heading">{t.productHeading}</h2>
-          <ul>
-            <li><a href={featuresHref}>{ui[lang].nav.features}</a></li>
-            <li><a href={compareHref}>{ui[lang].nav.compare}</a></li>
-            <li><a href={accessibilityHref}>{ui[lang].nav.accessibility}</a></li>
-            <li><a href="/docs/creating/">{t.productDocs}</a></li>
-            <li>
-              <a href="https://github.com/jaapstronks/deckyard" target="_blank" rel="noreferrer"
-                >{t.productGithub}</a
-              >
-            </li>
-            <li>
-              <a href="https://dreamkit.eu" target="_blank" rel="noreferrer">{t.productDreamkit}</a>
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
 
+    <!-- The accessibility statement and the studio sit here rather than in a
+         product column: this is the row a reader scans for who made this and
+         whether it conforms, and neither is a page about what Deckyard does. -->
     <div class="footer-meta">
       <span>{copyright}</span>
+      <ul class="footer-meta-links">
+        <li><a href={accessibilityHref}>{ui[lang].nav.accessibility}</a></li>
+        <li>
+          <a href="https://dreamkit.eu" target="_blank" rel="noreferrer">{t.productDreamkit}</a>
+        </li>
+      </ul>
       <span>{t.metaMade}</span>
     </div>
   </div>

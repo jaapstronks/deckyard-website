@@ -71,6 +71,9 @@ export const home: HomeContent = {
   aiLimit:
     'Wat dit níet doet, is de tekst waar maken. Een model kan nog steeds een zelfverzekerde zin schrijven over een getal dat het zelf bedacht heeft, en geen formaat vangt dat. Wat het niet meer kan, is je iets geven dat in niets op je organisatie lijkt, of dat stil de vorm breekt waar al het andere in staat.',
   aiCta: 'Hoe dat werkt',
+  hostedNote:
+    'Of laat het draaien: een eigen instance op je eigen domein, gehost in Europa, op dezelfde code. De hosting is wat de ontwikkeling betaalt.',
+  hostedCta: 'Hoe hosting werkt',
   compareKicker: 'Je komt ergens vandaan',
   compareTitle: 'Hoe dit zich verhoudt tot wat je nu gebruikt',
   compareBody:

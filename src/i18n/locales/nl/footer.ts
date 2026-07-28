@@ -7,6 +7,7 @@ export const footer: FooterContent = {
   followBlog: 'Blog',
   followRss: 'RSS-feed',
   productHeading: 'Product',
+  runHeading: 'Zelf draaien',
   productDocs: 'Documentatie (Engels)',
   productGithub: 'GitHub',
   productDreamkit: 'Dreamkit',

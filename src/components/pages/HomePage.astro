@@ -25,6 +25,7 @@ const ogImage = lang === 'nl' ? '/images/og/deckyard-og-nl.png' : '/images/og/de
 const compareHref = localizePath('/compare/', lang);
 const structuredHref = localizePath('/structured-slides/', lang);
 const featuresHref = localizePath('/features/', lang);
+const hostingHref = localizePath('/hosting/', lang);
 
 // The "everything else" band lists the groups of /features/ rather than a copy
 // of them: one source, so the two pages cannot name a different set of things,
@@ -205,6 +206,16 @@ const heroDeck = heroDecks[lang];
     />
     <div data-reveal data-reveal-delay="80">
       <InstallWidget lang={lang} />
+    </div>
+
+    <!-- The other door, and the only place hosting is offered on this page.
+         S5 took it out of the header nav, where it stood first and read as a
+         price list in front of a product the nav did not name. Here it answers
+         a question the reader has just been given: the one line above installs
+         it, and this says what happens if you would rather not. -->
+    <div class="hosted" data-reveal data-reveal-delay="140">
+      <p>{t.hostedNote}</p>
+      <Button href={hostingHref} variant="ghost">{t.hostedCta}</Button>
     </div>
   </Section>
 
@@ -563,6 +574,35 @@ const heroDeck = heroDecks[lang];
   .compare-copy p:last-child {
     margin: 0;
     color: var(--ink-soft);
+  }
+
+  /* ---------- The hosted door, under the install widget ----------
+     Centred, because the section head above it is (`<SectionHead center>`) and
+     a left-aligned afterthought under a centred column reads as a second
+     section starting. Side by side above 640px so the sentence and its link are
+     one line of thought rather than a paragraph with a button below it. */
+
+  .hosted {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-top: var(--space-lg);
+    text-align: center;
+  }
+  .hosted p {
+    margin: 0;
+    max-width: 46ch;
+    color: var(--ink-soft);
+  }
+  @media (min-width: 640px) {
+    .hosted {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-md);
+      text-align: left;
+    }
   }
 
   /* ---------- Closing CTA ---------- */

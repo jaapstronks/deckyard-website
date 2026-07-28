@@ -39,18 +39,44 @@ export interface LocaleMeta {
   skipToContent: string;
 }
 
+/**
+ * The site frame's labels.
+ *
+ * The primary nav answers one question - *what is this, and does it check out* -
+ * and everything else is a footer column. That rule is what decides the five:
+ *
+ *   How it works · Compared · Format spec · Docs · Blog · GitHub
+ *
+ * It is why `hosting` is no longer among them. Hosting is a commercial door, it
+ * stood first in the row, and it was answering a question nobody has yet on a
+ * site where the product itself was not in the nav at all. It now sits beside
+ * the install widget on the homepage (install it yourself / have it run for
+ * you), on /features, and in the footer.
+ *
+ * And it is why `features` is not among them either, which is the closer call.
+ * The inventory is a real page and a launch visitor does look for it - but a nav
+ * offering both "How it works" and "Features" asks the reader to guess which one
+ * holds what they want, and the homepage hands the whole thing over in an index
+ * band with a link per group. So: one door to the idea in the nav, the inventory
+ * one scroll down and first in the footer.
+ */
 export interface NavContent {
   sandbox: string;
   blog: string;
-  /** Label for /features/, the full inventory. Header placement is S5's call;
-   *  for now it is the first item in the footer's product column. */
+  /**
+   * Label for /structured-slides/. The route says `structured-slides`, which is
+   * the implementation's word for it; the nav says what the page is.
+   */
+  howItWorks: string;
+  /** Label for /features/, the full inventory. Footer, and the homepage index. */
   features: string;
   changelog: string;
+  /** Label for /hosting/. Footer and the homepage install section, not the nav. */
   hosting: string;
-  /** Label for /compare/. In the footer rather than the header: the primary nav
-   *  is deliberately four items, and the homepage band is the real entrance. */
+  /** Label for /compare/. */
   compare: string;
-  /** Label for /accessibility/, in the footer next to the comparison. */
+  /** Label for /accessibility/. In the footer's meta row, where a statement of
+   *  conformance belongs, rather than in a column of product pages. */
   accessibility: string;
   /** Label for /spec/, the format written down as a standard. */
   spec: string;
@@ -71,12 +97,30 @@ export interface WaitlistContent {
   note: string;
 }
 
+/**
+ * The footer.
+ *
+ * Three columns rather than two, each answering one question, because the old
+ * "Product" column had grown into a bin: the inventory, the comparison, the
+ * accessibility statement, the docs, the source and the studio that makes it,
+ * in one list of six with nothing in common but not being the blog.
+ *
+ *   Product   what is it        how it works · features · compared · format spec
+ *   Run it    how do I have it  docs · hosting · GitHub
+ *   Follow    is it alive       blog · changelog · RSS
+ *
+ * The accessibility statement and the studio link moved to the meta row beside
+ * the copyright, which is where a reader looks for a statement of conformance
+ * and who made this - and not among the pages that describe the product.
+ */
 export interface FooterContent {
   tagline: string;
   followHeading: string;
   followBlog: string;
   followRss: string;
   productHeading: string;
+  /** Heading of the middle column: getting an instance of your own. */
+  runHeading: string;
   productDocs: string;
   productGithub: string;
   productDreamkit: string;
@@ -234,6 +278,20 @@ export interface HomeContent {
    */
   aiLimit: string;
   aiCta: string;
+  /**
+   * The other door out of the install section: have it run for you.
+   *
+   * Hosting used to be the first item in the header nav, in front of a product
+   * the nav never named. It reads as an offer here and as a price list there:
+   * the reader has just been shown the one line that installs it, so "or don't"
+   * is an answer to a question they now have. It stays one sentence and a ghost
+   * link - /hosting is the page that makes the argument, and this is not a
+   * second pitch for it.
+   *
+   * @budget hostedNote 30 words
+   */
+  hostedNote: string;
+  hostedCta: string;
   /** The band that sends someone arriving from another tool to /compare/. */
   compareKicker: string;
   compareTitle: string;
