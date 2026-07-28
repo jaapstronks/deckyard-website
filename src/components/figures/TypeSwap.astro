@@ -1,0 +1,320 @@
+---
+// One record, four slide types.
+//
+// Every panel below is rendered from the *same* array of items. Nothing is
+// re-authored between them: the type decides which fields it reads and what it
+// does with them, which is the shortest honest definition of structured
+// content that does not use the word "schema". Each panel says out loud which
+// fields it took, because that is the part a reader cannot see.
+//
+// All four panels are in the document at once and the tabs only reveal one, so
+// switching costs nothing and the figure still works with the script blocked -
+// the first panel is simply the one that is open.
+import './figures.css';
+
+type TypeId = 'bullets' | 'timeline' | 'cards' | 'chart';
+
+interface Props {
+  /** Unique per instance; ids for the tab/panel pairing are derived from it. */
+  id: string;
+  title: string;
+  items: { date: string; label: string; detail: string; value: number }[];
+  /** Tab copy, in reading order. `reads` names the fields that type consumes. */
+  types: { id: TypeId; tab: string; reads: string }[];
+  groupLabel: string;
+}
+
+const { id, title, items, types, groupLabel } = Astro.props;
+const max = Math.max(1, ...items.map((i) => i.value));
+---
+
+<div class="swap" data-swap>
+  <div class="swap-stage">
+    {
+      types.map((type, index) => (
+        <div
+          class="swap-panel"
+          id={`${id}-panel-${type.id}`}
+          role="tabpanel"
+          aria-labelledby={`${id}-tab-${type.id}`}
+          tabindex="0"
+          hidden={index !== 0}
+        >
+          <div class="swap-slide">
+            <p class="swap-title">{title}</p>
+
+            {type.id === 'bullets' && (
+              <ul class="sw-bullets">
+                {items.map((it) => (
+                  <li>{it.label}</li>
+                ))}
+              </ul>
+            )}
+
+            {type.id === 'timeline' && (
+              <ol class="sw-tl">
+                {items.map((it) => (
+                  <li>
+                    <span class="sw-date">{it.date}</span>
+                    <span class="sw-moment">{it.label}</span>
+                  </li>
+                ))}
+              </ol>
+            )}
+
+            {type.id === 'cards' && (
+              <div class="sw-cards">
+                {items.map((it) => (
+                  <article>
+                    <h4>{it.label}</h4>
+                    <p>{it.detail}</p>
+                  </article>
+                ))}
+              </div>
+            )}
+
+            {type.id === 'chart' && (
+              <div class="sw-chart">
+                {items.map((it) => (
+                  <div class="sw-bar">
+                    <span class="sw-v">{it.value}</span>
+                    <span class="sw-fill" style={`height:${Math.round((it.value / max) * 100)}%`} />
+                    <span class="sw-l">{it.label}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <p class="fig-note">{type.reads}</p>
+        </div>
+      ))
+    }
+  </div>
+
+  <div class="fig-tabs" role="tablist" aria-label={groupLabel}>
+    {
+      types.map((type, index) => (
+        <button
+          class="fig-tab"
+          type="button"
+          role="tab"
+          id={`${id}-tab-${type.id}`}
+          aria-controls={`${id}-panel-${type.id}`}
+          aria-selected={index === 0 ? 'true' : 'false'}
+          data-swap-tab={type.id}
+        >
+          {type.tab}
+        </button>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  import { initRovingIn } from '@/lib/roving';
+
+  function initSwap() {
+    document.querySelectorAll<HTMLElement>('[data-swap]').forEach((root) => {
+      if (root.dataset.swapBound) return;
+      root.dataset.swapBound = 'true';
+      const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-swap-tab]'));
+      const panels = Array.from(root.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+          panels.forEach((p) => {
+            p.hidden = p.id !== tab.getAttribute('aria-controls');
+          });
+        });
+      });
+    });
+    // A control that announces itself as "tab, 1 of 4" has promised arrow keys.
+    initRovingIn(document);
+  }
+  initSwap();
+  document.addEventListener('astro:page-load', initSwap);
+</script>
+
+<style>
+  /* The stage holds its tallest panel, so switching type does not shift the
+     page under the reader's cursor. Panels are stacked in one grid cell. */
+  .swap-stage {
+    display: grid;
+    container-type: inline-size;
+  }
+  .swap-panel {
+    grid-area: 1 / 1;
+  }
+  .swap-panel:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 4px;
+    border-radius: var(--radius-md);
+  }
+
+  .swap-slide {
+    aspect-ratio: 16 / 9;
+    background: var(--card);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: 5.2cqi;
+    display: flex;
+    flex-direction: column;
+    font-family: var(--body);
+  }
+
+  .swap-title {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 4.4cqi;
+    font-variation-settings: 'wght' 620;
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  /* ---------- bullets ---------- */
+  .sw-bullets {
+    margin: auto 0;
+    padding-left: 3.4cqi;
+    display: grid;
+    gap: 1.8cqi;
+    font-size: 2.6cqi;
+    line-height: 1.25;
+  }
+  .sw-bullets li::marker {
+    color: var(--green-bright);
+  }
+
+  /* ---------- timeline ---------- */
+  .sw-tl {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    margin: auto 0 0;
+    padding: 2.2cqi 0 0;
+    position: relative;
+  }
+  .sw-tl::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: calc(2.2cqi + 0.7cqi - 1px);
+    height: 2px;
+    background: var(--sage);
+  }
+  .sw-tl li {
+    position: relative;
+    padding-right: 2cqi;
+  }
+  .sw-tl li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1.4cqi;
+    height: 1.4cqi;
+    border-radius: 50%;
+    background: var(--green-bright);
+    box-shadow: 0 0 0 0.7cqi var(--card);
+  }
+  .sw-date {
+    display: block;
+    margin-top: 3.6cqi;
+    font-family: var(--mono);
+    font-size: 2.1cqi;
+    color: var(--green-bright);
+    font-variant-numeric: tabular-nums;
+  }
+  .sw-moment {
+    display: block;
+    margin-top: 0.25em;
+    font-family: var(--display);
+    font-size: 2.1cqi;
+    font-variation-settings: 'wght' 600;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  /* ---------- cards ---------- */
+  .sw-cards {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 2.4cqi;
+    margin: auto 0 0;
+  }
+  .sw-cards article {
+    background: var(--green-wash);
+    border-radius: 1.4cqi;
+    padding: 2.4cqi;
+  }
+  .sw-cards h4 {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 2.3cqi;
+    font-variation-settings: 'wght' 600;
+    line-height: 1.15;
+    color: var(--green);
+  }
+  .sw-cards p {
+    margin: 0.6em 0 0;
+    font-size: 1.9cqi;
+    line-height: 1.35;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- chart ---------- */
+  .sw-chart {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 4.5cqi;
+    margin-top: auto;
+    height: 56%;
+  }
+  /* Grid, not flex: the bar's percentage height has to resolve against a track
+     that excludes the value and the label, or the proportions are distorted. */
+  .sw-bar {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+  }
+  .sw-v {
+    text-align: center;
+    padding-bottom: 0.8cqi;
+    font-family: var(--display);
+    font-size: 2.2cqi;
+    font-variation-settings: 'wght' 620;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .sw-fill {
+    align-self: end;
+    width: 100%;
+    background: var(--green-bright);
+    border-radius: 3px 3px 0 0;
+  }
+  .sw-l {
+    text-align: center;
+    padding-top: 1cqi;
+    font-family: var(--mono);
+    font-size: 1.6cqi;
+    color: var(--ink-mute);
+    border-top: 1px solid var(--sage);
+  }
+
+  /* Bars and nodes are shapes filled with an author colour, and a forced
+     palette drops those: the chart would read as numbers over an empty frame. */
+  @media (forced-colors: active) {
+    .sw-fill,
+    .sw-tl li::before {
+      background: CanvasText;
+    }
+  }
+</style>

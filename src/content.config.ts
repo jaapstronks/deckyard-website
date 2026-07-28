@@ -15,7 +15,11 @@ const blog = defineCollection({
   // before this schema runs, so it works even though nothing declares it. It
   // stays undeclared on purpose: a post that wants a different URL should get
   // a different filename, not a second place where the URL is decided.
-  loader: glob({ pattern: '**/[!_]*.md', base: 'src/content/blog' }),
+  // `.mdx` as well as `.md`: a post that has to demonstrate something rather
+  // than describe it embeds a component from src/components/figures/. The
+  // extension is not part of the id, so the URL of a post does not change if it
+  // gains or loses a figure.
+  loader: glob({ pattern: '**/[!_]*.{md,mdx}', base: 'src/content/blog' }),
   schema: z.object({
     title: z.string(),
     intro: z.string(),

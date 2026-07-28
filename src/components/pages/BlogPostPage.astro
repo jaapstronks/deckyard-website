@@ -5,6 +5,7 @@ import SiteLayout from '@/layouts/SiteLayout.astro';
 import Waitlist from '@/components/marketing/Waitlist.astro';
 import PageHero from '@/components/layout/PageHero.astro';
 import { ui, localizePath, type Lang } from '@/i18n';
+import { authorAvatar } from '@/lib/authors';
 
 interface Props {
   post: CollectionEntry<'blog'>;
@@ -23,6 +24,7 @@ const dateLabel = new Intl.DateTimeFormat(t.dateLocale, {
   year: 'numeric',
 }).format(pubDate);
 const blogHref = localizePath('/blog/', lang);
+const avatar = authorAvatar(author);
 ---
 
 <SiteLayout
@@ -44,7 +46,21 @@ const blogHref = localizePath('/blog/', lang);
       titleTransition={`post-title-${post.id}`}
     >
       <p class="article-byline" slot="meta">
-        <span>{author}</span>
+        {
+          /* Decorative: the author's name is right beside it, and a portrait
+             that repeats the name is one thing announced twice. */
+          avatar && (
+            <img
+              class="article-avatar"
+              src={avatar}
+              alt=""
+              width="48"
+              height="48"
+              decoding="async"
+            />
+          )
+        }
+        <span class="article-author">{author}</span>
         <time datetime={pubDate.toISOString()}>{dateLabel}</time>
       </p>
 
@@ -78,14 +94,55 @@ const blogHref = localizePath('/blog/', lang);
   .article-byline {
     display: flex;
     justify-content: center;
-    gap: 14px;
-    align-items: baseline;
-    margin-top: 26px;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    align-items: center;
+    margin-top: 30px;
     font-family: var(--mono);
     font-size: var(--step--2);
     text-transform: uppercase;
     letter-spacing: 0.13em;
     color: var(--ink-mute);
+  }
+  /* The name carries the line; the date is the footnote to it. */
+  .article-author {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  /* A brass pip between the two, so name and date read as one line rather than
+     two columns that happen to be next to each other. Drawn on the date so the
+     byline stays three elements, and it disappears with the date if a post
+     ever has none. */
+  .article-byline time::before {
+    content: '';
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--brass-bright);
+    vertical-align: middle;
+    margin-right: 14px;
+  }
+  /* The pip is the only thing on this line that is a painted shape rather than
+     text, so it is the only thing a forced palette drops to nothing. */
+  @media (forced-colors: active) {
+    .article-byline time::before {
+      background: CanvasText;
+    }
+  }
+
+  /* Square file, circular crop: the registry in src/lib/authors.ts promises
+     square portraits so this rule does not have to know whose face it is.
+     The hairline keeps a light-cornered photograph off the paper without
+     putting a frame around someone's head. */
+  .article-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow:
+      0 0 0 1px var(--line),
+      var(--shadow-sm);
   }
 
   .article-figure {

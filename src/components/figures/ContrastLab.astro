@@ -1,0 +1,374 @@
+---
+// Text over a photograph, measured.
+//
+// Drag the title around and the contrast ratio under the left panel swings
+// from comfortable to unreadable, because nothing in a canvas knows that this
+// text is sitting on that image. The right panel is the same title on the same
+// photo, from a record that says `type: image` with a title on it: the renderer
+// knows the two overlap, so it puts a scrim between them and the ratio has a
+// floor.
+//
+// The numbers are real. The photo is drawn into an offscreen canvas and the
+// pixels under the text block are averaged, so this figure cannot quietly go
+// out of step with what it is arguing.
+import './figures.css';
+
+interface Props {
+  image: string;
+  imageAlt: string;
+  /** The title drawn over the photo. */
+  text: string;
+  /** Panel headings, and the label on each readout. */
+  canvasLabel: string;
+  typedLabel: string;
+  ratioLabel: string;
+  /** Accessible name and instruction for the draggable block. */
+  dragLabel: string;
+  passLabel: string;
+  failLabel: string;
+  /** WCAG ratio the readout is checked against. */
+  threshold?: number;
+}
+
+const {
+  image,
+  imageAlt,
+  text,
+  canvasLabel,
+  typedLabel,
+  ratioLabel,
+  dragLabel,
+  passLabel,
+  failLabel,
+  threshold = 4.5,
+} = Astro.props;
+
+const panels = [
+  { id: 'canvas', label: canvasLabel, draggable: true },
+  { id: 'typed', label: typedLabel, draggable: false },
+] as const;
+---
+
+<div
+  class="cl"
+  data-contrast
+  data-threshold={threshold}
+  data-pass={passLabel}
+  data-fail={failLabel}
+>
+  {
+    panels.map((panel) => (
+      <div class:list={['cl-panel', `cl-panel--${panel.id}`]}>
+        <p class="cl-head">{panel.label}</p>
+
+        <div class="cl-shot" data-shot={panel.id}>
+          <img class="cl-photo" src={image} alt={panel.draggable ? imageAlt : ''} />
+          {panel.draggable ? (
+            <div class="cl-block cl-block--drag" tabindex="0" role="group" aria-label={dragLabel}>
+              {text}
+            </div>
+          ) : (
+            <div class="cl-block" aria-hidden="true">
+              {text}
+            </div>
+          )}
+        </div>
+
+        <p class="cl-read" role="status" aria-live="polite">
+          <span class="cl-ratio" data-ratio={panel.id}>
+            &ndash;
+          </span>
+          <span class="cl-unit">{ratioLabel}</span>
+          <span class="cl-chip" data-chip={panel.id} />
+        </p>
+      </div>
+    ))
+  }
+</div>
+
+<script>
+  // Relative luminance and contrast, straight out of WCAG 2.1. Kept here
+  // rather than imported because this is the only place on the site that
+  // measures a colour instead of declaring one.
+  function channel(value: number) {
+    const c = value / 255;
+    return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  }
+  function luminance(r: number, g: number, b: number) {
+    return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+  }
+  /** Against white text, which is what both panels draw. */
+  function ratioToWhite(r: number, g: number, b: number) {
+    return 1.05 / (luminance(r, g, b) + 0.05);
+  }
+
+  const W = 320;
+  const H = 180;
+  const SCRIM = 0.55; // what the typed panel's renderer puts behind the text
+
+  function initContrast() {
+    document.querySelectorAll<HTMLElement>('[data-contrast]').forEach((root) => {
+      if (root.dataset.contrastBound) return;
+      root.dataset.contrastBound = 'true';
+
+      const photo = root.querySelector<HTMLImageElement>('.cl-photo');
+      const block = root.querySelector<HTMLElement>('.cl-block--drag');
+      const shot = block?.closest<HTMLElement>('.cl-shot');
+      if (!photo || !block || !shot) return;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = W;
+      canvas.height = H;
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      if (!ctx) return;
+
+      let ready = false;
+      const draw = () => {
+        // Cover, the same geometry the <img> uses, so a position in the panel
+        // maps straight onto a position in the canvas.
+        const scale = Math.max(W / photo.naturalWidth, H / photo.naturalHeight);
+        const w = photo.naturalWidth * scale;
+        const h = photo.naturalHeight * scale;
+        ctx.drawImage(photo, (W - w) / 2, (H - h) / 2, w, h);
+        ready = true;
+        measure();
+      };
+
+      // Percentages of the panel: the top-left of the block, shared by both
+      // panels so they always show the same text in the same place.
+      let x = 8;
+      let y = 54;
+
+      const measure = () => {
+        if (!ready) return;
+        const rect = shot.getBoundingClientRect();
+        const bw = (block.offsetWidth / rect.width) * 100;
+        const bh = (block.offsetHeight / rect.height) * 100;
+
+        const sx = Math.round((x / 100) * W);
+        const sy = Math.round((y / 100) * H);
+        const sw = Math.max(1, Math.round((bw / 100) * W));
+        const sh = Math.max(1, Math.round((bh / 100) * H));
+        const data = ctx.getImageData(Math.min(sx, W - sw), Math.min(sy, H - sh), sw, sh).data;
+
+        let r = 0;
+        let g = 0;
+        let b = 0;
+        let n = 0;
+        // Every fourth pixel: this runs on every pointermove.
+        for (let i = 0; i < data.length; i += 16) {
+          r += data[i];
+          g += data[i + 1];
+          b += data[i + 2];
+          n++;
+        }
+        r /= n;
+        g /= n;
+        b /= n;
+
+        const bare = ratioToWhite(r, g, b);
+        const scrimmed = ratioToWhite(r * (1 - SCRIM), g * (1 - SCRIM), b * (1 - SCRIM));
+        report('canvas', bare);
+        report('typed', scrimmed);
+      };
+
+      const threshold = Number(root.dataset.threshold ?? 4.5);
+      const report = (panel: string, value: number) => {
+        const out = root.querySelector<HTMLElement>(`[data-ratio="${panel}"]`);
+        const chip = root.querySelector<HTMLElement>(`[data-chip="${panel}"]`);
+        if (out) out.textContent = value.toFixed(1);
+        if (chip) {
+          const pass = value >= threshold;
+          chip.textContent = pass ? (root.dataset.pass ?? '') : (root.dataset.fail ?? '');
+          chip.dataset.pass = String(pass);
+        }
+      };
+
+      const place = () => {
+        root.style.setProperty('--cl-x', `${x}%`);
+        root.style.setProperty('--cl-y', `${y}%`);
+        measure();
+      };
+
+      const moveTo = (clientX: number, clientY: number) => {
+        const rect = shot.getBoundingClientRect();
+        const bw = (block.offsetWidth / rect.width) * 100;
+        const bh = (block.offsetHeight / rect.height) * 100;
+        x = Math.min(100 - bw, Math.max(0, ((clientX - rect.left) / rect.width) * 100 - bw / 2));
+        y = Math.min(100 - bh, Math.max(0, ((clientY - rect.top) / rect.height) * 100 - bh / 2));
+        place();
+      };
+
+      block.addEventListener('pointerdown', (event) => {
+        block.setPointerCapture(event.pointerId);
+        block.classList.add('is-dragging');
+        moveTo(event.clientX, event.clientY);
+        event.preventDefault();
+      });
+      block.addEventListener('pointermove', (event) => {
+        if (!block.hasPointerCapture(event.pointerId)) return;
+        moveTo(event.clientX, event.clientY);
+      });
+      const drop = () => block.classList.remove('is-dragging');
+      block.addEventListener('pointerup', drop);
+      block.addEventListener('pointercancel', drop);
+
+      // The same widget from the keyboard. A step of 4% crosses the photo in
+      // about the same number of presses as an arrow key crosses a slider.
+      block.addEventListener('keydown', (event) => {
+        const step = event.shiftKey ? 12 : 4;
+        const rect = shot.getBoundingClientRect();
+        const bw = (block.offsetWidth / rect.width) * 100;
+        const bh = (block.offsetHeight / rect.height) * 100;
+        switch (event.key) {
+          case 'ArrowLeft':
+            x = Math.max(0, x - step);
+            break;
+          case 'ArrowRight':
+            x = Math.min(100 - bw, x + step);
+            break;
+          case 'ArrowUp':
+            y = Math.max(0, y - step);
+            break;
+          case 'ArrowDown':
+            y = Math.min(100 - bh, y + step);
+            break;
+          default:
+            return;
+        }
+        event.preventDefault();
+        place();
+      });
+
+      window.addEventListener('resize', measure);
+      if (photo.complete && photo.naturalWidth) draw();
+      else photo.addEventListener('load', draw);
+      place();
+    });
+  }
+
+  initContrast();
+  document.addEventListener('astro:page-load', initContrast);
+</script>
+
+<style>
+  .cl {
+    --cl-x: 8%;
+    --cl-y: 54%;
+    display: grid;
+    gap: var(--space-sm);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  .cl-head {
+    margin: 0 0 10px;
+    font-family: var(--mono);
+    font-size: var(--step--2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .cl-shot {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    container-type: inline-size;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    touch-action: none;
+  }
+  .cl-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* .article-body styles every img in the post; this one is a layer of a
+       figure, not an illustration in the prose. */
+    border: 0;
+    border-radius: 0;
+    margin: 0;
+    box-shadow: none;
+  }
+
+  .cl-block {
+    position: absolute;
+    left: var(--cl-x);
+    top: var(--cl-y);
+    width: 62%;
+    color: #fff;
+    font-family: var(--display);
+    font-size: 5cqi;
+    font-variation-settings: 'wght' 620;
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .cl-block--drag {
+    cursor: grab;
+  }
+  .cl-block--drag.is-dragging {
+    cursor: grabbing;
+  }
+  .cl-block--drag:focus-visible {
+    outline: 3px solid var(--brass-bright);
+    outline-offset: 6px;
+    border-radius: 4px;
+  }
+
+  /* The one difference between the panels: the typed renderer knows the title
+     is over an image, so it lays a scrim under it. */
+  .cl-panel--typed .cl-block {
+    background: rgba(0, 0, 0, 0.55);
+    padding: 2.4cqi 3cqi;
+    margin: -2.4cqi -3cqi;
+    border-radius: 1.6cqi;
+    backdrop-filter: blur(2px);
+  }
+
+  .cl-read {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 12px 0 0;
+    font-family: var(--mono);
+    font-size: var(--step--1);
+  }
+  .cl-ratio {
+    font-size: 1.5rem;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .cl-unit {
+    color: var(--ink-mute);
+    font-size: var(--step--2);
+  }
+  .cl-chip {
+    margin-left: auto;
+    font-size: var(--step--3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 999px;
+    border: 1px solid currentColor;
+  }
+  .cl-chip:empty {
+    display: none;
+  }
+  /* Pass and fail are told apart by their words as well as their colour, so
+     the readout survives both a forced palette and a colour-blind reader. */
+  .cl-chip[data-pass='true'] {
+    color: var(--green);
+  }
+  .cl-chip[data-pass='false'] {
+    color: var(--error-fg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cl-block {
+      transition: none;
+    }
+  }
+</style>

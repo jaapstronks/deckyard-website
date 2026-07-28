@@ -1,0 +1,296 @@
+---
+title: 'Presentatiesoftware is stuk, en AI maakt het alleen maar erger'
+intro: 'Elke slide deck-bouwer heeft inmiddels een LLM-knopje om vliegensvlug AI-slop te genereren, en de presentaties die eruit rollen zijn slechter dan het handwerk waar we aan gewend waren. Maar ja, dat is wat er gebeurt als je een taalmodel op een bestandsformaat richt dat alleen plaatjes kan bevatten.'
+translationKey: 'presentation-software-broken'
+pubDate: 2026-07-24
+category: 'Opinie'
+tags: ['ai', 'deck-formaat', 'gestructureerde content', 'opinie']
+draft: true
+---
+
+import Figure from '@/components/figures/Figure.astro';
+import XraySlide from '@/components/figures/XraySlide.astro';
+import TypeSwap from '@/components/figures/TypeSwap.astro';
+import ContrastLab from '@/components/figures/ContrastLab.astro';
+import FieldMap from '@/components/figures/FieldMap.astro';
+
+Ik keek naar een Powerpoint over beleidstraject waarvan de strekking me alweer is ontgaan, maar die me is bijgebleven omdat de slides waren verdeeld in tekstvlakken wier onderlinge positionering tamelijk willekeurig gekozen leek, en bovendien versierd waren met icoontjes die geen inhoudelijke relatie leken te hebben met de respectievelijke aanpalende tekstblokken. AI-slop heeft een unieke beledigende kracht die een gelijksoortige ergernis oproept aan WhatsApp-voicemomo's, omdat de van mijn verlangde investering in tijd en aandacht beduidend groter is dan de auteur van het geproduceerde materiaal.
+
+tekstblok Er zijn deze maand vier gegenereerde decks in mijn inbox geland. Elk ervan had
+een slide met elf bullets. Elk ervan zette witte tekst op de lichtste helft van
+een stockfoto. Elk ervan was, strikt technisch gesproken, een reeks plaatjes van
+zinnen. En geen van alle was te redden geweest met een betere prompt.
+
+De makkelijke conclusie is dat AI slecht is in slides maken. Ik denk dat dat
+niet klopt, en het echte antwoord is vervelender: hij deed precies wat we
+vroegen. We hebben hem op een bestandsformaat gericht dat niets anders kan
+bevatten dan een tekening, en hij tekende.
+
+## De genereer-knop wijst naar het verkeerde ding
+
+Open een willekeurig deck in een van de grote drie en kijk wat er werkelijk in
+het bestand staat. Een slide is een rechthoek met dingen die erop zweven. Hier
+een tekstvak, daar een afbeelding, elk met een positie, een formaat en een
+lettertype, en daarmee is de inhoud compleet. Het bestand weet niet dat het vak
+bovenaan een titel is. Het weet niet dat de vijf regels eronder een opsomming
+zijn. En het weet al helemaal niet dat de witte tekst die je er net op zette
+precies op het enige stuk foto ligt dat ook wit is.
+
+Als een model dus een deck genereert, valt er niets in te vullen. Er is alleen
+een canvas om vol te maken. Niets kan het resultaat controleren, want er is geen
+bewering om te controleren: geen veld dat zegt "dit is een titel en titels zijn
+één regel", geen regel die zegt "dit type neemt maximaal vijf items", geen
+manier om te vragen of de tekst leesbaar is tegen wat erachter ligt. De uitvoer
+is per constructie niet te reviewen. We hebben de productie geautomatiseerd van
+dingen die niemand kan nakijken, en dat is een merkwaardig ding om enthousiast
+over te zijn.
+
+<Figure
+  width="mid"
+  caption="Sleep de handgreep. Links is een slide gezet: een display-letter, een regel datums, een lijn. Rechts staat <b>wat het bestand bevat als het iets bevat</b> - sleutels, waarden tussen aanhalingstekens, en de drie momenten uitgeschreven als de reeks die ze zijn. Een canvas-bestand heeft dit niet. Dat heeft coördinaten. (De inhoud is een volkstuinvereniging, met opzet niet wij.)"
+>
+  <XraySlide
+    eyebrow="Volkstuinvereniging"
+    title="Hoe het tuinjaar wordt ingedeeld"
+    items={[
+      { date: 'maart', label: 'Zaadruil' },
+      { date: 'juni', label: 'Open tuin' },
+      { date: 'september', label: 'Oogstmaaltijd' },
+    ]}
+    leftLabel="wat de zaal ziet"
+    rightLabel="wat het bestand bevat"
+    sliderLabel="Schuif tussen de gerenderde slide en het record erachter"
+  />
+</Figure>
+
+## Het was al een zooi. AI heeft het geïndustrialiseerd.
+
+Laten we eerlijk zijn over het vertrekpunt, want "AI maakt presentaties
+slechter" is maar een halve zin. Presentaties waren al slecht.
+
+Walls of text, want nergens weet iets hoeveel regels er op een slide passen. Een
+huisstijl die op elke slide opnieuw wordt uitgevonden, want de huisstijl is een
+gewoonte en geen regel die het bestand kan afdwingen. Bullets die allemaal
+tegelijk verschijnen, want de instelling om ze één voor één te tonen ligt al
+dertig jaar drie dialoogvensters diep en vrijwel niemand heeft 'm ooit gevonden.
+Titels over de lichte helft van een foto, want geen enkel gereedschap in deze
+categorie heeft dat ooit gemeten, geen enkele keer, voor niemand.
+
+En dan het deel waar niemand eens over klaagt, omdat het altijd zo geweest is:
+een deck is per constructie ontoegankelijk. Een tekening heeft geen semantiek,
+dus er is niets om aan een schermlezer te geven. Een deck is een bestand en geen
+URL, dus het web krijgt hooguit een downloadlink. Dit is het medium waarin
+organisaties zeggen wat ze vinden, en het gaat de deur uit als een prentenboek
+dat de helft van het publiek niet kan lezen.
+
+Dat komt niet doordat de makers lui zijn. Het komt doordat het gereedschap niets
+weet, en gereedschap dat niets weet kan ook niets tegenhouden. Richt daar een
+generator op en je krijgt geen betere slides. Je krijgt dezelfde slides, veel
+sneller, in industriële hoeveelheden.
+
+<Figure caption="Sleep de titel over de foto, of focus 'm en gebruik de pijltjestoetsen. Links een canvas: dat laat je vrolijk witte tekst op een witte citroen zetten en zegt er niets van. Rechts dezelfde titel op dezelfde foto vanuit een record dat weet dat die twee elkaar overlappen, dus legt de renderer er een scrim onder en <b>heeft de ratio een bodem</b>. Beide getallen zijn uit de echte pixels gemeten. Een van deze twee tools kan ernaast zitten. De andere niet.">
+  <ContrastLab
+    image="/images/library/stand-saturday-morning.jpg"
+    imageAlt="Een mand met citroenen op een markttafel"
+    text="Alles wat we dit jaar hebben geteeld"
+    canvasLabel="Op een canvas"
+    typedLabel="Vanuit een record"
+    ratioLabel="contrast met wit"
+    dragLabel="Sleep de titel over de foto, of gebruik de pijltjestoetsen"
+    passLabel="haalt AA"
+    failLabel="zakt voor AA"
+  />
+</Figure>
+
+De web-first tools van de afgelopen jaren doen hier stukken van goed, en sommige
+doen het ronduit mooi. Maar het is altijd één stuk van de puzzel, en het formaat
+eronder blijft van hen.
+
+## Slides horen data te zijn, geen tekeningen
+
+Dit is het hele idee, en ingewikkeld is het niet. Een slide is een record met
+velden: een type, een titel, een lijst met items, een bron. Geen plaatje van een
+lijst, maar een lijst. Geen tekening die toevallig op een tijdlijn lijkt, maar
+een tijdlijn die zijn eigen datums kent.
+
+Geef een slide een type en elke klacht hierboven houdt op een
+karaktereigenschap te zijn en wordt een oplosbaar probleem. Het type weet
+hoeveel items erin passen, dus de wall of text kan geweigerd worden voordat het
+een wall is. De huisstijl is een render-regel in plaats van een beslissing die
+veertig keer per deck genomen wordt. Items één voor één tonen is gedrag van het
+type, geen vinkje dat iemand moet zien te vinden. Contrast is meetbaar, dus het
+kan gegarandeerd worden in plaats van gehoopt. Semantiek bestaat, dus
+toegankelijkheid en het web zijn geen extra werk meer. En er is eindelijk iets
+om tegenaan te programmeren.
+
+<Figure caption="Eén record, vier types. Er wordt tussen deze panelen niets opnieuw ingetypt: dezelfde drie items worden gerenderd door het type dat je kiest, en elk paneel zegt welke velden het heeft gelezen. <b>De inhoud veranderde niet. Alleen het type.</b> Probeer dat maar eens op een canvas.">
+  <TypeSwap
+    id="typeswap-nl"
+    title="Hoe het tuinjaar wordt ingedeeld"
+    items={[
+      {
+        date: 'maart',
+        label: 'Zaadruil',
+        detail: 'Iedereen brengt wat hij bewaard heeft en neemt mee wat hij nodig heeft.',
+        value: 40,
+      },
+      {
+        date: 'juni',
+        label: 'Open tuin',
+        detail: 'Het hek staat het hele weekend open, thee in het schuurtje.',
+        value: 120,
+      },
+      {
+        date: 'september',
+        label: 'Oogstmaaltijd',
+        detail: 'Eén lange tafel, alles erop gegroeid binnen het hek.',
+        value: 85,
+      },
+    ]}
+    types={[
+      { id: 'bullets', tab: 'Bullets', reads: 'leest items[].label' },
+      { id: 'timeline', tab: 'Tijdlijn', reads: 'leest items[].date en items[].label' },
+      { id: 'cards', tab: 'Kaarten', reads: 'leest items[].label en items[].detail' },
+      { id: 'chart', tab: 'Grafiek', reads: 'leest items[].label en items[].value' },
+    ]}
+    groupLabel="Render hetzelfde record als een ander slide-type"
+  />
+</Figure>
+
+Hier zit een echte ruil in en die hoort hardop gezegd: je levert het canvas in.
+Je kunt dat vak niet precies daar neerzetten, onder die hoek, want er is geen
+daar. Wat je ervoor terugkrijgt is een deck dat consistent is zonder dat iemand
+erop let, leesbaar zonder dat iemand het nakijkt, en automatiseerbaar zonder dat
+iemand het van een scherm hoeft te schrapen. Heeft jouw werk echt een vrij
+canvas nodig, gebruik dan een canvas, en geniet ervan. De meeste decks zijn dat
+niet. De meeste decks zijn een titel en wat items, voor de vierhonderdste keer
+met de hand nagetekend door iemand die liever iets anders had gedaan.
+
+## En nu de AI er weer bij
+
+Dit is het deel dat mij overtuigd heeft, en de reden dat dit geen anti-AI-stuk
+is. Ik gebruik dit dagelijks.
+
+Een doorsnee avond gaat nu zo: "voeg na slide 12 een slide in met de milestones
+uit die Notion-database." Hij haalt de data op en maakt er een tijdlijn-slide
+van. Of: "maak een slide met het smoelenboek van de Adviesraad", en omdat de
+mediabibliotheek gekoppeld is, staat die er in één keer compleet op, netjes
+uitgesneden, met de namen onder de juiste gezichten.
+
+Dat werkt door de structuur, niet door het model. Het model tekent geen plaatje
+van een tijdlijn. Het vult een record in, dat vervolgens gevalideerd wordt
+voordat het de slide op mag. Dat is een veel kleinere opdracht en een veel
+betrouwbaardere, en het is precies het verschil tussen een assistent die helpt
+en een slop-machine die elf bullets uitpoept.
+
+<Figure caption="Wijs een regel van het record aan en het deel van de slide dat eruit volgt licht op; wijs de slide aan en de regel licht op. Dit is wat een assistent werkelijk schrijft, en wat je eigen script in plaats daarvan zou schrijven. <b>Nergens een coördinaat.</b>">
+  <FieldMap
+    id="fieldmap-nl"
+    codeLabel="Het record achter de slide"
+    hint="Wijs een regel aan, of de slide."
+    lines={[
+      { text: '{' },
+      {
+        text: '  "type": "timeline",',
+        region: '*',
+        note: 'Het type bepaalt het hele plaatje, niet één onderdeel ervan.',
+      },
+      {
+        text: '  "title": "Hoe het tuinjaar wordt ingedeeld",',
+        region: 'title',
+        note: 'Een titel, geen tekstvak dat toevallig bovenaan staat.',
+      },
+      {
+        text: '  "items": [',
+        region: 'items',
+        note: 'Een lijst. De renderer bepaalt waar de datums landen.',
+      },
+      {
+        text: '    { "date": "maart", "title": "Zaadruil" },',
+        region: 'items',
+        note: 'Een lijst. De renderer bepaalt waar de datums landen.',
+      },
+      {
+        text: '    { "date": "juni", "title": "Open tuin" },',
+        region: 'items',
+        note: 'Een lijst. De renderer bepaalt waar de datums landen.',
+      },
+      {
+        text: '    { "date": "september", "title": "Oogstmaaltijd" }',
+        region: 'items',
+        note: 'Een lijst. De renderer bepaalt waar de datums landen.',
+      },
+      {
+        text: '  ]',
+        region: 'items',
+        note: 'Een lijst. De renderer bepaalt waar de datums landen.',
+      },
+      { text: '}' },
+    ]}
+    slide={{
+      eyebrow: 'Volkstuinvereniging',
+      title: 'Hoe het tuinjaar wordt ingedeeld',
+      items: [
+        { date: 'maart', title: 'Zaadruil' },
+        { date: 'juni', title: 'Open tuin' },
+        { date: 'september', title: 'Oogstmaaltijd' },
+      ],
+    }}
+  />
+</Figure>
+
+En wil je niets met AI te maken hebben, dan staat dezelfde deur open, en het is
+dezelfde deur. Het is een API. Schrijf het script zelf, in een cron, vanuit je
+eigen systemen. De assistent is hier een client, geen fundament. Dat onderscheid
+doet ertoe, want een fundament dat je niet kunt vervangen is gewoon een
+huisbaas.
+
+## En nu we toch bezig zijn: het hoort van jou te zijn
+
+Er volgt nog iets uit dit alles, en dat is het deel waar ik op de meeste dagen
+echt om geef, ook als de typografie me niet wakker houdt.
+
+Presentaties zijn waar organisaties zeggen wat ze vinden, hardop, voor de
+notulen. Dat materiaal staat op dit moment op infrastructuur die niemand in het
+gebouw ooit gezien heeft, in een formaat dat niemand in het gebouw kan openen
+zonder de leverancier, onder voorwaarden waar niemand in het gebouw over
+onderhandeld heeft. We hebben stilzwijgend afgesproken dat dat prima is. Het is
+niet prima, en het goede nieuws is dat het ook niet meer nodig is. Je kunt je
+eigen dingen tegenwoordig aan elkaar knopen. Je eigen server, je eigen
+mediabibliotheek, je eigen database, je eigen model als je dat wilt. Daar ga ik
+dieper op in bij
+[Waar je slides eigenlijk staan](/nl/blog/waar-je-slides-eigenlijk-staan/).
+
+## De omvang van de ambitie, nu we toch eerlijk zijn
+
+Er volgen twee besluiten uit, en maar één ervan ligt voor de hand.
+
+Open source is de voor de hand liggende. Lees elke regel, draai het op je eigen
+server, verander wat je niet bevalt, vraag niemand iets.
+
+De [spec](/nl/spec/) is de belangrijkere. Een applicatie kan verlaten worden.
+Een gedocumenteerd formaat met gepubliceerde schema's kan door iemand anders
+opgepakt en geïmplementeerd worden. Dat is de echte belofte tegen lock-in, en
+het is de reden dat het deck-formaat een eigen sectie op deze site heeft in
+plaats van een alinea in de handleiding.
+
+Ik weet hoe dat klinkt. Dit is een poging om een standaard te leggen onder iets
+waar drie van de grootste bedrijven ter wereld al een formaat voor hebben,
+vanuit een project met op het moment van schrijven precies één GitHub-ster, en
+die is van mij. Of het lukt is een oprecht open vraag.
+
+Prima. Ik zet toch een paal in de grond, want ik gebruik dit dagelijks en het is
+simpelweg beter, en omdat het alternatief nog een decennium industrieel
+geproduceerde prentenboeken is die niemand kan lezen en niemand kan nakijken.
+
+## Vertel me dat ik het mis heb
+
+Ik zou graag weten of wat mij dwarszit jou ook dwarszit. Misschien heb je er
+vrede mee gesloten. Misschien heb je zelf al iets in deze richting gebouwd en
+heb ik het gemist, wijs me er dan alsjeblieft op.
+
+Zo niet: proberen is één regel in een terminal. Er staat één ster op de
+repository, de mijne, en een tweede zou leuk zijn. En vind je dit betoog
+onzin, zeg dat dan, uitgebreid, in een mail. Ik hoor het liever wel dan niet.
+
+Let's build some cool shit.

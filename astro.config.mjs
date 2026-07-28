@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import sitemap from '@astrojs/sitemap';
+import mdx from '@astrojs/mdx';
 
 export default defineConfig({
   site: 'https://deckyard.eu',
@@ -238,5 +239,11 @@ export default defineConfig({
         },
       ],
     }),
+    // Last on purpose: @astrojs/mdx inherits the markdown configuration that
+    // earlier integrations set up, and Starlight sets some. MDX exists here for
+    // one reason - a blog post that has to *show* what structured content is
+    // needs components in its body, not screenshots of them. Posts stay .md
+    // unless they need a figure; see src/components/figures/README.md.
+    mdx(),
   ],
 });

@@ -1,0 +1,38 @@
+---
+// The frame every blog figure sits in: the width bleed out of the reading
+// column, and the caption.
+//
+// The caption is required, and not for tidiness. A figure here is an argument
+// the reader can operate, and a reader in an RSS client, in print, or with the
+// script blocked gets the caption and nothing else. If the caption does not
+// make the point on its own, the figure is decoration.
+import './figures.css';
+
+interface Props {
+  caption: string;
+  /**
+   * How far out of the 700px reading column the figure bleeds. `wide` is the
+   * default; `mid` for a figure that reads better a little smaller; `text` to
+   * stay inside the column with the prose.
+   */
+  width?: 'text' | 'mid' | 'wide';
+  class?: string;
+}
+
+const { caption, width = 'wide', class: className } = Astro.props;
+---
+
+<figure class:list={['fig', `fig--${width}`, className]}>
+  <slot />
+  <figcaption set:html={caption} />
+</figure>
+
+<style>
+  .fig--mid {
+    --fig-w: min(820px, calc(100vw - 2 * var(--gutter)));
+  }
+  .fig--text {
+    --fig-w: 100%;
+    margin-inline: 0;
+  }
+</style>

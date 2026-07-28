@@ -1,0 +1,415 @@
+---
+// The x-ray: one slide, wiped between what a room sees and what the file holds.
+//
+// The two halves are deliberately *not* the same drawing with two colour
+// schemes. The front is typeset - a display face, a body face, no code
+// anywhere. The back is the record: monospace, keys, quotes, braces, and the
+// items as what they actually are, an array of three of the same shape. A
+// reader who has never thought about a file format should be able to tell the
+// two apart at a glance, which is the entire job of this figure.
+//
+// What keeps it one slide rather than two pictures is the geometry. Both
+// plates use the same fixed grid rows, so the eyebrow, the title and the items
+// occupy exactly the same three rectangles no matter what is typeset inside
+// them, and the wipe cuts between regions instead of through a word.
+//
+// Field names are not copy: `eyebrow`, `title`, `items`, `date` and `label`
+// are the format's, identical in every language, so they are written here
+// rather than passed in.
+import './figures.css';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  items: { date: string; label: string }[];
+  /** Corner labels, one per plate. */
+  leftLabel: string;
+  rightLabel: string;
+  sliderLabel: string;
+  /** Where the seam starts, in percent. */
+  initial?: number;
+}
+
+const { eyebrow, title, items, leftLabel, rightLabel, sliderLabel, initial = 40 } = Astro.props;
+---
+
+<div class="xray" data-xray style={`--x:${initial}%`}>
+  <div class="xr-plate xr-plate--rendered">
+    <span class="xr-corner">{leftLabel}</span>
+
+    <p class="xr-eyebrow">{eyebrow}</p>
+    <p class="xr-title">{title}</p>
+    <ol class="xr-items">
+      {
+        items.map((it) => (
+          <li>
+            <span class="xr-date">{it.date}</span>
+            <span class="xr-moment">{it.label}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+
+  {
+    /* The record repeats the copy, so it is one thing said twice to a screen
+      reader. The rendered plate is the accessible copy; the caption says what
+      the other half is. */
+  }
+  <div class="xr-plate xr-plate--data" aria-hidden="true">
+    <span class="xr-corner">{rightLabel}</span>
+
+    <p class="xr-field xr-line">
+      <span class="xr-key">eyebrow:</span>
+      <span class="xr-str">"{eyebrow}"</span>
+    </p>
+    <p class="xr-field xr-line">
+      <span class="xr-key">title:</span>
+      <span class="xr-str">"{title}"</span>
+    </p>
+
+    {
+      /* Commas are drawn by CSS rather than written into the markup: a comma as
+        a sibling element picks up the whitespace around it and renders as
+        `"June" ,`. As a ::after it sits tight against what it follows. */
+    }
+    <div class="xr-field xr-array">
+      <span class="xr-punc"><span class="xr-key">items:</span> [</span>
+      <ol class="xr-cells">
+        {
+          items.map((it) => (
+            <li>
+              <span class="xr-punc">{'{'}</span>
+              <span class="xr-pairs">
+                <span class="xr-pair">
+                  <span class="xr-key">date:</span> <span class="xr-str">"{it.date}"</span>
+                </span>
+                <span class="xr-pair">
+                  <span class="xr-key">label:</span> <span class="xr-str">"{it.label}"</span>
+                </span>
+              </span>
+              <span class="xr-punc xr-brace-close">{'}'}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <span class="xr-punc xr-close">]</span>
+    </div>
+  </div>
+
+  <input
+    class="xr-range"
+    type="range"
+    min="0"
+    max="100"
+    step="1"
+    value={initial}
+    aria-label={sliderLabel}
+  />
+  <div class="xr-seam" aria-hidden="true"><span class="xr-grip"></span></div>
+</div>
+
+<script>
+  // The handle writes one custom property; the clip and the seam both read it,
+  // so there is a single source of truth for where the wipe sits.
+  function initXray() {
+    document.querySelectorAll<HTMLElement>('[data-xray]').forEach((root) => {
+      const range = root.querySelector<HTMLInputElement>('.xr-range');
+      if (!range || root.dataset.xrayBound) return;
+      root.dataset.xrayBound = 'true';
+      const paint = () => root.style.setProperty('--x', `${range.value}%`);
+      range.addEventListener('input', paint);
+      paint();
+    });
+  }
+  initXray();
+  document.addEventListener('astro:page-load', initXray);
+</script>
+
+<style>
+  /* The container, not the plate: an element cannot query its own
+     container-type, so the cqi sizes below have to resolve against the parent.
+     Same reason .slide-shell exists in ui/Slide.astro. */
+  .xray {
+    position: relative;
+    container-type: inline-size;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    touch-action: pan-y;
+  }
+
+  /* ---------- one geometry, two typesettings ----------
+     Fixed rows rather than content-driven ones. That is what lets the front be
+     set in a display face and the back in monospace without the two halves
+     drifting apart: whatever goes in a row, the row is the same rectangle on
+     both plates, and the seam always falls between regions. */
+  .xr-plate {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    padding: 7cqi 5cqi 5cqi;
+    display: grid;
+    grid-template-rows: 4cqi 1fr 21cqi;
+    gap: 3cqi;
+    overflow: hidden;
+  }
+  .xr-plate--data {
+    position: absolute;
+    inset: 0;
+    /* Everything to the right of the handle. */
+    clip-path: inset(0 0 0 var(--x));
+  }
+
+  /* ---------- front: what a room sees ----------
+     No monospace anywhere. A slide is typeset, and the point of the wipe is
+     lost if both halves look like a terminal. */
+  .xr-plate--rendered {
+    background: var(--card);
+    color: var(--ink);
+    font-family: var(--body);
+  }
+  .xr-eyebrow {
+    margin: 0;
+    align-self: center;
+    font-size: 1.9cqi;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--green-bright);
+  }
+  .xr-title {
+    margin: 0;
+    font-family: var(--display);
+    font-size: 5.2cqi;
+    font-variation-settings: 'wght' 620;
+    font-weight: 700;
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+    max-width: 84%;
+  }
+  /* The rail sits on the nodes' centre line and the nodes hang off the top of
+     each item, so the two are derived from the same pair of numbers rather
+     than eyeballed apart. */
+  .xr-items {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    margin: 0;
+    padding: 2.2cqi 0 0;
+    align-self: end;
+    position: relative;
+  }
+  .xr-items::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: calc(2.2cqi + 0.7cqi - 1px);
+    height: 2px;
+    background: var(--sage);
+  }
+  .xr-items li {
+    position: relative;
+    padding-right: 2.5cqi;
+  }
+  .xr-items li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1.4cqi;
+    height: 1.4cqi;
+    border-radius: 50%;
+    background: var(--green-bright);
+    box-shadow: 0 0 0 0.7cqi var(--card);
+  }
+  .xr-date {
+    display: block;
+    margin-top: 3.6cqi;
+    font-size: 2.1cqi;
+    font-weight: 600;
+    color: var(--green-bright);
+  }
+  .xr-moment {
+    display: block;
+    margin-top: 0.3em;
+    font-family: var(--display);
+    font-size: 2.3cqi;
+    font-variation-settings: 'wght' 600;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  /* ---------- back: what the file holds ----------
+     Monospace throughout, keys and quotes visible, and the items written out
+     as the array they are: three objects of the same shape, comma separated.
+     A dashed box marks each region; the fixed rows guarantee two of them can
+     never touch. */
+  .xr-plate--data {
+    background: var(--green-deep);
+    color: #cfe0d4;
+    font-family: var(--mono);
+    font-size: 1.7cqi;
+    line-height: 1.5;
+  }
+  .xr-field {
+    margin: 0;
+    outline: 1px dashed rgba(219, 163, 35, 0.4);
+    outline-offset: 0.9cqi;
+    border-radius: 2px;
+  }
+  .xr-plate--data .xr-field:first-of-type {
+    align-self: center;
+  }
+  .xr-line .xr-str::after {
+    content: ',';
+    color: #7f9a88;
+  }
+  .xr-key {
+    color: var(--brass-soft);
+  }
+  .xr-str {
+    color: #dceadf;
+  }
+  .xr-punc {
+    color: #7f9a88;
+  }
+
+  .xr-array {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    align-content: start;
+  }
+  .xr-cells {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 2.5cqi;
+    margin: 0.6cqi 0 0;
+    padding: 0 0 0 2ch;
+    font-size: 1.45cqi;
+  }
+  .xr-cells li {
+    display: grid;
+    align-content: start;
+  }
+  .xr-pairs {
+    display: grid;
+    padding-left: 2ch;
+  }
+  /* Every comma in this half is drawn, not written. See the note in the
+     template: a comma as its own element inherits the whitespace between
+     elements and drifts a space away from the value it belongs to. */
+  .xr-pairs .xr-pair:not(:last-child) .xr-str::after,
+  .xr-cells li:not(:last-child) .xr-brace-close::after {
+    content: ',';
+    color: #7f9a88;
+  }
+  .xr-close {
+    align-self: end;
+  }
+
+  /* ---------- the handle ----------
+     One corner label per plate rather than two floating over both: the data
+     plate's clip then hides the left label exactly where it hides everything
+     else, instead of a second copy of the same sum in a clip-path. */
+  .xr-corner {
+    position: absolute;
+    top: 2.4cqi;
+    font-family: var(--mono);
+    font-size: 1.5cqi;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+  .xr-plate--rendered .xr-corner {
+    left: 5cqi;
+    color: var(--ink-mute);
+  }
+  .xr-plate--data .xr-corner {
+    right: 5cqi;
+    color: var(--brass-soft);
+  }
+
+  /* A range, not a pointer handler: clicking anywhere on a range moves the
+     thumb there and keeps dragging, and arrows, Home and End arrive for free.
+     It is invisible and covers the figure, so the whole slide is the handle. */
+  .xr-range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+  }
+  .xr-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 44px;
+    height: 100%;
+  }
+  .xr-range::-moz-range-thumb {
+    width: 44px;
+    height: 100%;
+    border: 0;
+  }
+
+  .xr-seam {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--x);
+    width: 2px;
+    background: var(--brass-bright);
+    pointer-events: none;
+  }
+  .xr-grip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--brass-bright);
+    box-shadow: var(--shadow-sm);
+  }
+  /* Two bars, so the grip says "drag me" without a label. */
+  .xr-grip::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(var(--green-deep), var(--green-deep)) 11px 50% / 2px 12px no-repeat,
+      linear-gradient(var(--green-deep), var(--green-deep)) 21px 50% / 2px 12px no-repeat;
+  }
+  /* The input is transparent, so the ring has to be drawn on the thing the
+     reader is actually looking at. */
+  .xr-range:focus-visible ~ .xr-seam .xr-grip {
+    outline: 3px solid var(--green);
+    outline-offset: 3px;
+  }
+
+  /* Dashes, tints and a brass seam all vanish under a forced palette; the
+     regions keep a border that survives it. */
+  @media (forced-colors: active) {
+    .xr-field {
+      outline-color: CanvasText;
+    }
+    .xr-items li::before {
+      background: CanvasText;
+    }
+    .xr-seam {
+      background: CanvasText;
+    }
+    .xr-grip {
+      background: Canvas;
+      border: 2px solid CanvasText;
+    }
+  }
+</style>

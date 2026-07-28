@@ -1,0 +1,117 @@
+/* Chrome shared by the blog's figures (src/components/figures/*).
+   Astro can only scope a style to its own template, so the parts more than one
+   figure uses - the frame, the caption, the button row, the dark plate - live
+   here rather than being copied into each component. Same arrangement, and the
+   same reason, as components/marketing/anatomy/anatomy.css.
+
+   Unlayered on purpose (see src/styles/global.css): a figure has to win over
+   .article-body's rules for img, pre and code without a specificity fight. */
+
+/* ---------- the frame ----------
+   A figure is wider than the 700px reading column it sits in. The width is
+   worked out once and the side margins fall out of it, so the figure stays
+   centred on the column without a transform and without a wrapper. */
+.fig {
+  --fig-w: min(980px, calc(100vw - 2 * var(--gutter)));
+  width: var(--fig-w);
+  margin-inline: calc((100% - var(--fig-w)) / 2);
+  margin-block: var(--space-xl);
+}
+
+.fig figcaption {
+  margin-top: 14px;
+  font-size: var(--step--1);
+  line-height: 1.5;
+  color: var(--ink-mute);
+  max-width: 62ch;
+}
+/* The caption carries the argument on its own: it is what a reader gets in the
+   RSS feed, in print, and whenever the figure cannot be operated. */
+.fig figcaption b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ---------- the button row ----------
+   Used by any figure that switches between states. The group is one stop in
+   the tab order and the arrows move within it; that behaviour comes from
+   src/lib/roving.ts, which every tablist and radiogroup on the site owes its
+   reader. */
+.fig-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.fig-tab {
+  font-family: var(--mono);
+  font-size: var(--step--2);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition:
+    background var(--dur-micro) ease,
+    color var(--dur-micro) ease,
+    border-color var(--dur-micro) ease;
+}
+.fig-tab:hover {
+  border-color: var(--green-bright);
+  color: var(--green);
+}
+.fig-tab:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+.fig-tab[aria-selected='true'],
+.fig-tab[aria-checked='true'] {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+
+/* A selected state told apart only by a background colour disappears when the
+   reader supplies the palette, so it gets a second signal that survives. */
+@media (forced-colors: active) {
+  .fig-tab[aria-selected='true'],
+  .fig-tab[aria-checked='true'] {
+    border-width: 3px;
+  }
+}
+
+/* ---------- the mono note ----------
+   One line under a figure's controls, in the voice of the machine rather than
+   the article. */
+.fig-note {
+  margin-top: 12px;
+  font-family: var(--mono);
+  font-size: var(--step--2);
+  color: var(--ink-mute);
+  min-height: 1.4em;
+}
+.fig-note b {
+  color: var(--brass-text);
+  font-weight: 400;
+}
+
+/* ---------- the dark plate ----------
+   Any figure surface that paints its own dark background inside a light
+   article re-points the focus ring, the same way .section-dark does: the green
+   ring is invisible on it. */
+.fig-plate {
+  --focus-ring: var(--brass-bright);
+  background: var(--green-deep);
+  color: #e8efe9;
+  border-radius: var(--radius-md);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fig-tab {
+    transition: none;
+  }
+}

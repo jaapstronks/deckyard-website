@@ -1,0 +1,217 @@
+---
+// The record and the slide, wired to each other in both directions.
+//
+// Point at a line of the record and the part of the slide it drives lights up;
+// point at a part of the slide and the line that produced it lights up. That
+// is the whole idea of structured content demonstrated rather than defined,
+// and it needs no vocabulary from the reader.
+//
+// The lighting is not new machinery: ui/Slide.astro already ships the field
+// probe (`interactive`, `[data-region]`, `.is-probing` / `.is-lit`) for the
+// explainer on /structured-slides. This figure borrows it.
+import Slide from '@/components/ui/Slide.astro';
+import './figures.css';
+
+interface Props {
+  id: string;
+  /**
+   * The record, one line per entry. A line with a `region` is operable and
+   * lights that region of the slide; `region: '*'` lights the whole slide,
+   * which is what the type field does.
+   */
+  lines: { text: string; region?: string; note?: string }[];
+  slide: {
+    eyebrow: string;
+    title: string;
+    items: { date: string; title: string }[];
+  };
+  /** Shown under the pair until the reader points at something. */
+  hint: string;
+  codeLabel: string;
+}
+
+const { id, lines, slide, hint, codeLabel } = Astro.props;
+
+// Indentation as non-breaking spaces rather than `white-space: pre`. A line
+// here is an element, and an element's own tags sit on their own source lines
+// once the formatter has been through - which `pre` would faithfully render as
+// a blank line and a wall of indentation. Fixing the whitespace at the source
+// is more robust than asking every future edit to stay on one line.
+const rows = lines.map((line) => ({ ...line, text: line.text.replace(/ /g, '\u00a0') }));
+---
+
+<div class="fm" data-fieldmap id={id}>
+  <div class="fm-code fig-plate">
+    {
+      /* One block element per line, so a line can be a button without the
+         layout noticing, and no line break in this file is load-bearing. */
+    }
+    <pre
+      class="fm-pre"
+      tabindex="0"
+      role="region"
+      aria-label={codeLabel}><code>{
+      rows.map((line) =>
+        line.region ? (
+          <button class="fm-line" type="button" data-field={line.region} data-note={line.note}>
+            {line.text}
+          </button>
+        ) : (
+          <span class="fm-line fm-line--plain">{line.text}</span>
+        )
+      )
+    }</code></pre>
+  </div>
+
+  <div class="fm-slide">
+    <Slide
+      eyebrow={slide.eyebrow}
+      title={slide.title}
+      items={slide.items}
+      variant="outcome"
+      interactive
+    />
+  </div>
+
+  <p class="fig-note" data-fm-note data-hint={hint}>{hint}</p>
+</div>
+
+<script>
+  function initFieldMap() {
+    document.querySelectorAll<HTMLElement>('[data-fieldmap]').forEach((root) => {
+      if (root.dataset.fmBound) return;
+      root.dataset.fmBound = 'true';
+
+      const slide = root.querySelector<HTMLElement>('[data-slide]');
+      const note = root.querySelector<HTMLElement>('[data-fm-note]');
+      const lines = Array.from(root.querySelectorAll<HTMLElement>('[data-field]'));
+      const regions = Array.from(root.querySelectorAll<HTMLElement>('[data-region]'));
+      if (!slide) return;
+
+      const clear = () => {
+        slide.classList.remove('is-probing');
+        regions.forEach((r) => r.classList.remove('is-lit'));
+        lines.forEach((l) => l.classList.remove('is-lit'));
+        if (note) note.textContent = note.dataset.hint ?? '';
+      };
+
+      const light = (field: string, message?: string) => {
+        slide.classList.add('is-probing');
+        regions.forEach((r) =>
+          r.classList.toggle('is-lit', field === '*' || r.dataset.region === field)
+        );
+        lines.forEach((l) => l.classList.toggle('is-lit', l.dataset.field === field));
+        if (note && message) note.textContent = message;
+      };
+
+      lines.forEach((line) => {
+        const field = line.dataset.field ?? '';
+        const show = () => light(field, line.dataset.note);
+        line.addEventListener('mouseenter', show);
+        line.addEventListener('focus', show);
+        line.addEventListener('mouseleave', clear);
+        line.addEventListener('blur', clear);
+      });
+
+      // The other direction: the slide points back at the record.
+      regions.forEach((region) => {
+        const field = region.dataset.region ?? '';
+        const match = lines.find((l) => l.dataset.field === field);
+        region.addEventListener('mouseenter', () => light(field, match?.dataset.note));
+        region.addEventListener('mouseleave', clear);
+      });
+    });
+  }
+  initFieldMap();
+  document.addEventListener('astro:page-load', initFieldMap);
+</script>
+
+<style>
+  .fm {
+    display: grid;
+    gap: var(--space-sm);
+    align-items: center;
+  }
+  /* Explicit tracks rather than auto-fit: the note below spans the full row, so
+     an empty third track would never collapse and the pair would sit in the
+     left two thirds. The record gets the wider one - it is the half with the
+     long lines in it. */
+  @media (min-width: 720px) {
+    .fm {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    }
+  }
+  .fm .fig-note {
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+
+  .fm-code {
+    padding: 20px 22px;
+    overflow: hidden;
+  }
+  /* Focusable, so a keyboard reader can scroll a block that overflows its
+     column: a scroll container only a mouse can reach is half a control. */
+  .fm-pre {
+    margin: 0;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    line-height: 1.75;
+    color: #cfe0d4;
+    background: none;
+    padding: 0;
+  }
+  .fm-pre:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 4px;
+  }
+
+  .fm-line {
+    display: block;
+    width: fit-content;
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    white-space: nowrap;
+  }
+  button.fm-line {
+    cursor: pointer;
+    border-radius: 3px;
+    transition:
+      background var(--dur-micro) ease,
+      color var(--dur-micro) ease;
+  }
+  button.fm-line:hover,
+  button.fm-line.is-lit {
+    background: rgba(219, 163, 35, 0.18);
+    color: var(--brass-soft);
+  }
+  button.fm-line:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+  .fm-line--plain {
+    color: #8ba795;
+  }
+
+  /* A lit line is told apart from its neighbours by a tint, which a forced
+     palette drops; underlining it says the same thing in the reader's own
+     colours. */
+  @media (forced-colors: active) {
+    button.fm-line:hover,
+    button.fm-line.is-lit {
+      text-decoration: underline;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    button.fm-line {
+      transition: none;
+    }
+  }
+</style>
