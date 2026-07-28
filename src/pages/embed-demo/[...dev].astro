@@ -1,0 +1,47 @@
+---
+// The `<DeckEmbed>` test harness. Dev only: it is built by `npm run dev` and
+// absent from `dist`.
+//
+// It was published and had zero incoming links from anywhere on the site, which
+// is the worst of the two states available - a page nobody can reach that a
+// crawler still can. Linking it was the alternative and it does not survive the
+// question "for whom": the homepage hero now embeds a real 27-slide deck, so a
+// visitor has already seen a self-contained export playing on this site, and
+// what is left here addresses somebody working on *this repository* ("dropped in
+// `public/decks/` and embedded with `<DeckEmbed>`"). That is a test page.
+//
+// So it keeps its use - checking the embed against a small deck rather than the
+// 1.4 MB one - and loses its URL. The rest parameter is the whole mechanism: a
+// route with no paths builds nothing, and `params: { dev: undefined }` resolves
+// to the parent path, so in dev this is `/embed-demo/` exactly as before.
+// `public/decks/example.html` (3.6 kB) is still copied to the output because
+// everything under public/ is; this page is the only thing that references it.
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import DeckEmbed from '@/components/ui/DeckEmbed.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+
+export function getStaticPaths() {
+  return import.meta.env.PROD ? [] : [{ params: { dev: undefined } }];
+}
+---
+
+<SiteLayout
+  title="Static deck embed - Deckyard"
+  description="Embed a self-contained Deckyard HTML export with no running instance."
+  localeUrls={{ en: '/embed-demo/' }}
+>
+  <Section>
+    <SectionHead center level={1} kicker="Static embed" title="A deck, embedded without a server">
+      <p class="lead">
+        The presentation below is a single self-contained HTML file dropped in
+        <code>public/decks/</code> and embedded with <code>&lt;DeckEmbed&gt;</code>. No running
+        Deckyard instance, no external origin. This page is a development harness and is not part of
+        the production build.
+      </p>
+    </SectionHead>
+    <div data-reveal data-reveal-delay="80">
+      <DeckEmbed src="/decks/example.html" title="Example deck" />
+    </div>
+  </Section>
+</SiteLayout>

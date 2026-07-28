@@ -71,6 +71,9 @@ export const home: HomeContent = {
   aiLimit:
     'What this does not do is make the text true. A model can still write a confident sentence about a number it invented, and no format catches that. What it can no longer do is hand you something that looks nothing like your organisation, or that quietly breaks the shape everything else is in.',
   aiCta: 'How that works',
+  hostedNote:
+    'Or have it run for you: a dedicated instance on your own domain, hosted in Europe, on the same code. The hosting is what pays for the development.',
+  hostedCta: 'How hosting works',
   compareKicker: 'Coming from somewhere else',
   compareTitle: 'How this compares to what you use now',
   compareBody:
