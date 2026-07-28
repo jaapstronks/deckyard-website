@@ -32,6 +32,17 @@ export const home: HomeContent = {
   formatCodeCaption: 'De envelop, ingekort',
   formatCta: 'Lees de formaatspecificatie',
   formatSchemaCta: 'Bekijk de schema’s',
+  roomKicker: 'In de zaal',
+  roomTitle: 'Het deck vraagt, en de zaal antwoordt',
+  roomLead:
+    'Een poll is een slidetype, geen tweede tool die er los naast hangt. Jij presenteert, de zaal komt binnen op een kort adres met een code, en de antwoorden landen op de slide waar iedereen al naar kijkt.',
+  roomCta: 'Hoe presenteren werkt',
+  roomPollAlt:
+    'Een pollslide tijdens een presentatie. Vier antwoorden, de balken ongelijk: 31 van de 47 stemmen op de derde optie, met het lopende totaal eronder.',
+  roomPollCaption: 'poll-slide, tijdens de presentatie',
+  roomJoinAlt:
+    'De uitnodigingsslide op het grote scherm: een QR-code naast het adres deckyard.eu/go en een toegangscode van vijf letters.',
+  roomJoinCaption: 'follow-invite-slide, op het grote scherm',
   featuresKicker: 'De rest',
   featuresTitle: 'En dan is er nog alles eromheen',
   featuresLead:

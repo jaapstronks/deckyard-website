@@ -32,6 +32,17 @@ export const home: HomeContent = {
   formatCodeCaption: 'The envelope, shortened',
   formatCta: 'Read the format spec',
   formatSchemaCta: 'See the schemas',
+  roomKicker: 'In the room',
+  roomTitle: 'The deck asks, and the room answers',
+  roomLead:
+    'A poll is a slide type, not a second tool bolted on beside it. You present; people arrive at a short address with a code; and the answers land on the slide everybody is already looking at.',
+  roomCta: 'How presenting works',
+  roomPollAlt:
+    'A poll slide during a presentation. Four answers, the bars unequal: 31 of the 47 votes on the third option, with the running total underneath.',
+  roomPollCaption: 'poll-slide, mid-presentation',
+  roomJoinAlt:
+    'The invitation slide on the big screen: a QR code beside the address deckyard.eu/go and a five-letter access code.',
+  roomJoinCaption: 'follow-invite-slide, on the big screen',
   featuresKicker: 'Everything else',
   featuresTitle: 'And then there is everything around the slide',
   featuresLead:

@@ -156,6 +156,38 @@ export interface HomeContent {
   formatCta: string;
   formatSchemaCta: string;
   /**
+   * The promoted showcase: the one section on the homepage that argues with a
+   * photograph of the product rather than with a drawing of it. S4 left the slot
+   * empty on purpose - the marketing images at the time were a violet render
+   * with a zero-vote poll and a QR pointing at a fork - and deckyard's capture
+   * harness has since filled it.
+   *
+   * It is the room rather than the editor, of the two candidates that had a
+   * usable image. "A slide is named fields" is already made twice above; "the
+   * room answers" was a claim with nothing behind it.
+   *
+   * Two `alt` rules, and neither is style:
+   *
+   * - **Never invite the reader to scan the code.** The QR in the join shot
+   *   still encodes the capture instance, because re-encoding it would produce a
+   *   scannable code pointing at a deck nobody hosts. Naming it is fine;
+   *   "scan it" is a promise the picture cannot keep. (The slide's own copy says
+   *   "scan the QR code" - that is inside the image and cannot be written away.)
+   * - **Describe what is in the frame, including the numbers.** The whole claim
+   *   is that the result is real, so "a poll with results" throws away the
+   *   evidence for a reader who cannot see the picture.
+   *
+   * @budget roomLead 45 words
+   */
+  roomKicker: string;
+  roomTitle: string;
+  roomLead: string;
+  roomCta: string;
+  roomPollAlt: string;
+  roomPollCaption: string;
+  roomJoinAlt: string;
+  roomJoinCaption: string;
+  /**
    * The band that hands the rest of the product to /features/. It used to be
    * eight cards with an icon each - the tallest section on the page, a list
    * pretending to be an argument, and not one link out of it. Three of the eight
