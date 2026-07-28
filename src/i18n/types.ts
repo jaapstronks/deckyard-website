@@ -825,6 +825,18 @@ export interface SpecContent {
     degradeLead: string;
     degrade: { term: string; def: string }[];
 
+    /**
+     * Active content. The same claim the IANA media-type registration makes in
+     * its security considerations, and it has to read the same in both places:
+     * a `.deck` is not an inert document, two slide types carry author HTML and
+     * embed URLs, and sanitising them is the reader's job. Stated here rather
+     * than left out, because silence on a spec page reads as "nothing to worry
+     * about" - and the archive's own integrity guarantee (a tampered package
+     * fails loudly) invites exactly that reading.
+     */
+    securityTitle: string;
+    securityBody: string[];
+
     versioningTitle: string;
     versioningBody: string[];
 
@@ -899,10 +911,34 @@ export interface SpecContent {
     stats: { value: string; label: string }[];
     introBody: string[];
 
-    /** Filter bar. Only rendered when scripting is on, so it never lies. */
-    filterGroupLabel: string;
-    filterAll: string;
-    groupLabels: Record<string, string>;
+    /**
+     * The `structure` facet. Names and one-line meanings come from core through
+     * `slide-types.json`, so only what a reader needs *around* them lives here:
+     * the section framing, the shared contract per group, and the labels the
+     * filter bar puts on the same six values.
+     */
+    structureTitle: string;
+    structureBody: string[];
+    /** The type-versus-variant rule. Quoted policy - keep it verbatim. */
+    structureRule: string;
+    structureRuleSource: string;
+    /** Per structure: the contract every type in the group honours. */
+    structureContracts: Record<string, string>;
+    /** Shown on a group whose members do not all keep to the contract. */
+    structureCaveats: Record<string, string>;
+    /** Carries {n}. Two keys because `tabular` and `dataset` hold exactly one. */
+    structureCountLabel: string;
+    structureCountOne: string;
+    structureItemsLabel: string;
+    structureNoItems: string;
+
+    /**
+     * Names the six sections. The structure filter that used to sit here is
+     * gone: grouping by structure *is* the navigation, and a radiogroup that
+     * hides five of six sections says the same thing twice.
+     */
+    structureLabels: Record<string, string>;
+    /** The one filter left. Only rendered with scripting on, so it never lies. */
     filterAudienceLabel: string;
     filterAudienceHint: string;
     /** Announced when filtering changes what the grid shows. */
@@ -927,6 +963,23 @@ export interface SpecContent {
     notForTitle: string;
     schemaLinkLabel: string;
     identityLabel: string;
+
+    /**
+     * The conformance claim. The point of the facet for anyone outside this
+     * project: a second implementation can say which structures it covers and
+     * how many types that is, instead of choosing between all of them and
+     * saying nothing.
+     */
+    conformanceTitle: string;
+    conformanceBody: string[];
+    conformanceColStructure: string;
+    conformanceColTypes: string;
+    conformanceColClaim: string;
+    /** Carries {n}; the page fills in the type count for that structure. */
+    conformanceClaim: string;
+    conformanceExampleTitle: string;
+    /** Carries {n} and {total}. */
+    conformanceExample: string;
 
     globalTitle: string;
     globalBody: string[];

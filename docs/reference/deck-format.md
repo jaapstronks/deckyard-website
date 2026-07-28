@@ -148,6 +148,26 @@ Deliberate lossy edges (they degrade, they do not crash):
 - A **missing local asset** keeps its `/uploads/…` ref and imports as a dangling
   reference.
 
+## Active content and sanitisation
+
+A deck is **not** an inert document. Two slide types carry content that executes
+or loads in the reader's context:
+
+| Type | What it carries | What a reader owes it |
+| --- | --- | --- |
+| `custom-html-slide` | HTML written by the deck's author | Sanitise before it reaches a document. |
+| `embed-slide` | a URL that will be framed | Isolate in a frame that cannot reach the surrounding page. |
+
+Validating a deck says nothing about whether it is safe to render, and neither
+does the package layer: content addressing proves the bytes are the bytes that
+were packed, not that they are safe to run. Treat a deck from someone else the
+way you would treat any untrusted document.
+
+This matches the security considerations in the `application/vnd.deckyard.deck`
+media-type registration and the [active-content section on the spec
+page](/spec/deck-format/). The same claim is deliberately worded the same way in
+all three places.
+
 ## Versioning
 
 - `version` is the **envelope** version, bumped only for a breaking change to the

@@ -177,6 +177,13 @@ export const spec: SpecContent = {
       },
     ],
 
+    securityTitle: 'Een deck is niet inert',
+    securityBody: [
+      'Het grootste deel van het formaat is data die een lezer kan renderen zonder iets uit te voeren. Twee slidetypes niet: `custom-html-slide` draagt HTML die een auteur geschreven heeft, en `embed-slide` draagt een URL die in een frame komt te staan. Een deck is dus actieve inhoud, en een bestand van iemand anders veilig noemen omdat het valideert is de verkeerde conclusie.',
+      'Wat daaruit volgt is een plicht voor wie het formaat leest, geen eigenschap ervan: saneer auteurs-HTML voordat die een document bereikt, en isoleer ingesloten URLs in een frame dat niet bij de pagina eromheen kan. De pakketlaag verandert daar niets aan. Adressering op hash bewijst dat de bytes de ingepakte bytes zijn; over de vraag of ze veilig zijn om uit te voeren zegt het niets.',
+      'Deze formulering is bewust gelijk aan de security-paragraaf van de mediatype-registratie. Dezelfde claim hoort hier niet anders te luiden dan daar.',
+    ],
+
     versioningTitle: 'Versionering',
     versioningBody: [
       '`version` is de envelopversie. Die beweegt alleen bij een breaking wijziging aan de vorm van de envelop, en hij heeft nog niet bewogen.',
@@ -317,15 +324,43 @@ export const spec: SpecContent = {
       'De tekening op elke kaart is hetzelfde abstracte diagram dat de editor in zijn slidekiezer tekent, uit dezelfde beschrijving van de layout. Het toont structuur in plaats van een verkleinde schermafdruk, en dat is het enige wat op dit formaat leesbaar blijft.',
     ],
 
-    filterGroupLabel: 'Categorie',
-    filterAll: 'Alle',
-    groupLabels: {
-      basic: 'Basis',
-      media: 'Media',
-      layouts: 'Layouts',
-      data: 'Data',
-      interaction: 'Interactie',
-      other: 'Overig',
+    structureTitle: 'Zes vormen, geen achtendertig losse dingen',
+    structureBody: [
+      'Een platte lijst types zegt niets over hoe ze zich tot elkaar verhouden, dus lijkt elk type iets aparts om te bouwen. Dat zijn ze niet. Elk type declareert een `structure`: de vorm van zijn primaire inhoud, los van waar de slide over gaat en hoe hij eruitziet. Zes waarden dekken ze allemaal, zonder restcategorie.',
+      'Dit is de as om tegenaan te bouwen. De categorieën waar een editor types onder wegzet mengen bekendheid, payload en gedrag tijdens het presenteren; dat is meubilair. `structure` is af te leiden uit het veldschema, en dus kan een declaratie die liegt door een test worden betrapt. Core draait die test.',
+    ],
+    structureRule:
+      'Een variant is een renderkeuze die elke geldige instantie van de inhoud zonder verlies overleeft. Een typegrens is waar inhoud toegevoegd of weggegooid moet worden.',
+    structureRuleSource: 'De regel die bepaalt wanneer iets een type is en niet een layout.',
+    structureContracts: {
+      singleton:
+        'Een vaste set losse velden. Lees de sleutels die het type declareert; er valt niets te herhalen.',
+      collection:
+        'Eén array met items die allemaal dezelfde vorm hebben. Loop de array af, render het item, herhaal. Die ene lus is het hele contract, hoeveel types hem ook gebruiken.',
+      'fixed-collection':
+        'Hetzelfde itemcontract als een collection, met een vast aantal, omdat dat aantal betekenis draagt: vier kwadranten is wat een matrix een matrix maakt.',
+      tabular: 'Rijen met cellen. De rij is het item; de kolommen zijn posities daarbinnen.',
+      dataset:
+        'Datapunten plus een codering. De payload is een gecodeerd blok in plaats van benoemde velden, dus dit is de enige vorm die een renderer niet generiek kan aflopen.',
+      chrome:
+        'Helemaal geen inhoudsvelden. De slide is zijn eigen meubilair, dus er valt niets uit te lezen.',
+    },
+    structureCaveats: {
+      'fixed-collection':
+        'Twee hiervan houden zich er nog niet aan: `poll-slide` en `likert-slide` dragen `option1..optionN` als losse velden in plaats van een array, omdat ze de migratie die de andere collections kregen nooit gehad hebben. Core houdt ze bij in een open burndown; ze staan hier genoemd in plaats van stilletjes naar boven afgerond.',
+    },
+    structureCountLabel: '{n} types',
+    structureCountOne: '1 type',
+    structureItemsLabel: 'Itemvorm',
+    structureNoItems: 'Alleen losse velden',
+
+    structureLabels: {
+      singleton: 'Singleton',
+      collection: 'Collection',
+      'fixed-collection': 'Fixed collection',
+      tabular: 'Tabular',
+      dataset: 'Dataset',
+      chrome: 'Chrome',
     },
     filterAudienceLabel: 'De zaal doet mee',
     filterAudienceHint:
@@ -350,6 +385,19 @@ export const spec: SpecContent = {
     notForTitle: 'Pak iets anders als',
     schemaLinkLabel: 'JSON Schema',
     identityLabel: 'Identiteit',
+
+    conformanceTitle: 'Claim structuren, geen types',
+    conformanceBody: [
+      'Een tweede implementatie wil bijna nooit alle achtendertig, en had tot nu toe geen manier om dat te zeggen: of ze beweerde Deckyard-decks te lezen en viel stilletjes om op een grafiek, of ze zei niets en niemand kon nagaan wat ze deed. Structuren geven de claim een rand. Ondersteun je een structuur, dan ondersteun je elk type erin, want ze delen één contract.',
+      'Een lezer die de structuur dekt die hij geclaimd heeft en voor de rest een benoemde placeholder toont, is een correcte gedeeltelijke implementatie en geen kapotte. Daar is het gespecificeerde degraderen van het formaat voor.',
+    ],
+    conformanceColStructure: 'Structuur',
+    conformanceColTypes: 'Types gedekt',
+    conformanceColClaim: 'Wat ondersteunen betekent',
+    conformanceClaim: 'Leest alle {n}, zonder uitzondering per type.',
+    conformanceExampleTitle: 'Hoe zo’n claim eruitziet',
+    conformanceExample:
+      'Leest het deck-formaat, slidestructuren `singleton` en `collection` ({n} van de {total} core-types). Andere structuren komen binnen als benoemde placeholder.',
 
     globalTitle: 'De velden die elk type meedraagt',
     globalBody: [

@@ -33,6 +33,12 @@ export interface SlideType {
   label: string;
   deprecated: boolean;
   group: SlideTypeGroup;
+  /**
+   * The shape of the type's primary content, declared in core. `null` when a
+   * type declares none - core's own answer, not a default this side invents, so
+   * a gap in the facet has to look like a gap.
+   */
+  structure: SlideStructure | null;
   /** True when the audience takes part rather than only watching. */
   audience: boolean;
   description: string | null;
@@ -57,10 +63,32 @@ export const SLIDE_TYPE_GROUPS: SlideTypeGroup[] = [
   'other',
 ];
 
+/**
+ * The `structure` facet's vocabulary. Six values that partition all core types
+ * with no "other" bucket, which is core's own evidence that the axis is right.
+ *
+ * This is a different kind of statement from `SlideTypeGroup` above. A group is
+ * the editor's shelving and mixes four axes - `basic` is familiarity, `media`
+ * and `data` are payload, `interaction` is runtime behaviour - so it says where
+ * a type sits in a picker, not what its content looks like. `structure` is a
+ * claim about the content shape, derivable from the field schema and guarded by
+ * a test in core, which is why the spec page groups by it and the picker's
+ * groups stay out of the spec entirely.
+ */
+export type SlideStructure =
+  'singleton' | 'collection' | 'fixed-collection' | 'tabular' | 'dataset' | 'chrome';
+
+export interface SlideStructureEntry {
+  name: SlideStructure;
+  /** The one-line meaning, as core words it. */
+  meaning: string;
+}
+
 const registry = data as unknown as {
   count: number;
   activeCount: number;
   deprecatedCount: number;
+  structures: SlideStructureEntry[];
   globalFields: SlideTypeField[];
   types: SlideType[];
 };
@@ -83,3 +111,43 @@ export function typesInGroup(group: SlideTypeGroup): SlideType[] {
 
 /** The four types kept only so existing decks keep rendering. */
 export const deprecatedTypes: SlideType[] = slideTypes.filter((t) => t.deprecated);
+
+// ---------------------------------------------------------------------------
+// The `structure` facet
+// ---------------------------------------------------------------------------
+
+/** The vocabulary, in core's declaration order. */
+export const slideStructures: SlideStructureEntry[] = registry.structures;
+
+/** Active types declaring a structure, in registration order. */
+export function typesWithStructure(structure: SlideStructure): SlideType[] {
+  return slideTypes.filter((t) => t.structure === structure && !t.deprecated);
+}
+
+/**
+ * A type's repeating fields: the ones carrying an item shape rather than a
+ * scalar. This is what makes the shared contract of a `collection` visible -
+ * twelve types, one array of homogeneous items each, so one renderer covers
+ * all twelve.
+ *
+ * Read off the field table rather than asserted, which is what lets the page
+ * show where the declaration and the schema disagree instead of smoothing it
+ * over: `poll-slide` and `likert-slide` declare `fixed-collection` and carry
+ * `option1..optionN` as scalars, so they come back empty here. Core tracks both
+ * in an open burndown; a page that hid them would be claiming a tidier format
+ * than the one on offer.
+ */
+export function repeatingFields(type: SlideType): SlideTypeField[] {
+  return type.fields.filter((f) => Array.isArray(f.itemFields) && f.itemFields.length > 0);
+}
+
+/**
+ * How many active types a reader covers by implementing a set of structures.
+ * This is the number that turns "we support Deckyard decks" into a claim with
+ * an edge: a renderer that does singleton and collection can say so and name
+ * what it skips, instead of choosing between all thirty-eight and silence.
+ */
+export function structureCoverage(structures: SlideStructure[]): number {
+  const wanted = new Set(structures);
+  return slideTypes.filter((t) => !t.deprecated && t.structure && wanted.has(t.structure)).length;
+}
