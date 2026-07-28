@@ -227,6 +227,15 @@ const deployDocsHref = '/docs/deployment/quickstart/';
     gap: var(--space-lg);
     align-items: center;
   }
+  /* A grid item's min-width is `auto`, so the track cannot get narrower than the
+     widest thing in it - here the mono hostname in the browser mock, whose
+     min-content is 228px and which never wraps. Under 340px that pushed the
+     whole page 7px wider than the viewport. The frame already clips
+     (`overflow: hidden`), so all this does is let it. Same failure as the code
+     block on the homepage's format section; see the note in CLAUDE.md. */
+  .domain > * {
+    min-width: 0;
+  }
   @media (min-width: 900px) {
     .domain {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
