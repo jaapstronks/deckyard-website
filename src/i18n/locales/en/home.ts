@@ -11,7 +11,7 @@ export const home: HomeContent = {
     'Deckyard is an open source presentation platform you host yourself, in place of PowerPoint, Canva or Gamma.',
   heroLead:
     'Create, present, publish and collaborate in one tool: your brand, your data, and AI that fills slides in rather than designing them.',
-  heroDeckTitle: 'Hi, this is Deckyard - a presentation embedded on this page',
+  heroDeckTitle: 'Sunnyside Lemonade Stand - a presentation embedded on this page',
   heroDeckPlay: 'Play the presentation',
   heroDeckNote:
     'Not a screenshot: a real deck, exported from Deckyard and dropped into this page with a single tag.',
