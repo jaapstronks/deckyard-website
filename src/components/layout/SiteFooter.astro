@@ -10,6 +10,7 @@ const t = ui[lang].footer;
 const year = new Date().getFullYear();
 const blogHref = localizePath('/blog/', lang);
 const changelogHref = localizePath('/changelog/', lang);
+const featuresHref = localizePath('/features/', lang);
 const compareHref = localizePath('/compare/', lang);
 const accessibilityHref = localizePath('/accessibility/', lang);
 const rssHref = localizePath('/rss.xml', lang);
@@ -36,6 +37,7 @@ const copyright = t.metaCopyright.replace('{year}', String(year));
         <div>
           <h2 class="footer-heading">{t.productHeading}</h2>
           <ul>
+            <li><a href={featuresHref}>{ui[lang].nav.features}</a></li>
             <li><a href={compareHref}>{ui[lang].nav.compare}</a></li>
             <li><a href={accessibilityHref}>{ui[lang].nav.accessibility}</a></li>
             <li><a href="/docs/creating/">{t.productDocs}</a></li>

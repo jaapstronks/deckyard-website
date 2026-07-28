@@ -1,0 +1,208 @@
+---
+// /features/ - the full inventory.
+//
+// This page exists so that deleting the eight pillar cards from the homepage was
+// a move rather than a loss. The pillars were a list pretending to be an
+// argument: eight cards with an icon each, the tallest section of the page, and
+// not one link out of them. Three of the eight had already been absorbed by the
+// slide-type rail, the format callout and the AI section, and the rest wanted
+// more room than a card, not less.
+//
+// So the homepage argues and this page lists. Every group here ends in a link
+// into the documentation, because somebody reading a features page in this much
+// detail was on their way there anyway.
+//
+// The docs hrefs live here rather than in the copy: a URL is structural, and
+// typing it into two locale files is two places for it to rot. Copy carries the
+// group `id`; this map turns it into a link. A group whose id is absent renders
+// without a "read more" rather than with a dead one.
+import SiteLayout from '@/layouts/SiteLayout.astro';
+import PageHero from '@/components/layout/PageHero.astro';
+import Section from '@/components/layout/Section.astro';
+import Button from '@/components/ui/Button.astro';
+import { ui, localizePath, type Lang } from '@/i18n';
+import { withFacts } from '@/lib/facts';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].features;
+
+// Docs are English-only (see astro.config.mjs), so these are the same for every
+// locale. `/docs/ai/` and `/docs/integrations/` have no index page, hence the
+// deeper targets for those two.
+const DOCS: Record<string, string> = {
+  // `editing`, not `creating`: the group is about the form you fill in, and
+  // `/docs/creating/` is about getting a deck to exist at all (import, paste,
+  // duplicate). The link label says "editing" in both languages.
+  making: '/docs/editing/',
+  brand: '/docs/themes/',
+  ai: '/docs/ai/getting-started/',
+  together: '/docs/collaboration/',
+  room: '/docs/presenter/',
+  out: '/docs/publishing/',
+};
+
+const hostingHref = localizePath('/hosting/', lang);
+---
+
+<SiteLayout title={t.metaTitle} description={t.metaDescription}>
+  <PageHero kicker={t.heroKicker} title={t.heroTitle} intro={t.heroIntro} />
+
+  <Section>
+    <div class="groups">
+      {
+        t.groups.map((group) => (
+          <section class="group" id={group.id} aria-labelledby={`${group.id}-title`}>
+            {/* Sticky on a wide screen: the items list runs longer than the
+                intro, and a reader three items down should still be able to see
+                which group they are in. */}
+            <div class="group-head" data-reveal>
+              <p class="kicker">{group.label}</p>
+              <h2 id={`${group.id}-title`}>{group.title}</h2>
+              <p class="group-body">{group.body}</p>
+              {DOCS[group.id] && (
+                <a class="group-more" href={DOCS[group.id]}>
+                  {group.moreLabel}
+                </a>
+              )}
+            </div>
+
+            <ul class="group-items">
+              {group.items.map((item, i) => (
+                <li data-reveal data-reveal-delay={i === 0 ? undefined : Math.min(i, 4) * 60}>
+                  <h3>{withFacts(item.title)}</h3>
+                  <p>{item.body}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- ============ and you run it ============ -->
+  <!-- Not a group: self-hosting is not a feature of the editor, it is the
+       condition all of the above is delivered under. It is also the one card of
+       the original eight that the homepage still makes better, with a real
+       command in the install widget. -->
+  <Section variant="dark">
+    <div class="run">
+      <h2 data-reveal>{t.runTitle}</h2>
+      <p class="lead" data-reveal data-reveal-delay="80">{t.runBody}</p>
+      <div class="run-actions" data-reveal data-reveal-delay="140">
+        <Button href={hostingHref}>{t.runHosting}</Button>
+        <Button href="/docs/deployment/quickstart/" variant="ghost">{t.runDocs}</Button>
+      </div>
+    </div>
+  </Section>
+</SiteLayout>
+
+<style>
+  .groups {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  .group {
+    display: grid;
+    gap: var(--space-md);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--line);
+    /* The homepage links straight at #room, and the header is sticky. */
+    scroll-margin-top: calc(var(--header-h) + var(--space-sm));
+  }
+  /* The first group opens the section, so it does not need a rule separating it
+     from the hero above. */
+  .group:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  @media (min-width: 900px) {
+    .group {
+      grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+      gap: var(--space-xl);
+      align-items: start;
+    }
+    .group-head {
+      position: sticky;
+      top: calc(var(--header-h) + var(--space-sm));
+    }
+  }
+
+  .group-head h2 {
+    margin: 0.35rem 0 0.6rem;
+    font-size: var(--step-3);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .group-body {
+    margin: 0;
+    color: var(--ink-soft);
+    line-height: 1.65;
+  }
+
+  .group-more {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.92rem;
+    font-variation-settings: 'wght' 560;
+    color: var(--brass-text);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .group-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 620px) {
+    .group-items {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+    }
+  }
+  .group-items li {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.35rem 1.3rem;
+    box-shadow: var(--shadow-sm);
+    /* A grid item defaults to min-width:auto, so a long unbreakable string in a
+       card widens the whole page rather than wrapping. This bit the format
+       callout in S3. */
+    min-width: 0;
+  }
+  .group-items h3 {
+    margin: 0 0 0.45rem;
+    font-size: 1.05rem;
+    font-variation-settings: 'wght' 620;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .group-items p {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- and you run it ---------- */
+  .run {
+    max-width: var(--container-text);
+  }
+  .run .lead {
+    margin-bottom: var(--space-md);
+  }
+  .run-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>
