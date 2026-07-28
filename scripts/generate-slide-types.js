@@ -51,6 +51,7 @@ export const MARKER_FILES = [
 /** Core modules this script reads. Mirrored in docs-sync/registry.json. */
 const CORE_SOURCES = {
   registry: 'shared/slide-types/registry.js',
+  structure: 'shared/slide-types/structure.js',
   schematics: 'client/views/editor/slide-type-schematics.js',
   picker: 'client/views/editor/slide-type-picker/data.js',
   catalog: 'server/utils/ai/slide-catalog/definitions.js',
@@ -120,11 +121,13 @@ function oneLine(text) {
 
 async function buildData() {
   const registry = await coreImport(CORE_SOURCES.registry);
+  const structureModule = await coreImport(CORE_SOURCES.structure);
   const schematics = await coreImport(CORE_SOURCES.schematics);
   const picker = await coreImport(CORE_SOURCES.picker);
   const catalog = await coreImport(CORE_SOURCES.catalog);
 
   const { SLIDE_TYPES, CORE_SLIDE_TYPE_NAMES, SLIDE_TYPE_IDS, GLOBAL_SLIDE_FIELD_KEYS } = registry;
+  const { SLIDE_STRUCTURES, SLIDE_STRUCTURE_NAMES, slideStructure } = structureModule;
   const { SLIDE_TYPE_SCHEMATIC } = schematics;
   const { SLIDE_TYPE_DESC, PICKER_GROUPS } = picker;
   const aiCatalog = catalog.getCoreSlideCatalog();
@@ -151,6 +154,11 @@ async function buildData() {
       label: def.label ?? name,
       deprecated: !!def.deprecated,
       group,
+      // The `structure` facet: the shape of the type's primary content, read
+      // straight off its definition. `slideStructure()` returns '' for a type
+      // that declares none, which is core's own answer and not a default this
+      // side invents - a type missing from the facet has to look missing.
+      structure: slideStructure(def) || null,
       // "Does the audience take part?" - the filter that separates Deckyard from
       // a slide editor. Derived, not asserted: a type counts when the editor
       // shelves it under interaction or the agent catalog files it as
@@ -186,6 +194,16 @@ async function buildData() {
     activeCount: active.length,
     deprecatedCount: types.length - active.length,
     groups: Object.keys(PICKER_GROUPS).concat('other'),
+    // The `structure` vocabulary, in core's own order, each with the one-line
+    // meaning core states. The site groups by this rather than by `groups`
+    // above: the picker's shelving mixes four axes (familiarity, payload,
+    // rhetorical function, runtime behaviour) and is the editor's furniture,
+    // while `structure` is a claim about the content shape that an implementor
+    // can build against.
+    structures: SLIDE_STRUCTURE_NAMES.map((name) => ({
+      name,
+      meaning: SLIDE_STRUCTURES[name],
+    })),
     globalFields,
     types,
   };

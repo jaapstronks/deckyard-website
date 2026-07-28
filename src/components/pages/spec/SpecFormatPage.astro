@@ -105,8 +105,20 @@ const prose = (text: string) => inlineCode(withSpec(text));
     </dl>
   </Section>
 
-  <!-- ============ versioning ============ -->
+  <!-- ============ active content ============ -->
+  <!-- Straight after degradation on purpose: that section is about what a
+       reader owes a deck it does not fully understand, and this is the other
+       half of the same duty. Kept in step with the security considerations in
+       the media-type registration - one claim, one wording. -->
   <Section>
+    <div class="spec-prose" data-reveal>
+      <h2>{t.securityTitle}</h2>
+      {t.securityBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+  </Section>
+
+  <!-- ============ versioning ============ -->
+  <Section variant="tint">
     <div class="spec-prose" data-reveal>
       <h2>{t.versioningTitle}</h2>
       {t.versioningBody.map((p) => <p set:html={prose(p)} />)}
@@ -114,7 +126,7 @@ const prose = (text: string) => inlineCode(withSpec(text));
   </Section>
 
   <!-- ============ the API surface ============ -->
-  <Section variant="tint">
+  <Section>
     <SectionHead title={t.apiTitle} lead={t.apiLead} />
     <div class="spec-prose" data-reveal>
       {t.apiBody.map((p) => <p set:html={prose(p)} />)}

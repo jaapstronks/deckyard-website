@@ -175,6 +175,13 @@ export const spec: SpecContent = {
       },
     ],
 
+    securityTitle: 'A deck is not inert',
+    securityBody: [
+      'Most of the format is data a reader can render without executing anything. Two slide types are not: `custom-html-slide` carries HTML an author wrote, and `embed-slide` carries a URL that will be framed. A deck is therefore active content, and treating a file from someone else as safe because it validated is the wrong conclusion.',
+      'What follows is a duty on whoever reads the format, not a property of it: sanitise author HTML before it reaches a document, and isolate embedded URLs in a frame that cannot reach the page around it. The package layer does not change this. Content addressing proves the bytes are the bytes that were packed; it says nothing about whether they are safe to run.',
+      'This is worded to match the security considerations in the media-type registration, deliberately. The same claim should not read one way here and another way there.',
+    ],
+
     versioningTitle: 'Versioning',
     versioningBody: [
       '`version` is the envelope version. It moves only for a breaking change to the envelope shape, and it has not moved.',
@@ -314,15 +321,43 @@ export const spec: SpecContent = {
       'The glyph on each card is the same abstract diagram the editor draws in its slide picker, from the same description of the layout. It shows structure rather than a shrunk-down screenshot, which is the only thing that stays legible this small.',
     ],
 
-    filterGroupLabel: 'Category',
-    filterAll: 'All',
-    groupLabels: {
-      basic: 'Basics',
-      media: 'Media',
-      layouts: 'Layouts',
-      data: 'Data',
-      interaction: 'Interaction',
-      other: 'Other',
+    structureTitle: 'Six shapes, not thirty-eight peers',
+    structureBody: [
+      'A flat list of types says nothing about how any of them relate, so every type looks like a separate thing to build. They are not. Each type declares a `structure`: the shape of its primary content, independent of what the slide is about and how it looks. Six values cover all of them, with no "other" bucket.',
+      'This is the axis worth building against. The categories an editor shelves types under mix familiarity, payload and runtime behaviour, and they are furniture; `structure` is derivable from the field schema, which means a declaration that lies about it can be caught by a test, and core runs one.',
+    ],
+    structureRule:
+      'A variant is a render choice that every valid instance of the content survives without loss. A type boundary is where content has to be added or thrown away.',
+    structureRuleSource: 'The rule that decides when something is a type rather than a layout.',
+    structureContracts: {
+      singleton:
+        'A fixed set of scalar slots. Read the keys the type declares; there is no repetition to walk.',
+      collection:
+        'One array of items that all share a shape. Walk the array, render the item, repeat. That single loop is the whole contract, however many types use it.',
+      'fixed-collection':
+        'The same item contract as a collection, with the count fixed because the count carries meaning: four quadrants is what makes a matrix a matrix.',
+      tabular: 'Rows of cells. The row is the item; the columns are positions inside it.',
+      dataset:
+        'Data points plus an encoding. The payload is an encoded blob rather than named fields, so this is the one shape a renderer cannot walk generically.',
+      chrome:
+        'No content fields at all. The slide is its own furniture, so there is nothing to read out of it.',
+    },
+    structureCaveats: {
+      'fixed-collection':
+        'Two of these do not keep to it yet: `poll-slide` and `likert-slide` carry `option1..optionN` as separate scalars rather than an array, because they never got the migration the other collections did. Core tracks both in an open burndown; they are listed here rather than quietly rounded up.',
+    },
+    structureCountLabel: '{n} types',
+    structureCountOne: '1 type',
+    structureItemsLabel: 'Item shape',
+    structureNoItems: 'Scalar fields only',
+
+    structureLabels: {
+      singleton: 'Singleton',
+      collection: 'Collection',
+      'fixed-collection': 'Fixed collection',
+      tabular: 'Tabular',
+      dataset: 'Dataset',
+      chrome: 'Chrome',
     },
     filterAudienceLabel: 'The audience takes part',
     filterAudienceHint:
@@ -347,6 +382,19 @@ export const spec: SpecContent = {
     notForTitle: 'Reach for something else when',
     schemaLinkLabel: 'JSON Schema',
     identityLabel: 'Identity',
+
+    conformanceTitle: 'Claim structures, not types',
+    conformanceBody: [
+      'A second implementation almost never wants all thirty-eight, and until now it had no way to say so: either it claimed to read Deckyard decks and quietly fell over on a chart, or it said nothing and nobody could tell what it did. Structures give the claim an edge. Support a structure and you support every type in it, because they share one contract.',
+      "A reader that covers a structure it has claimed and renders an unknown-type placeholder for the rest is a correct partial implementation, not a broken one. That is what the format's specified degradation is for.",
+    ],
+    conformanceColStructure: 'Structure',
+    conformanceColTypes: 'Types covered',
+    conformanceColClaim: 'What supporting it means',
+    conformanceClaim: 'Reads all {n} without a special case per type.',
+    conformanceExampleTitle: 'What a claim looks like',
+    conformanceExample:
+      'Reads the deck format, slide structures `singleton` and `collection` ({n} of {total} core types). Other structures import as a named placeholder.',
 
     globalTitle: 'The fields every type carries',
     globalBody: [
