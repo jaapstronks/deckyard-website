@@ -5,6 +5,7 @@ import InstallWidget from '@/components/marketing/InstallWidget.astro';
 import StructuredTeaser from '@/components/marketing/StructuredTeaser.astro';
 import SlideTypeRail from '@/components/marketing/SlideTypeRail.astro';
 import FormatCallout from '@/components/marketing/FormatCallout.astro';
+import RoomShowcase from '@/components/marketing/RoomShowcase.astro';
 import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
@@ -129,6 +130,19 @@ const heroDeck = heroDecks[lang];
        /structured-slides, /spec/slide-types/, /structured-slides, /spec/ - where
        two of them used to be the same page twice. -->
   <FormatCallout lang={lang} />
+
+  <!-- ============ AND THIS IS WHAT IT LOOKS LIKE ============ -->
+  <!-- The block S4 designed the slot for and then left empty, because the
+       marketing images at the time were a violet render of a poll with zero
+       votes and a QR pointing at the CIIIC fork. deckyard's capture harness has
+       since replaced both.
+
+       It is the room rather than the editor, of the two candidates that had
+       usable images: "a slide is named fields" is already made twice above (the
+       teaser draws it, the rail shows its range), while "the room answers" was
+       a claim with nothing behind it. It also breaks a run of four sections that
+       all argue about the shape of a file. -->
+  <RoomShowcase lang={lang} />
 
   <!-- ============ AND EVERYTHING ELSE ============ -->
   <!-- This was eight cards with an icon each: the tallest section on the page,

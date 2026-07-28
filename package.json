@@ -5,6 +5,7 @@
   "scripts": {
     "sync-docs": "node scripts/sync-docs.js",
     "sync-slide-types": "node scripts/generate-slide-types.js",
+    "derive-images": "node scripts/derive-marketing-images.js",
     "check-slide-types": "node scripts/generate-slide-types.js --check",
     "dev": "npm run sync-docs && astro dev",
     "build": "npm run sync-docs && astro build",
@@ -29,6 +30,7 @@
     "@astrojs/check": "^0.9.9",
     "prettier": "^3.9.6",
     "prettier-plugin-astro": "^0.14.1",
+    "sharp": "^0.34.5",
     "typescript": "^5.9.3"
   }
 }
