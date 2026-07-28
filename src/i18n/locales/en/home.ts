@@ -15,6 +15,14 @@ export const home: HomeContent = {
   heroDeckPlay: 'Play the presentation',
   heroDeckNote:
     'Not a screenshot: a real deck, exported from Deckyard and dropped into this page with a single tag.',
+  typesKicker: 'The pieces',
+  typesTitle: 'Every deck is made of the same handful of things',
+  typesLead:
+    'A timeline, a comparison, some numbers, a question for the room. Deckyard ships {count} of them as declared types, so you pick the one you mean instead of drawing it.',
+  typesRailLabel: 'A selection of the {count} slide types',
+  typesAudienceLabel: 'the room answers',
+  typesAllLabel: 'slide types, with their fields',
+  typesCta: 'See all {count}',
   featuresKicker: 'Under the hood',
   featuresTitle: 'Already built, now in the open',
   featuresLead:

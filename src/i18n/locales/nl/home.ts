@@ -15,6 +15,14 @@ export const home: HomeContent = {
   heroDeckPlay: 'Start de presentatie',
   heroDeckNote:
     'Geen screenshot: een echt deck, geëxporteerd uit Deckyard en met één tag in deze pagina gezet.',
+  typesKicker: 'De onderdelen',
+  typesTitle: 'Elke deck bestaat uit dezelfde handvol dingen',
+  typesLead:
+    'Een tijdlijn, een vergelijking, wat cijfers, een vraag aan de zaal. Deckyard levert er {count} als gedeclareerde types, zodat je kiest wat je bedoelt in plaats van het te tekenen.',
+  typesRailLabel: 'Een selectie uit de {count} slidetypes',
+  typesAudienceLabel: 'de zaal antwoordt',
+  typesAllLabel: 'slidetypes, met hun velden',
+  typesCta: 'Bekijk alle {count}',
   featuresKicker: 'Onder de motorkap',
   featuresTitle: 'Al gebouwd, nu in de openbaarheid',
   featuresLead:

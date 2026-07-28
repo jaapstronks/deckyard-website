@@ -3,6 +3,7 @@ import SiteLayout from '@/layouts/SiteLayout.astro';
 import Waitlist from '@/components/marketing/Waitlist.astro';
 import InstallWidget from '@/components/marketing/InstallWidget.astro';
 import StructuredTeaser from '@/components/marketing/StructuredTeaser.astro';
+import SlideTypeRail from '@/components/marketing/SlideTypeRail.astro';
 import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
@@ -93,6 +94,15 @@ const pillars = t.pillars.map((pillar, i) => ({
 
   <!-- ============ THE IDEA UNDERNEATH (teaser -> explainer) ============ -->
   <StructuredTeaser lang={lang} />
+
+  <!-- ============ AND HERE ARE THE PIECES ============ -->
+  <!-- Directly after the teaser on purpose: that section shows one slide made of
+       named fields, this one shows that the same is true of every kind of slide
+       a deck needs. Idea, then range. It also gives the two sections different
+       destinations - the teaser opens /structured-slides, this opens
+       /spec/slide-types/, which was three clicks deep and is the best-looking
+       page on the site. -->
+  <SlideTypeRail lang={lang} />
 
   <!-- ============ WHAT HAPPENS WHEN AI WRITES FOR YOU ============ -->
   <!-- The emphasis this site used to put on "hosted in Europe" - a tiebreaker in

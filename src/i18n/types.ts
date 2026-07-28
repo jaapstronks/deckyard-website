@@ -121,6 +121,24 @@ export interface HomeContent {
   heroDeckTitle: string;
   heroDeckPlay: string;
   heroDeckNote: string;
+  /**
+   * The slide-type showcase. Its claim is that a deck is made of a known set of
+   * pieces, so the copy names the pieces ("a timeline, a comparison, some
+   * numbers") before it names the figure. `{count}` is substituted by
+   * `withFacts`, so the number is never typed here.
+   *
+   * @budget typesLead 35 words
+   */
+  typesKicker: string;
+  typesTitle: string;
+  typesLead: string;
+  /** Accessible name of the scrollable strip, for a reader who lands on it. */
+  typesRailLabel: string;
+  /** Marks the types where the room answers rather than watches. */
+  typesAudienceLabel: string;
+  /** On the card that ends the run, under the figure itself. */
+  typesAllLabel: string;
+  typesCta: string;
   featuresKicker: string;
   featuresTitle: string;
   featuresLead: string;
