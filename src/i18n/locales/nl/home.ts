@@ -8,9 +8,9 @@ export const home: HomeContent = {
   heroTitleMain: 'Presenteren,',
   heroTitleHighlight: 'eindelijk vrij.',
   heroWhatItIs:
-    'Deckyard is een open source presentatieplatform dat je zelf host, in plaats van PowerPoint, Canva of Gamma: je eigen huisstijl, je eigen data, en AI die slides vult in plaats van ze te ontwerpen.',
+    'Deckyard is een open source presentatieplatform dat je zelf host, in plaats van PowerPoint, Canva of Gamma.',
   heroLead:
-    'Niet zomaar een slidebouwer: maken, presenteren, publiceren en samenwerken in één webtool die draait op infrastructuur die jij beheert. Elke deck ziet eruit alsof je designafdeling hem maakte, en blijft van jou; van eerste opzet tot live publiek.',
+    'Maken, presenteren, publiceren en samenwerken in één tool: je eigen huisstijl, je eigen data, en AI die slides vult in plaats van ze te ontwerpen.',
   heroDeckTitle: 'Hoi, dit is Deckyard - een presentatie, geëmbed op deze pagina',
   heroDeckPlay: 'Start de presentatie',
   heroDeckNote:
@@ -55,8 +55,10 @@ export const home: HomeContent = {
   ],
   aiKicker: 'Het stuk dat niemand heeft opgelost',
   aiTitle: 'Jullie mensen laten AI nu al voor de organisatie schrijven',
-  aiLead:
-    'Niet als beleidsbesluit. Iemand moest donderdag een deck maken, plakte de aantekeningen in een chatvenster en plakte het antwoord terug. Het leest prima, het gaat sneller, en het gaat niet meer ophouden. Wat niemand kan zeggen, is of wat eruit kwam binnen de regels van de organisatie blijft: de juiste claims, de juiste toon, het juiste beeld, de dingen die er wettelijk in moeten staan. Elk deck nalopen schaalt niet, en mensen vragen om geen AI te gebruiken heeft nog nooit gewerkt.',
+  aiLead: [
+    'Niet als beleidsbesluit. Iemand moest donderdag een deck maken, plakte de aantekeningen in een chatvenster en plakte het antwoord terug. Het leest prima, het gaat sneller, en het gaat niet meer ophouden.',
+    'Wat niemand kan zeggen, is of wat eruit kwam binnen de regels van de organisatie blijft: de juiste claims, de juiste toon, het juiste beeld, de dingen die er wettelijk in moeten staan. Elk deck nalopen schaalt niet, en mensen vragen om geen AI te gebruiken heeft nog nooit gewerkt.',
+  ],
   aiPoints: [
     {
       title: 'Een agent kan geen layout verzinnen',
@@ -86,7 +88,6 @@ export const home: HomeContent = {
   ctaGithub: 'Bekijk op GitHub',
   ctaWaitlistButton: 'Zet me op de lanceerlijst',
   sandboxButton: 'Probeer de live sandbox',
-  sandboxNote:
-    'Geen installatie, geen aanmelding. De editor is er helemaal; AI, uploads en publiceren staan uit, want hij is openbaar en anoniem.',
+  sandboxNote: 'Geen installatie, geen aanmelding. AI, uploads en publiceren staan uit.',
   ctaSandboxButton: 'Open de sandbox',
 };

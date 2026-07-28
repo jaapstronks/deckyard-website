@@ -3,6 +3,32 @@
 // A namespace maps 1:1 to a file per locale under locales/<lang>/. Adding a
 // page means adding an interface here plus one file per locale you translate
 // it into; untranslated locales fall back to EN (see index.ts).
+//
+// ---------------------------------------------------------------------------
+// Length budgets: `@budget <n> words`
+//
+// A field whose doc comment carries `@budget` was written for a layout that
+// only holds that much. Every one of them started short, was later made
+// factually correct, and nobody looked at the rendered result again: the
+// homepage hero grew to three consecutive paragraphs all explaining what
+// Deckyard is, and the note under the sandbox button reached 23 words for one
+// line of screen. The budget is here so the next correction has to choose
+// between being shorter and moving the fact somewhere it fits.
+//
+// Two rules:
+//
+//  - **The budget is measured on the longest locale, which is NL.** Dutch runs
+//    5-10% longer than the same sentence in English, so a budget that only
+//    holds in EN is not a budget. Stay under it in Dutch and English is free.
+//  - **Over budget is a layout decision, not a typo.** Raising the number is
+//    allowed; doing it silently, while the section it belongs to reflows, is
+//    the thing this comment exists to stop. Change the number in the same
+//    commit as the copy, and look at the section.
+//
+// Not enforced by a test on purpose. A word count is a proxy for "does this
+// still read as one line under a button", and the only way to know that is to
+// open the page.
+// ---------------------------------------------------------------------------
 
 export interface Pillar {
   title: string;
@@ -70,8 +96,22 @@ export interface HomeContent {
    * The one plain sentence saying what Deckyard is and what it stands in place
    * of - the line somebody forwards to a colleague. Not a tagline: the kicker
    * above the headline already does that job, and it did it twice.
+   *
+   * Set in the display face at --step-1, so it is read as the second line of
+   * the headline rather than as body copy. Beside the deck that column is half
+   * the container.
+   *
+   * @budget 20 words
    */
   heroWhatItIs: string;
+  /**
+   * What makes it different, once `heroWhatItIs` has said what it is. The two
+   * are split by job and may not restate each other: this one carries
+   * end-to-end plus the AI stance, and says nothing about self-hosting or
+   * standing in for PowerPoint, because the sentence above already did.
+   *
+   * @budget 25 words
+   */
   heroLead: string;
   /**
    * The deck beside the headline. Whether a locale actually has one is not a
@@ -94,9 +134,25 @@ export interface HomeContent {
    */
   aiKicker: string;
   aiTitle: string;
-  aiLead: string;
+  /**
+   * The scene this section opens on, as paragraphs rather than one string. It
+   * was a single 88-word block set as a `.lead` in a 56ch measure, which is
+   * seven lines of large type before the reader reaches a full stop - the one
+   * place on the page where somebody stops reading.
+   *
+   * Two paragraphs, in this order: what people are already doing, then what
+   * nobody can say about the result. Do not add a third; the three panels below
+   * are the answer, and a lead that keeps going competes with them.
+   *
+   * @budget 50 words per paragraph
+   */
+  aiLead: string[];
   aiPoints: { title: string; body: string }[];
-  /** What the format does not fix. Stated on the page, not left to be found. */
+  /**
+   * What the format does not fix. Stated on the page, not left to be found.
+   *
+   * @budget 60 words
+   */
   aiLimit: string;
   aiCta: string;
   /** The band that sends someone arriving from another tool to /compare/. */
@@ -110,6 +166,15 @@ export interface HomeContent {
   ctaGithub: string;
   ctaWaitlistButton: string;
   sandboxButton: string;
+  /**
+   * One line under the sandbox button, at 0.9rem. Says what it costs to try
+   * (nothing) and which parts are switched off - not *why* they are. The reason
+   * ("it is public and anonymous") is true, was what pushed this string to 23
+   * words, and belongs in the sandbox rather than under a button on the
+   * homepage.
+   *
+   * @budget 10 words
+   */
   sandboxNote: string;
   ctaSandboxButton: string;
 }

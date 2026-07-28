@@ -104,7 +104,7 @@ const pillars = t.pillars.map((pillar, i) => ({
     <div class="ai-head">
       <p class="kicker">{t.aiKicker}</p>
       <h2>{t.aiTitle}</h2>
-      <p class="lead">{t.aiLead}</p>
+      {t.aiLead.map((para) => <p class="lead">{para}</p>)}
     </div>
 
     <ul class="ai-points">
@@ -375,7 +375,9 @@ const pillars = t.pillars.map((pillar, i) => ({
   .ai-head h2 {
     margin: 0.35rem 0 0.8rem;
   }
-  .ai-head .lead {
+  /* Two paragraphs now, so only the last one loses its bottom margin - the
+     first still needs the gap that tells them apart. */
+  .ai-head .lead:last-child {
     margin-bottom: 0;
   }
 
