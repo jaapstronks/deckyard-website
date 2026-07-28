@@ -15,6 +15,8 @@ export const home: HomeContent = {
   heroDeckPlay: 'Start de presentatie',
   heroDeckNote:
     'Geen screenshot: een echt deck, geëxporteerd uit Deckyard en met één tag in deze pagina gezet.',
+  heroDeckPrev: 'Vorige slide',
+  heroDeckNext: 'Volgende slide',
   typesKicker: 'De onderdelen',
   typesTitle: 'Elke deck bestaat uit dezelfde handvol dingen',
   typesLead:

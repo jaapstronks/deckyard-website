@@ -29,6 +29,15 @@
  * export's title bar and control row collapse to zero height, so the frame is
  * the slide and the stage is a plain aspect ratio. The links out keep the
  * unmodified URL - a deck opening in a tab of its own wants its controls.
+ *
+ * `?ui=min` takes the export's Previous/Next row with it, though, and the play
+ * pill it might have replaced lives on the poster, which is removed the moment
+ * the frame loads. A deck with no visible control is a deck that reads as a
+ * picture of one - which is exactly what the caption underneath it denies. So
+ * the embed paints two arrows of its own over the frame and proxies them to the
+ * export's own buttons: same navigation, in this page's visual language, with
+ * the aspect-ratio contract left alone. See `mountNav` below for what that
+ * costs and how it fails safe.
  */
 interface Props {
   /** Path to the exported .html deck, e.g. "/decks/my-deck.html". */
@@ -47,6 +56,10 @@ interface Props {
   inlineFrom?: string;
   /** Caption link shown when there is no poster. Pass '' to drop it. */
   openLabel?: string;
+  /** Accessible name of the back arrow painted over the frame. */
+  prevLabel?: string;
+  /** Accessible name of the forward arrow painted over the frame. */
+  nextLabel?: string;
 }
 
 const {
@@ -58,6 +71,8 @@ const {
   playLabel = 'Play the presentation',
   inlineFrom = '(min-width: 700px)',
   openLabel = 'Open the presentation',
+  prevLabel = 'Previous slide',
+  nextLabel = 'Next slide',
 } = Astro.props;
 
 // A ratio that does not parse falls back to 16:9 rather than collapsing the
@@ -123,6 +138,45 @@ const frameSrc = `${src}${src.includes('?') ? '&' : '?'}ui=min`;
         />
       )
     }
+    {
+      /* Hidden until the script has found controls in the frame to proxy to, so
+        an export too old for `?ui=min` - or one served from another origin,
+        where the frame cannot be read - never shows arrows that do nothing. */
+    }
+    <div class="deck-embed__nav" data-deck-nav hidden>
+      <button class="deck-embed__arrow" type="button" data-deck-prev aria-label={prevLabel}>
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="M15 5 8 12l7 7"></path>
+        </svg>
+      </button>
+      <button class="deck-embed__arrow" type="button" data-deck-next aria-label={nextLabel}>
+        <svg
+          width="22"
+          height="22"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path d="m9 5 7 7-7 7"></path>
+        </svg>
+      </button>
+    </div>
   </div>
   {
     !poster && openLabel && (
@@ -141,6 +195,62 @@ const frameSrc = `${src}${src.includes('?') ? '&' : '?'}ui=min`;
   // somebody presses play. A reader on a metered connection gets it only when
   // they ask. The poster is removed once the frame reports it has loaded, so
   // the swap has nothing to flash through.
+  // The arrows this page paints are a remote control, not a second
+  // implementation of "next slide": each one clicks the export's own button
+  // inside the frame, so clamping at the ends, the progress fill, the
+  // screen-reader announcement and the `#slide=` history entry all stay the
+  // export's job. The one coupling is the pair of ids, which is why the whole
+  // thing is opt-in on finding them: an export without them (before 1.6.0) or a
+  // frame that cannot be read at all (a deck served from another origin) keeps
+  // the arrows hidden rather than showing two buttons that do nothing.
+  const mountNav = (figure: HTMLElement, frame: HTMLIFrameElement) => {
+    const nav = figure.querySelector<HTMLElement>('[data-deck-nav]');
+    if (!nav) return;
+
+    let inner: Document | null = null;
+    try {
+      inner = frame.contentDocument;
+    } catch {
+      return; // cross-origin: nothing to proxy to.
+    }
+    if (!inner) return;
+
+    // Duck-typed, not `instanceof`: the frame is a realm of its own, so its
+    // buttons are not instances of *this* document's HTMLButtonElement and the
+    // check would reject every export there is.
+    const isButton = (node: Element | null): node is HTMLButtonElement =>
+      !!node && node.tagName === 'BUTTON';
+
+    const pairs: [HTMLButtonElement, HTMLButtonElement][] = [];
+    for (const [attr, id] of [
+      ['data-deck-prev', 'btnPrev'],
+      ['data-deck-next', 'btnNext'],
+    ] as const) {
+      const ours = figure.querySelector<HTMLButtonElement>(`[${attr}]`);
+      const theirs = inner.getElementById(id);
+      if (!ours || !isButton(theirs)) return;
+      pairs.push([ours, theirs]);
+    }
+
+    for (const [ours, theirs] of pairs) {
+      // `.click()` runs the listener regardless of the button being laid out;
+      // `?ui=min` only hides the row it sits in.
+      ours.addEventListener('click', () => theirs.click());
+      // Mirrored rather than recomputed, so "is there a slide that way" has one
+      // answer and it is the deck's. The export sets it on every slide change.
+      const mirror = () => {
+        ours.disabled = theirs.disabled;
+      };
+      mirror();
+      new MutationObserver(mirror).observe(theirs, {
+        attributes: true,
+        attributeFilter: ['disabled'],
+      });
+    }
+
+    nav.hidden = false;
+  };
+
   const mountDeck = (figure: HTMLElement, takeFocus: boolean) => {
     if (figure.dataset.deckMounted) return;
     figure.dataset.deckMounted = 'true';
@@ -154,12 +264,26 @@ const frameSrc = `${src}${src.includes('?') ? '&' : '?'}ui=min`;
     frame.addEventListener('load', () => {
       frame.classList.remove('is-arriving');
       poster.remove();
+      // The arrows replace the play pill the poster took with it, so they
+      // arrive in the same beat rather than after a second hop.
+      mountNav(figure, frame);
       // Only after the deck is really there: moving focus into an empty frame
       // would strand the keyboard.
       if (takeFocus) frame.focus();
     });
     frame.src = figure.dataset.deckSrc ?? '';
   };
+
+  // The posterless embed puts its `src` in the HTML and loads it lazily, so
+  // there is no mount to hang the arrows off - only the frame's own load. A
+  // lazy frame that is already complete by the time this runs (bfcache, a warm
+  // reload) would never fire another one, hence the readyState check.
+  document.querySelectorAll<HTMLElement>('.deck-embed:not([data-deck-src])').forEach((figure) => {
+    const frame = figure.querySelector<HTMLIFrameElement>('iframe');
+    if (!frame) return;
+    if (frame.contentDocument?.readyState === 'complete') mountNav(figure, frame);
+    else frame.addEventListener('load', () => mountNav(figure, frame));
+  });
 
   document.querySelectorAll<HTMLElement>('.deck-embed[data-deck-src]').forEach((figure) => {
     const poster = figure.querySelector('.deck-embed__poster');
@@ -269,6 +393,59 @@ const frameSrc = `${src}${src.includes('?') ? '&' : '?'}ui=min`;
     transform: translate(-50%, -50%) scale(1.04);
   }
 
+  /* ---------- the arrows ---------- */
+  /* Visible at rest, not on hover only: the whole point is that somebody
+     glancing at the hero can tell the deck is a deck. Hover and focus just
+     brighten what is already there. */
+  .deck-embed__arrow {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--green);
+    cursor: pointer;
+    opacity: 0.78;
+    box-shadow: 0 4px 16px rgba(16, 40, 27, 0.28);
+    transition:
+      opacity var(--dur-micro) var(--ease-out-quint),
+      scale var(--dur-micro) var(--ease-out-quint);
+  }
+  .deck-embed__arrow[data-deck-prev] {
+    left: 0.75rem;
+  }
+  .deck-embed__arrow[data-deck-next] {
+    right: 0.75rem;
+  }
+  .deck-embed__stage:hover .deck-embed__arrow,
+  .deck-embed__arrow:focus-visible {
+    opacity: 1;
+  }
+  .deck-embed__arrow:hover:not(:disabled) {
+    scale: 1.06;
+  }
+  .deck-embed__arrow:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+  /* Left in the tab order on purpose: the export disables its own buttons at
+     the ends, and a control that goes quiet says "this is the last slide" more
+     clearly than one that vanishes. */
+  .deck-embed__arrow:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+  .deck-embed__stage:hover .deck-embed__arrow:disabled {
+    opacity: 0.4;
+  }
+
   /* The frame fades in over the poster it replaces, so a deck that arrives on
      idle does not blink into the page while somebody is reading beside it. */
   .deck-embed__frame {
@@ -283,20 +460,32 @@ const frameSrc = `${src}${src.includes('?') ? '&' : '?'}ui=min`;
 
   @media (prefers-reduced-motion: reduce) {
     .deck-embed__play,
-    .deck-embed__frame {
+    .deck-embed__frame,
+    .deck-embed__arrow {
       transition: none;
     }
     .deck-embed__poster:hover .deck-embed__play,
     .deck-embed__poster:focus-visible .deck-embed__play {
       transform: translate(-50%, -50%);
     }
+    .deck-embed__arrow:hover:not(:disabled) {
+      scale: 1;
+    }
   }
 
-  /* A pill told apart from the still behind it by a background colour only;
-     the user's own palette drops that, so give it an edge of its own. */
+  /* A pill and two arrows told apart from the slide behind them by a background
+     colour only; the user's own palette drops that, so give them an edge of
+     their own - and an opacity-only disabled state disappears with it, so the
+     end of the deck has to be said in a way forced colours keeps. */
   @media (forced-colors: active) {
-    .deck-embed__play {
+    .deck-embed__play,
+    .deck-embed__arrow {
       border: 2px solid currentColor;
+    }
+    .deck-embed__arrow:disabled {
+      opacity: 1;
+      color: GrayText;
+      border-color: GrayText;
     }
   }
 

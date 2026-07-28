@@ -15,6 +15,8 @@ export const home: HomeContent = {
   heroDeckPlay: 'Play the presentation',
   heroDeckNote:
     'Not a screenshot: a real deck, exported from Deckyard and dropped into this page with a single tag.',
+  heroDeckPrev: 'Previous slide',
+  heroDeckNext: 'Next slide',
   typesKicker: 'The pieces',
   typesTitle: 'Every deck is made of the same handful of things',
   typesLead:

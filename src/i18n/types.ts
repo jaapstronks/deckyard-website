@@ -164,6 +164,13 @@ export interface HomeContent {
   heroDeckPlay: string;
   heroDeckNote: string;
   /**
+   * The two arrows the embed paints over the frame. They are the only visible
+   * proof the deck is a deck, so they are labelled for a screen reader even
+   * though the glyph is all a sighted reader gets.
+   */
+  heroDeckPrev: string;
+  heroDeckNext: string;
+  /**
    * The slide-type showcase. Its claim is that a deck is made of a known set of
    * pieces, so the copy names the pieces ("a timeline, a comparison, some
    * numbers") before it names the figure. `{count}` is substituted by
