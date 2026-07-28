@@ -39,6 +39,16 @@ export interface SlideType {
    * a gap in the facet has to look like a gap.
    */
   structure: SlideStructure | null;
+  /**
+   * What the presenting session has to do for the type beyond serving it.
+   * `null` on the same terms as `structure`: core's own gap, not a default.
+   */
+  runtime: SlideRuntime | null;
+  /**
+   * What kind of answer a `live` type collects. `null` on every other runtime,
+   * which core's guardrail asserts rather than this side assuming.
+   */
+  interaction: LiveInteraction | null;
   /** True when the audience takes part rather than only watching. */
   audience: boolean;
   description: string | null;
@@ -84,11 +94,43 @@ export interface SlideStructureEntry {
   meaning: string;
 }
 
+/**
+ * The `runtime` facet's vocabulary: what the presenting session has to do for a
+ * slide type beyond serving it.
+ *
+ * The second facet, and it answers a different question from `structure`.
+ * `structure` is about the content and is derivable from the field schema;
+ * `runtime` is a fact about the server, which nothing in the schema can confirm,
+ * so core guards it from the other end - no module may re-derive the live set by
+ * hand, which is the measurement that produced the facet in the first place.
+ *
+ * The line is drawn at *session state*, not at "has behaviour". That is what
+ * makes `countdown-slide` `timed` rather than `live`, and `lead-capture-slide`
+ * `static` even though it plainly collects from the room: its submissions go to
+ * lead storage over their own endpoint and never reach the session.
+ */
+export type SlideRuntime = 'static' | 'timed' | 'live';
+
+/** The kind of answer a `live` type collects. Meaningless on any other runtime. */
+export type LiveInteraction = 'poll' | 'likert' | 'feedback';
+
+export interface SlideRuntimeEntry {
+  name: SlideRuntime;
+  meaning: string;
+}
+
+export interface LiveInteractionEntry {
+  name: LiveInteraction;
+  meaning: string;
+}
+
 const registry = data as unknown as {
   count: number;
   activeCount: number;
   deprecatedCount: number;
   structures: SlideStructureEntry[];
+  runtimes: SlideRuntimeEntry[];
+  interactions: LiveInteractionEntry[];
   globalFields: SlideTypeField[];
   types: SlideType[];
 };
@@ -150,4 +192,61 @@ export function repeatingFields(type: SlideType): SlideTypeField[] {
 export function structureCoverage(structures: SlideStructure[]): number {
   const wanted = new Set(structures);
   return slideTypes.filter((t) => !t.deprecated && t.structure && wanted.has(t.structure)).length;
+}
+
+// ---------------------------------------------------------------------------
+// The `runtime` facet
+// ---------------------------------------------------------------------------
+
+/** The vocabulary, in core's declaration order: static, timed, live. */
+export const slideRuntimes: SlideRuntimeEntry[] = registry.runtimes;
+
+/** The three answer kinds a `live` type can declare. */
+export const liveInteractions: LiveInteractionEntry[] = registry.interactions;
+
+/** Active types with this runtime, in registration order. */
+export function typesWithRuntime(runtime: SlideRuntime): SlideType[] {
+  return slideTypes.filter((t) => t.runtime === runtime && !t.deprecated);
+}
+
+/**
+ * Every type with this runtime, retired ones included.
+ *
+ * The page states both figures where it counts implementation cost, and they are
+ * not the same: 28 of the 33 types you can add today are `static`, but 33 of all
+ * 38 are, because all five retired types are. A renderer meets retired types in
+ * real decks - that is the entire reason they still render - so the wider figure
+ * is the honest one for "how much of this needs a session", and the narrower one
+ * matches every other count on the page. Neither is typed out anywhere.
+ */
+export function runtimeCountAll(runtime: SlideRuntime): number {
+  return slideTypes.filter((t) => t.runtime === runtime).length;
+}
+
+/** Active `live` types collecting this kind of answer. */
+export function typesWithInteraction(interaction: LiveInteraction): SlideType[] {
+  return slideTypes.filter((t) => t.interaction === interaction && !t.deprecated);
+}
+
+/**
+ * How many active types a reader covers by implementing a set of structures
+ * *and* a set of runtimes - the grid cell, rather than either axis alone.
+ *
+ * This is what makes the conformance claim both precise and reachable. Structure
+ * alone says a renderer walks the content; adding the runtime axis says whether
+ * it needs a session server behind it, and the answer for the large majority of
+ * the catalogue is no. Narrowing on both is a smaller number than structure
+ * alone, which is the point: it is a claim with an edge instead of a boast.
+ */
+export function coverage(structures: SlideStructure[], runtimes: SlideRuntime[]): number {
+  const wantedStructures = new Set(structures);
+  const wantedRuntimes = new Set(runtimes);
+  return slideTypes.filter(
+    (t) =>
+      !t.deprecated &&
+      t.structure &&
+      wantedStructures.has(t.structure) &&
+      t.runtime &&
+      wantedRuntimes.has(t.runtime)
+  ).length;
 }

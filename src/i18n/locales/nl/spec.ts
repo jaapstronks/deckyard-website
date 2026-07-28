@@ -354,6 +354,47 @@ export const spec: SpecContent = {
     structureItemsLabel: 'Itemvorm',
     structureNoItems: 'Alleen losse velden',
 
+    runtimeTitle: 'En wat er achter moet draaien',
+    runtimeBody: [
+      'Een vorm vertelt je hoe je een slide leest. Hij vertelt niet wat er achter moet draaien terwijl iemand staat te presenteren. Dat is het tweede wat elk type declareert: een `runtime`, oftewel wat de presentatiesessie de slide verschuldigd is bovenop het uitserveren ervan.',
+      'Deze is gemeten in plaats van ontworpen. Negen modules in de core hadden dezelfde vier typenamen uitgeschreven om één vraag te beantwoorden: verzamelt deze slide antwoorden uit de zaal? Aan de randen liepen die negen lijstjes al uiteen. Geen ervan wilde weten wélk type het was; ze wilden allemaal een eigenschap die het type niet declareerde. Nu declareert het type hem, en zijn de negen handgeschreven lijstjes weg.',
+      'De grens ligt bij sessiestatus, niet bij "doet het iets", en juist daardoor vallen de lastige gevallen uit de definitie in plaats van dat ze stuk voor stuk beslecht moeten worden.',
+    ],
+    runtimeColRuntime: 'Runtime',
+    runtimeColMeaning: 'Wat de sessie doet',
+    runtimeColTypes: 'Types',
+    runtimeHeadlineTitle: 'Wat dat een implementatie kost',
+    runtimeHeadline:
+      '{n} van de {total} types vragen helemaal niets van een sessie. Een renderer dekt ze zonder server erachter: geen sessie om te openen en te sluiten, geen antwoorden om op te halen, geen uitslag om terug te duwen naar de zaal.',
+    runtimeHeadlineNote:
+      'Geteld over elk type dat in een deck kan zitten, de uitgefaseerde types meegerekend, want decks in het wild dragen die nog. Van de {activeTotal} types die je vandaag kunt toevoegen is het {active}: de uitgefaseerde types zijn allemaal `static`.',
+    runtimeEdgeTitle: 'Waar de grens valt',
+    runtimeEdges: [
+      {
+        type: 'countdown-slide',
+        text: 'is `timed`, niet `live`. Een klok, geen publiek, geen sessiestatus: de timer loopt volledig in het presentatievenster.',
+      },
+      {
+        type: 'lead-capture-slide',
+        text: 'is `static`, al haalt hij overduidelijk iets op uit de zaal. Zijn inzendingen gaan via een eigen endpoint naar de leadopslag en bereiken de sessie nooit.',
+      },
+      {
+        type: 'follow-invite-slide',
+        text: 'is `static`. De deelnamecode die hij toont is een renderinvoer die de sessie aanreikt, geen status die de sessie voor die slide bijhoudt.',
+      },
+    ],
+    interactionTitle: 'Wat een live slide ophaalt',
+    interactionBody: [
+      'Een `live` type declareert nog één ding: wat voor antwoord het ophaalt. Het is geen derde facet, het is het contract dat `live` impliceert, en op elke andere waarde is het betekenisloos. De drie soorten zijn die welke de follow-API al over de lijn stuurt, dus de declaratie benoemt een bestaand protocol in plaats van er een te verzinnen.',
+      'De schuif en de knoppen halen hetzelfde soort antwoord op. Dit groepeert op wat de zaal stuurt, niet op de widget waarmee het gestuurd wordt.',
+    ],
+    interactionColKind: 'Interactie',
+    interactionColSends: 'Wat de zaal stuurt',
+    interactionColTypes: 'Types',
+    runtimeSchemaNote:
+      'Geen van beide facetten staat in het gepubliceerde JSON Schema, en dat is bewust. Een schema beschrijft de inhoud van een slide; deze twee beschrijven het type. Een draaiende instantie serveert ze allebei per type via `/api/slide-types`.',
+    runtimeLabel: 'Sessie',
+
     structureLabels: {
       singleton: 'Singleton',
       collection: 'Collection',
@@ -386,18 +427,29 @@ export const spec: SpecContent = {
     schemaLinkLabel: 'JSON Schema',
     identityLabel: 'Identiteit',
 
-    conformanceTitle: 'Claim structuren, geen types',
+    conformanceTitle: 'Claim een vakje, geen lijst types',
     conformanceBody: [
-      'Een tweede implementatie wil bijna nooit alle achtendertig, en had tot nu toe geen manier om dat te zeggen: of ze beweerde Deckyard-decks te lezen en viel stilletjes om op een grafiek, of ze zei niets en niemand kon nagaan wat ze deed. Structuren geven de claim een rand. Ondersteun je een structuur, dan ondersteun je elk type erin, want ze delen één contract.',
-      'Een lezer die de structuur dekt die hij geclaimd heeft en voor de rest een benoemde placeholder toont, is een correcte gedeeltelijke implementatie en geen kapotte. Daar is het gespecificeerde degraderen van het formaat voor.',
+      'Een tweede implementatie wil bijna nooit alle achtendertig, en had tot nu toe geen manier om dat te zeggen: of ze beweerde Deckyard-decks te lezen en viel stilletjes om op een grafiek, of ze zei niets en niemand kon nagaan wat ze deed. De twee facetten geven de claim een rand. Ondersteun je een structuur, dan ondersteun je elk type erin, want ze delen één contract; noem je een runtime, dan heb je gezegd hoeveel machinerie daarachter staat.',
+      'Samen vormen ze een raster, en een claim is een vakje daarin: deze inhoudsvormen, zoveel sessie. Een lezer die het vakje dekt dat hij geclaimd heeft en voor de rest een benoemde placeholder toont, is een correcte gedeeltelijke implementatie en geen kapotte. Daar is het gespecificeerde degraderen van het formaat voor.',
     ],
+    conformanceStructureCaption: 'Wat je moet kunnen lezen',
+    conformanceRuntimeCaption: 'Wat je moet kunnen draaien',
     conformanceColStructure: 'Structuur',
+    conformanceColRuntime: 'Runtime',
     conformanceColTypes: 'Types gedekt',
     conformanceColClaim: 'Wat ondersteunen betekent',
     conformanceClaim: 'Leest alle {n}, zonder uitzondering per type.',
+    conformanceRuntimeClaims: {
+      static: 'Serveer de slide en klaar. Voor geen van de {n} hoeft iets bewaard te worden.',
+      timed:
+        'Laat een klok lopen in het presentatievenster. Niets opgeslagen, niets samengevat, niets te synchroniseren.',
+      live: 'Open een sessie, neem antwoorden aan uit de zaal, vat ze samen en duw de uitslag terug. Alle {n} spreken één protocol.',
+    },
     conformanceExampleTitle: 'Hoe zo’n claim eruitziet',
     conformanceExample:
-      'Leest het deck-formaat, slidestructuren `singleton` en `collection` ({n} van de {total} core-types). Andere structuren komen binnen als benoemde placeholder.',
+      'Leest het deck-formaat, slidestructuren `singleton` en `collection`, runtime `static` ({n} van de {total} core-types). De rest komt binnen als benoemde placeholder.',
+    conformanceExampleNote:
+      'Twee assen geven een kleiner getal dan één, en dat is precies de bedoeling: de claim zegt nu even nauwkeurig wat hij niet doet als wat hij wel doet. Hij heeft ook geen server nodig, wat hem een eerste doel maakt in plaats van een ambitie.',
 
     globalTitle: 'De velden die elk type meedraagt',
     globalBody: [

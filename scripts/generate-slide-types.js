@@ -52,6 +52,7 @@ export const MARKER_FILES = [
 const CORE_SOURCES = {
   registry: 'shared/slide-types/registry.js',
   structure: 'shared/slide-types/structure.js',
+  runtime: 'shared/slide-types/runtime.js',
   schematics: 'client/views/editor/slide-type-schematics.js',
   picker: 'client/views/editor/slide-type-picker/data.js',
   catalog: 'server/utils/ai/slide-catalog/definitions.js',
@@ -122,12 +123,21 @@ function oneLine(text) {
 async function buildData() {
   const registry = await coreImport(CORE_SOURCES.registry);
   const structureModule = await coreImport(CORE_SOURCES.structure);
+  const runtimeModule = await coreImport(CORE_SOURCES.runtime);
   const schematics = await coreImport(CORE_SOURCES.schematics);
   const picker = await coreImport(CORE_SOURCES.picker);
   const catalog = await coreImport(CORE_SOURCES.catalog);
 
   const { SLIDE_TYPES, CORE_SLIDE_TYPE_NAMES, SLIDE_TYPE_IDS, GLOBAL_SLIDE_FIELD_KEYS } = registry;
   const { SLIDE_STRUCTURES, SLIDE_STRUCTURE_NAMES, slideStructure } = structureModule;
+  const {
+    SLIDE_RUNTIMES,
+    SLIDE_RUNTIME_NAMES,
+    LIVE_INTERACTIONS,
+    LIVE_INTERACTION_NAMES,
+    slideRuntime,
+    slideLiveInteraction,
+  } = runtimeModule;
   const { SLIDE_TYPE_SCHEMATIC } = schematics;
   const { SLIDE_TYPE_DESC, PICKER_GROUPS } = picker;
   const aiCatalog = catalog.getCoreSlideCatalog();
@@ -159,6 +169,13 @@ async function buildData() {
       // that declares none, which is core's own answer and not a default this
       // side invents - a type missing from the facet has to look missing.
       structure: slideStructure(def) || null,
+      // The `runtime` facet: what the presenting session has to do for the type
+      // beyond serving it. Same rule as `structure` - core's '' becomes null
+      // rather than a default, so a type outside the facet reads as outside it.
+      runtime: slideRuntime(def) || null,
+      // Only a `live` type carries one, and core's guardrail asserts that in
+      // both directions, so this is null on everything else by construction.
+      interaction: slideLiveInteraction(def) || null,
       // "Does the audience take part?" - the filter that separates Deckyard from
       // a slide editor. Derived, not asserted: a type counts when the editor
       // shelves it under interaction or the agent catalog files it as
@@ -203,6 +220,19 @@ async function buildData() {
     structures: SLIDE_STRUCTURE_NAMES.map((name) => ({
       name,
       meaning: SLIDE_STRUCTURES[name],
+    })),
+    // The `runtime` vocabulary, same shape and same reason. Three values, and
+    // unlike `structure` they are wildly unbalanced - which is the useful part:
+    // the large majority of the catalogue asks nothing of a session at all.
+    runtimes: SLIDE_RUNTIME_NAMES.map((name) => ({
+      name,
+      meaning: SLIDE_RUNTIMES[name],
+    })),
+    // The sub-declaration a `live` type carries. Not a third facet: these are
+    // the values the follow API already puts on the wire as `interaction.type`.
+    interactions: LIVE_INTERACTION_NAMES.map((name) => ({
+      name,
+      meaning: LIVE_INTERACTIONS[name],
     })),
     globalFields,
     types,
@@ -428,6 +458,13 @@ function typeSection(type) {
   const lines = [`### ${type.label} — \`${type.name}\``, ''];
 
   const meta = [`Identity \`${type.id}\``];
+  if (type.structure) meta.push(`structure \`${type.structure}\``);
+  // The two facets belong on the searchable half too: somebody holding a
+  // `content` object and asking "does my renderer need a session for this?" is
+  // searching, not browsing /spec/slide-types/.
+  if (type.runtime) {
+    meta.push(`runtime \`${type.runtime}\`${type.interaction ? ` (\`${type.interaction}\`)` : ''}`);
+  }
   if (type.audience) meta.push('the audience takes part');
   if (type.deprecated) meta.push('**retired**');
   lines.push(`${meta.join(' · ')}.`, '');
@@ -483,6 +520,15 @@ export function buildSlideTypeDoc(data, format) {
     '- **Limit** is the maximum length in characters, where the type declares one.',
     '- **Options** lists the accepted values of an enumerated field.',
     '- Every type also accepts the [global fields](#fields-every-type-carries) below.',
+    '',
+    'The line under each heading carries the two facets a type declares about',
+    'itself. **Structure** is the shape of its primary content; **runtime** is what',
+    'the presenting session has to do for it (`static` — nothing, `timed` — a',
+    'presenter-driven clock, `live` — the audience answers and the session',
+    'aggregates), with the kind of answer a `live` type collects in brackets.',
+    "Neither is part of the JSON Schema: the schema describes a slide's content,",
+    'and these are statements about the type. Read them from `/api/slide-types` or',
+    'from [the slide-type spec](/spec/slide-types/).',
     '',
     `Each type's JSON Schema is served at`,
     `\`${schemaBase}/slide-types/<type>.schema.json\` — see`,

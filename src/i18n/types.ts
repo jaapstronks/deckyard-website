@@ -933,6 +933,38 @@ export interface SpecContent {
     structureNoItems: string;
 
     /**
+     * The `runtime` facet: what the presenting session has to do for a type
+     * beyond serving it. Names and meanings come from core through
+     * `slide-types.json` the same way `structure`'s do, so what lives here is
+     * the framing, the three edge cases, and the note that the facet is not in
+     * the JSON Schema.
+     */
+    runtimeTitle: string;
+    runtimeBody: string[];
+    runtimeColRuntime: string;
+    runtimeColMeaning: string;
+    runtimeColTypes: string;
+    /** The pull-out that turns the split into a cost. */
+    runtimeHeadlineTitle: string;
+    /** Carries {n} of {total}, counted over every type a deck may contain. */
+    runtimeHeadline: string;
+    /** Carries {active} of {activeTotal}: the same figure, retired types aside. */
+    runtimeHeadlineNote: string;
+    /** Where the line falls, argued once instead of per type. */
+    runtimeEdgeTitle: string;
+    runtimeEdges: { type: string; text: string }[];
+    /** The sub-declaration only a `live` type carries. */
+    interactionTitle: string;
+    interactionBody: string[];
+    interactionColKind: string;
+    interactionColSends: string;
+    interactionColTypes: string;
+    /** The facet is a statement about the type, not about a slide's content. */
+    runtimeSchemaNote: string;
+    /** Names the facet on a card, beside the item shape and the identity. */
+    runtimeLabel: string;
+
+    /**
      * Names the six sections. The structure filter that used to sit here is
      * gone: grouping by structure *is* the navigation, and a radiogroup that
      * hides five of six sections says the same thing twice.
@@ -965,21 +997,28 @@ export interface SpecContent {
     identityLabel: string;
 
     /**
-     * The conformance claim. The point of the facet for anyone outside this
-     * project: a second implementation can say which structures it covers and
-     * how many types that is, instead of choosing between all of them and
-     * saying nothing.
+     * The conformance claim, on two axes. The point of both facets for anyone
+     * outside this project: an implementation can name the grid cell it covers -
+     * these content shapes, this much session machinery - instead of choosing
+     * between all of the types and saying nothing.
      */
     conformanceTitle: string;
     conformanceBody: string[];
+    conformanceStructureCaption: string;
+    conformanceRuntimeCaption: string;
     conformanceColStructure: string;
+    conformanceColRuntime: string;
     conformanceColTypes: string;
     conformanceColClaim: string;
     /** Carries {n}; the page fills in the type count for that structure. */
     conformanceClaim: string;
+    /** Carries {n}; what supporting a runtime costs the implementor. */
+    conformanceRuntimeClaims: Record<string, string>;
     conformanceExampleTitle: string;
-    /** Carries {n} and {total}. */
+    /** Carries {n} and {total}: the grid cell, not either axis alone. */
     conformanceExample: string;
+    /** Why the two-axis figure is smaller than the structure-only one. */
+    conformanceExampleNote: string;
 
     globalTitle: string;
     globalBody: string[];

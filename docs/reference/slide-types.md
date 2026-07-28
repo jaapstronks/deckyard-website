@@ -24,6 +24,15 @@ for, see [Slide Types](/docs/slide-types/).
 - **Options** lists the accepted values of an enumerated field.
 - Every type also accepts the [global fields](#fields-every-type-carries) below.
 
+The line under each heading carries the two facets a type declares about
+itself. **Structure** is the shape of its primary content; **runtime** is what
+the presenting session has to do for it (`static` — nothing, `timed` — a
+presenter-driven clock, `live` — the audience answers and the session
+aggregates), with the kind of answer a `live` type collects in brackets.
+Neither is part of the JSON Schema: the schema describes a slide's content,
+and these are statements about the type. Read them from `/api/slide-types` or
+from [the slide-type spec](/spec/slide-types/).
+
 Each type's JSON Schema is served at
 `https://deckyard.eu/schema/v3/slide-types/<type>.schema.json` — see
 [JSON Schemas](/docs/reference/schemas/) for how to fetch it.
@@ -49,7 +58,7 @@ type rather than declared on each one. They are listed here once instead of 38 t
 
 ### Title slide — `title-slide`
 
-Identity `core/title-slide`.
+Identity `core/title-slide` · structure `singleton` · runtime `static`.
 
 Big title and subtitle to open with.
 
@@ -66,7 +75,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Section title — `chapter-title-slide`
 
-Identity `core/chapter-title-slide`.
+Identity `core/chapter-title-slide` · structure `singleton` · runtime `static`.
 
 Section divider between topics.
 
@@ -81,7 +90,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Text slide — `content-slide`
 
-Identity `core/content-slide`.
+Identity `core/content-slide` · structure `singleton` · runtime `static`.
 
 A heading with body text.
 
@@ -107,7 +116,7 @@ Layout variants: `one-column` (One column), `two-column` (Text in two columns), 
 
 ### List — `list-slide`
 
-Identity `core/list-slide`.
+Identity `core/list-slide` · structure `collection` · runtime `static`.
 
 A bulleted or numbered list.
 
@@ -133,7 +142,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Quote — `quote-slide`
 
-Identity `core/quote-slide`.
+Identity `core/quote-slide` · structure `singleton` · runtime `static`.
 
 A pull quote with attribution.
 
@@ -167,7 +176,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Image + text — `image-text-slide`
 
-Identity `core/image-text-slide`.
+Identity `core/image-text-slide` · structure `singleton` · runtime `static`.
 
 An image beside text.
 
@@ -214,7 +223,7 @@ Layout variants: `text` (Text only), `split-narrow` (Image 1/3), `split-half` (I
 
 ### Video — `video-slide`
 
-Identity `core/video-slide`.
+Identity `core/video-slide` · structure `singleton` · runtime `static`.
 
 An embedded video.
 
@@ -229,7 +238,7 @@ An embedded video.
 
 ### Image blocks — `team-cards-slide`
 
-Identity `core/team-cards-slide`.
+Identity `core/team-cards-slide` · structure `collection` · runtime `static`.
 
 Image blocks in a grid.
 
@@ -435,7 +444,7 @@ Each item in `members`:
 
 ### Logo wall — `logo-wall-slide`
 
-Identity `core/logo-wall-slide`.
+Identity `core/logo-wall-slide` · structure `collection` · runtime `static`.
 
 A wall of logos.
 
@@ -508,7 +517,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Image slide — `image-slide`
 
-Identity `core/image-slide`.
+Identity `core/image-slide` · structure `singleton` · runtime `static`.
 
 A single full-bleed image.
 
@@ -533,7 +542,7 @@ A single full-bleed image.
 
 ### Embed — `embed-slide`
 
-Identity `core/embed-slide`.
+Identity `core/embed-slide` · structure `singleton` · runtime `static`.
 
 Embed an external page or iframe.
 
@@ -547,7 +556,7 @@ Embed an external page or iframe.
 
 ### Gallery — `gallery-slide`
 
-Identity `core/gallery-slide`.
+Identity `core/gallery-slide` · structure `collection` · runtime `static`.
 
 A grid of images.
 
@@ -574,7 +583,7 @@ Each item in `images`:
 
 ### Icon cards — `icon-card-grid-slide`
 
-Identity `core/icon-card-grid-slide`.
+Identity `core/icon-card-grid-slide` · structure `collection` · runtime `static`.
 
 Cards with an icon and label.
 
@@ -622,7 +631,7 @@ Each item in `items`:
 
 ### Text blocks — `text-blocks-slide`
 
-Identity `core/text-blocks-slide`.
+Identity `core/text-blocks-slide` · structure `collection` · runtime `static`.
 
 Several labelled text blocks.
 
@@ -699,7 +708,7 @@ Each item in `blocks`:
 
 ### Process — `process-slide`
 
-Identity `core/process-slide`.
+Identity `core/process-slide` · structure `collection` · runtime `static`.
 
 Sequential steps with arrows.
 
@@ -729,7 +738,7 @@ Each item in `steps`:
 
 ### Timeline — `timeline-slide`
 
-Identity `core/timeline-slide`.
+Identity `core/timeline-slide` · structure `collection` · runtime `static`.
 
 Events along a timeline.
 
@@ -753,7 +762,7 @@ Each item in `items`:
 
 ### Table — `table-slide`
 
-Identity `core/table-slide`.
+Identity `core/table-slide` · structure `tabular` · runtime `static`.
 
 A data table.
 
@@ -786,7 +795,7 @@ Each item in `rows`:
 
 ### KPI — `kpi-metrics-slide`
 
-Identity `core/kpi-metrics-slide`.
+Identity `core/kpi-metrics-slide` · structure `collection` · runtime `static`.
 
 Big numbers with deltas.
 
@@ -814,7 +823,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Chart — `chart-slide`
 
-Identity `core/chart-slide`.
+Identity `core/chart-slide` · structure `dataset` · runtime `static`.
 
 A bar, line or pie chart.
 
@@ -839,7 +848,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Comparison — `comparison-slide`
 
-Identity `core/comparison-slide`.
+Identity `core/comparison-slide` · structure `singleton` · runtime `static`.
 
 Two options side by side.
 
@@ -857,7 +866,7 @@ Two options side by side.
 
 ### Matrix — `matrix-slide`
 
-Identity `core/matrix-slide`.
+Identity `core/matrix-slide` · structure `fixed-collection` · runtime `static`.
 
 A 2×2 quadrant matrix.
 
@@ -879,7 +888,7 @@ Each item in `cells`:
 
 ### Funnel — `funnel-slide`
 
-Identity `core/funnel-slide`.
+Identity `core/funnel-slide` · structure `collection` · runtime `static`.
 
 Stages narrowing to a goal.
 
@@ -910,7 +919,7 @@ Each item in `stages`:
 
 ### Pyramid — `pyramid-slide`
 
-Identity `core/pyramid-slide`.
+Identity `core/pyramid-slide` · structure `collection` · runtime `static`.
 
 A layered hierarchy pyramid.
 
@@ -931,7 +940,7 @@ Each item in `levels`:
 
 ### Cycle — `cycle-slide`
 
-Identity `core/cycle-slide`.
+Identity `core/cycle-slide` · structure `collection` · runtime `static`.
 
 A repeating cycle of stages.
 
@@ -963,7 +972,7 @@ Each item in `stages`:
 
 ### Countdown timer — `countdown-slide`
 
-Identity `core/countdown-slide` · the audience takes part.
+Identity `core/countdown-slide` · structure `singleton` · runtime `timed` · the audience takes part.
 
 A countdown timer.
 
@@ -980,7 +989,7 @@ A countdown timer.
 
 ### Poll — `poll-slide`
 
-Identity `core/poll-slide` · the audience takes part.
+Identity `core/poll-slide` · structure `fixed-collection` · runtime `live` (`poll`) · the audience takes part.
 
 A live audience poll.
 
@@ -997,7 +1006,7 @@ A live audience poll.
 
 ### Likert (agree/disagree) — `likert-slide`
 
-Identity `core/likert-slide` · the audience takes part.
+Identity `core/likert-slide` · structure `fixed-collection` · runtime `live` (`likert`) · the audience takes part.
 
 An agree/disagree rating.
 
@@ -1020,7 +1029,7 @@ An agree/disagree rating.
 
 ### Likert slider (1–10) — `likert-slider-slide`
 
-Identity `core/likert-slider-slide` · the audience takes part.
+Identity `core/likert-slider-slide` · structure `singleton` · runtime `live` (`likert`) · the audience takes part.
 
 A 1–10 slider rating.
 
@@ -1033,7 +1042,7 @@ A 1–10 slider rating.
 
 ### Feedback — `feedback-slide`
 
-Identity `core/feedback-slide` · the audience takes part.
+Identity `core/feedback-slide` · structure `singleton` · runtime `live` (`feedback`) · the audience takes part.
 
 Collect open text feedback.
 
@@ -1045,7 +1054,7 @@ Collect open text feedback.
 
 ### Follow-along invite — `follow-invite-slide`
 
-Identity `core/follow-invite-slide` · the audience takes part.
+Identity `core/follow-invite-slide` · structure `chrome` · runtime `static` · the audience takes part.
 
 A QR code to follow along.
 
@@ -1055,7 +1064,7 @@ No type-specific fields; it carries the global fields only.
 
 ### Payoff — `payoff-slide`
 
-Identity `core/payoff-slide`.
+Identity `core/payoff-slide` · structure `chrome` · runtime `static`.
 
 A closing payoff statement.
 
@@ -1063,7 +1072,7 @@ No type-specific fields; it carries the global fields only.
 
 ### Custom HTML — `custom-html-slide`
 
-Identity `core/custom-html-slide`.
+Identity `core/custom-html-slide` · structure `singleton` · runtime `static`.
 
 Your own HTML and CSS, for anything else.
 
@@ -1075,7 +1084,7 @@ Your own HTML and CSS, for anything else.
 
 ### End / Contact — `end-slide`
 
-Identity `core/end-slide`.
+Identity `core/end-slide` · structure `singleton` · runtime `static`.
 
 A closing slide with contact details.
 
@@ -1101,7 +1110,7 @@ not have to.
 
 ### List — `lijstje-slide`
 
-Identity `core/lijstje-slide` · **retired**.
+Identity `core/lijstje-slide` · structure `collection` · runtime `static` · **retired**.
 
 | Key | Label | Type | Required | Limit | Options |
 | --- | --- | --- | --- | --- | --- |
@@ -1125,7 +1134,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Partner split — `split-partner-title-slide`
 
-Identity `core/split-partner-title-slide` · **retired**.
+Identity `core/split-partner-title-slide` · structure `singleton` · runtime `static` · **retired**.
 
 | Key | Label | Type | Required | Limit | Options |
 | --- | --- | --- | --- | --- | --- |
@@ -1143,7 +1152,7 @@ Identity `core/split-partner-title-slide` · **retired**.
 
 ### Card stack — `card-stack-slide`
 
-Identity `core/card-stack-slide` · **retired**.
+Identity `core/card-stack-slide` · structure `collection` · runtime `static` · **retired**.
 
 | Key | Label | Type | Required | Limit | Options |
 | --- | --- | --- | --- | --- | --- |
@@ -1179,7 +1188,7 @@ Each item in `items`:
 
 ### Lead Capture — `lead-capture-slide`
 
-Identity `core/lead-capture-slide` · **retired**.
+Identity `core/lead-capture-slide` · structure `singleton` · runtime `static` · **retired**.
 
 | Key | Label | Type | Required | Limit | Options |
 | --- | --- | --- | --- | --- | --- |
@@ -1196,7 +1205,7 @@ Identity `core/lead-capture-slide` · **retired**.
 
 ### Content columns — `content-columns-slide`
 
-Identity `core/content-columns-slide` · **retired**.
+Identity `core/content-columns-slide` · structure `collection` · runtime `static` · **retired**.
 
 | Key | Label | Type | Required | Limit | Options |
 | --- | --- | --- | --- | --- | --- |

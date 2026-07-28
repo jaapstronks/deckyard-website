@@ -351,6 +351,47 @@ export const spec: SpecContent = {
     structureItemsLabel: 'Item shape',
     structureNoItems: 'Scalar fields only',
 
+    runtimeTitle: 'And what has to be running behind it',
+    runtimeBody: [
+      'A shape tells you how to read a slide. It does not tell you what has to be running behind it while somebody is presenting. That is the second thing every type declares: a `runtime`, meaning what the presenting session owes the slide beyond handing it over.',
+      'This one was measured rather than designed. Nine modules in the core had written out the same four type names to answer a single question - does this slide collect answers from the room? - and had already drifted apart at the edges. None of them wanted to know which type it was; they all wanted a capability the type did not declare. So the type declares it, and the nine hand-written lists are gone.',
+      'The line is drawn at session state rather than at "does it do anything", which is what lets the awkward cases fall out of the definition instead of being argued one at a time.',
+    ],
+    runtimeColRuntime: 'Runtime',
+    runtimeColMeaning: 'What the session does',
+    runtimeColTypes: 'Types',
+    runtimeHeadlineTitle: 'What that costs an implementation',
+    runtimeHeadline:
+      '{n} of the {total} types ask nothing of a session at all. A renderer covers them with no server behind it: no session to open and close, no answers to collect, no aggregate to push back to the room.',
+    runtimeHeadlineNote:
+      'Counted over every type a deck may contain, retired ones included, because decks in the wild still carry them. Of the {activeTotal} types on offer today it is {active}: the retired ones are all `static`.',
+    runtimeEdgeTitle: 'Where the line falls',
+    runtimeEdges: [
+      {
+        type: 'countdown-slide',
+        text: 'is `timed`, not `live`. A clock, no audience, no session state: the timer runs entirely in the presenting window.',
+      },
+      {
+        type: 'lead-capture-slide',
+        text: 'is `static`, though it plainly collects something from the room. Its submissions go to lead storage over an endpoint of their own and never reach the session.',
+      },
+      {
+        type: 'follow-invite-slide',
+        text: 'is `static`. The join code it renders is a render input the session hands over, not state the session keeps for that slide.',
+      },
+    ],
+    interactionTitle: 'What a live slide collects',
+    interactionBody: [
+      'A `live` type declares one more thing: which kind of answer it collects. It is not a third facet, it is the contract `live` implies, and it is meaningless on any other value. The three kinds are the ones the follow API already puts on the wire, so the declaration names an existing protocol rather than inventing one.',
+      'The slider and the buttons collect the same kind. This groups by what the audience sends, not by the widget it is sent with.',
+    ],
+    interactionColKind: 'Interaction',
+    interactionColSends: 'What the audience sends',
+    interactionColTypes: 'Types',
+    runtimeSchemaNote:
+      "Neither facet is in the published JSON Schema, deliberately. A schema describes a slide's content; these describe the type. A running instance serves both per type from `/api/slide-types`.",
+    runtimeLabel: 'Session',
+
     structureLabels: {
       singleton: 'Singleton',
       collection: 'Collection',
@@ -383,18 +424,29 @@ export const spec: SpecContent = {
     schemaLinkLabel: 'JSON Schema',
     identityLabel: 'Identity',
 
-    conformanceTitle: 'Claim structures, not types',
+    conformanceTitle: 'Claim a cell, not a list of types',
     conformanceBody: [
-      'A second implementation almost never wants all thirty-eight, and until now it had no way to say so: either it claimed to read Deckyard decks and quietly fell over on a chart, or it said nothing and nobody could tell what it did. Structures give the claim an edge. Support a structure and you support every type in it, because they share one contract.',
-      "A reader that covers a structure it has claimed and renders an unknown-type placeholder for the rest is a correct partial implementation, not a broken one. That is what the format's specified degradation is for.",
+      'A second implementation almost never wants all thirty-eight, and until now it had no way to say so: either it claimed to read Deckyard decks and quietly fell over on a chart, or it said nothing and nobody could tell what it did. The two facets give the claim an edge. Support a structure and you support every type in it, because they share one contract; name a runtime and you have said how much machinery stands behind that.',
+      "Together they make a grid, and a claim is a cell in it: these content shapes, this much session. A reader that covers the cell it claimed and renders a named placeholder for the rest is a correct partial implementation, not a broken one. That is what the format's specified degradation is for.",
     ],
+    conformanceStructureCaption: 'What you have to be able to read',
+    conformanceRuntimeCaption: 'What you have to be able to run',
     conformanceColStructure: 'Structure',
+    conformanceColRuntime: 'Runtime',
     conformanceColTypes: 'Types covered',
     conformanceColClaim: 'What supporting it means',
     conformanceClaim: 'Reads all {n} without a special case per type.',
+    conformanceRuntimeClaims: {
+      static: 'Serve the slide and stop. None of the {n} needs anything held for it.',
+      timed:
+        'Run a clock in the presenting window. Nothing stored, nothing aggregated, nothing to synchronise.',
+      live: 'Open a session, take answers from the room, aggregate them and push the result back. All {n} speak one protocol.',
+    },
     conformanceExampleTitle: 'What a claim looks like',
     conformanceExample:
-      'Reads the deck format, slide structures `singleton` and `collection` ({n} of {total} core types). Other structures import as a named placeholder.',
+      'Reads the deck format, slide structures `singleton` and `collection`, runtime `static` ({n} of {total} core types). Everything else imports as a named placeholder.',
+    conformanceExampleNote:
+      'Two axes give a smaller number than one, which is the point: the claim now says what it will not do as precisely as what it will. It also needs no server, which makes it a first target rather than an ambition.',
 
     globalTitle: 'The fields every type carries',
     globalBody: [

@@ -25,7 +25,12 @@ import {
   slideStructures,
   typesWithStructure,
   repeatingFields,
-  structureCoverage,
+  slideRuntimes,
+  liveInteractions,
+  typesWithRuntime,
+  typesWithInteraction,
+  runtimeCountAll,
+  coverage,
   type SlideType,
   type SlideTypeField,
 } from '@/lib/slideTypes';
@@ -53,8 +58,38 @@ const structureGroups = slideStructures
   .map((s) => ({ ...s, types: typesWithStructure(s.name) }))
   .filter((s) => s.types.length > 0);
 
-/** The claim the conformance table is worth making: the two biggest shapes. */
-const headlineStructures = structureCoverage(['singleton', 'collection']);
+/**
+ * The `runtime` facet, same treatment. Unlike `structure` these three are wildly
+ * unbalanced, and that is the finding rather than a flaw to smooth out: almost
+ * the whole catalogue asks nothing of a session. Rendering them as three equal
+ * columns would hide the one number an implementor most needs.
+ */
+const runtimeGroups = slideRuntimes
+  .map((r) => ({ ...r, types: typesWithRuntime(r.name) }))
+  .filter((r) => r.types.length > 0);
+
+/** The sub-declaration, which only `live` types carry. */
+const interactionGroups = liveInteractions
+  .map((i) => ({ ...i, types: typesWithInteraction(i.name) }))
+  .filter((i) => i.types.length > 0);
+
+/**
+ * A group small enough to be named is named. `static` holds most of the
+ * catalogue, so listing its members would only be the registry again; `timed`
+ * and `live` are short enough that the names are the more useful answer.
+ */
+const NAME_MEMBERS_UPTO = 5;
+
+/** How much of the catalogue needs no session at all, on both denominators. */
+const staticAll = runtimeCountAll('static');
+const staticActive = typesWithRuntime('static').length;
+
+/**
+ * The claim the conformance section is worth making, and it is a grid cell now:
+ * the two biggest shapes *and* no session behind them. Smaller than the
+ * structure-only figure, which is what gives it an edge.
+ */
+const headlineCell = coverage(['singleton', 'collection'], ['static']);
 
 /** A field's limit, or an em rule when it has none. */
 const limitOf = (f: SlideTypeField) => (f.maxLength ? String(f.maxLength) : t.noLimit);
@@ -103,6 +138,121 @@ const countLabel = (n: number) =>
       <p>{t.structureRule}</p>
       <cite>{t.structureRuleSource}</cite>
     </blockquote>
+  </Section>
+
+  <!-- ============ the second facet ============ -->
+  <Section>
+    <SectionHead title={t.runtimeTitle} />
+    <div class="spec-prose" data-reveal>
+      {t.runtimeBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+
+    <div class="spec-tablewrap" data-reveal>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th scope="col">{t.runtimeColRuntime}</th>
+            <th scope="col">{t.runtimeColMeaning}</th>
+            <th scope="col">{t.runtimeColTypes}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            runtimeGroups.map((group) => (
+              <tr>
+                <th scope="row">
+                  <code>{group.name}</code>
+                </th>
+                {/* Core's own one-line meaning, generated, not copy. */}
+                <td>{group.meaning}</td>
+                <td>
+                  {countLabel(group.types.length)}
+                  {group.types.length <= NAME_MEMBERS_UPTO && (
+                    <span class="ty-members">
+                      {group.types.map((type) => (
+                        <code>{type.name}</code>
+                      ))}
+                    </span>
+                  )}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- The sentence somebody deciding whether to write a renderer needs. Both
+         figures are counted here, so neither can be quoted at a number that has
+         moved, and the two denominators are named rather than blended. -->
+    <div class="ty-claim" data-reveal>
+      <h3>{t.runtimeHeadlineTitle}</h3>
+      <p
+        set:html={prose(
+          t.runtimeHeadline
+            .replace('{n}', String(staticAll))
+            .replace('{total}', String(slideTypes.length))
+        )}
+      />
+      <p
+        class="ty-claim-note"
+        set:html={prose(
+          t.runtimeHeadlineNote
+            .replace('{active}', String(staticActive))
+            .replace('{activeTotal}', String(active.length))
+        )}
+      />
+    </div>
+
+    <div class="spec-prose ty-edge-block" data-reveal>
+      <h3>{t.runtimeEdgeTitle}</h3>
+      <ul class="ty-edges">
+        {
+          t.runtimeEdges.map((edge) => (
+            <li>
+              <code>{edge.type}</code> <span set:html={prose(edge.text)} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="spec-prose ty-edge-block" data-reveal>
+      <h3>{t.interactionTitle}</h3>
+      {t.interactionBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+    <div class="spec-tablewrap" data-reveal>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th scope="col">{t.interactionColKind}</th>
+            <th scope="col">{t.interactionColSends}</th>
+            <th scope="col">{t.interactionColTypes}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            interactionGroups.map((group) => (
+              <tr>
+                <th scope="row">
+                  <code>{group.name}</code>
+                </th>
+                <td>{group.meaning}</td>
+                <td>
+                  <span class="ty-members">
+                    {group.types.map((type) => (
+                      <code>{type.name}</code>
+                    ))}
+                  </span>
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <p class="ty-note" data-reveal set:html={prose(t.runtimeSchemaNote)} />
   </Section>
 
   <!-- ============ the registry, by structure ============ -->
@@ -250,6 +400,15 @@ const countLabel = (n: number) =>
                           <em>{t.structureNoItems}</em>
                         )}
                       </span>
+                      {type.runtime && (
+                        <span>
+                          {/* The other facet, per type. The group heading above
+                          already says the structure; this is the one a reader
+                          cannot infer from where the card sits. */}
+                          {t.runtimeLabel}: <code>{type.runtime}</code>
+                          {type.interaction && <code>{type.interaction}</code>}
+                        </span>
+                      )}
                       <span>
                         {t.identityLabel}: <code>{type.id}</code>
                       </span>
@@ -275,8 +434,12 @@ const countLabel = (n: number) =>
     <div class="spec-prose" data-reveal>
       {t.conformanceBody.map((p) => <p set:html={prose(p)} />)}
     </div>
+    <!-- Two tables rather than one 6x3 grid. The grid would be mostly empty
+         cells, and the two axes are read one at a time anyway: what a renderer
+         has to walk, then what it has to keep running. -->
     <div class="spec-tablewrap" data-reveal>
       <table class="spec-table">
+        <caption>{t.conformanceStructureCaption}</caption>
         <thead>
           <tr>
             <th scope="col">{t.conformanceColStructure}</th>
@@ -299,6 +462,36 @@ const countLabel = (n: number) =>
         </tbody>
       </table>
     </div>
+    <div class="spec-tablewrap" data-reveal>
+      <table class="spec-table">
+        <caption>{t.conformanceRuntimeCaption}</caption>
+        <thead>
+          <tr>
+            <th scope="col">{t.conformanceColRuntime}</th>
+            <th scope="col">{t.conformanceColTypes}</th>
+            <th scope="col">{t.conformanceColClaim}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            runtimeGroups.map((group) => (
+              <tr>
+                <th scope="row">
+                  <code>{group.name}</code>
+                </th>
+                <td>{group.types.length}</td>
+                <td>
+                  {(t.conformanceRuntimeClaims[group.name] ?? '').replace(
+                    '{n}',
+                    String(group.types.length)
+                  )}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
     <!-- A worked example rather than a form to fill in: the sentence is the
          deliverable, and the two numbers in it are counted here so it cannot
          be quoted at a figure that has since moved. -->
@@ -307,10 +500,11 @@ const countLabel = (n: number) =>
       <p
         set:html={prose(
           t.conformanceExample
-            .replace('{n}', String(headlineStructures))
+            .replace('{n}', String(headlineCell))
             .replace('{total}', String(active.length))
         )}
       />
+      <p class="ty-claim-note" set:html={prose(t.conformanceExampleNote)} />
     </div>
   </Section>
 
@@ -620,6 +814,53 @@ const countLabel = (n: number) =>
     line-height: 1.6;
     color: var(--ink);
   }
+  /* The second denominator, and why there are two. Quieter than the claim it
+     qualifies, because a reader who does not care can skip it and still have
+     read a true sentence. */
+  .ty-claim-note {
+    font-size: 0.8rem;
+    color: var(--ink-mute);
+  }
+
+  /* ---------- the runtime facet ---------- */
+  /* A short group names its members in the cell; `static` holds most of the
+     catalogue and would only be the registry again, so it stays a count. */
+  .ty-members {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.4rem;
+  }
+  .ty-edge-block {
+    margin-top: var(--space-md);
+  }
+  .ty-edges {
+    max-width: 46rem;
+    margin: 0.9rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .ty-edges li {
+    padding-left: 1.1rem;
+    border-left: 3px solid var(--brass);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .ty-edges code {
+    font-family: var(--mono);
+    font-size: 0.85em;
+    color: var(--brass-text);
+  }
+  .ty-note {
+    max-width: 46rem;
+    margin: var(--space-md) 0 0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--ink-mute);
+  }
 
   /* ---------- the grid ---------- */
   .ty-grid {
@@ -821,6 +1062,10 @@ const countLabel = (n: number) =>
     font-family: var(--mono);
     font-size: 0.8em;
     color: var(--ink-soft);
+  }
+  /* `live` and its interaction kind sit together as two spans, not one. */
+  .ty-meta code + code {
+    margin-left: 0.3rem;
   }
 
   .ty-empty {

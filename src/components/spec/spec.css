@@ -63,6 +63,17 @@
   border-radius: var(--radius-md);
   background: var(--card);
 }
+/* A <caption> rather than a heading above the wrapper: two tables that answer
+   two halves of one question stay one section, and a screen reader gets the
+   label as part of the table it labels. */
+.spec-table caption {
+  text-align: left;
+  padding: 0.85rem 1.05rem 0;
+  font-family: var(--display);
+  font-variation-settings: 'wght' 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
 .spec-table {
   width: 100%;
   border-collapse: collapse;
