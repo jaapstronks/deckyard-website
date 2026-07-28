@@ -23,6 +23,15 @@ export const home: HomeContent = {
   typesAudienceLabel: 'de zaal antwoordt',
   typesAllLabel: 'slidetypes, met hun velden',
   typesCta: 'Bekijk alle {count}',
+  formatKicker: 'Geen lock-in, opgeschreven',
+  formatTitle: 'Je deck is een bestand dat je kunt lezen',
+  formatBody: [
+    'Een deck is JSON. Het noemt het formaat waarin het staat, de versie van dat formaat, en een gedeclareerd type voor elke slide. Daar hoeft geen Deckyard te draaien om het te begrijpen.',
+    'En het formaat is gepubliceerd in plaats van beschreven: het JSON Schema staat op de URL die z’n eigen `$id` noemt, dus iedereen kan een deck ertegen valideren zonder het ons eerst te vragen.',
+  ],
+  formatCodeCaption: 'De envelop, ingekort',
+  formatCta: 'Lees de formaatspecificatie',
+  formatSchemaCta: 'Bekijk de schema’s',
   featuresKicker: 'Onder de motorkap',
   featuresTitle: 'Al gebouwd, nu in de openbaarheid',
   featuresLead:

@@ -23,6 +23,15 @@ export const home: HomeContent = {
   typesAudienceLabel: 'the room answers',
   typesAllLabel: 'slide types, with their fields',
   typesCta: 'See all {count}',
+  formatKicker: 'No lock-in, written down',
+  formatTitle: 'Your deck is a file you can read',
+  formatBody: [
+    'A deck is JSON. It names the format it is in, the version of that format, and a declared type for every slide. None of that needs Deckyard to be running to be understood.',
+    'And the format is published rather than described: the JSON Schema is served from the URL its own `$id` names, so anyone can validate a deck against it without asking us first.',
+  ],
+  formatCodeCaption: 'The envelope, shortened',
+  formatCta: 'Read the format spec',
+  formatSchemaCta: 'See the schemas',
   featuresKicker: 'Under the hood',
   featuresTitle: 'Already built, now in the open',
   featuresLead:
