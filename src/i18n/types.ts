@@ -270,6 +270,37 @@ export interface HomeContent {
    * @budget 50 words per paragraph
    */
   aiLead: string[];
+  /**
+   * The figure beside that lead: where the decisions live.
+   *
+   * The claim the panels below make - the model does not design anything - is a
+   * claim about *what was already settled before it ran*, and that is a diagram
+   * rather than a sentence. One panel of fixed things, one panel of the fields
+   * left open, an arrow between them, and a caption that says what the request
+   * therefore is. It also gave the lead its right-hand column back; it used to
+   * be two long paragraphs with half a section of nothing beside them.
+   *
+   * Values are illustrative but not invented: `fixed[].key` names real files,
+   * the count and the schema version are substituted from the generated data,
+   * and `open[]` is the field list `timeline-slide` actually declares - the
+   * slide the teaser two sections up draws.
+   *
+   * @budget foot 40 words, note 8 words each
+   */
+  aiFigure: {
+    fixedLabel: string;
+    fixed: { key: string; note: string }[];
+    openLabel: string;
+    open: { key: string; value: string }[];
+    foot: string;
+  };
+  /**
+   * The three panels. The first one carries the load, so it says what the model
+   * *does* (picks a declared type, fills its fields) rather than what it cannot
+   * do: "an agent cannot invent a layout" was read as a claim about the limits
+   * of models, which is not the argument. The argument is that nothing is asking
+   * it to invent one.
+   */
   aiPoints: { title: string; body: string }[];
   /**
    * What the format does not fix. Stated on the page, not left to be found.

@@ -51,13 +51,28 @@ export const home: HomeContent = {
   aiKicker: 'Het stuk dat niemand heeft opgelost',
   aiTitle: 'Jullie mensen laten AI nu al voor de organisatie schrijven',
   aiLead: [
-    'Niet als beleidsbesluit. Iemand moest donderdag een deck maken, plakte de aantekeningen in een chatvenster en plakte het antwoord terug. Het leest prima, het gaat sneller, en het gaat niet meer ophouden.',
-    'Wat niemand kan zeggen, is of wat eruit kwam binnen de regels van de organisatie blijft: de juiste claims, de juiste toon, het juiste beeld, de dingen die er wettelijk in moeten staan. Elk deck nalopen schaalt niet, en mensen vragen om geen AI te gebruiken heeft nog nooit gewerkt.',
+    'Niet als beleidsbesluit. Iemand moest donderdag een deck maken, plakte de aantekeningen in een chatvenster en plakte het antwoord terug. Het gaat sneller, en het gaat niet meer ophouden.',
+    'Wat niemand kan zeggen, is of wat terugkwam binnen de regels van de organisatie blijft: de juiste claims, het juiste beeld, de dingen die er wettelijk in moeten staan. Elk deck nalopen schaalt niet, en mensen vragen om geen AI te gebruiken heeft nog nooit gewerkt.',
   ],
+  aiFigure: {
+    fixedLabel: 'Ligt vast voordat het draait',
+    fixed: [
+      { key: 'slidetypes', note: '{count} gedeclareerde vormen met benoemde velden' },
+      { key: 'theme.json', note: 'kleuren, fonts, logo’s, ruimte' },
+      { key: 'deck.schema.json', note: 'gepubliceerd als v{schemaVersion}: wat valideert' },
+    ],
+    openLabel: 'Blijft over voor het model',
+    open: [
+      { key: 'type', value: 'timeline-slide' },
+      { key: 'title', value: '"Waar het geld heenging"' },
+      { key: 'items', value: '4 x { date, title }' },
+    ],
+    foot: 'De vraag is dus "vul deze velden in", niet "ontwerp een slide". Een kleinere vraag, een goedkoper antwoord, en niets meer om fout te doen dat het thema niet al had beslist.',
+  },
   aiPoints: [
     {
-      title: 'Een agent kan geen layout verzinnen',
-      body: 'Er is geen layout om te verzinnen. Hij vraagt welke slidetypes bestaan en vult de velden van een van die types. Het ontwerp was al beslist, door jou, in het thema.',
+      title: 'Het vult velden, het ontwerpt niet',
+      body: 'De layout is niet aan het model. Het vraagt welke slidetypes er zijn, kiest er een, en vult de velden die dat type declareert. Het ontwerp was al beslist voordat het draaide, door jou, in het thema.',
     },
     {
       title: 'Een schrijfactie wordt getoetst als elke andere',

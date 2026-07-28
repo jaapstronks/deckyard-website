@@ -41,7 +41,11 @@ const schemasHref = localizePath('/spec/schemas/', lang);
 const prose = (text: string) => inlineCode(withSpec(text));
 ---
 
-<Section>
+<!-- Tint rather than paper: this is the homepage's surface rhythm, which is
+     documented where the sections are ordered (HomePage.astro). It used to be
+     paper, and so is the section after it, so the boundary between "the format
+     is written down" and "the room answers" was invisible. -->
+<Section variant="tint">
   <div class="fmt">
     <div class="fmt-copy" data-reveal>
       <p class="kicker">{t.formatKicker}</p>

@@ -6,6 +6,7 @@ import StructuredTeaser from '@/components/marketing/StructuredTeaser.astro';
 import SlideTypeRail from '@/components/marketing/SlideTypeRail.astro';
 import FormatCallout from '@/components/marketing/FormatCallout.astro';
 import RoomShowcase from '@/components/marketing/RoomShowcase.astro';
+import AiSlots from '@/components/marketing/AiSlots.astro';
 import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
@@ -38,6 +39,26 @@ const featureGroups = ui[lang].features.groups;
 const heroDeck = heroDecks[lang];
 ---
 
+<!--
+  The surface rhythm of this page, because it is decided across five files and
+  can only be judged in one place:
+
+    hero        gradient
+    teaser      paper
+    rail        tint
+    AI          dark
+    format      tint
+    room        paper
+    features    tint
+    compare     paper  ) one surface on purpose: the band is a card that flows
+    install     paper  ) into the section under it (`flushBottom`)
+    CTA         dark
+
+  No two consecutive sections share a surface except that pair. A section that
+  moves has to be checked against its new neighbours here, not only where it is
+  defined - the format callout and the room showcase were both paper, and the
+  seam between them disappeared.
+-->
 <SiteLayout title={t.metaTitle} description={t.metaDescription} ogImage={ogImage}>
   <!-- ============ HERO ============ -->
   <!-- With a deck the hero is two columns and reads left-aligned; without one it
@@ -99,10 +120,18 @@ const heroDeck = heroDecks[lang];
        plate because it is the argument, not a feature; sovereignty stays on the
        site as a property (the kicker, the footer, /hosting). -->
   <Section variant="dark">
+    <!-- Copy left, figure right. The lead used to run down a 56ch column with
+         the other half of the section empty beside it, which is what made two
+         ordinary paragraphs read as a wall: nothing arrived until the panels
+         below. The figure is the same argument in the form it actually has -
+         these things were decided, those fields are open. -->
     <div class="ai-head">
-      <p class="kicker">{t.aiKicker}</p>
-      <h2>{t.aiTitle}</h2>
-      {t.aiLead.map((para) => <p class="lead">{para}</p>)}
+      <div class="ai-head-copy">
+        <p class="kicker">{t.aiKicker}</p>
+        <h2>{t.aiTitle}</h2>
+        {t.aiLead.map((para) => <p class="lead">{para}</p>)}
+      </div>
+      <AiSlots lang={lang} />
     </div>
 
     <ul class="ai-points">
@@ -389,19 +418,24 @@ const heroDeck = heroDecks[lang];
     gap: 0;
     border-top: 1px solid var(--line);
   }
-  @media (min-width: 760px) {
+  /* 900, not 760: from here a row can hold a 10rem label column and still leave
+     the teaser a readable measure. Below it the rows run full width, which is
+     also what lets the label column be fixed at every width above 620. */
+  @media (min-width: 900px) {
     .rest-list {
       grid-template-columns: 1fr 1fr;
       column-gap: var(--space-lg);
     }
   }
 
-  /* label | teaser | arrow. The label column is sized by its content and the
-     teaser takes what is left: with `1fr auto` the long teasers squeezed every
-     label onto two lines and then overlapped them. */
+  /* label | teaser | arrow, with the label column the same width in every row.
+     It was `auto`, so each row was its own grid and every teaser started at a
+     different x - six rows of text stepping in and out. 10rem clears the longest
+     label in either language ("Getting it out again", 149px) with room for a
+     seventh group; a label past that widens its own row and nothing else. */
   .rest-list a {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: minmax(10rem, auto) minmax(0, 1fr) auto;
     align-items: baseline;
     gap: 0.25rem var(--space-sm);
     padding: 0.95rem 0;
@@ -487,7 +521,20 @@ const heroDeck = heroDecks[lang];
      The panels below therefore paint their own dark surface rather than reaching
      for --card and coming out white. */
 
+  /* One column until the figure has somewhere to be: below 1000px it sits under
+     the copy, which is the reading order in the markup anyway. */
   .ai-head {
+    display: grid;
+    gap: var(--space-lg);
+  }
+  @media (min-width: 1000px) {
+    .ai-head {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+      gap: var(--space-xl);
+      align-items: start;
+    }
+  }
+  .ai-head-copy {
     max-width: 56ch;
   }
   .ai-head h2 {

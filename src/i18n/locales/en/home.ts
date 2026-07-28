@@ -51,13 +51,28 @@ export const home: HomeContent = {
   aiKicker: 'The part nobody has solved',
   aiTitle: 'Your people are already letting AI write for the organisation',
   aiLead: [
-    'Not as a policy decision. Somebody had a deck to make on Thursday, pasted the notes into a chat window, and pasted the answer back. It reads fine, it is faster, and it is not going to stop.',
-    'What nobody can say is whether what came out stays inside the rules the organisation has: the right claims, the right tone, the right look, the things that legally have to be there. Reviewing every deck does not scale, and asking people not to use AI has never once worked.',
+    'Not as a policy decision. Somebody had a deck to make on Thursday, pasted the notes into a chat window, and pasted the answer back. It is faster, and it is not going to stop.',
+    'What nobody can say is whether what came back stays inside the rules the organisation has: the right claims, the right look, the things that legally have to be there. Reviewing every deck does not scale, and asking people not to use AI has never once worked.',
   ],
+  aiFigure: {
+    fixedLabel: 'Settled before it runs',
+    fixed: [
+      { key: 'slide types', note: '{count} declared shapes, each with named fields' },
+      { key: 'theme.json', note: 'colours, fonts, logos, spacing' },
+      { key: 'deck.schema.json', note: 'published as v{schemaVersion}: what validates' },
+    ],
+    openLabel: 'Left for the model',
+    open: [
+      { key: 'type', value: 'timeline-slide' },
+      { key: 'title', value: '"Where the money went"' },
+      { key: 'items', value: '4 x { date, title }' },
+    ],
+    foot: 'So the request is "fill in these fields", not "design a slide". A smaller question, a cheaper answer, and nothing left to get wrong that the theme had not already settled.',
+  },
   aiPoints: [
     {
-      title: 'An agent cannot invent a layout',
-      body: 'There is no layout to invent. It asks which slide types exist, and it fills in the fields of one of them. The design was already decided, by you, in the theme.',
+      title: 'It fills fields, it does not design',
+      body: 'The layout is not the model’s to invent. It asks which slide types exist, picks one, and fills in the fields that type declares. The design was decided before it ran, by you, in the theme.',
     },
     {
       title: 'A write is checked like any other',
