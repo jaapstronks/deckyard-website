@@ -74,5 +74,5 @@ npm run setup -- --yes --ai=claude --ai-key=… --auth=off
 ## Next Steps
 
 - [Docker Deployment](/docs/deployment/docker) - the production path, with Compose
-- [Configuration](/docs/configuration/) - customize your instance
+- [Configuration](/docs/configuration/environment/) - customize your instance
 - [Creating Presentations](/docs/creating/) - start making presentations

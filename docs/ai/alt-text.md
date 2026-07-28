@@ -191,4 +191,4 @@ Alt text can be generated in your presentation's language:
 
 - [Media Slide Types](/docs/slide-types/media/)
 - [Setup & API Keys](/docs/ai/getting-started/)
-- [Image Library](/docs/editing/image-library/)
+- [Image Library](/docs/libraries/image-library/)

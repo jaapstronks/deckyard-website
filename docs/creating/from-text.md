@@ -42,5 +42,5 @@ Generated presentations are starting points. You should:
 ## Related
 
 - [From Notion](/docs/creating/from-notion)
-- [AI Features](/docs/ai/)
+- [AI Features](/docs/ai/getting-started/)
 - [Editing Basics](/docs/editing/)

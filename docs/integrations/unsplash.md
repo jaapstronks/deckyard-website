@@ -205,4 +205,4 @@ Each photo includes:
 
 - [Giphy Integration](/docs/integrations/giphy/)
 - [Media Services](/docs/integrations/media-services/)
-- [Image Slides](/docs/slide-types/image/)
+- [Image Slides](/docs/slide-types/media/)

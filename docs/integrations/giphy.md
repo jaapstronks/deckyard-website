@@ -229,4 +229,4 @@ Each GIF includes:
 
 - [Unsplash Integration](/docs/integrations/unsplash/)
 - [Media Services](/docs/integrations/media-services/)
-- [Image Slides](/docs/slide-types/image/)
+- [Image Slides](/docs/slide-types/media/)
