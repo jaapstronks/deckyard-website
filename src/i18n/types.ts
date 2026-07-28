@@ -139,6 +139,24 @@ export interface HomeContent {
   /** On the card that ends the run, under the figure itself. */
   typesAllLabel: string;
   typesCta: string;
+  /**
+   * The deck-format section: the anti-lock-in argument, made by showing the
+   * file. Two paragraphs beside one code block, and no third - the field tables
+   * are in /docs/reference/ and the full envelope is on /spec/deck-format/.
+   *
+   * Copy may name a key in backticks (`$id`), which src/lib/inline.ts lets
+   * through, and may carry the `{magic}` / `{version}` / `{schemaBase}` /
+   * `{schemaVersion}` placeholders, which withSpec() substitutes. Never spell a
+   * format constant out here: two of them have moved once already.
+   *
+   * @budget 40 words per paragraph
+   */
+  formatKicker: string;
+  formatTitle: string;
+  formatBody: string[];
+  formatCodeCaption: string;
+  formatCta: string;
+  formatSchemaCta: string;
   featuresKicker: string;
   featuresTitle: string;
   featuresLead: string;

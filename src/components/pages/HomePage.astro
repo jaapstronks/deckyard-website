@@ -4,6 +4,7 @@ import Waitlist from '@/components/marketing/Waitlist.astro';
 import InstallWidget from '@/components/marketing/InstallWidget.astro';
 import StructuredTeaser from '@/components/marketing/StructuredTeaser.astro';
 import SlideTypeRail from '@/components/marketing/SlideTypeRail.astro';
+import FormatCallout from '@/components/marketing/FormatCallout.astro';
 import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import Button from '@/components/ui/Button.astro';
@@ -135,6 +136,14 @@ const pillars = t.pillars.map((pillar, i) => ({
       <Button href={structuredHref} variant="ghost">{t.aiCta}</Button>
     </div>
   </Section>
+
+  <!-- ============ AND THE FORMAT IS WRITTEN DOWN ============ -->
+  <!-- After the AI argument rather than before it: that section ends on "the
+       shape holds", and the shape being a published file is the proof. It also
+       gives this run of sections four different destinations in a row -
+       /structured-slides, /spec/slide-types/, /structured-slides, /spec/ - where
+       two of them used to be the same page twice. -->
+  <FormatCallout lang={lang} />
 
   <!-- ============ WHAT SHIPS ============ -->
   <Section variant="tint">

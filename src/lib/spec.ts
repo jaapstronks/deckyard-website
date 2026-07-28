@@ -98,6 +98,25 @@ export const EXAMPLE_ENVELOPE = `{
   ]
 }`;
 
+/**
+ * The same deck, short enough for the homepage.
+ *
+ * Five keys instead of the full envelope, and the slide bodies elided, because
+ * the front page is making a claim rather than documenting a field: this is
+ * JSON, it names its own format and version, and every slide names a declared
+ * type. Someone who wants the rest clicks through and meets the deck above,
+ * fuller - which is why it is the same two slide types rather than a second
+ * example that can drift away from the first.
+ */
+export const EXAMPLE_ENVELOPE_BRIEF = `{
+  "format": "${FORMAT_MAGIC}",
+  "version": ${ENVELOPE_VERSION},
+  "slides": [
+    { "type": "title-slide", "content": { … } },
+    { "type": "quote-slide", "content": { … } }
+  ]
+}`;
+
 export const EXAMPLE_SLIDE = `{ "type": "content-slide", "content": { "title": "Why", "body": "..." } }`;
 
 /**

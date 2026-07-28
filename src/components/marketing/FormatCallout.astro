@@ -1,0 +1,124 @@
+---
+// Homepage section for the deck format. The anti-lock-in argument, made by
+// showing the file rather than by promising anything about it.
+//
+// This is the one claim on the site that a reader can check in ten seconds, and
+// until now the front page did not make it at all: /spec/ was in the primary nav
+// and nowhere on the homepage, and there was not a line of JSON anywhere on it.
+// A section that says "your deck is a file you can read" and then shows the file
+// is worth more than the four sections that say "no lock-in" in a card.
+//
+// Short on purpose: one code block and two paragraphs. The exhaustive field
+// tables are in /docs/reference/ (where the site's search can see them), the
+// full envelope is on /spec/deck-format/, and this is the door.
+//
+// Nothing about the format is typed into copy. The magic string, the envelope
+// version, the schema base URI and the content-schema version live in
+// src/data/deck-format.json, generated from core; the copy carries `{magic}`,
+// `{version}`, `{schemaBase}` and `{schemaVersion}` placeholders and withSpec()
+// substitutes them. Two of these have already moved once - the sentinel used to
+// be slidecreator.deck, the $id domain used to be deckyard.app - and both
+// arrived as a one-liner instead of a sweep through two languages.
+import Section from '@/components/layout/Section.astro';
+import CodeBlock from '@/components/spec/CodeBlock.astro';
+import Button from '@/components/ui/Button.astro';
+import { ui, localizePath, type Lang } from '@/i18n';
+import { withSpec, EXAMPLE_ENVELOPE_BRIEF } from '@/lib/spec';
+import { inlineCode } from '@/lib/inline';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].home;
+
+const specHref = localizePath('/spec/', lang);
+const schemasHref = localizePath('/spec/schemas/', lang);
+
+// Escape first, then let exactly backticked runs back in - the copy names
+// `$id` and `format`, and a sentence that names a key without marking it as one
+// is harder to read. See src/lib/inline.ts.
+const prose = (text: string) => inlineCode(withSpec(text));
+---
+
+<Section>
+  <div class="fmt">
+    <div class="fmt-copy" data-reveal>
+      <p class="kicker">{t.formatKicker}</p>
+      <h2>{t.formatTitle}</h2>
+      {t.formatBody.map((para) => <p set:html={prose(para)} />)}
+
+      <div class="fmt-actions">
+        <Button href={specHref} variant="ghost">{t.formatCta}</Button>
+        <a class="fmt-link" href={schemasHref}>
+          {t.formatSchemaCta}<span aria-hidden="true"> →</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="fmt-art" data-reveal data-reveal-delay="120">
+      <CodeBlock code={EXAMPLE_ENVELOPE_BRIEF} caption={t.formatCodeCaption} />
+    </div>
+  </div>
+</Section>
+
+<style>
+  .fmt {
+    display: grid;
+    gap: var(--space-md);
+    align-items: center;
+  }
+  /* A grid item's automatic minimum size is its content's min-content width, and
+     for the code block that is its longest line. Without this the column cannot
+     be narrower than that line, so the section pushes the whole page wider on a
+     phone instead of letting the <pre> scroll - which is what its own
+     `overflow-x: auto` is there for. On /spec/ the same block never hit this,
+     because there it is in normal flow rather than a grid item. */
+  .fmt > * {
+    min-width: 0;
+  }
+  @media (min-width: 900px) {
+    .fmt {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      gap: var(--space-xl);
+    }
+  }
+
+  .fmt-copy {
+    max-width: 46ch;
+  }
+  .fmt-copy h2 {
+    margin: 0.35rem 0 0.8rem;
+  }
+  .fmt-copy p {
+    color: var(--ink-soft);
+  }
+  .fmt-copy p:last-of-type {
+    margin-bottom: 0;
+  }
+  /* An inline key set in the mono face, at the size the surrounding text is
+     rather than at the mono face's own optical size, which runs large. */
+  .fmt-copy :global(code) {
+    font-family: var(--mono);
+    font-size: 0.88em;
+  }
+
+  .fmt-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem 1.4rem;
+    margin-top: var(--space-sm);
+  }
+  .fmt-link {
+    font-variation-settings: 'wght' 600;
+    font-size: 0.95rem;
+    color: var(--green);
+  }
+
+  /* The block is the illustration here, so it carries the figure's own frame
+     rather than sitting in the running text the way it does on /spec/. */
+  .fmt-art :global(.spec-code) {
+    margin: 0;
+  }
+</style>
