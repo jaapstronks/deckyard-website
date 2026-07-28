@@ -8,9 +8,9 @@ export const home: HomeContent = {
   heroTitleMain: 'Presentations,',
   heroTitleHighlight: 'set free.',
   heroWhatItIs:
-    'Deckyard is an open source presentation platform you host yourself, in place of PowerPoint, Canva or Gamma: your brand, your data, and AI that fills slides in rather than designing them.',
+    'Deckyard is an open source presentation platform you host yourself, in place of PowerPoint, Canva or Gamma.',
   heroLead:
-    'Not just a slide builder: create, present, publish and collaborate in one web-based tool that runs on infrastructure you control. Every deck looks like it came from your design department, and stays yours from first draft to live audience.',
+    'Create, present, publish and collaborate in one tool: your brand, your data, and AI that fills slides in rather than designing them.',
   heroDeckTitle: 'Hi, this is Deckyard - a presentation embedded on this page',
   heroDeckPlay: 'Play the presentation',
   heroDeckNote:
@@ -55,8 +55,10 @@ export const home: HomeContent = {
   ],
   aiKicker: 'The part nobody has solved',
   aiTitle: 'Your people are already letting AI write for the organisation',
-  aiLead:
-    'Not as a policy decision. Somebody had a deck to make on Thursday, pasted the notes into a chat window, and pasted the answer back. It reads fine, it is faster, and it is not going to stop. What nobody can say is whether what came out stays inside the rules the organisation has: the right claims, the right tone, the right look, the things that legally have to be there. Reviewing every deck does not scale, and asking people not to use AI has never once worked.',
+  aiLead: [
+    'Not as a policy decision. Somebody had a deck to make on Thursday, pasted the notes into a chat window, and pasted the answer back. It reads fine, it is faster, and it is not going to stop.',
+    'What nobody can say is whether what came out stays inside the rules the organisation has: the right claims, the right tone, the right look, the things that legally have to be there. Reviewing every deck does not scale, and asking people not to use AI has never once worked.',
+  ],
   aiPoints: [
     {
       title: 'An agent cannot invent a layout',
@@ -86,7 +88,6 @@ export const home: HomeContent = {
   ctaGithub: 'View on GitHub',
   ctaWaitlistButton: 'Join the launch list',
   sandboxButton: 'Try the live sandbox',
-  sandboxNote:
-    'No install, no signup. The editor is all of it; AI, uploads and publishing are switched off, because it is public and anonymous.',
+  sandboxNote: 'No install, no signup. AI, uploads and publishing are off.',
   ctaSandboxButton: 'Open the sandbox',
 };
