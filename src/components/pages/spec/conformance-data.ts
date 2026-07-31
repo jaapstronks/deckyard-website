@@ -27,34 +27,34 @@ export const STRUCTURE_EXAMPLES: Record<SlideStructure, string> = {
   collection: `"content": {
   "title": "Three horizons",
   "items": [
-    { "label": "Now",  "text": "One pilot, self-hosted" },
-    { "label": "Next", "text": "A second implementation" },
-    { "label": "Later","text": "An archive that outlives us" }
+    { "label": "Now",   "text": "One pilot" },
+    { "label": "Next",  "text": "A second reader" },
+    { "label": "Later", "text": "An archive" }
   ]
 }`,
 
   'fixed-collection': `"content": {
   "title": "Effort against impact",
   "quadrants": [
-    { "label": "Do now",   "text": "Low effort, high impact" },
-    { "label": "Plan",     "text": "High effort, high impact" },
-    { "label": "Delegate", "text": "Low effort, low impact" },
-    { "label": "Drop",     "text": "High effort, low impact" }
+    { "label": "Do now",   "text": "…" },
+    { "label": "Plan",     "text": "…" },
+    { "label": "Delegate", "text": "…" },
+    { "label": "Drop",     "text": "…" }
   ]
 }`,
 
   tabular: `"content": {
   "title": "What each layer carries",
   "rows": [
-    { "layer": "Deck format",  "carries": "JSON", "offline": "No"  },
-    { "layer": "Deck package", "carries": "ZIP",  "offline": "Yes" }
+    { "layer": "Deck format",  "offline": false },
+    { "layer": "Deck package", "offline": true  }
   ]
 }`,
 
   dataset: `"content": {
   "title": "Installs per quarter",
   "chartType": "bar",
-  "chartData": "{\\"labels\\":[\\"Q1\\",\\"Q2\\"],\\"series\\":[[3,7]]}"
+  "chartData": "{\\"labels\\":[\\"Q1\\",\\"Q2\\"], …}"
 }`,
 
   chrome: `"content": {}`,
@@ -65,9 +65,9 @@ export const STRUCTURE_EXAMPLES: Record<SlideStructure, string> = {
  * that these are one type and not three, which a table of names can state and
  * only a block like this can show.
  */
-export const SPELLINGS_EXAMPLE = `{ "type": "title-slide",                "content": { … } }
-{ "type": "core/title-slide",           "content": { … } }
-{ "type": "eu.deckyard.slide.title",    "content": { … } }`;
+export const SPELLINGS_EXAMPLE = `{ "type": "title-slide",             …  }
+{ "type": "core/title-slide",        …  }
+{ "type": "eu.deckyard.slide.title", …  }`;
 
 /**
  * The evolution rule as the one thing it forbids, beside the thing it permits.
@@ -75,15 +75,17 @@ export const SPELLINGS_EXAMPLE = `{ "type": "title-slide",                "conte
  * exactly why the rule is worth stating: only one of them keeps every deck ever
  * written valid.
  */
-export const RULE_OK_EXAMPLE = `{
-  "key": "title",    "required": true  },
-{ "key": "subtitle", "required": false },
-{ "key": "eyebrow",  "required": false }`;
+export const RULE_OK_EXAMPLE = `"fields": [
+  { "key": "title",    "required": true  },
+  { "key": "subtitle", "required": false },
+  { "key": "eyebrow",  "required": false }
+]`;
 
-export const RULE_BAD_EXAMPLE = `{
-  "key": "title",    "required": true  },
-{ "key": "subtitle", "required": false },
-{ "key": "eyebrow",  "required": true  }`;
+export const RULE_BAD_EXAMPLE = `"fields": [
+  { "key": "title",    "required": true  },
+  { "key": "subtitle", "required": false },
+  { "key": "eyebrow",  "required": true  }
+]`;
 
 /**
  * A slide of a type nobody outside one fork has ever heard of, carrying one
@@ -91,32 +93,61 @@ export const RULE_BAD_EXAMPLE = `{
  * and 5 of the unknown-type contract, which is what makes the rendering beside
  * it worth showing rather than describing.
  */
+export const UNKNOWN_TYPE = 'nl.ciiic.slide.roadmap';
+
+/** The `notes` key, which is envelope-level: rule 5 says a reader honours it. */
+export const UNKNOWN_NOTES = 'Do not promise dates.';
+
+/**
+ * The content, as the object a reader would actually hold. The JSON block on the
+ * page is formatted by hand below (one item per line reads better than
+ * `JSON.stringify` at this size), but the *rendering* beside it is walked out of
+ * this object by `renderUnknown`, so the two halves of the demo cannot disagree
+ * about what the slide contains.
+ */
+export const UNKNOWN_CONTENT: Record<string, string | Record<string, string>[]> = {
+  title: 'Where this is going',
+  intro: 'Three horizons, no dates.',
+  phases: [
+    { label: 'Now', detail: 'One pilot' },
+    { label: 'Next', detail: 'A second reader' },
+  ],
+};
+
 export const UNKNOWN_SLIDE = `{
-  "type": "nl.ciiic.slide.roadmap",
+  "type": "${UNKNOWN_TYPE}",
   "content": {
     "title": "Where this is going",
     "intro": "Three horizons, no dates.",
     "phases": [
-      { "label": "Now",  "detail": "One pilot, self-hosted" },
-      { "label": "Next", "detail": "A second implementation" }
+      { "label": "Now",  "detail": "One pilot" },
+      { "label": "Next", "detail": "A second reader" }
     ]
   },
-  "notes": "Do not promise dates."
+  "notes": "${UNKNOWN_NOTES}"
 }`;
 
+/** A block in the generic rendering: a line of text, or a repeated item's values. */
+export type UnknownBlock = { text: string } | { item: string[] };
+
 /**
- * What rules 2 to 5 produce from the slide above, as data rather than as markup,
- * so the mock rendering beside the JSON is derived from the same declaration a
- * conforming reader would walk instead of being drawn by hand.
+ * Rules 2 and 3 of the unknown-type contract, applied.
+ *
+ * Every string-valued entry becomes a line, in the order the keys appear; every
+ * array-valued entry becomes one repeated item per element, with rule 2 applied
+ * inside it. Nothing is added, nothing is reordered, and the empty string is
+ * skipped as unset - which is the whole contract, executed rather than asserted.
  */
-export const UNKNOWN_RENDERED: { text: string; items?: { label: string; text: string }[] }[] = [
-  { text: 'Where this is going' },
-  { text: 'Three horizons, no dates.' },
-  {
-    text: '',
-    items: [
-      { label: 'Now', text: 'One pilot, self-hosted' },
-      { label: 'Next', text: 'A second implementation' },
-    ],
-  },
-];
+export function renderUnknown(content: typeof UNKNOWN_CONTENT): UnknownBlock[] {
+  const blocks: UnknownBlock[] = [];
+  for (const value of Object.values(content)) {
+    if (Array.isArray(value)) {
+      for (const element of value) {
+        blocks.push({ item: Object.values(element).map(String).filter(Boolean) });
+      }
+    } else if (String(value)) {
+      blocks.push({ text: String(value) });
+    }
+  }
+  return blocks;
+}

@@ -36,8 +36,11 @@ import {
   RULE_OK_EXAMPLE,
   SPELLINGS_EXAMPLE,
   STRUCTURE_EXAMPLES,
-  UNKNOWN_RENDERED,
+  UNKNOWN_CONTENT,
+  UNKNOWN_NOTES,
   UNKNOWN_SLIDE,
+  UNKNOWN_TYPE,
+  renderUnknown,
 } from './conformance-data';
 
 interface Props {
@@ -422,27 +425,26 @@ const structureLabels = ui[lang].spec.types.structureLabels;
       </div>
       <figure class="cf-unknown-out">
         <div class="cf-slide">
+          {/* Rule 4: the type reference, as written, on the slide. */}
           <p class="cf-slide-badge">
             <span>{t.unknownOutBadge}</span>
-            <code>nl.ciiic.slide.roadmap</code>
+            <code>{UNKNOWN_TYPE}</code>
           </p>
           {
-            UNKNOWN_RENDERED.map((block) =>
-              block.items ? (
-                <ul class="cf-slide-items">
-                  {block.items.map((item) => (
-                    <li>
-                      <strong>{item.label}</strong>
-                      <span>{item.text}</span>
-                    </li>
-                  ))}
-                </ul>
+            renderUnknown(UNKNOWN_CONTENT).map((block) =>
+              'item' in block ? (
+                <p class="cf-slide-item">
+                  {block.item.map((value, i) =>
+                    i === 0 ? <strong>{value}</strong> : <span>{value}</span>
+                  )}
+                </p>
               ) : (
                 <p class="cf-slide-text">{block.text}</p>
               )
             )
           }
-          <p class="cf-slide-note" aria-hidden="true">&#9679; Do not promise dates.</p>
+          {/* Rule 5: an envelope key, so it is honoured without knowing the type. */}
+          <p class="cf-slide-note" aria-hidden="true">&#9679; {UNKNOWN_NOTES}</p>
         </div>
         <figcaption>{t.unknownOutCaption}</figcaption>
       </figure>
@@ -634,6 +636,7 @@ const structureLabels = ui[lang].spec.types.structureLabels;
   /* ---------- the claim builder ---------- */
   .cf-builder {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.2rem;
     margin-top: 2rem;
   }
@@ -808,6 +811,7 @@ const structureLabels = ui[lang].spec.types.structureLabels;
   }
   .cf-panel {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.2rem;
   }
   /* `display` on a class outranks the UA sheet's `[hidden] { display: none }`,
@@ -816,7 +820,11 @@ const structureLabels = ui[lang].spec.types.structureLabels;
   .cf-panel[hidden] {
     display: none;
   }
-  @media (min-width: 880px) {
+  /* Late, and on purpose. A worked `content` object runs to about 60 monospace
+     characters, which needs roughly 500px; splitting the panel at the usual
+     880 gave each half 460 and every example scrolled. Below this the code sits
+     under the text at full width and none of them do. */
+  @media (min-width: 1120px) {
     .cf-panel {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       align-items: start;
@@ -984,6 +992,7 @@ const structureLabels = ui[lang].spec.types.structureLabels;
   /* ---------- identity ---------- */
   .cf-id {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.2rem;
     margin-top: 2rem;
   }
@@ -996,6 +1005,13 @@ const structureLabels = ui[lang].spec.types.structureLabels;
   .cf-id-code :global(.spec-code),
   .cf-id-table {
     margin-top: 0;
+  }
+  /* `.spec-table` carries a 34rem floor so a wide field table scrolls rather
+     than crushing its columns. This one is two columns of prose in a half-width
+     grid cell, so the floor is wider than the cell and it scrolled at every
+     viewport - a scrollbar under a table that has nothing to scroll to. */
+  .cf-id-table .spec-table {
+    min-width: 0;
   }
 
   /* ---------- the evolution rule ---------- */
@@ -1018,6 +1034,7 @@ const structureLabels = ui[lang].spec.types.structureLabels;
 
   .cf-verdicts {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.2rem;
     margin-top: var(--space-md);
   }
@@ -1080,8 +1097,12 @@ const structureLabels = ui[lang].spec.types.structureLabels;
   }
 
   /* ---------- the unknown-type demo ---------- */
+  /* Single column below the breakpoint, and the floor of 0 is the load-bearing
+     part: an `auto` track takes its width from the <pre>'s longest line, which
+     pushed the grid - and with it the whole page - past a 390px viewport. */
   .cf-unknown {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 1.2rem;
     margin-top: 2rem;
     align-items: start;
@@ -1147,21 +1168,21 @@ const structureLabels = ui[lang].spec.types.structureLabels;
     font-variation-settings: 'wght' 620;
     letter-spacing: -0.015em;
   }
-  .cf-slide-items {
-    list-style: none;
-    display: grid;
-    gap: 0.3rem;
-    margin: 0.2rem 0 0;
-    padding: 0;
-  }
-  .cf-slide-items li {
+  /* One row per repeated item. The first of an item's values is set apart, which
+     is a rendering choice a generic reader is allowed to make - it is not
+     inventing content, and without it two values run together as one phrase. */
+  .cf-slide-item {
     display: flex;
     gap: 0.5rem;
+    margin: 0;
     font-size: 0.82rem;
     line-height: 1.4;
     color: var(--ink-soft);
   }
-  .cf-slide-items strong {
+  .cf-slide-item:first-of-type {
+    margin-top: 0.2rem;
+  }
+  .cf-slide-item strong {
     flex: 0 0 auto;
     font-family: var(--mono);
     font-size: 0.76rem;
