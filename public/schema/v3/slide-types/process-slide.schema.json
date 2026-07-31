@@ -53,31 +53,6 @@
       "maxItems": 7,
       "title": "Steps"
     },
-    "steps": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "maxLength": 60,
-            "title": "Step title"
-          },
-          "text": {
-            "type": "string",
-            "maxLength": 200,
-            "title": "Step description"
-          }
-        },
-        "additionalProperties": true,
-        "required": [
-          "title"
-        ]
-      },
-      "minItems": 3,
-      "maxItems": 7,
-      "title": "Steps (legacy)"
-    },
     "background": {
       "type": "string",
       "title": "Background"

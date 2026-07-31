@@ -54,6 +54,7 @@ const CORE_SOURCES = {
   structure: 'shared/slide-types/structure.js',
   schematics: 'client/views/editor/slide-type-schematics.js',
   picker: 'client/views/editor/slide-type-picker/data.js',
+  companions: 'shared/slide-types/authoring-companions.js',
   catalog: 'server/utils/ai/slide-catalog/definitions.js',
   deck: 'shared/slide-types/deck.js',
   bundle: 'server/export/deck-bundle.js',
@@ -124,12 +125,17 @@ async function buildData() {
   const structureModule = await coreImport(CORE_SOURCES.structure);
   const schematics = await coreImport(CORE_SOURCES.schematics);
   const picker = await coreImport(CORE_SOURCES.picker);
+  const companions = await coreImport(CORE_SOURCES.companions);
   const catalog = await coreImport(CORE_SOURCES.catalog);
 
   const { SLIDE_TYPES, CORE_SLIDE_TYPE_NAMES, SLIDE_TYPE_IDS, GLOBAL_SLIDE_FIELD_KEYS } = registry;
   const { SLIDE_STRUCTURES, SLIDE_STRUCTURE_NAMES, slideStructure } = structureModule;
   const { SLIDE_TYPE_SCHEMATIC } = schematics;
-  const { SLIDE_TYPE_DESC, PICKER_GROUPS } = picker;
+  // The picker declares its shelves; the one-line description of a type moved to
+  // the authoring companions, which is where core keeps the prose it puts on the
+  // wire. Both are core's own vocabulary, so neither is restated here.
+  const { PICKER_GROUP_ORDER, PICKER_GROUP_KEYS } = picker;
+  const { SLIDE_TYPE_DESCRIPTION } = companions;
   const aiCatalog = catalog.getCoreSlideCatalog();
 
   const globalKeys = new Set(GLOBAL_SLIDE_FIELD_KEYS);
@@ -138,7 +144,7 @@ async function buildData() {
   // shelving; anything it leaves out is a long tail, not a gap, so it lands in
   // 'other' rather than being forced somewhere.
   const groupOf = new Map();
-  for (const [group, names] of Object.entries(PICKER_GROUPS)) {
+  for (const [group, names] of Object.entries(PICKER_GROUP_ORDER)) {
     for (const name of names) groupOf.set(name, group);
   }
 
@@ -164,7 +170,7 @@ async function buildData() {
       // shelves it under interaction or the agent catalog files it as
       // interactive. Both live in core, so this cannot drift on its own.
       audience: group === 'interaction' || ai.category === 'interactive',
-      description: SLIDE_TYPE_DESC[name] ?? null,
+      description: SLIDE_TYPE_DESCRIPTION[name] ?? null,
       agentDescription: ai.description ? oneLine(ai.description) : null,
       bestFor: Array.isArray(ai.bestFor) ? ai.bestFor : [],
       notFor: Array.isArray(ai.notFor) ? ai.notFor : [],
@@ -193,7 +199,7 @@ async function buildData() {
     count: types.length,
     activeCount: active.length,
     deprecatedCount: types.length - active.length,
-    groups: Object.keys(PICKER_GROUPS).concat('other'),
+    groups: [...PICKER_GROUP_KEYS, 'other'],
     // The `structure` vocabulary, in core's own order, each with the one-line
     // meaning core states. The site groups by this rather than by `groups`
     // above: the picker's shelving mixes four axes (familiarity, payload,

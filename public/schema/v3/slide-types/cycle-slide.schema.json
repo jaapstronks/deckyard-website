@@ -49,31 +49,6 @@
       "maxItems": 6,
       "title": "Stages"
     },
-    "stages": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "label": {
-            "type": "string",
-            "maxLength": 40,
-            "title": "Stage label"
-          },
-          "text": {
-            "type": "string",
-            "maxLength": 80,
-            "title": "Description"
-          }
-        },
-        "additionalProperties": true,
-        "required": [
-          "label"
-        ]
-      },
-      "minItems": 3,
-      "maxItems": 6,
-      "title": "Stages (legacy)"
-    },
     "background": {
       "type": "string",
       "title": "Background"

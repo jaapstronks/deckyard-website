@@ -18,7 +18,7 @@ does not do what you need.
 
 The order matters here. Deckyard was built because we needed it, used in real
 work for months, and only then opened up. Everything on the site is describing
-software that exists: 38 slide types, real-time collaboration, live polls and
+software that exists: 36 slide types, real-time collaboration, live polls and
 Q&A, publishing and embedding, export to PDF and PowerPoint and self-contained
 HTML.
 

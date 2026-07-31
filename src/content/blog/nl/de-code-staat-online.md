@@ -18,7 +18,7 @@ draaien, en het aanpassen als het niet doet wat jij nodig hebt.
 
 De volgorde doet ertoe. Deckyard is gebouwd omdat we het zelf nodig hadden,
 maandenlang in echt werk gebruikt, en pas daarna opengezet. Alles op deze site
-beschrijft software die bestaat: 38 slidetypes, realtime samenwerken, live polls
+beschrijft software die bestaat: 36 slidetypes, realtime samenwerken, live polls
 en Q&A, publiceren en embedden, export naar PDF, PowerPoint en zelfstandige HTML.
 
 Deze post is dus geen belofte over een roadmap. Het is een verwijzing naar een

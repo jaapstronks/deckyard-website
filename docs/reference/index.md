@@ -16,7 +16,7 @@ script being fixed, an archive being checked.
   carries a deck plus its images: layout, manifest fields, integrity guarantees
   and how import re-hydrates it.
 - **[Slide types](/docs/reference/slide-types/)** — all
-  <!--gen:slide-type-count-->38<!--/gen:slide-type-count--> built-in types with
+  <!--gen:slide-type-count-->36<!--/gen:slide-type-count--> built-in types with
   every field, type, limit and option. Generated from the core registry.
 - **[JSON Schemas](/docs/reference/schemas/)** — how to fetch a schema, what its
   `$id` means, and what the lenient contract promises.

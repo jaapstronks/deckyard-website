@@ -145,7 +145,7 @@ export function repeatingFields(type: SlideType): SlideTypeField[] {
  * How many active types a reader covers by implementing a set of structures.
  * This is the number that turns "we support Deckyard decks" into a claim with
  * an edge: a renderer that does singleton and collection can say so and name
- * what it skips, instead of choosing between all thirty-eight and silence.
+ * what it skips, instead of choosing between all thirty-six and silence.
  */
 export function structureCoverage(structures: SlideStructure[]): number {
   const wanted = new Set(structures);
