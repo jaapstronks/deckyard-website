@@ -776,7 +776,7 @@ export interface SpecContent {
     whyTitle: string;
     whyBody: string[];
 
-    /** What is actually unlike anything else. Five claims, each checkable. */
+    /** What is actually unlike anything else. Three claims, each checkable. */
     claimsTitle: string;
     claimsLead: string;
     claims: { title: string; body: string }[];
@@ -787,6 +787,20 @@ export interface SpecContent {
     status: { term: string; def: string }[];
   };
 
+  /**
+   * /spec/deck-format/ - the format itself, both layers on one page.
+   *
+   * The JSON envelope and the ZIP that carries it used to be two pages, with a
+   * third beside them for the schemas. They are one artifact seen from three
+   * angles, and splitting them meant every one of the three had to restate the
+   * other two before it could say anything. Read top to bottom it is now: what
+   * a deck is, what its slides carry, what validates them, and what the archive
+   * adds when the pixels have to travel too.
+   *
+   * The exhaustive field tables and the export/import endpoints are deliberately
+   * not here. Those answer "what does field X do", which is a search, and only
+   * /docs/ is indexed by the site search.
+   */
   format: {
     metaTitle: string;
     metaDescription: string;
@@ -798,30 +812,32 @@ export interface SpecContent {
     envelopeTitle: string;
     envelopeBody: string[];
     leniency: string;
-    /**
-     * The value a reader keeps accepting besides the one it is shown. Not
-     * justified by files in the wild - nothing has been installed long enough
-     * for those to exist - but by the cheapness of accepting one more constant
-     * against the cost of a rename being why something will not open.
-     */
-    legacySentinel: string;
     /** Stands in for the field table, which lives in the (searchable) docs. */
     envelopeRefNote: string;
 
-    manifestTitle: string;
-    manifestBody: string[];
-
+    /** Slides, and the manifest that records which type definitions they need. */
     slidesTitle: string;
     slidesBody: string[];
 
+    /** Generated from the field registry, versioned by `$id`, lenient by design. */
     schemaTitle: string;
     schemaBody: string[];
 
     assetsTitle: string;
     assetsBody: string[];
 
-    roundTripTitle: string;
-    roundTripBody: string[];
+    /** Layer 2: the archive, its four entries and what it guarantees. */
+    packageTitle: string;
+    packageLead: string;
+    packageBody: string[];
+    /** One note per archive entry, keyed by BUNDLE_ENTRIES[].key. */
+    layoutNotes: Record<string, string>;
+    guarantees: { title: string; body: string }[];
+    /** Stands in for the manifest field table, which lives in the docs. */
+    packageRefNote: string;
+
+    /** The two lossy edges, specified so they degrade rather than crash. */
+    degradeTitle: string;
     degradeLead: string;
     degrade: { term: string; def: string }[];
 
@@ -839,66 +855,6 @@ export interface SpecContent {
 
     versioningTitle: string;
     versioningBody: string[];
-
-    apiTitle: string;
-    apiLead: string;
-    apiBody: string[];
-    /** Stands in for the endpoint table, which lives in the docs. */
-    apiRefNote: string;
-  };
-
-  bundle: {
-    metaTitle: string;
-    metaDescription: string;
-    heroKicker: string;
-    heroTitle: string;
-    heroIntro: string;
-    introBody: string[];
-
-    layoutTitle: string;
-    layoutBody: string[];
-    /** One note per archive entry, keyed by BUNDLE_ENTRIES[].key. */
-    layoutNotes: Record<string, string>;
-    /** The media type a reader must keep accepting; see `format.legacySentinel`. */
-    legacySentinel: string;
-
-    manifestTitle: string;
-    manifestBody: string[];
-    /** Stands in for the manifest field table, which lives in the docs. */
-    manifestRefNote: string;
-
-    guaranteesTitle: string;
-    guaranteesLead: string;
-    guarantees: { title: string; body: string }[];
-
-    importTitle: string;
-    importBody: string[];
-
-    gapsTitle: string;
-    gapsBody: string[];
-  };
-
-  schemas: {
-    metaTitle: string;
-    metaDescription: string;
-    heroKicker: string;
-    heroTitle: string;
-    heroIntro: string;
-    introBody: string[];
-
-    sourceTitle: string;
-    sourceBody: string[];
-
-    idTitle: string;
-    idBody: string[];
-
-    contractTitle: string;
-    contractBody: string[];
-
-    fetchTitle: string;
-    fetchBody: string[];
-    /** Stands in for the endpoint table, which lives in the docs. */
-    fetchRefNote: string;
   };
 
   types: {
@@ -912,17 +868,14 @@ export interface SpecContent {
     introBody: string[];
 
     /**
-     * The `structure` facet. Names and one-line meanings come from core through
-     * `slide-types.json`, so only what a reader needs *around* them lives here:
-     * the section framing, the shared contract per group, and the labels the
-     * filter bar puts on the same six values.
+     * The `structure` facet, as the grid's grouping and nothing more. The facet
+     * is *argued* on /spec/conformance/, where it is the thing a second
+     * implementation builds against; here it only has to say enough that the six
+     * headings are not six arbitrary words. Names and one-line meanings come
+     * from core through `slide-types.json`.
      */
-    structureTitle: string;
-    structureBody: string[];
-    /** The type-versus-variant rule. Quoted policy - keep it verbatim. */
-    structureRule: string;
-    structureRuleSource: string;
-    /** Per structure: the contract every type in the group honours. */
+    structureLead: string;
+    /** Per structure: the contract every type in the group honours, in a line. */
     structureContracts: Record<string, string>;
     /** Shown on a group whose members do not all keep to the contract. */
     structureCaveats: Record<string, string>;
@@ -972,32 +925,16 @@ export interface SpecContent {
     runtimeLabel: string;
     fallbackLabel: string;
 
-    /** The second facet: what the presenting session has to do for a type. */
+    /**
+     * The second facet, as a legend rather than a section. What the presenting
+     * session has to do for a type decides whether a reader needs a server at
+     * all, so the three values are named; the argument for why the facet exists
+     * is core's business, not a spec reader's.
+     */
     runtimeTitle: string;
-    runtimeBody: string[];
+    runtimeLead: string;
     runtimeLabels: Record<string, string>;
     runtimeContracts: Record<string, string>;
-    /** The three types whose value falls out of the definition rather than the name. */
-    runtimeEdge: string;
-
-    /**
-     * The conformance claim. The point of the facet for anyone outside this
-     * project: a second implementation can say which structures it covers and
-     * how many types that is, instead of choosing between all of them and
-     * saying nothing.
-     */
-    conformanceTitle: string;
-    conformanceBody: string[];
-    conformanceColStructure: string;
-    conformanceColTypes: string;
-    conformanceColClaim: string;
-    /** Carries {n}; the page fills in the type count for that structure. */
-    conformanceClaim: string;
-    conformanceExampleTitle: string;
-    /** Carries {n} and {total}. */
-    conformanceExample: string;
-    /** Into the claim builder, which does the same sentence for any combination. */
-    conformanceLinkLabel: string;
 
     globalTitle: string;
     globalBody: string[];
@@ -1006,8 +943,6 @@ export interface SpecContent {
     deprecatedBody: string[];
     deprecatedBadge: string;
 
-    provenanceTitle: string;
-    provenanceBody: string[];
     /** This page keeps its cards; the flat, searchable table is in the docs. */
     referenceNote: string;
   };
@@ -1043,7 +978,6 @@ export interface SpecContent {
       /** What that claim is worth to somebody handing you a deck. */
       body: string;
     }[];
-    levelsNote: string;
 
     /**
      * The claim builder: tick what you render, read back the sentence you may
@@ -1088,14 +1022,15 @@ export interface SpecContent {
     >;
     contractNotes: string[];
 
-    /** Three tiers, one normative. */
-    tiersTitle: string;
-    tiersLead: string;
-    tiers: { badge: string; name: string; what: string; promise: string }[];
+    /**
+     * The nine normative types, and the fallback every other type declares into
+     * them. The three tiers used to be three cards arguing why a tier beats a
+     * removal; that is a policy decision, and a reader building against the
+     * format only needs to know which names carry a promise.
+     */
     profileTitle: string;
     profileLead: string;
     profileCriterion: string;
-    profileNoChart: string;
 
     /** The fallback map: every tier-2 type under the tier-1 contract it degrades to. */
     mapTitle: string;
@@ -1106,17 +1041,6 @@ export interface SpecContent {
     /** Shown only if a tier-2 type ever stops declaring a fallback. */
     mapGapLabel: string;
 
-    /** One identity, three spellings. */
-    idTitle: string;
-    idLead: string;
-    idColSpelling: string;
-    idColExample: string;
-    idColWhere: string;
-    idSpellings: { spelling: string; where: string }[];
-    idExampleCaption: string;
-    idStorage: string;
-    idVersion: string;
-
     /** The evolution rule, shown as a permitted / forbidden pair. */
     ruleTitle: string;
     rule: string;
@@ -1125,13 +1049,8 @@ export interface SpecContent {
     ruleOkCaption: string;
     ruleBadLabel: string;
     ruleBadCaption: string;
-    producerTitle: string;
-    /** Numbered duties. Normative, so the wording is fixed. */
-    producer: string[];
-    readerTitle: string;
-    reader: string[];
-    ruleWhyTitle: string;
-    ruleWhy: string[];
+    /** The duties that follow from it. Normative, so the wording is fixed. */
+    duties: string[];
 
     /** The unknown-type contract, shown as a deck in and a rendering out. */
     unknownTitle: string;
@@ -1142,19 +1061,13 @@ export interface SpecContent {
     unknownOutNote: string;
     unknownRules: { must: string; body: string }[];
     unknownNested: string;
-    precedenceTitle: string;
-    precedenceLead: string;
-    precedenceColHas: string;
-    precedenceColDoes: string;
-    precedence: { has: string; does: string }[];
 
     referenceNote: string;
   };
 }
 
 /** The pages that make up /spec/, in reading order. */
-export type SpecPageId =
-  'index' | 'conformance' | 'deck-format' | 'deck-bundle' | 'schemas' | 'slide-types';
+export type SpecPageId = 'index' | 'deck-format' | 'slide-types' | 'conformance';
 
 export interface Content extends LocaleMeta {
   nav: NavContent;

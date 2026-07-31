@@ -8,25 +8,17 @@ export const spec: SpecContent = {
         title: 'The Deckyard deck format',
         blurb: 'What it is, the two layers it comes in, and what you may do with it.',
       },
-      conformance: {
-        title: 'Conformance',
-        blurb: 'What a second implementation has to build, and what it may then claim.',
-      },
       'deck-format': {
-        title: 'The deck format',
-        blurb: 'The portable envelope, field by field: slides, types, versions, degradation.',
-      },
-      'deck-bundle': {
-        title: 'The deck package',
-        blurb: 'The archive that carries a deck and its images, content-addressed and verifiable.',
-      },
-      schemas: {
-        title: 'Schemas',
-        blurb: 'Where the JSON Schemas live, how to fetch them, and what they promise.',
+        title: 'The format',
+        blurb: 'The envelope, the schemas and the archive that carries a deck with its images.',
       },
       'slide-types': {
         title: 'Slide types',
         blurb: 'Every built-in type, its shape, its fields and when to reach for it.',
+      },
+      conformance: {
+        title: 'Conformance',
+        blurb: 'What a second implementation has to build, and what it may then claim.',
       },
     },
     sourceNote: 'Every example on this page is served live by any Deckyard instance.',
@@ -64,13 +56,12 @@ export const spec: SpecContent = {
     whyTitle: 'Why it is written down',
     whyBody: [
       'A presentation tool that keeps your work in a shape only it understands has made a claim on your work. Everything follows from that: whether you can leave, whether a script can read your decks, whether an archive can keep them, whether anyone else could ever build something that opens them.',
-      'HTML is to EPUB what the deck format is to the deck package: one is the document, the other is the container that lets the document travel with its images. The comparison people reach for is `document.xml` inside a `.docx`, and the resemblance is real, minus the XML. This is JSON you can read by eye.',
       'Deckyard is open source, so the implementation was always inspectable. That is a weaker promise than this one. Code tells you what a program does today; a spec tells you what a file means, which is what you need when the program is gone.',
     ],
 
     claimsTitle: 'What is actually unusual about it',
     claimsLead:
-      'Plenty of tools export JSON. Five things here are harder to find, and each one is checkable rather than claimed.',
+      'Plenty of tools export JSON. Three things here are harder to find, and each one is checkable rather than claimed.',
     claims: [
       {
         title: 'One source for the editor, the validator, the schema and the agent',
@@ -78,15 +69,7 @@ export const spec: SpecContent = {
       },
       {
         title: 'Semantics, not geometry',
-        body: 'A deck says "a timeline with four milestones", never "a text box at 312.88pt". That is why one deck can render responsively, export to HTML and PDF, and take a different theme without being redrawn. It is also why a machine can reason about it.',
-      },
-      {
-        title: 'As readable to a person as it is writable by an agent',
-        body: 'The same type contract that the slide picker shows a human is what a model receives. PPTX and Google Slides are machine-writable but not machine-understandable: they carry boxes and coordinates, not meaning.',
-      },
-      {
-        title: 'Two version axes, deliberately separated',
-        body: "The envelope has a version, and slide content has its own, with a migration runner modelled on Jupyter's nbformat. Readers are lenient by contract: unknown keys are ignored, not rejected. That is why decks written years apart still open.",
+        body: 'A deck says "a timeline with four milestones", never "a text box at 312.88pt". That is why one deck can render responsively, export to HTML and PDF, and take a different theme without being redrawn. It is also why a machine can reason about it, and why the same type contract a human sees in the slide picker is what a model receives.',
       },
       {
         title: 'Degradation is specified, not accidental',
@@ -111,7 +94,7 @@ export const spec: SpecContent = {
       },
       {
         term: 'Conformance',
-        def: 'Two levels, written down: level 1 is the envelope, the six structure contracts and the unknown-type contract; level 2 adds the nine normative slide types. Neither grows when a slide type is added. What each one entitles you to say is on the conformance page.',
+        def: 'Two levels, written down: level 1 is the envelope and the six structure contracts, level 2 adds the nine normative slide types. Neither grows when a slide type is added.',
       },
     ],
   },
@@ -119,11 +102,11 @@ export const spec: SpecContent = {
   format: {
     metaTitle: 'The deck format - spec - Deckyard',
     metaDescription:
-      'The portable deck envelope, field by field: the slide-type identity manifest, asset references, the round-trip guarantee, versioning and specified degradation.',
-    heroKicker: 'Spec · layer 1',
+      'The deck format, field by field: the JSON envelope, the generated schemas, and the content-addressed archive that carries a deck together with its images.',
+    heroKicker: 'Spec',
     heroTitle: 'The deck format',
     heroIntro:
-      "The portable, versioned envelope a presentation serializes to, so a second implementation can read, render and round-trip it without Deckyard's server or its storage.",
+      "The portable, versioned shape a presentation serializes to, so a second implementation can read, render and round-trip it without Deckyard's server or its storage.",
     introBody: [
       'A deck is data, not a rendering. The format is deliberately plain: slides are a flat array of `{ type, content }`, and nothing in it depends on the machine it came from.',
     ],
@@ -132,110 +115,41 @@ export const spec: SpecContent = {
     envelopeBody: ['Six top-level fields. Everything else about a deck lives inside `slides`.'],
     leniency:
       'The envelope is lenient. Unknown top-level keys are ignored by an importer, never rejected, so a newer producer can add a field that an older reader simply skips.',
-    legacySentinel:
-      'Before 1.7.0 this field said `slidecreator.deck`, a name that predates the product. Nothing writes it any more; a reader accepts it anyway, because a rename should never be the reason a file will not open.',
     envelopeRefNote:
       'Each of the six fields, its type and what a reader should do with it, is written out in the documentation.',
 
-    manifestTitle: 'slideTypes: the identity manifest',
-    manifestBody: [
-      'The manifest records which slide-type definitions a deck was written against, as a map from the bare key to a qualified `namespace/name[@version]` identity. Core types resolve into the `core/` namespace; a type someone added themselves carries their own.',
-      "It is recomputed from the registry on every export and never hand-maintained, so it cannot drift from the slides it describes. A CI test asserts that the committed example deck's manifest equals the recomputed one.",
-      'This is how a second implementation learns which type definitions a deck needs. `slides[].type` stays the bare key for compatibility; the manifest is where the identity lives.',
-    ],
-
-    slidesTitle: 'Slides',
+    slidesTitle: 'Slides, and the manifest that names their types',
     slidesBody: [
-      'A slide is a type and a content object whose shape that type defines. An absent or empty field means "unset": an importer fills the type\'s defaults and never blanks a required field.',
-      'Portable slides carry no id. Ids are a storage concern and are regenerated on import, so a reader must not depend on slide identity surviving a round trip.',
+      'A slide is a type and a content object whose shape that type defines. An absent or empty field means "unset": an importer fills the type\'s defaults and never blanks a required field. Portable slides carry no id, because ids are a storage concern and are regenerated on import.',
+      '`slideTypes` records which type definitions the deck was written against, as a map from the bare key to a qualified `namespace/name[@version]` identity. It is recomputed from the registry on every export and never hand-maintained, so it cannot drift from the slides it describes. This is how a second implementation learns which definitions a deck needs.',
     ],
 
     schemaTitle: 'Content schemas',
     schemaBody: [
-      "Each slide type's content shape is described by a JSON Schema generated from the same field registry that drives validation and the editor. One source, no hand-synced copy, and no way for the schema to describe a shape the software does not accept.",
-      'The schemas are served live and versioned by their `$id`. See the schemas page for how to fetch them.',
+      "Each slide type's content shape is described by a JSON Schema generated from the same field registry that drives validation and builds the editor form. One declaration, four consumers, and no way for a schema to describe a shape the software does not accept.",
+      'They are versioned by their `$id`, which carries the version of the content shape ({schemaVersion}) rather than the envelope version ({version}). `{schemaBase}/deck.schema.json` is the whole deck, `{schemaBase}/slide-types/<type>.schema.json` is one type, and `{schemaBase}/index.json` hands you the list. All three resolve: a `$id` is not formally required to be fetchable, and a format offered to other people as a standard should be anyway.',
+      'Additional properties are allowed. The schemas document the known shape of a slide; they do not reject history. Nothing under a published version path is ever withdrawn either, because a type that has been retired here is still named by somebody else’s deck.',
     ],
 
     assetsTitle: 'Asset references',
     assetsBody: [
       'Images are referenced by string. A local upload is a server path, portable only while that server is reachable. An external `https://` URL is already portable and is left untouched by every transform.',
-      "To make a deck self-contained, use the deck package: it embeds each local asset's bytes, content-addressed, and rewrites the references to point inside the archive. Package references never appear in a plain portable deck.",
     ],
 
-    roundTripTitle: 'Round-trip guarantee',
-    roundTripBody: [
-      'For content-bearing slides, export to import to export is a fixpoint: after one normalization pass, the portable projection is stable, and identical asset bytes hash to identical addresses. A test in the core repo proves this against a committed example deck on every run.',
+    packageTitle: 'The package: a deck with its pixels',
+    packageLead:
+      'Where the JSON export still points at images on a server, the package carries its own. It renders and round-trips on a machine that has never seen the instance it came from, and it can enumerate exactly which assets it contains.',
+    packageBody: [
+      'The layout is modelled on OCF, the container EPUB uses, for the same reason EPUB uses it: a ZIP whose first entry is an uncompressed media type is identifiable by magic number before anything unpacks it. Four entries, in this order.',
     ],
-    degradeLead:
-      'Two edges are deliberately lossy. They are specified so that they degrade rather than crash, which is what makes the format safe to implement against.',
-    degrade: [
-      {
-        term: 'Unknown slide type',
-        def: 'Imports as a placeholder that names the type it could not resolve, says whether it was deliberately retired and what replaces it, and carries the original content across as text.',
-      },
-      {
-        term: 'Missing local asset',
-        def: 'Keeps its original reference and imports as a dangling one. Harmless, and visible rather than silent.',
-      },
-    ],
-
-    securityTitle: 'A deck is not inert',
-    securityBody: [
-      'Most of the format is data a reader can render without executing anything. Two slide types are not: `custom-html-slide` carries HTML an author wrote, and `embed-slide` carries a URL that will be framed. A deck is therefore active content, and treating a file from someone else as safe because it validated is the wrong conclusion.',
-      'What follows is a duty on whoever reads the format, not a property of it: sanitise author HTML before it reaches a document, and isolate embedded URLs in a frame that cannot reach the page around it. The package layer does not change this. Content addressing proves the bytes are the bytes that were packed; it says nothing about whether they are safe to run.',
-      'This is worded to match the security considerations in the media-type registration, deliberately. The same claim should not read one way here and another way there.',
-    ],
-
-    versioningTitle: 'Versioning',
-    versioningBody: [
-      '`version` is the envelope version. It moves only for a breaking change to the envelope shape, and it has not moved.',
-      "Slide content is versioned independently, tied to a schema version with its own migration runner. The model is Jupyter's nbformat: a reader validates against the version it understands, and the lenient contract lets it tolerate keys from a newer one.",
-    ],
-
-    apiTitle: 'Producing and consuming a deck',
-    apiLead:
-      "The schema routes answer without credentials on any instance, including the sandbox, because a published format contract should be fetchable. The routes that touch somebody's decks do not, for the same reason your documents are not public.",
-    apiBody: [
-      'Export produces either layer; import takes either one back. Nothing in that round trip is tied to one installation, which is the only test of a portable format that means anything: a deck your instance wrote opens on an instance that has never seen it.',
-    ],
-    apiRefNote:
-      'The four export and import routes, and which of them need credentials, are listed in the documentation.',
-  },
-
-  bundle: {
-    metaTitle: 'The deck package - spec - Deckyard',
-    metaDescription:
-      'The .deck package: an OCF-style ZIP that carries a deck and its assets, content-addressed by SHA-256, deduplicated, verifiable and enumerable.',
-    heroKicker: 'Spec · layer 2',
-    heroTitle: 'The deck package',
-    heroIntro:
-      'A self-contained archive of a presentation and its images. Where the JSON export still points at images on a server, the package carries its own pixels.',
-    introBody: [
-      'It renders and round-trips on another machine without the server it came from, and it can enumerate exactly which assets it contains. The layout is modelled on OCF, the container EPUB uses, for the same reason EPUB uses it: a ZIP whose first entry is an uncompressed media type is identifiable by magic number before anything unpacks it.',
-    ],
-
-    layoutTitle: 'Archive layout',
-    layoutBody: ['Four things, in this order.'],
     layoutNotes: {
-      mimetype:
-        'First entry, stored uncompressed, containing exactly `{mime}`. That is what lets the archive be identified by magic number, before anything is unpacked.',
-      manifest: 'Package metadata and the complete asset inventory.',
+      mimetype: 'First entry, stored uncompressed, containing exactly `{mime}`.',
+      manifest:
+        'Package metadata and the complete asset inventory. The original filenames stay in it, so hash churn never leaks into the readable structure, and several sources against one hash means the same bytes were referenced from several places.',
       deck: 'The portable envelope, with every asset reference rewritten to point inside the archive.',
       assets:
         'The asset bytes, addressed by the SHA-256 of their own content. Identical bytes are stored once.',
     },
-    legacySentinel:
-      'The media type has the same history as the sentinel in the envelope: a package written before 1.7.0 declares `application/vnd.slidecreator.deck`, and a reader takes both. A writer emits `{mime}` only. The file extension never changed, so a package on disk is a `.deck` either way.',
-
-    manifestTitle: 'The manifest',
-    manifestBody: [
-      "The manifest is a complete inventory of the deck's assets. Each record ties the bytes in the archive to the names they used to have.",
-      'The one worth understanding is `sources`: the original filenames stay in the manifest, so hash churn never leaks into the readable structure, and several sources means the same bytes were referenced from several places.',
-    ],
-    manifestRefNote: 'Every manifest field is written out in the documentation.',
-
-    guaranteesTitle: 'What the package guarantees',
-    guaranteesLead: 'Four properties, each one enforced by the reader rather than assumed.',
     guarantees: [
       {
         title: 'Self-contained',
@@ -254,57 +168,33 @@ export const spec: SpecContent = {
         body: 'The manifest lists every asset a deck needs. You can answer "what is in here" without unpacking it.',
       },
     ],
+    packageRefNote:
+      'Every manifest field, and what import does with each one, is written out in the documentation.',
 
-    importTitle: 'Reading a package back',
-    importBody: [
-      "Import is the mirror of export: verify the media-type sentinel, re-hash every asset, write the bytes back out using the human name the manifest remembered, rewrite the deck's references to their new locations, and then run the same normalization the plain JSON import runs.",
-      'It degrades in specified ways too. An asset whose media type the receiving system will not accept is skipped and reported rather than aborting the import. An unknown slide type becomes the same named placeholder it does everywhere else. References that were already missing when the package was built import as dangling, which is harmless.',
+    degradeTitle: 'What is guaranteed, and what is lossy',
+    degradeLead:
+      'For content-bearing slides, export to import to export is a fixpoint: after one normalization pass the portable projection is stable, and identical asset bytes hash to identical addresses. A test in the core repo proves this against a committed example deck on every run. Two edges are deliberately not lossless, and both are specified so that they degrade rather than crash - which is what makes the format safe to implement against.',
+    degrade: [
+      {
+        term: 'Unknown slide type',
+        def: 'Imports as a placeholder that names the type it could not resolve, says whether it was deliberately retired and what replaces it, and carries the original content across as text.',
+      },
+      {
+        term: 'Missing local asset',
+        def: 'Keeps its original reference and imports as a dangling one. Harmless, and visible rather than silent. Theme assets and external URLs are not embedded by the package either: the first is a known gap, the second is deliberate, since an `https://` URL is already portable.',
+      },
     ],
 
-    gapsTitle: 'What it does not cover yet',
-    gapsBody: [
-      'Assets attached to a theme rather than to a slide - a logo, say - are not embedded, and neither are external image URLs. External URLs are a deliberate choice, since they are already portable. Theme assets are a gap, and it is listed here rather than discovered later.',
-    ],
-  },
-
-  schemas: {
-    metaTitle: 'Schemas - spec - Deckyard',
-    metaDescription:
-      'Deckyard generates a JSON Schema for every slide type from the same field registry that drives the editor, and serves them live over a public endpoint.',
-    heroKicker: 'Spec',
-    heroTitle: 'Schemas',
-    heroIntro:
-      'Every slide type has a JSON Schema. None of them were written by hand, and none of them can describe a shape the software does not accept.',
-    introBody: [
-      'A schema that is maintained separately from the code it describes is a schema that is wrong, on a delay nobody measures. These are generated from the field registry that also builds the editor form, runs validation and feeds the agent catalogue, so there is one declaration and four consumers.',
+    securityTitle: 'A deck is not inert',
+    securityBody: [
+      'Most of the format is data a reader can render without executing anything. Two slide types are not: `custom-html-slide` carries HTML an author wrote, and `embed-slide` carries a URL that will be framed. A deck is therefore active content, and treating a file from someone else as safe because it validated is the wrong conclusion.',
+      'What follows is a duty on whoever reads the format, not a property of it: sanitise author HTML before it reaches a document, and isolate embedded URLs in a frame that cannot reach the page around it. The package layer does not change this. Content addressing proves the bytes are the bytes that were packed; it says nothing about whether they are safe to run.',
     ],
 
-    sourceTitle: 'Generated, not written',
-    sourceBody: [
-      'A slide type declares its fields: their keys, types, whether they are required, their length limits and their enumerated options. That declaration is the schema, projected. Add a field to a slide type and the schema gains it in the same commit, because there is no second place to update.',
-      'This is also why the slide-type page on this site can show you a field table that is guaranteed to match: it is reading the same registry.',
+    versioningTitle: 'Versioning',
+    versioningBody: [
+      "`version` is the envelope version. It moves only for a breaking change to the envelope shape, and it has not moved. Slide content is versioned independently, tied to a schema version with its own migration runner. The model is Jupyter's nbformat: a reader validates against the version it understands, and the lenient contract lets it tolerate keys from a newer one.",
     ],
-
-    idTitle: 'Identity and versioning',
-    idBody: [
-      'Schemas are versioned by their `$id`, which carries the major version in its path. A per-type schema and a whole-deck schema, discriminated by slide type, are both published.',
-      'Worth catching: that version is the version of the content shape ({schemaVersion}), not the envelope version ({version}). They are two axes, which is exactly why they have drifted apart.',
-      'Both resolve. `{schemaBase}/deck.schema.json` is the whole deck, `{schemaBase}/slide-types/<type>.schema.json` is one type, and `{schemaBase}/index.json` hands you the list. A JSON Schema `$id` is an identifier and is not formally required to be fetchable; a format offered to other people as a standard should be anyway.',
-      'Nothing under a published version path is ever withdrawn. A slide type that is retired keeps the schema it was published with, because somebody else’s deck still names it.',
-    ],
-
-    contractTitle: 'Contracts, not gatekeepers',
-    contractBody: [
-      'Additional properties are allowed. The schemas document the known shape of a slide; they do not reject history. A deck written before a field existed still validates, and a deck written after this reader was built still validates.',
-      'This is the same leniency the envelope has, for the same reason: a format that rejects what it does not recognise cannot survive its own versions.',
-    ],
-
-    fetchTitle: 'Fetching them',
-    fetchBody: [
-      'There are two places to get them, and the difference matters. The files under `{schemaBase}` are the published ones: the core slide types, at the URL their `$id` names, frozen per schema version.',
-      'The schema endpoints on a running instance are public and unauthenticated too, including on the sandbox, and they are generated at request time from that instance’s registry. So an instance carrying extra slide types serves schemas for those as well - which is the correct answer for that instance, and a good reason to fetch from the one you are actually talking to.',
-    ],
-    fetchRefNote: 'The endpoints, with a `curl` for each, are in the documentation.',
   },
 
   types: {
@@ -321,23 +211,16 @@ export const spec: SpecContent = {
       { value: '1', label: 'Place any of this is written down' },
     ],
     introBody: [
-      'A slide type is a small contract: a name, a set of fields, and a shape. It is not a template you fill in and then push around - which is why the same deck can render at any size, on any theme, into HTML or PDF, and be read by something that is not a person.',
-      'The glyph on each card is the same abstract diagram the editor draws in its slide picker, from the same description of the layout. It shows structure rather than a shrunk-down screenshot, which is the only thing that stays legible this small.',
+      'A slide type is a small contract: a name, a set of fields, and a shape. It is not a template you fill in and then push around, which is why the same deck can render at any size, on any theme, into HTML or PDF, and be read by something that is not a person. The glyph on each card is the abstract diagram the editor draws in its own slide picker, from the same description of the layout.',
     ],
 
-    structureTitle: 'Six shapes, not thirty-six peers',
-    structureBody: [
-      'A flat list of types says nothing about how any of them relate, so every type looks like a separate thing to build. They are not. Each type declares a `structure`: the shape of its primary content, independent of what the slide is about and how it looks. Six values cover all of them, with no "other" bucket.',
-      'This is the axis worth building against. The categories an editor shelves types under mix familiarity, payload and runtime behaviour, and they are furniture; `structure` is derivable from the field schema, which means a declaration that lies about it can be caught by a test, and core runs one.',
-    ],
-    structureRule:
-      'A variant is a render choice that every valid instance of the content survives without loss. A type boundary is where content has to be added or thrown away.',
-    structureRuleSource: 'The rule that decides when something is a type rather than a layout.',
+    structureLead:
+      'The grid is grouped by the `structure` each type declares: the shape of its primary content, independent of what the slide is about and how it looks. Six values cover all of them, with no "other" bucket, and this is the axis a second implementation builds against - support a structure and you support every type in it.',
     structureContracts: {
       singleton:
         'A fixed set of scalar slots. Read the keys the type declares; there is no repetition to walk.',
       collection:
-        'One array of items that all share a shape. Walk the array, render the item, repeat. That single loop is the whole contract, however many types use it.',
+        'One array of items that all share a shape. Walk the array, render the item, repeat.',
       'fixed-collection':
         'The same item contract as a collection, with the count fixed because the count carries meaning: four quadrants is what makes a matrix a matrix.',
       tabular: 'Rows of cells. The row is the item; the columns are positions inside it.',
@@ -348,7 +231,7 @@ export const spec: SpecContent = {
     },
     structureCaveats: {
       'fixed-collection':
-        'Two of these do not keep to it yet: `poll-slide` and `likert-slide` carry `option1..optionN` as separate scalars rather than an array, because they never got the migration the other collections did. Core tracks both in an open burndown; they are listed here rather than quietly rounded up.',
+        'Two of these do not keep to it yet: `poll-slide` and `likert-slide` carry `option1..optionN` as separate scalars rather than an array, because they never got the migration the other collections did. They are listed here rather than quietly rounded up.',
     },
     structureCountLabel: '{n} types',
     structureCountOne: '1 type',
@@ -390,11 +273,9 @@ export const spec: SpecContent = {
     runtimeLabel: 'Runtime',
     fallbackLabel: 'Falls back to',
 
-    runtimeTitle: 'The second facet: what has to be running behind a slide',
-    runtimeBody: [
-      'A type also declares a `runtime`: what the presenting session has to do for it beyond serving the slide. It answers a different question from `structure`, and it is the one that decides whether a reader needs a server at all.',
-      'Unlike `structure`, this facet was measured rather than designed. Nine modules in core were writing out the same four type names to ask "does this slide collect answers from the audience?", and they had already drifted apart at the edges. None of them wanted to know which type it was; they wanted a capability the type did not declare.',
-    ],
+    runtimeTitle: 'What has to be running behind a slide',
+    runtimeLead:
+      'A type also declares a `runtime`: what the presenting session has to do for it beyond serving the slide. It is the facet that decides whether a reader needs a server at all, and most of the catalogue asks for nothing.',
     runtimeLabels: {
       static: 'Static',
       timed: 'Timed',
@@ -402,31 +283,15 @@ export const spec: SpecContent = {
     },
     runtimeContracts: {
       static:
-        'The session does nothing for it. The slide may still have client-side behaviour of its own; that is the slide\u2019s business, not the session\u2019s.',
+        'The session does nothing for it. The slide may still have client-side behaviour of its own; that is the slide’s business, not the session’s.',
       timed:
         'The presenter drives a clock on the slide. The timer state lives in the presenting window; the session neither holds nor aggregates it.',
       live: 'The audience answers, and the session collects and aggregates those answers as state the presenter opens and closes.',
     },
-    runtimeEdge:
-      'The line is drawn at session state, not at "has behaviour", so the awkward cases fall out of the definition instead of being argued one by one. `countdown-slide` is `timed`: a clock, no audience. `lead-capture-slide` is `static` even though it plainly collects from the room, because its submissions go to lead storage over their own endpoint and never reach the session. `follow-invite-slide` is `static` too: it renders the join code the session issued, which is a render input rather than state the session keeps.',
-
-    conformanceTitle: 'Claim structures, not types',
-    conformanceBody: [
-      'A second implementation almost never wants all thirty-six, and until now it had no way to say so: either it claimed to read Deckyard decks and quietly fell over on a chart, or it said nothing and nobody could tell what it did. Structures give the claim an edge. Support a structure and you support every type in it, because they share one contract.',
-      "A reader that covers a structure it has claimed and renders an unknown-type placeholder for the rest is a correct partial implementation, not a broken one. That is what the format's specified degradation is for.",
-    ],
-    conformanceColStructure: 'Structure',
-    conformanceColTypes: 'Types covered',
-    conformanceColClaim: 'What supporting it means',
-    conformanceClaim: 'Reads all {n} without a special case per type.',
-    conformanceExampleTitle: 'What a claim looks like',
-    conformanceLinkLabel: 'Build the claim for your own reader',
-    conformanceExample:
-      'Reads the deck format, slide structures `singleton` and `collection` ({n} of {total} core types). Other structures import as a named placeholder.',
 
     globalTitle: 'The fields every type carries',
     globalBody: [
-      'Nine fields are added to every slide type rather than declared on each one: two for what a screen reader announces, six for a per-slide background image and how it is treated, and one for the theme logo. They are listed once here instead of thirty-six times above.',
+      'Nine fields are added to every slide type rather than declared on each one: two for what a screen reader announces, six for a per-slide background image and how it is treated, and one for the theme logo.',
     ],
 
     deprecatedTitle: 'Retired types',
@@ -435,13 +300,8 @@ export const spec: SpecContent = {
     ],
     deprecatedBadge: 'Retired',
 
-    provenanceTitle: 'Where this page comes from',
-    provenanceBody: [
-      'Nothing on this page was typed out by hand. The list, the count, the labels, the field tables, the limits, the layout glyphs and the "reach for it when" lines are generated from the Deckyard core repository into a data file this site reads, and the same source paths are watched so that a change in core shows up as drift here rather than as a page that quietly went out of date.',
-      'It used to say 36 in one place, 38 in another and 44 in a third. That is what a hand-maintained number does.',
-    ],
     referenceNote:
-      'The same registry as one flat, searchable table - every field, limit and option, without the diagrams - is in the documentation.',
+      'Nothing on this page is typed by hand: the list, the counts, the field tables and the glyphs are generated from the core registry. The same registry as one flat, searchable table is in the documentation.',
   },
 
   conformance: {
@@ -455,7 +315,7 @@ export const spec: SpecContent = {
 
     levelsTitle: 'Conformance has two levels',
     levelsLead:
-      'The point of the split is that level 1 does not grow with the number of slide types. A reader that learns nine type contracts knows nine things and is stale the day a tenth is published. A reader that learns six structure contracts can render a type that did not exist when it shipped.',
+      'The point of the split is that neither level grows with the number of slide types. A reader that learns nine type contracts knows nine things and is stale the day a tenth is published. A reader that learns six structure contracts can render a type that did not exist when it shipped.',
     levels: [
       {
         badge: 'Level 1',
@@ -473,8 +333,6 @@ export const spec: SpecContent = {
         body: 'Every deck renders the way it was authored, up to the degradation each type declares for itself. This is the realistic target: it is a weekend of work, not a catalogue.',
       },
     ],
-    levelsNote:
-      'Neither level asks for all of the types. That is the whole design: a conformance claim that grows every time somebody adds a slide type is a claim nobody can keep.',
 
     builderTitle: 'The claim you may publish',
     builderLead:
@@ -539,105 +397,41 @@ export const spec: SpecContent = {
       },
     },
     contractNotes: [
-      '**`collection` and `fixed-collection` differ only in whether the count is meaning.** That is exactly why they are two structures and not one: a list of six may be reflowed into two columns, and a four-quadrant matrix may not be reduced to three.',
-      '**`dataset` is the one structure whose payload cannot be checked.** The contract says so rather than pretending otherwise, and it names the degradation instead of leaving a reader to invent one.',
+      '**`collection` and `fixed-collection` differ only in whether the count is meaning.** That is exactly why they are two structures and not one: a list of six may be reflowed into two columns, and a four-quadrant matrix may not be reduced to three. `dataset` is the one structure whose payload cannot be checked, and the contract says so rather than leaving a reader to invent a degradation.',
     ],
 
-    tiersTitle: 'Three tiers, one normative',
-    tiersLead:
-      'The reframe that makes a published type set bearable is not "which types do we remove" but "which types do we promise". Removing is destructive and irreversible once a name is out; a tier is free and reversible. So nothing was removed.',
-    tiers: [
-      {
-        badge: 'Tier 1',
-        name: 'Core profile',
-        what: 'Nine types.',
-        promise: 'Normative. What a conforming implementation renders.',
-      },
-      {
-        badge: 'Tier 2',
-        name: 'Deckyard set',
-        what: 'The other types we ship.',
-        promise: 'We publish and document them, but they version with the app.',
-      },
-      {
-        badge: 'Tier 3',
-        name: 'Extension',
-        what: 'Fork types, org types, third-party types.',
-        promise:
-          "The declarant's promise, not ours. We promise nothing about them, and we do not ignore them.",
-      },
-    ],
-    profileTitle: 'The nine',
+    profileTitle: 'The nine that carry a promise',
     profileLead:
-      'A tier is a property of the name rather than of the definition. A fork that overrides `title-slide` answers a tier-1 name and inherits the tier-1 promise; that is what choosing the name means.',
+      'Nine names are normative. The other types Deckyard ships are published and documented but version with the app, and a type from a fork carries its declarant’s promise rather than ours. A tier is a property of the name, not of the definition: a fork that overrides `title-slide` inherits the tier-1 promise, because that is what choosing the name means.',
     profileCriterion:
-      'The choice is a criterion, not a taste: this is the minimal set that expresses an ordinary presentation without loss - title, section break, prose, enumeration, quotation, image, image-with-text, table, closing. Everything outside it adds expressiveness that has an acceptable degradation inside it.',
-    profileNoChart:
-      'A chart type is deliberately not in it. It demands a charting library, and the success criterion for a second implementation is a weekend of work; a profile that requires a charting runtime is no longer an entry threshold.',
+      'The choice is a criterion, not a taste: this is the minimal set that expresses an ordinary presentation without loss - title, section break, prose, enumeration, quotation, image, image-with-text, table, closing. Everything outside it adds expressiveness that has an acceptable degradation inside it, which is also why no chart type is in it: a profile that demands a charting runtime is no longer an entry threshold.',
 
     mapTitle: 'Every other type degrades into one of them',
     mapLead:
-      'This is the rule that makes the tiers worth anything: **every tier-2 type declares a `fallback` to a tier-1 type.** A funnel falls back to a list, a gallery to images, a chart to a table. So a reader that knows only the nine renders every Deckyard deck without dropping content.',
+      'This is the rule that makes the nine worth anything: **every tier-2 type declares a `fallback` to a tier-1 type.** A funnel falls back to a list, a gallery to images, a chart to a table. So a reader that knows only the nine renders every Deckyard deck without dropping content.',
     mapDegradeLabel: '{n} degrade to it',
     mapNote:
       'The `fallback` names a tier-1 contract, not a one-for-one slide swap. A gallery falling back to `image-slide` means "this content is images, render it the way you render images", and a reader is free to emit more than one slide for it.',
     mapGapLabel: 'Declares no fallback',
 
-    idTitle: 'One identity, three spellings',
-    idLead:
-      'The canonical id is reverse-DNS: whoever owns the domain may define the type, which makes collisions structurally impossible instead of socially managed. The -slide suffix comes off the canonical name, because "slide" is already in the authority.',
-    idColSpelling: 'Spelling',
-    idColExample: 'Example',
-    idColWhere: 'Where it appears',
-    idSpellings: [
-      {
-        spelling: 'Canonical reverse-DNS',
-        where: 'The `slideTypes` manifest, `GET /api/slide-types`, anything newly published.',
-      },
-      {
-        spelling: 'Qualified',
-        where: 'Decks written against the earlier identity model.',
-      },
-      {
-        spelling: 'Bare key',
-        where: '`slides[].type`, in every deck, past and present.',
-      },
-    ],
-    idExampleCaption: 'One slide, three ways of naming its type. A reader MUST accept all three.',
-    idStorage:
-      '**Storage did not move.** `slides[].type` still holds the bare key, so the rename cost no deck a rewrite and nothing has to be migrated. A reader MUST treat the three spellings as one identity; the published JSON Schema applies the same content contract to each of them.',
-    idVersion:
-      'The `@version` suffix is a compatibility hint about a definition, not a different type. A reader that does not have the named version renders the version it has, and MUST NOT treat `title-slide@2` as an unknown type.',
-
     ruleTitle: 'The evolution rule',
     rule: 'Within a name, only additions. A change of meaning is a change of name.',
     ruleLead:
-      'Normative, and it applies to every published name: a slide type, a content key, an envelope key, an enum value. The two blocks below change the same type in what looks like the same way, and only one of them leaves every deck ever written still valid.',
+      'Normative, and it applies to every published name: a slide type, a content key, an envelope key, an enum value. Deckyard migrates its own storage forward, but a reader we do not own does not run our migration chain, so for anything published a migration is not a fix. The two blocks below make the same change to the same type, and only one of them leaves every deck ever written still valid.',
     ruleOkLabel: 'Permitted',
     ruleOkCaption: 'A new optional key. Every existing deck stays valid.',
     ruleBadLabel: 'Forbidden',
     ruleBadCaption: 'A new required key. Every existing deck is retroactively invalid.',
-    producerTitle: 'What a producer owes',
-    producer: [
-      'A published name MUST keep its meaning for as long as it exists. If the meaning has to change, the name changes and the old one walks the removal ladder.',
-      'Optional keys MAY be added at any time. A new **required** key MUST NOT be added to a published type: that turns every existing deck invalid retroactively, and that is a rename wearing a compatible-looking hat.',
-      'Widening a value space is additive (a new enum value, a new spelling of a type id). **Narrowing it is not** and needs a new name.',
-      'Nothing published is removed silently: a name that goes away is deprecated first, and tier 1 is covered by the standing stability promise.',
-    ],
-    readerTitle: 'What a reader owes',
-    reader: [
-      'A reader MUST ignore keys it does not know, at every level (envelope, slide, content, item), and MUST NOT reject a deck for carrying them.',
-      'A reader MUST accept a `type` it does not know and render it per the contract below.',
-    ],
-    ruleWhyTitle: 'Why this replaces migration freedom',
-    ruleWhy: [
-      'Deckyard has a migration chain because it owns both ends of the line: an old deck is read, migrated forward in memory, and written back in the current shape. That freedom stops at our own storage. **A reader we do not own does not run our migration chain.** For anything published, a migration is therefore not a fix, it is a break that we happen to survive.',
-      'The rule is what we trade that freedom for, and it is worth more: it is why a reader written today still works in three years without tracking our releases. The form is borrowed from atproto’s Lexicon on purpose - same problem, same answer, and no reason to invent a second dialect of it.',
+    duties: [
+      'A published name MUST keep its meaning for as long as it exists. If the meaning has to change, the name changes, and the old one is deprecated rather than removed silently.',
+      'Optional keys MAY be added at any time. A new **required** key MUST NOT be added to a published type: that turns every existing deck retroactively invalid, and it is a rename wearing a compatible-looking hat. Widening a value space is additive; **narrowing it is not.**',
+      'A reader MUST ignore keys it does not know, at every level - envelope, slide, content, item - and MUST NOT reject a deck for carrying them.',
+      'A reader MUST treat the three spellings of a type id as one identity: the canonical reverse-DNS name, the qualified `namespace/name`, and the bare key that `slides[].type` still holds in every deck. A `@version` suffix is a compatibility hint about a definition, not a different type, so `title-slide@2` MUST NOT be treated as unknown.',
     ],
 
     unknownTitle: 'A type your reader has never heard of',
     unknownLead:
-      'This is what "nothing is dropped" means at the hardest point: a type you have no declaration for at all, from a fork you have never seen. It is a specified rendering, not an error path.',
+      'This is what "nothing is dropped" means at the hardest point: a type you have no declaration for at all, from a fork you have never seen. It is a specified rendering, not an error path, and it is the last resort - a type you have the declaration for but have not implemented takes its `structure` or its declared `fallback` instead.',
     unknownInCaption: 'A slide from a fork you do not know',
     unknownOutCaption: 'What a conforming reader shows',
     unknownOutBadge: 'Unknown type',
@@ -650,11 +444,11 @@ export const spec: SpecContent = {
       },
       {
         must: 'MUST render every string-valued entry of `content` as text,',
-        body: "in the order the keys appear in `content` - a producer writes them in the declared field order, so that order is the author's. A reader whose parser does not preserve member order MUST pick a stable order (lexicographic will do) rather than an arbitrary one. Non-string scalars render as their text form; the empty string means unset and MAY be skipped.",
+        body: "in the order the keys appear in `content` - a producer writes them in the declared field order, so that order is the author's. A reader whose parser does not preserve member order MUST pick a stable order rather than an arbitrary one. The empty string means unset and MAY be skipped.",
       },
       {
         must: 'MUST render each element of an array-valued entry as a repeated item,',
-        body: 'in array order, applying rule 2 within each element. This is the `collection` contract, the honest reading of an array whose meaning is unknown: it may be reflowed, it may not be reordered or truncated.',
+        body: 'in array order, applying rule 2 within each element. This is the `collection` contract: it may be reflowed, it may not be reordered or truncated.',
       },
       {
         must: 'MUST show the type reference,',
@@ -675,19 +469,6 @@ export const spec: SpecContent = {
     ],
     unknownNested:
       'A value that is neither a scalar nor an array or object of scalars - a nested payload a reader cannot interpret - MAY be omitted. Rule 7 outranks completeness.',
-    precedenceTitle: 'And it is the last resort, not the first',
-    precedenceLead:
-      'Three cases, in order. Most of what looks like an unknown type is really a known type you have not implemented, and that case has a better answer.',
-    precedenceColHas: 'The reader has',
-    precedenceColDoes: 'It does',
-    precedence: [
-      { has: 'The type, implemented', does: 'Renders it natively.' },
-      {
-        has: 'The declaration but no implementation',
-        does: 'Uses `structure` plus the item contract, or the declared `fallback`.',
-      },
-      { has: 'Nothing but the slide', does: 'The seven rules above.' },
-    ],
 
     referenceNote:
       'The exhaustive tables - every envelope field, every manifest field, every slide type with its facets - are in the documentation, which is the half the site search indexes.',

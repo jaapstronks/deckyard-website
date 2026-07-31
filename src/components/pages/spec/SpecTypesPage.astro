@@ -14,18 +14,16 @@ import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import Schematic from '@/components/spec/Schematic.astro';
 import SpecReference from '@/components/spec/SpecReference.astro';
-import { ui, localizePath, type Lang } from '@/i18n';
+import { ui, type Lang } from '@/i18n';
 import { withSpec, liveSchemaUrl, LIVE_INSTANCE } from '@/lib/spec';
 import { withFacts } from '@/lib/facts';
 import { inlineCode } from '@/lib/inline';
 import {
-  slideTypes,
   globalFields,
   deprecatedTypes,
   slideStructures,
   typesWithStructure,
   repeatingFields,
-  structureCoverage,
   slideRuntimes,
   typesWithRuntime,
   type SlideType,
@@ -39,7 +37,6 @@ const { lang } = Astro.props;
 const t = ui[lang].spec.types;
 
 const prose = (text: string) => inlineCode(withSpec(text));
-const active = slideTypes.filter((type) => !type.deprecated);
 
 /**
  * The registry, grouped by the `structure` facet rather than by the editor's
@@ -54,9 +51,6 @@ const active = slideTypes.filter((type) => !type.deprecated);
 const structureGroups = slideStructures
   .map((s) => ({ ...s, types: typesWithStructure(s.name) }))
   .filter((s) => s.types.length > 0);
-
-/** The claim the conformance table is worth making: the two biggest shapes. */
-const headlineStructures = structureCoverage(['singleton', 'collection']);
 
 /** A field's limit, or an em rule when it has none. */
 const limitOf = (f: SlideTypeField) => (f.maxLength ? String(f.maxLength) : t.noLimit);
@@ -92,30 +86,17 @@ const countLabel = (n: number) =>
     </div>
   </Section>
 
-  <!-- ============ the facet ============ -->
+  <!-- ============ the two facets, as a legend ============ -->
+  <!-- Both facets used to be a section of their own, arguing for themselves. The
+       `structure` argument belongs on /spec/conformance/, where it is the thing
+       somebody builds against; here the six values only have to earn the six
+       headings below. `runtime` gets the same treatment: named, contracted, and
+       left at that. -->
   <Section>
-    <SectionHead title={t.structureTitle} />
     <div class="spec-prose" data-reveal>
-      {t.structureBody.map((p) => <p set:html={prose(p)} />)}
-    </div>
-    <!-- Quoted policy from core's own reference page, kept verbatim: it is the
-         rule that decides where a type boundary is, and a paraphrase on this
-         side would be a second wording of a decision that has one. -->
-    <blockquote class="ty-rule" data-reveal>
-      <p>{t.structureRule}</p>
-      <cite>{t.structureRuleSource}</cite>
-    </blockquote>
-  </Section>
-
-  <!-- ============ the second facet ============ -->
-  <!-- Deliberately short and deliberately here, beside `structure`, rather than
-       folded into the cards: the two facets are peers, and the useful thing
-       about this one is how lopsided it is. Most of the catalogue asks nothing
-       of a session at all, which is what makes a server-free reader realistic. -->
-  <Section>
-    <SectionHead title={t.runtimeTitle} />
-    <div class="spec-prose" data-reveal>
-      {t.runtimeBody.map((p) => <p set:html={prose(p)} />)}
+      <p set:html={prose(t.structureLead)} />
+      <h2>{t.runtimeTitle}</h2>
+      <p set:html={prose(t.runtimeLead)} />
     </div>
     <dl class="spec-defs ty-runtimes" data-reveal>
       {
@@ -130,7 +111,6 @@ const countLabel = (n: number) =>
         ))
       }
     </dl>
-    <p class="spec-note" data-reveal set:html={prose(t.runtimeEdge)} />
   </Section>
 
   <!-- ============ the registry, by structure ============ -->
@@ -324,57 +304,6 @@ const countLabel = (n: number) =>
     <p class="ty-empty" data-types-empty hidden>{t.emptyResult}</p>
   </Section>
 
-  <!-- ============ conformance ============ -->
-  <Section>
-    <SectionHead title={t.conformanceTitle} />
-    <div class="spec-prose" data-reveal>
-      {t.conformanceBody.map((p) => <p set:html={prose(p)} />)}
-    </div>
-    <div class="spec-tablewrap" data-reveal>
-      <table class="spec-table">
-        <thead>
-          <tr>
-            <th scope="col">{t.conformanceColStructure}</th>
-            <th scope="col">{t.conformanceColTypes}</th>
-            <th scope="col">{t.conformanceColClaim}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            structureGroups.map((group) => (
-              <tr>
-                <th scope="row">
-                  <code>{group.name}</code>
-                </th>
-                <td>{group.types.length}</td>
-                <td>{t.conformanceClaim.replace('{n}', String(group.types.length))}</td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
-    <!-- The worked example is still here, because it is the answer with
-         scripting off and because one concrete sentence beats a control nobody
-         clicks. The claim builder on /spec/conformance/ is the same sentence for
-         any combination, so this links there rather than restating it. -->
-    <div class="ty-claim" data-reveal>
-      <h3>{t.conformanceExampleTitle}</h3>
-      <p
-        set:html={prose(
-          t.conformanceExample
-            .replace('{n}', String(headlineStructures))
-            .replace('{total}', String(active.length))
-        )}
-      />
-      <p class="ty-claim-more">
-        <a href={localizePath('/spec/conformance/', lang)}>
-          {t.conformanceLinkLabel}<span aria-hidden="true"> →</span>
-        </a>
-      </p>
-    </div>
-  </Section>
-
   <!-- ============ the shared fields ============ -->
   <Section>
     <SectionHead title={t.globalTitle} />
@@ -424,11 +353,12 @@ const countLabel = (n: number) =>
     </ul>
   </Section>
 
-  <!-- ============ provenance ============ -->
+  <!-- ============ where it comes from ============ -->
+  <!-- One line and the live endpoint, where there used to be a section arguing
+       that the page is generated. The claim is worth making once; the story of
+       the number that said 36, 38 and 44 in three places is repo history. -->
   <Section>
     <div class="spec-prose" data-reveal>
-      <h2>{t.provenanceTitle}</h2>
-      {t.provenanceBody.map((p) => <p set:html={prose(p)} />)}
       <p><code>{LIVE_INSTANCE}/api/v1/schema/slide-types/&lt;type&gt;.json</code></p>
     </div>
     <SpecReference lang={lang} href="/docs/reference/slide-types/" note={t.referenceNote} />
@@ -583,30 +513,6 @@ const countLabel = (n: number) =>
     }
   }
 
-  /* ---------- the quoted rule ---------- */
-  .ty-rule {
-    max-width: 42rem;
-    margin: var(--space-md) 0 0;
-    padding-left: 1.2rem;
-    border-left: 3px solid var(--brass);
-  }
-  .ty-rule p {
-    margin: 0;
-    font-family: var(--display);
-    font-variation-settings: 'wght' 520;
-    font-size: var(--step-1);
-    line-height: 1.4;
-    color: var(--ink);
-  }
-  .ty-rule cite {
-    display: block;
-    margin-top: 0.7rem;
-    font-style: normal;
-    font-family: var(--mono);
-    font-size: var(--step--3);
-    color: var(--ink-mute);
-  }
-
   /* ---------- a structure group ---------- */
   .ty-group + .ty-group {
     margin-top: var(--space-lg);
@@ -654,39 +560,6 @@ const countLabel = (n: number) =>
     font-size: 0.88rem;
     line-height: 1.55;
     color: var(--ink-mute);
-  }
-
-  /* ---------- the conformance claim ---------- */
-  .ty-claim {
-    max-width: 46rem;
-    margin: var(--space-md) 0 0;
-    padding: 1.1rem 1.3rem;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-  }
-  .ty-claim h3 {
-    margin: 0;
-    font-family: var(--mono);
-    font-size: var(--step--3);
-    font-weight: 400;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-  }
-  .ty-claim-more {
-    margin-top: 0.9rem;
-  }
-  .ty-claim-more a {
-    font-variation-settings: 'wght' 600;
-    white-space: nowrap;
-  }
-  .ty-claim p {
-    margin: 0.7rem 0 0;
-    font-family: var(--mono);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: var(--ink);
   }
 
   /* The runtime vocabulary reuses the shared definition rows; only the two

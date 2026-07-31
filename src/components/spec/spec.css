@@ -35,7 +35,7 @@
 /* `.spec-note` belongs in this list, not only in the one that follows it: the
    longest unbreakable token on the whole spec section - the MIME type - lives in
    a note, and a browser does not break at a dot. Without `anywhere` it pushed
-   /spec/deck-bundle/ 27px wider than a 320px viewport. */
+   the package section of /spec/deck-format/ 27px wider than a 320px viewport. */
 .spec-prose code,
 .spec-table code,
 .spec-defs code,
@@ -139,9 +139,13 @@
   padding: 0;
   list-style: none;
 }
+/* Three cards, because a page leaves itself out of a section of four. Two
+   columns left one card orphaned on its own row; auto-fit puts all three in a
+   row where there is width and folds them cleanly where there is not, so this
+   survives the section growing or shrinking by one. */
 @media (min-width: 760px) {
   .spec-more {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
   }
 }
 .spec-more a {

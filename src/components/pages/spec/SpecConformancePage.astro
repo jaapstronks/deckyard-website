@@ -34,7 +34,6 @@ import {
 import {
   RULE_BAD_EXAMPLE,
   RULE_OK_EXAMPLE,
-  SPELLINGS_EXAMPLE,
   STRUCTURE_EXAMPLES,
   UNKNOWN_CONTENT,
   UNKNOWN_NOTES,
@@ -104,7 +103,6 @@ const structureLabels = ui[lang].spec.types.structureLabels;
         ))
       }
     </div>
-    <p class="spec-note" data-reveal set:html={prose(t.levelsNote)} />
   </Section>
 
   <!-- ============ the claim builder ============ -->
@@ -251,26 +249,13 @@ const structureLabels = ui[lang].spec.types.structureLabels;
     </div>
   </Section>
 
-  <!-- ============ 4. tiers, the nine, and the fallback map ============ -->
+  <!-- ============ 4. the nine, and the fallback map ============ -->
+  <!-- The three tiers used to be three cards arguing why a tier beats a removal.
+       That is a policy decision this project made; a reader building against the
+       format only needs to know which names carry a promise, which is one
+       sentence of the lead. -->
   <Section variant="tint">
-    <SectionHead title={t.tiersTitle} lead={t.tiersLead} />
-    <ol class="cf-tiers">
-      {
-        t.tiers.map((tier, i) => (
-          <li data-reveal data-reveal-delay={i * 60}>
-            <p class="cf-tier-badge">{tier.badge}</p>
-            <h3>{tier.name}</h3>
-            <p class="cf-tier-what">{tier.what}</p>
-            <p class="cf-tier-promise" set:html={prose(tier.promise)} />
-          </li>
-        ))
-      }
-    </ol>
-
-    <div class="spec-prose cf-profile-intro" data-reveal>
-      <h3>{t.profileTitle}</h3>
-      <p set:html={prose(t.profileLead)} />
-    </div>
+    <SectionHead title={t.profileTitle} lead={t.profileLead} />
     <!-- The nine with their own layout glyphs, because "the minimal set that
          expresses an ordinary presentation" is an argument a reader can check by
          looking rather than one they have to take on trust. -->
@@ -290,7 +275,6 @@ const structureLabels = ui[lang].spec.types.structureLabels;
     </ul>
     <div class="spec-prose cf-notes" data-reveal>
       <p set:html={prose(t.profileCriterion)} />
-      <p set:html={prose(t.profileNoChart)} />
     </div>
   </Section>
 
@@ -337,42 +321,12 @@ const structureLabels = ui[lang].spec.types.structureLabels;
     <p class="spec-note" data-reveal set:html={prose(t.mapNote)} />
   </Section>
 
-  <!-- ============ 5. one identity, three spellings ============ -->
+  <!-- ============ 5. the evolution rule ============ -->
+  <!-- The three spellings of a type id used to be a section here, with its own
+       table and worked JSON. It is a lookup - which spelling appears where - and
+       lookups belong in /docs/reference/, which is the half the site search
+       indexes. What is normative about it survives as one of the duties below. -->
   <Section variant="tint">
-    <SectionHead title={t.idTitle} lead={t.idLead} />
-    <div class="cf-id">
-      <div class="cf-id-code" data-reveal>
-        <CodeBlock code={SPELLINGS_EXAMPLE} caption={t.idExampleCaption} />
-      </div>
-      <div class="spec-tablewrap cf-id-table" data-reveal>
-        <table class="spec-table">
-          <thead>
-            <tr>
-              <th scope="col">{t.idColSpelling}</th>
-              <th scope="col">{t.idColWhere}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              t.idSpellings.map((row) => (
-                <tr>
-                  <th scope="row">{row.spelling}</th>
-                  <td set:html={prose(row.where)} />
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="spec-prose cf-notes" data-reveal>
-      <p set:html={prose(t.idStorage)} />
-      <p set:html={prose(t.idVersion)} />
-    </div>
-  </Section>
-
-  <!-- ============ 6. the evolution rule ============ -->
-  <Section>
     <SectionHead title={t.ruleTitle} />
     <blockquote class="cf-rule" data-reveal>
       <p>{t.rule}</p>
@@ -393,29 +347,16 @@ const structureLabels = ui[lang].spec.types.structureLabels;
       </div>
     </div>
 
-    <div class="cf-duties">
-      <section data-reveal>
-        <h3>{t.producerTitle}</h3>
-        <ol class="cf-duty-list">
-          {t.producer.map((d) => <li set:html={prose(d)} />)}
-        </ol>
-      </section>
-      <section data-reveal data-reveal-delay="80">
-        <h3>{t.readerTitle}</h3>
-        <ol class="cf-duty-list" start={t.producer.length + 1}>
-          {t.reader.map((d) => <li set:html={prose(d)} />)}
-        </ol>
-      </section>
-    </div>
-
-    <div class="spec-prose cf-notes" data-reveal>
-      <h3>{t.ruleWhyTitle}</h3>
-      {t.ruleWhy.map((p) => <p set:html={prose(p)} />)}
-    </div>
+    <!-- One numbered list, not a producer column beside a reader column. The
+         duties read as one contract with two parties, and splitting them meant
+         each side restating the rule before it could state its half. -->
+    <ol class="cf-duty-list" data-reveal>
+      {t.duties.map((d) => <li set:html={prose(d)} />)}
+    </ol>
   </Section>
 
-  <!-- ============ 7. the unknown-type contract ============ -->
-  <Section variant="tint">
+  <!-- ============ 6. the unknown-type contract ============ -->
+  <Section>
     <SectionHead title={t.unknownTitle} lead={t.unknownLead} />
     <!-- The deck in, the rendering out. Seven MUSTs describe this; one picture
          settles it, and the picture is built from the JSON beside it. -->
@@ -466,30 +407,10 @@ const structureLabels = ui[lang].spec.types.structureLabels;
       }
     </ol>
     <p class="spec-note" data-reveal set:html={prose(t.unknownNested)} />
-  </Section>
-
-  <Section>
-    <SectionHead title={t.precedenceTitle} lead={t.precedenceLead} />
-    <div class="spec-tablewrap" data-reveal>
-      <table class="spec-table">
-        <thead>
-          <tr>
-            <th scope="col">{t.precedenceColHas}</th>
-            <th scope="col">{t.precedenceColDoes}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            t.precedence.map((row) => (
-              <tr>
-                <th scope="row">{row.has}</th>
-                <td set:html={prose(row.does)} />
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
+    <!-- The precedence table that used to close the page - implemented type,
+         declared-but-not-implemented type, nothing but the slide - was a summary
+         of the two sections it followed. Its one non-obvious claim, that this is
+         the last resort rather than the first, is now the lead above. -->
     <SpecReference lang={lang} href="/docs/reference/slide-types/" note={t.referenceNote} />
   </Section>
 </SpecShell>
@@ -844,59 +765,6 @@ const structureLabels = ui[lang].spec.types.structureLabels;
     margin-top: var(--space-md);
   }
 
-  /* ---------- tiers ---------- */
-  .cf-tiers {
-    list-style: none;
-    display: grid;
-    gap: 1rem;
-    margin: 2rem 0 0;
-    padding: 0;
-  }
-  @media (min-width: 860px) {
-    .cf-tiers {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  .cf-tiers li {
-    padding: 1.2rem 1.3rem 1.3rem;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
-    background: var(--card);
-  }
-  /* Tier 1 is the only normative one, and the card says so before the words do. */
-  .cf-tiers li:first-child {
-    border-color: var(--green);
-    box-shadow: inset 3px 0 0 var(--green);
-  }
-  .cf-tier-badge {
-    margin: 0 0 0.15rem;
-    font-family: var(--mono);
-    font-size: var(--step--3);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--brass-text);
-  }
-  .cf-tiers h3 {
-    margin: 0 0 0.4rem;
-    font-size: 1.1rem;
-    font-variation-settings: 'wght' 620;
-  }
-  .cf-tier-what {
-    margin: 0 0 0.5rem;
-    font-family: var(--mono);
-    font-size: 0.82rem;
-    color: var(--ink-mute);
-  }
-  .cf-tier-promise {
-    margin: 0;
-    font-size: 0.93rem;
-    line-height: 1.6;
-    color: var(--ink-soft);
-  }
-
-  .cf-profile-intro {
-    margin-top: var(--space-md);
-  }
   .cf-nine {
     list-style: none;
     display: grid;
@@ -989,31 +857,6 @@ const structureLabels = ui[lang].spec.types.structureLabels;
     border-color: var(--brass);
   }
 
-  /* ---------- identity ---------- */
-  .cf-id {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1.2rem;
-    margin-top: 2rem;
-  }
-  @media (min-width: 900px) {
-    .cf-id {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      align-items: start;
-    }
-  }
-  .cf-id-code :global(.spec-code),
-  .cf-id-table {
-    margin-top: 0;
-  }
-  /* `.spec-table` carries a 34rem floor so a wide field table scrolls rather
-     than crushing its columns. This one is two columns of prose in a half-width
-     grid cell, so the floor is wider than the cell and it scrolled at every
-     viewport - a scrollbar under a table that has nothing to scroll to. */
-  .cf-id-table .spec-table {
-    min-width: 0;
-  }
-
   /* ---------- the evolution rule ---------- */
   .cf-rule {
     max-width: var(--container-text);
@@ -1068,24 +911,9 @@ const structureLabels = ui[lang].spec.types.structureLabels;
     border: 1px solid currentcolor;
   }
 
-  .cf-duties {
-    display: grid;
-    gap: 1.6rem;
-    margin-top: var(--space-lg);
-  }
-  @media (min-width: 880px) {
-    .cf-duties {
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
-    }
-  }
-  .cf-duties h3 {
-    margin: 0 0 0.8rem;
-    font-size: 1.15rem;
-    font-variation-settings: 'wght' 620;
-  }
   .cf-duty-list {
-    margin: 0;
+    max-width: var(--container-text);
+    margin: var(--space-lg) 0 0;
     padding-left: 1.3rem;
     display: grid;
     gap: 0.7rem;

@@ -4,6 +4,22 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://deckyard.eu',
+  // /spec/ used to be six pages. The archive layer and the schemas were their
+  // own routes and are now sections of /spec/deck-format/, because all three
+  // described one artifact and each had to restate the other two first. The old
+  // URLs were published, so they stay reachable: a static build emits a
+  // meta-refresh page with a canonical link, which is enough for a section that
+  // was linked from release notes and the docs reference.
+  //
+  // One entry per locale, listed rather than derived, because a redirect is a
+  // promise about a URL that once existed and not a route that should quietly
+  // appear for every language added later.
+  redirects: {
+    '/spec/deck-bundle': '/spec/deck-format/',
+    '/spec/schemas': '/spec/deck-format/',
+    '/nl/spec/deck-bundle': '/nl/spec/deck-format/',
+    '/nl/spec/schemas': '/nl/spec/deck-format/',
+  },
   // Marketing pages are multilingual: EN at the root (no prefix), every other
   // locale under /<code>/. Handled by the src/pages/[...locale]/ routes plus the
   // registry in src/i18n/. We deliberately do NOT set Astro's global `i18n`

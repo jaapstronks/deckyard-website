@@ -61,15 +61,6 @@ export const STRUCTURE_EXAMPLES: Record<SlideStructure, string> = {
 };
 
 /**
- * One slide, spelled three ways. The whole argument of the identity section is
- * that these are one type and not three, which a table of names can state and
- * only a block like this can show.
- */
-export const SPELLINGS_EXAMPLE = `{ "type": "title-slide",             …  }
-{ "type": "core/title-slide",        …  }
-{ "type": "eu.deckyard.slide.title", …  }`;
-
-/**
  * The evolution rule as the one thing it forbids, beside the thing it permits.
  * Both halves change the same type in what looks like the same way, which is
  * exactly why the rule is worth stating: only one of them keeps every deck ever
