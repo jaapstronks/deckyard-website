@@ -82,6 +82,14 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     }),
   },
   {
+    path: '/spec/conformance',
+    card: (t) => ({
+      label: t.spec.conformance.heroKicker,
+      title: t.spec.conformance.heroTitle,
+      intro: t.spec.conformance.heroIntro,
+    }),
+  },
+  {
     path: '/spec/deck-format',
     card: (t) => ({
       label: t.spec.format.heroKicker,

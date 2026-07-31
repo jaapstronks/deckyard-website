@@ -1,0 +1,1216 @@
+---
+// /spec/conformance/ - the one page on the site that carries normative text.
+//
+// The material arrived as roughly 1500 words of MUST / MUST NOT. Set as prose it
+// would be the longest page in the section and the least likely to be read by
+// the person it is for, who is deciding whether to spend a weekend building a
+// reader. So everything that can be *shown* is a widget fed from the generated
+// registry - the claim you may publish, the six item contracts, the fallback
+// map, what an unrecognised type renders as - and only the numbered duties stay
+// as sentences, because those are the contract and their wording is the point.
+//
+// Nothing here is a fact typed in by hand. The nine, the twenty-seven, which
+// type degrades to which, the counts under the claim builder: all of it comes
+// out of src/data/slide-types.json, so a tier that moves in core moves here.
+import SpecShell from '@/components/spec/SpecShell.astro';
+import Section from '@/components/layout/Section.astro';
+import SectionHead from '@/components/layout/SectionHead.astro';
+import CodeBlock from '@/components/spec/CodeBlock.astro';
+import SpecReference from '@/components/spec/SpecReference.astro';
+import Schematic from '@/components/spec/Schematic.astro';
+import { ui, type Lang } from '@/i18n';
+import { withSpec } from '@/lib/spec';
+import { inlineCode } from '@/lib/inline';
+import {
+  coreProfile,
+  fallbackMap,
+  slideStructures,
+  slideTypeActiveCount,
+  structureCoverage,
+  typesWithStructure,
+  unmappedTypes,
+  type SlideStructure,
+} from '@/lib/slideTypes';
+import {
+  RULE_BAD_EXAMPLE,
+  RULE_OK_EXAMPLE,
+  SPELLINGS_EXAMPLE,
+  STRUCTURE_EXAMPLES,
+  UNKNOWN_RENDERED,
+  UNKNOWN_SLIDE,
+} from './conformance-data';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = ui[lang].spec.conformance;
+
+const prose = (text: string) => inlineCode(withSpec(text));
+
+// The claim builder's arithmetic, precomputed per structure so the client script
+// only has to add up the ones that are ticked. Doing the counting here rather
+// than in the browser means the numbers are the same with scripting off, and it
+// keeps the registry out of the bundle.
+const structureCounts = slideStructures.map((s) => ({
+  name: s.name,
+  count: typesWithStructure(s.name).length,
+}));
+
+// Ticked when the page loads: the two structures that cover the most ground for
+// the least work, which is the target the tier split was designed to make
+// reachable rather than a neutral empty state nobody learns anything from.
+const DEFAULT_STRUCTURES: SlideStructure[] = ['singleton', 'collection'];
+const defaultCoverage = structureCoverage(DEFAULT_STRUCTURES);
+
+const map = fallbackMap();
+// Expected to be empty. Rendered anyway, because "every tier-2 type declares a
+// fallback" is only worth claiming on a page that would visibly stop claiming it.
+const unmapped = unmappedTypes();
+
+const structureLabels = ui[lang].spec.types.structureLabels;
+---
+
+<SpecShell
+  lang={lang}
+  page="conformance"
+  title={t.metaTitle}
+  description={t.metaDescription}
+  heroKicker={t.heroKicker}
+  heroTitle={t.heroTitle}
+  heroIntro={t.heroIntro}
+>
+  <!-- ============ 1 + 2. the two levels ============ -->
+  <Section>
+    <SectionHead title={t.levelsTitle} lead={t.levelsLead} />
+    <div class="cf-levels">
+      {
+        t.levels.map((level, i) => (
+          <article class="cf-level" data-reveal data-reveal-delay={i * 80}>
+            <p class="cf-level-badge">{level.badge}</p>
+            <h3>{level.name}</h3>
+            <p class="cf-level-implement" set:html={prose(level.implement)} />
+            <p class="cf-level-claim">
+              <span class="cf-quote-mark" aria-hidden="true">
+                &ldquo;
+              </span>
+              {level.claim}
+            </p>
+            <p class="cf-level-body" set:html={prose(level.body)} />
+          </article>
+        ))
+      }
+    </div>
+    <p class="spec-note" data-reveal set:html={prose(t.levelsNote)} />
+  </Section>
+
+  <!-- ============ the claim builder ============ -->
+  <!-- The one interactive thing on the page, and the reason the two levels above
+       can stay short: a reader who has just been told conformance has levels
+       immediately gets to ask "so what may *I* say?" and read the answer back. -->
+  <Section variant="tint">
+    <SectionHead title={t.builderTitle} lead={t.builderLead} />
+    <div class="cf-builder" data-claim-builder>
+      <fieldset class="cf-picks">
+        <legend>{t.builderStructuresLabel}</legend>
+        <div class="cf-checks">
+          {
+            structureCounts.map((s) => (
+              <label class="cf-check">
+                <input
+                  type="checkbox"
+                  name="structure"
+                  value={s.name}
+                  data-count={s.count}
+                  checked={DEFAULT_STRUCTURES.includes(s.name)}
+                />
+                <span class="cf-check-name">{structureLabels[s.name]}</span>
+                <span class="cf-check-count">{s.count}</span>
+              </label>
+            ))
+          }
+        </div>
+      </fieldset>
+
+      <fieldset class="cf-picks">
+        <legend>{t.builderProfileLabel}</legend>
+        <label class="cf-check cf-check-wide">
+          <input type="checkbox" name="profile" data-profile />
+          <span class="cf-check-name">{t.builderProfileHint}</span>
+        </label>
+      </fieldset>
+
+      <!-- role="status" so the sentence is announced when it changes; it is the
+           output of the control above it, not decoration beside it. -->
+      <output class="cf-output" role="status" data-claim-output>
+        <p class="cf-coverage">
+          <strong data-coverage
+            >{
+              t.builderCoverage
+                .replace('{n}', String(defaultCoverage))
+                .replace('{total}', String(slideTypeActiveCount))
+            }</strong
+          >
+          <span>{t.builderCoverageLabel}</span>
+        </p>
+        <p class="cf-degrade">
+          <strong data-degrade>{slideTypeActiveCount - defaultCoverage}</strong>
+          <span>{t.builderDegradeLabel}</span>
+        </p>
+        <p class="cf-claim-label">{t.builderClaimLabel}</p>
+        <p class="cf-claim" data-claim></p>
+      </output>
+
+      <!-- Templates on the element rather than in the script, so the copy stays
+           in the locale files and the script stays language-blind. -->
+      <template
+        data-templates
+        data-total={slideTypeActiveCount}
+        data-coverage-tpl={t.builderCoverage}
+        data-claim-none={t.builderClaimNone}
+        data-claim-structures={t.builderClaimStructures}
+        data-claim-profile={t.builderClaimProfile}></template>
+    </div>
+    <noscript>
+      <p class="spec-note">{t.builderStaticNote}</p>
+    </noscript>
+  </Section>
+
+  <!-- ============ 3. the six item contracts ============ -->
+  <!-- Tabs rather than a six-row table: the table was the briefing's shape and it
+       has no room for the `content` object, which is the only thing that settles
+       what "one array of items" actually means for somebody writing a parser. -->
+  <Section>
+    <SectionHead title={t.contractTitle} lead={t.contractLead} />
+    <div class="cf-contracts" data-reveal>
+      <div class="cf-tabs" role="tablist" aria-label={t.contractTitle}>
+        {
+          slideStructures.map((s, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`cf-tab-${s.name}`}
+              aria-controls={`cf-panel-${s.name}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              class="cf-tab"
+            >
+              <code>{s.name}</code>
+            </button>
+          ))
+        }
+      </div>
+      {
+        slideStructures.map((s, i) => {
+          const c = t.contracts[s.name];
+          const count = typesWithStructure(s.name).length;
+          return (
+            <div
+              role="tabpanel"
+              id={`cf-panel-${s.name}`}
+              aria-labelledby={`cf-tab-${s.name}`}
+              class="cf-panel"
+              hidden={i !== 0}
+            >
+              <div class="cf-panel-text">
+                <dl class="spec-defs cf-contract-defs">
+                  <div>
+                    <dt>{t.contractCarriesLabel}</dt>
+                    <dd set:html={prose(c.carries)} />
+                  </div>
+                  <div>
+                    <dt>{t.contractCountLabel}</dt>
+                    <dd set:html={prose(c.count)} />
+                  </div>
+                  <div>
+                    <dt>{t.contractReaderLabel}</dt>
+                    <dd set:html={prose(c.reader)} />
+                  </div>
+                  <div>
+                    <dt>{t.contractTypesLabel}</dt>
+                    <dd>{count}</dd>
+                  </div>
+                </dl>
+              </div>
+              <div class="cf-panel-code">
+                <CodeBlock
+                  code={STRUCTURE_EXAMPLES[s.name]}
+                  caption={t.contractExampleLabel}
+                  label={`${s.name} - ${t.contractExampleLabel}`}
+                />
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+    <div class="spec-prose cf-notes" data-reveal>
+      {t.contractNotes.map((p) => <p set:html={prose(p)} />)}
+    </div>
+  </Section>
+
+  <!-- ============ 4. tiers, the nine, and the fallback map ============ -->
+  <Section variant="tint">
+    <SectionHead title={t.tiersTitle} lead={t.tiersLead} />
+    <ol class="cf-tiers">
+      {
+        t.tiers.map((tier, i) => (
+          <li data-reveal data-reveal-delay={i * 60}>
+            <p class="cf-tier-badge">{tier.badge}</p>
+            <h3>{tier.name}</h3>
+            <p class="cf-tier-what">{tier.what}</p>
+            <p class="cf-tier-promise" set:html={prose(tier.promise)} />
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="spec-prose cf-profile-intro" data-reveal>
+      <h3>{t.profileTitle}</h3>
+      <p set:html={prose(t.profileLead)} />
+    </div>
+    <!-- The nine with their own layout glyphs, because "the minimal set that
+         expresses an ordinary presentation" is an argument a reader can check by
+         looking rather than one they have to take on trust. -->
+    <ul class="cf-nine" data-reveal>
+      {
+        coreProfile.map((type) => (
+          <li>
+            {type.schematic && (
+              <span class="cf-nine-glyph" aria-hidden="true">
+                <Schematic spec={type.schematic} />
+              </span>
+            )}
+            <code>{type.name}</code>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="spec-prose cf-notes" data-reveal>
+      <p set:html={prose(t.profileCriterion)} />
+      <p set:html={prose(t.profileNoChart)} />
+    </div>
+  </Section>
+
+  <Section>
+    <SectionHead title={t.mapTitle} />
+    <div class="spec-prose" data-reveal>
+      <p set:html={prose(t.mapLead)} />
+    </div>
+    <ul class="cf-map" data-reveal>
+      {
+        map.map((row) => (
+          <li>
+            <p class="cf-map-target">
+              <code>{row.target.name}</code>
+              <span>{t.mapDegradeLabel.replace('{n}', String(row.sources.length))}</span>
+            </p>
+            <ul class="cf-map-sources">
+              {row.sources.map((src) => (
+                <li>
+                  <code>{src.name}</code>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+      {
+        unmapped.length > 0 && (
+          <li class="cf-map-gap">
+            <p class="cf-map-target">
+              <span>{t.mapGapLabel}</span>
+            </p>
+            <ul class="cf-map-sources">
+              {unmapped.map((src) => (
+                <li>
+                  <code>{src.name}</code>
+                </li>
+              ))}
+            </ul>
+          </li>
+        )
+      }
+    </ul>
+    <p class="spec-note" data-reveal set:html={prose(t.mapNote)} />
+  </Section>
+
+  <!-- ============ 5. one identity, three spellings ============ -->
+  <Section variant="tint">
+    <SectionHead title={t.idTitle} lead={t.idLead} />
+    <div class="cf-id">
+      <div class="cf-id-code" data-reveal>
+        <CodeBlock code={SPELLINGS_EXAMPLE} caption={t.idExampleCaption} />
+      </div>
+      <div class="spec-tablewrap cf-id-table" data-reveal>
+        <table class="spec-table">
+          <thead>
+            <tr>
+              <th scope="col">{t.idColSpelling}</th>
+              <th scope="col">{t.idColWhere}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              t.idSpellings.map((row) => (
+                <tr>
+                  <th scope="row">{row.spelling}</th>
+                  <td set:html={prose(row.where)} />
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="spec-prose cf-notes" data-reveal>
+      <p set:html={prose(t.idStorage)} />
+      <p set:html={prose(t.idVersion)} />
+    </div>
+  </Section>
+
+  <!-- ============ 6. the evolution rule ============ -->
+  <Section>
+    <SectionHead title={t.ruleTitle} />
+    <blockquote class="cf-rule" data-reveal>
+      <p>{t.rule}</p>
+    </blockquote>
+    <div class="spec-prose" data-reveal>
+      <p set:html={prose(t.ruleLead)} />
+    </div>
+    <!-- The rule stated twice in the only language that cannot be misread: the
+         same edit, made twice, once legally and once not. -->
+    <div class="cf-verdicts" data-reveal>
+      <div class="cf-verdict cf-verdict-ok">
+        <p class="cf-verdict-label">{t.ruleOkLabel}</p>
+        <CodeBlock code={RULE_OK_EXAMPLE} caption={t.ruleOkCaption} />
+      </div>
+      <div class="cf-verdict cf-verdict-bad">
+        <p class="cf-verdict-label">{t.ruleBadLabel}</p>
+        <CodeBlock code={RULE_BAD_EXAMPLE} caption={t.ruleBadCaption} />
+      </div>
+    </div>
+
+    <div class="cf-duties">
+      <section data-reveal>
+        <h3>{t.producerTitle}</h3>
+        <ol class="cf-duty-list">
+          {t.producer.map((d) => <li set:html={prose(d)} />)}
+        </ol>
+      </section>
+      <section data-reveal data-reveal-delay="80">
+        <h3>{t.readerTitle}</h3>
+        <ol class="cf-duty-list" start={t.producer.length + 1}>
+          {t.reader.map((d) => <li set:html={prose(d)} />)}
+        </ol>
+      </section>
+    </div>
+
+    <div class="spec-prose cf-notes" data-reveal>
+      <h3>{t.ruleWhyTitle}</h3>
+      {t.ruleWhy.map((p) => <p set:html={prose(p)} />)}
+    </div>
+  </Section>
+
+  <!-- ============ 7. the unknown-type contract ============ -->
+  <Section variant="tint">
+    <SectionHead title={t.unknownTitle} lead={t.unknownLead} />
+    <!-- The deck in, the rendering out. Seven MUSTs describe this; one picture
+         settles it, and the picture is built from the JSON beside it. -->
+    <div class="cf-unknown" data-reveal>
+      <div class="cf-unknown-in">
+        <CodeBlock code={UNKNOWN_SLIDE} caption={t.unknownInCaption} />
+      </div>
+      <figure class="cf-unknown-out">
+        <div class="cf-slide">
+          <p class="cf-slide-badge">
+            <span>{t.unknownOutBadge}</span>
+            <code>nl.ciiic.slide.roadmap</code>
+          </p>
+          {
+            UNKNOWN_RENDERED.map((block) =>
+              block.items ? (
+                <ul class="cf-slide-items">
+                  {block.items.map((item) => (
+                    <li>
+                      <strong>{item.label}</strong>
+                      <span>{item.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p class="cf-slide-text">{block.text}</p>
+              )
+            )
+          }
+          <p class="cf-slide-note" aria-hidden="true">&#9679; Do not promise dates.</p>
+        </div>
+        <figcaption>{t.unknownOutCaption}</figcaption>
+      </figure>
+    </div>
+    <p class="spec-note" data-reveal set:html={prose(t.unknownOutNote)} />
+
+    <ol class="cf-rules" data-reveal>
+      {
+        t.unknownRules.map((rule, i) => (
+          <li>
+            <span class="cf-rule-n" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <p>
+              <strong set:html={prose(rule.must)} /> <span set:html={prose(rule.body)} />
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="spec-note" data-reveal set:html={prose(t.unknownNested)} />
+  </Section>
+
+  <Section>
+    <SectionHead title={t.precedenceTitle} lead={t.precedenceLead} />
+    <div class="spec-tablewrap" data-reveal>
+      <table class="spec-table">
+        <thead>
+          <tr>
+            <th scope="col">{t.precedenceColHas}</th>
+            <th scope="col">{t.precedenceColDoes}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            t.precedence.map((row) => (
+              <tr>
+                <th scope="row">{row.has}</th>
+                <td set:html={prose(row.does)} />
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <SpecReference lang={lang} href="/docs/reference/slide-types/" note={t.referenceNote} />
+  </Section>
+</SpecShell>
+
+<script>
+  import { initRovingIn } from '@/lib/roving';
+
+  // ---- the six item contracts, as tabs -------------------------------------
+  // The roles are claimed in the markup, so the keys they promise are owed here.
+  function initTabs() {
+    const list = document.querySelector<HTMLElement>('.cf-tabs');
+    if (!list) return;
+    const tabs = Array.from(list.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+
+    const select = (tab: HTMLButtonElement) => {
+      for (const other of tabs) {
+        const on = other === tab;
+        other.setAttribute('aria-selected', String(on));
+        const panel = document.getElementById(other.getAttribute('aria-controls') ?? '');
+        if (panel) panel.hidden = !on;
+      }
+    };
+
+    for (const tab of tabs) tab.addEventListener('click', () => select(tab));
+    initRovingIn(list.parentElement ?? document);
+  }
+
+  // ---- the claim builder ---------------------------------------------------
+  // Every number it prints was counted at build time off the registry and put on
+  // a data attribute; this only adds up the ticked ones. A browser cannot be the
+  // place a conformance count is computed, because the page has to say the same
+  // thing with scripting off.
+  function initBuilder() {
+    const root = document.querySelector<HTMLElement>('[data-claim-builder]');
+    if (!root) return;
+    const tpl = root.querySelector<HTMLElement>('[data-templates]');
+    const claimEl = root.querySelector<HTMLElement>('[data-claim]');
+    const coverageEl = root.querySelector<HTMLElement>('[data-coverage]');
+    const degradeEl = root.querySelector<HTMLElement>('[data-degrade]');
+    const profile = root.querySelector<HTMLInputElement>('[data-profile]');
+    if (!tpl || !claimEl || !coverageEl || !degradeEl || !profile) return;
+
+    const boxes = Array.from(root.querySelectorAll<HTMLInputElement>('input[name="structure"]'));
+    const total = Number(tpl.dataset.total ?? '0');
+
+    // The structures named in the claim, as a plain comma list. The names are
+    // the locale-free values from the format, not words to translate: a claim
+    // that translates them is a claim nobody can grep for. No backticks either -
+    // this sentence is meant to be copied into somebody else's documentation,
+    // and markup they did not ask for travels with it.
+    const nameList = (names: string[]) => names.join(', ');
+
+    const render = () => {
+      const picked = boxes.filter((b) => b.checked);
+      const covered = picked.reduce((sum, b) => sum + Number(b.dataset.count ?? '0'), 0);
+
+      coverageEl.textContent = (tpl.dataset.coverageTpl ?? '{n}/{total}')
+        .replace('{n}', String(covered))
+        .replace('{total}', String(total));
+      degradeEl.textContent = String(total - covered);
+
+      const key = !picked.length
+        ? 'claimNone'
+        : profile.checked
+          ? 'claimProfile'
+          : 'claimStructures';
+      claimEl.textContent = (tpl.dataset[key] ?? '')
+        .replace('{structures}', nameList(picked.map((b) => b.value)))
+        .replace('{n}', String(covered))
+        .replace('{total}', String(total));
+    };
+
+    for (const box of [...boxes, profile]) box.addEventListener('change', render);
+    render();
+  }
+
+  initTabs();
+  initBuilder();
+</script>
+
+<style>
+  /* ---------- the two levels ---------- */
+  .cf-levels {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  @media (min-width: 820px) {
+    .cf-levels {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+  }
+  .cf-level {
+    padding: 1.5rem 1.6rem 1.7rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+  .cf-level-badge {
+    margin: 0 0 0.15rem;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass-text);
+  }
+  .cf-level h3 {
+    margin: 0 0 0.8rem;
+    font-size: var(--step-2);
+    letter-spacing: -0.02em;
+  }
+  .cf-level p {
+    margin: 0 0 0.8rem;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  .cf-level p:last-child {
+    margin-bottom: 0;
+  }
+  /* The claim is the payload of the card: it is the sentence a reader is
+     buying, so it is set as the quotation it will become in their own docs. */
+  .cf-level-claim {
+    position: relative;
+    padding: 0.7rem 0.9rem 0.7rem 2.1rem;
+    border-radius: var(--radius-sm);
+    background: var(--green-wash);
+    font-family: var(--display);
+    font-variation-settings: 'wght' 600;
+    font-size: 1.02rem;
+    color: var(--ink) !important;
+  }
+  .cf-quote-mark {
+    position: absolute;
+    left: 0.7rem;
+    top: 0.35rem;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--brass);
+  }
+
+  /* ---------- the claim builder ---------- */
+  .cf-builder {
+    display: grid;
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+  @media (min-width: 900px) {
+    .cf-builder {
+      grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+      align-items: start;
+    }
+    /* The two fieldsets stack in the left column; the output fills the right
+       one across both of their rows. */
+    .cf-output {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+    }
+  }
+  .cf-picks {
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .cf-picks legend {
+    padding: 0;
+    margin-bottom: 0.6rem;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .cf-checks {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .cf-check {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    cursor: pointer;
+    font-size: 0.92rem;
+    transition: border-color var(--dur-micro) ease;
+  }
+  .cf-check:hover {
+    border-color: var(--green-bright);
+  }
+  /* A ticked row is told apart by more than its background, so it survives a
+     user-supplied palette. */
+  .cf-check:has(input:checked) {
+    border-color: var(--green);
+    background: var(--green-wash);
+  }
+  .cf-check:has(input:checked) .cf-check-name {
+    font-variation-settings: 'wght' 620;
+    color: var(--ink);
+  }
+  .cf-check-wide {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+  }
+  .cf-check-wide .cf-check-name {
+    line-height: 1.5;
+  }
+  .cf-check input {
+    accent-color: var(--green);
+    width: 1rem;
+    height: 1rem;
+  }
+  .cf-check-name {
+    color: var(--ink-soft);
+  }
+  .cf-check-count {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+  }
+  @media (forced-colors: active) {
+    .cf-check:has(input:checked) {
+      outline: 2px solid CanvasText;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cf-check {
+      transition: none;
+    }
+  }
+
+  .cf-output {
+    display: block;
+    padding: 1.3rem 1.4rem 1.4rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--card);
+  }
+  .cf-coverage,
+  .cf-degrade {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin: 0 0 0.5rem;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+  .cf-coverage strong {
+    font-family: var(--display);
+    font-size: var(--step-2);
+    font-variation-settings: 'wght' 640;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .cf-degrade strong {
+    font-family: var(--mono);
+    font-size: 1rem;
+    color: var(--brass-text);
+  }
+  .cf-claim-label {
+    margin: 1.2rem 0 0.5rem;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .cf-claim {
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border-left: 3px solid var(--brass);
+    background: var(--paper-warm);
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .cf-claim:empty::before {
+    content: '\00a0';
+  }
+
+  /* ---------- the item contracts ---------- */
+  .cf-contracts {
+    margin-top: 2rem;
+  }
+  .cf-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.2rem;
+  }
+  .cf-tab {
+    padding: 0.45rem 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    color: var(--ink-soft);
+    cursor: pointer;
+    font: inherit;
+  }
+  .cf-tab code {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+  }
+  .cf-tab[aria-selected='true'] {
+    border-color: var(--green);
+    background: var(--green);
+    color: var(--paper);
+  }
+  @media (forced-colors: active) {
+    .cf-tab[aria-selected='true'] {
+      outline: 2px solid CanvasText;
+    }
+  }
+  .cf-panel {
+    display: grid;
+    gap: 1.2rem;
+  }
+  /* `display` on a class outranks the UA sheet's `[hidden] { display: none }`,
+     so without this the six panels all render at once and the tab strip picks
+     nothing. Any component that lays out a hidden element owes this rule. */
+  .cf-panel[hidden] {
+    display: none;
+  }
+  @media (min-width: 880px) {
+    .cf-panel {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+  /* The defs list opens with a rule of its own in spec.css; inside a panel it is
+     already under a tab strip, so the top border doubles up. */
+  .cf-contract-defs {
+    margin-top: 0;
+    border-top: 0;
+  }
+  .cf-panel-code :global(.spec-code) {
+    margin-top: 0;
+  }
+
+  .cf-notes {
+    margin-top: var(--space-md);
+  }
+
+  /* ---------- tiers ---------- */
+  .cf-tiers {
+    list-style: none;
+    display: grid;
+    gap: 1rem;
+    margin: 2rem 0 0;
+    padding: 0;
+  }
+  @media (min-width: 860px) {
+    .cf-tiers {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .cf-tiers li {
+    padding: 1.2rem 1.3rem 1.3rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--card);
+  }
+  /* Tier 1 is the only normative one, and the card says so before the words do. */
+  .cf-tiers li:first-child {
+    border-color: var(--green);
+    box-shadow: inset 3px 0 0 var(--green);
+  }
+  .cf-tier-badge {
+    margin: 0 0 0.15rem;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brass-text);
+  }
+  .cf-tiers h3 {
+    margin: 0 0 0.4rem;
+    font-size: 1.1rem;
+    font-variation-settings: 'wght' 620;
+  }
+  .cf-tier-what {
+    margin: 0 0 0.5rem;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    color: var(--ink-mute);
+  }
+  .cf-tier-promise {
+    margin: 0;
+    font-size: 0.93rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  .cf-profile-intro {
+    margin-top: var(--space-md);
+  }
+  .cf-nine {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+    gap: 0.7rem;
+    margin: 1.4rem 0 0;
+    padding: 0;
+  }
+  .cf-nine li {
+    display: grid;
+    gap: 0.5rem;
+    justify-items: center;
+    padding: 0.8rem 0.6rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--card);
+    text-align: center;
+  }
+  .cf-nine-glyph {
+    display: block;
+    width: 100%;
+    max-width: 5.5rem;
+  }
+  .cf-nine code {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    overflow-wrap: anywhere;
+  }
+
+  /* ---------- the fallback map ---------- */
+  .cf-map {
+    list-style: none;
+    display: grid;
+    gap: 1rem;
+    margin: 2rem 0 0;
+    padding: 0;
+  }
+  @media (min-width: 900px) {
+    .cf-map {
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+      align-items: start;
+    }
+  }
+  .cf-map > li {
+    padding: 1rem 1.1rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--card);
+  }
+  .cf-map-target {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0 0 0.7rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .cf-map-target code {
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    font-variation-settings: 'wght' 620;
+    color: var(--ink);
+  }
+  .cf-map-target span {
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+  }
+  .cf-map-sources {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+  }
+  .cf-map-sources code {
+    display: block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    background: var(--paper-warm);
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    color: var(--ink-soft);
+  }
+  /* Only rendered when a tier-2 type has lost its declaration, which is the
+     state the claim above the map says cannot happen. It has to look wrong. */
+  .cf-map-gap {
+    border-color: var(--brass);
+  }
+
+  /* ---------- identity ---------- */
+  .cf-id {
+    display: grid;
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+  @media (min-width: 900px) {
+    .cf-id {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+  .cf-id-code :global(.spec-code),
+  .cf-id-table {
+    margin-top: 0;
+  }
+
+  /* ---------- the evolution rule ---------- */
+  .cf-rule {
+    max-width: var(--container-text);
+    margin: 2rem 0 var(--space-md);
+    padding: 1.2rem 1.4rem;
+    border-left: 4px solid var(--brass);
+    background: var(--paper-warm);
+  }
+  .cf-rule p {
+    margin: 0;
+    font-family: var(--display);
+    font-size: var(--step-2);
+    font-variation-settings: 'wght' 620;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
+    color: var(--ink);
+  }
+
+  .cf-verdicts {
+    display: grid;
+    gap: 1.2rem;
+    margin-top: var(--space-md);
+  }
+  @media (min-width: 880px) {
+    .cf-verdicts {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .cf-verdict :global(.spec-code) {
+    margin-top: 0.6rem;
+  }
+  .cf-verdict-label {
+    display: inline-block;
+    margin: 0;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  /* Told apart by a word as well as a colour, so the pair still reads when the
+     palette is not ours to choose. */
+  .cf-verdict-ok .cf-verdict-label {
+    background: var(--green-wash);
+    color: var(--green);
+  }
+  .cf-verdict-bad .cf-verdict-label {
+    background: var(--paper-warm);
+    color: var(--error-fg, var(--brass-text));
+    border: 1px solid currentcolor;
+  }
+
+  .cf-duties {
+    display: grid;
+    gap: 1.6rem;
+    margin-top: var(--space-lg);
+  }
+  @media (min-width: 880px) {
+    .cf-duties {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+  }
+  .cf-duties h3 {
+    margin: 0 0 0.8rem;
+    font-size: 1.15rem;
+    font-variation-settings: 'wght' 620;
+  }
+  .cf-duty-list {
+    margin: 0;
+    padding-left: 1.3rem;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .cf-duty-list li {
+    font-size: 0.94rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- the unknown-type demo ---------- */
+  .cf-unknown {
+    display: grid;
+    gap: 1.2rem;
+    margin-top: 2rem;
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .cf-unknown {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+  }
+  .cf-unknown-in :global(.spec-code) {
+    margin-top: 0;
+  }
+  .cf-unknown-out {
+    margin: 0;
+  }
+  /* A slide-shaped plate rather than the real Slide component: what this shows
+     is a *generic* rendering, and borrowing the themed renderer would quietly
+     make the case that an unknown type looks authored. */
+  .cf-slide {
+    aspect-ratio: 16 / 9;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.2rem 1.4rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--card);
+    overflow: hidden;
+  }
+  .cf-slide-badge {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0 0 0.2rem;
+  }
+  .cf-slide-badge span {
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    background: var(--paper-warm);
+    border: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .cf-slide-badge code {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--brass-text);
+    overflow-wrap: anywhere;
+  }
+  .cf-slide-text {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .cf-slide-text:first-of-type {
+    font-family: var(--display);
+    font-size: 1.15rem;
+    font-variation-settings: 'wght' 620;
+    letter-spacing: -0.015em;
+  }
+  .cf-slide-items {
+    list-style: none;
+    display: grid;
+    gap: 0.3rem;
+    margin: 0.2rem 0 0;
+    padding: 0;
+  }
+  .cf-slide-items li {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--ink-soft);
+  }
+  .cf-slide-items strong {
+    flex: 0 0 auto;
+    font-family: var(--mono);
+    font-size: 0.76rem;
+    font-weight: 400;
+    color: var(--brass-text);
+  }
+  .cf-slide-note {
+    margin: auto 0 0;
+    font-size: 0.7rem;
+    color: var(--ink-mute);
+  }
+  .cf-unknown-out figcaption {
+    margin-top: 0.6rem;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .cf-rules {
+    list-style: none;
+    display: grid;
+    gap: 0.8rem;
+    max-width: 54rem;
+    margin: var(--space-md) 0 0;
+    padding: 0;
+  }
+  .cf-rules li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.9rem;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--card);
+  }
+  .cf-rule-n {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--brass-text);
+  }
+  .cf-rules p {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+  .cf-rules strong {
+    color: var(--ink);
+  }
+</style>

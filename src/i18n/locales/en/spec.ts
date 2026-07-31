@@ -8,6 +8,10 @@ export const spec: SpecContent = {
         title: 'The Deckyard deck format',
         blurb: 'What it is, the two layers it comes in, and what you may do with it.',
       },
+      conformance: {
+        title: 'Conformance',
+        blurb: 'What a second implementation has to build, and what it may then claim.',
+      },
       'deck-format': {
         title: 'The deck format',
         blurb: 'The portable envelope, field by field: slides, types, versions, degradation.',
@@ -107,7 +111,7 @@ export const spec: SpecContent = {
       },
       {
         term: 'Conformance',
-        def: 'A committed example deck and a round-trip test in the core repo act as a conformance fixture today. Publishing them as a downloadable kit is the next step.',
+        def: 'Two levels, written down: level 1 is the envelope, the six structure contracts and the unknown-type contract; level 2 adds the nine normative slide types. Neither grows when a slide type is added. What each one entitles you to say is on the conformance page.',
       },
     ],
   },
@@ -382,6 +386,29 @@ export const spec: SpecContent = {
     notForTitle: 'Reach for something else when',
     schemaLinkLabel: 'JSON Schema',
     identityLabel: 'Identity',
+    tierLabel: 'Tier',
+    runtimeLabel: 'Runtime',
+    fallbackLabel: 'Falls back to',
+
+    runtimeTitle: 'The second facet: what has to be running behind a slide',
+    runtimeBody: [
+      'A type also declares a `runtime`: what the presenting session has to do for it beyond serving the slide. It answers a different question from `structure`, and it is the one that decides whether a reader needs a server at all.',
+      'Unlike `structure`, this facet was measured rather than designed. Nine modules in core were writing out the same four type names to ask "does this slide collect answers from the audience?", and they had already drifted apart at the edges. None of them wanted to know which type it was; they wanted a capability the type did not declare.',
+    ],
+    runtimeLabels: {
+      static: 'Static',
+      timed: 'Timed',
+      live: 'Live',
+    },
+    runtimeContracts: {
+      static:
+        'The session does nothing for it. The slide may still have client-side behaviour of its own; that is the slide\u2019s business, not the session\u2019s.',
+      timed:
+        'The presenter drives a clock on the slide. The timer state lives in the presenting window; the session neither holds nor aggregates it.',
+      live: 'The audience answers, and the session collects and aggregates those answers as state the presenter opens and closes.',
+    },
+    runtimeEdge:
+      'The line is drawn at session state, not at "has behaviour", so the awkward cases fall out of the definition instead of being argued one by one. `countdown-slide` is `timed`: a clock, no audience. `lead-capture-slide` is `static` even though it plainly collects from the room, because its submissions go to lead storage over their own endpoint and never reach the session. `follow-invite-slide` is `static` too: it renders the join code the session issued, which is a render input rather than state the session keeps.',
 
     conformanceTitle: 'Claim structures, not types',
     conformanceBody: [
@@ -393,6 +420,7 @@ export const spec: SpecContent = {
     conformanceColClaim: 'What supporting it means',
     conformanceClaim: 'Reads all {n} without a special case per type.',
     conformanceExampleTitle: 'What a claim looks like',
+    conformanceLinkLabel: 'Build the claim for your own reader',
     conformanceExample:
       'Reads the deck format, slide structures `singleton` and `collection` ({n} of {total} core types). Other structures import as a named placeholder.',
 
@@ -414,5 +442,254 @@ export const spec: SpecContent = {
     ],
     referenceNote:
       'The same registry as one flat, searchable table - every field, limit and option, without the diagrams - is in the documentation.',
+  },
+
+  conformance: {
+    metaTitle: 'Conformance - spec - Deckyard',
+    metaDescription:
+      'What a second implementation has to build to say it reads Deckyard decks: two conformance levels, six item contracts, nine normative slide types and a specified contract for a type it has never heard of.',
+    heroKicker: 'Spec',
+    heroTitle: 'What it takes to read a Deckyard deck',
+    heroIntro:
+      'Publishing a format is a promise, and a promise without an edge is not one. This page draws the edge: what you have to build, what you may then say you support, and what happens at every point where your reader meets something it does not know.',
+
+    levelsTitle: 'Conformance has two levels',
+    levelsLead:
+      'The point of the split is that level 1 does not grow with the number of slide types. A reader that learns nine type contracts knows nine things and is stale the day a tenth is published. A reader that learns six structure contracts can render a type that did not exist when it shipped.',
+    levels: [
+      {
+        badge: 'Level 1',
+        name: 'Structure',
+        implement:
+          'The envelope, the six `structure` contracts, and the behaviour on a type you do not recognise.',
+        claim: 'Reads Deckyard decks',
+        body: 'Every deck renders and nothing is dropped. Some slides render generically rather than the way they were authored, which is a degradation you have declared rather than a failure the reader discovers.',
+      },
+      {
+        badge: 'Level 2',
+        name: 'Core profile',
+        implement: 'Level 1, plus the field contracts of the nine tier-1 types, plus `fallback`.',
+        claim: 'Renders the Deckyard core profile',
+        body: 'Every deck renders the way it was authored, up to the degradation each type declares for itself. This is the realistic target: it is a weekend of work, not a catalogue.',
+      },
+    ],
+    levelsNote:
+      'Neither level asks for all of the types. That is the whole design: a conformance claim that grows every time somebody adds a slide type is a claim nobody can keep.',
+
+    builderTitle: 'The claim you may publish',
+    builderLead:
+      'Tick what you actually render. The sentence underneath is the one you are entitled to put in your own documentation, and the numbers behind it are counted off the published registry rather than estimated.',
+    builderStructuresLabel: 'Structures you render',
+    builderProfileLabel: 'The nine tier-1 types, field by field',
+    builderProfileHint:
+      'Their own field contracts, not just their structure. This is what separates level 2 from level 1.',
+    builderCoverage: '{n} of {total}',
+    builderCoverageLabel: 'render as authored',
+    builderDegradeLabel: 'degrade through a declared fallback or the unknown-type contract',
+    builderClaimLabel: 'What you may say',
+    builderClaimNone:
+      'Nothing yet. A reader that renders no structure at all cannot claim to read the format.',
+    builderClaimStructures:
+      'Reads the Deckyard deck format. Slide structures {structures} render as authored ({n} of {total} types); every other slide renders through the unknown-type contract.',
+    builderClaimProfile:
+      'Renders the Deckyard core profile. Slide structures {structures} render as authored ({n} of {total} types); every other slide degrades through its declared fallback.',
+    builderStaticNote:
+      'This page can build the sentence for you with scripting on. Without it: name the structures you render, count the types they cover on the slide-types page, and say what the rest degrade to.',
+
+    contractTitle: 'The six item contracts',
+    contractLead:
+      'Every slide type declares one structure, and that declaration is the interop currency: it says what the content carries, whether the count means anything, and what a reader that knows nothing else about the type is entitled to do with it.',
+    contractCarriesLabel: 'The content carries',
+    contractCountLabel: 'The count means',
+    contractReaderLabel: 'A reader that knows only this',
+    contractTypesLabel: 'Types declaring it',
+    contractExampleLabel: 'What that looks like',
+    contracts: {
+      singleton: {
+        carries: 'No repeated-item array.',
+        count: 'Nothing to count.',
+        reader: 'Renders the named scalar slots, in declaration order.',
+      },
+      collection: {
+        carries: 'Exactly one item array.',
+        count: "The author's choice.",
+        reader:
+          'Iterates. You may reflow it, paginate it or split it across slides; you may not reorder or truncate it.',
+      },
+      'fixed-collection': {
+        carries: 'Exactly one item array, with `minItems === maxItems`.',
+        count: "Part of the type's meaning.",
+        reader:
+          'Iterates, but never drops or pads items to make a layout fit. Four quadrants is what makes a matrix a matrix.',
+      },
+      tabular: {
+        carries: 'Exactly one item array: the rows.',
+        count: "The author's choice.",
+        reader: 'Treats items as rows and item keys as columns, with the column set shared.',
+      },
+      dataset: {
+        carries: 'An encoded payload plus its encoding.',
+        count: 'Inside the payload.',
+        reader: 'Decodes to rows and falls back to `tabular`. Only the visual encoding is lost.',
+      },
+      chrome: {
+        carries: 'No content fields at all.',
+        count: 'Nothing to count.',
+        reader: 'Renders the beat the slide occupies, or omits the slide. Either one is lossless.',
+      },
+    },
+    contractNotes: [
+      '**`collection` and `fixed-collection` differ only in whether the count is meaning.** That is exactly why they are two structures and not one: a list of six may be reflowed into two columns, and a four-quadrant matrix may not be reduced to three.',
+      '**`dataset` is the one structure whose payload cannot be checked.** The contract says so rather than pretending otherwise, and it names the degradation instead of leaving a reader to invent one.',
+    ],
+
+    tiersTitle: 'Three tiers, one normative',
+    tiersLead:
+      'The reframe that makes a published type set bearable is not "which types do we remove" but "which types do we promise". Removing is destructive and irreversible once a name is out; a tier is free and reversible. So nothing was removed.',
+    tiers: [
+      {
+        badge: 'Tier 1',
+        name: 'Core profile',
+        what: 'Nine types.',
+        promise: 'Normative. What a conforming implementation renders.',
+      },
+      {
+        badge: 'Tier 2',
+        name: 'Deckyard set',
+        what: 'The other types we ship.',
+        promise: 'We publish and document them, but they version with the app.',
+      },
+      {
+        badge: 'Tier 3',
+        name: 'Extension',
+        what: 'Fork types, org types, third-party types.',
+        promise:
+          "The declarant's promise, not ours. We promise nothing about them, and we do not ignore them.",
+      },
+    ],
+    profileTitle: 'The nine',
+    profileLead:
+      'A tier is a property of the name rather than of the definition. A fork that overrides `title-slide` answers a tier-1 name and inherits the tier-1 promise; that is what choosing the name means.',
+    profileCriterion:
+      'The choice is a criterion, not a taste: this is the minimal set that expresses an ordinary presentation without loss - title, section break, prose, enumeration, quotation, image, image-with-text, table, closing. Everything outside it adds expressiveness that has an acceptable degradation inside it.',
+    profileNoChart:
+      'A chart type is deliberately not in it. It demands a charting library, and the success criterion for a second implementation is a weekend of work; a profile that requires a charting runtime is no longer an entry threshold.',
+
+    mapTitle: 'Every other type degrades into one of them',
+    mapLead:
+      'This is the rule that makes the tiers worth anything: **every tier-2 type declares a `fallback` to a tier-1 type.** A funnel falls back to a list, a gallery to images, a chart to a table. So a reader that knows only the nine renders every Deckyard deck without dropping content.',
+    mapDegradeLabel: '{n} degrade to it',
+    mapNote:
+      'The `fallback` names a tier-1 contract, not a one-for-one slide swap. A gallery falling back to `image-slide` means "this content is images, render it the way you render images", and a reader is free to emit more than one slide for it.',
+    mapGapLabel: 'Declares no fallback',
+
+    idTitle: 'One identity, three spellings',
+    idLead:
+      'The canonical id is reverse-DNS: whoever owns the domain may define the type, which makes collisions structurally impossible instead of socially managed. The -slide suffix comes off the canonical name, because "slide" is already in the authority.',
+    idColSpelling: 'Spelling',
+    idColExample: 'Example',
+    idColWhere: 'Where it appears',
+    idSpellings: [
+      {
+        spelling: 'Canonical reverse-DNS',
+        where: 'The `slideTypes` manifest, `GET /api/slide-types`, anything newly published.',
+      },
+      {
+        spelling: 'Qualified',
+        where: 'Decks written against the earlier identity model.',
+      },
+      {
+        spelling: 'Bare key',
+        where: '`slides[].type`, in every deck, past and present.',
+      },
+    ],
+    idExampleCaption: 'One slide, three ways of naming its type. A reader MUST accept all three.',
+    idStorage:
+      '**Storage did not move.** `slides[].type` still holds the bare key, so the rename cost no deck a rewrite and nothing has to be migrated. A reader MUST treat the three spellings as one identity; the published JSON Schema applies the same content contract to each of them.',
+    idVersion:
+      'The `@version` suffix is a compatibility hint about a definition, not a different type. A reader that does not have the named version renders the version it has, and MUST NOT treat `title-slide@2` as an unknown type.',
+
+    ruleTitle: 'The evolution rule',
+    rule: 'Within a name, only additions. A change of meaning is a change of name.',
+    ruleLead:
+      'Normative, and it applies to every published name: a slide type, a content key, an envelope key, an enum value. The two blocks below change the same type in what looks like the same way, and only one of them leaves every deck ever written still valid.',
+    ruleOkLabel: 'Permitted',
+    ruleOkCaption: 'A new optional key. Every existing deck stays valid.',
+    ruleBadLabel: 'Forbidden',
+    ruleBadCaption: 'A new required key. Every existing deck is retroactively invalid.',
+    producerTitle: 'What a producer owes',
+    producer: [
+      'A published name MUST keep its meaning for as long as it exists. If the meaning has to change, the name changes and the old one walks the removal ladder.',
+      'Optional keys MAY be added at any time. A new **required** key MUST NOT be added to a published type: that turns every existing deck invalid retroactively, and that is a rename wearing a compatible-looking hat.',
+      'Widening a value space is additive (a new enum value, a new spelling of a type id). **Narrowing it is not** and needs a new name.',
+      'Nothing published is removed silently: a name that goes away is deprecated first, and tier 1 is covered by the standing stability promise.',
+    ],
+    readerTitle: 'What a reader owes',
+    reader: [
+      'A reader MUST ignore keys it does not know, at every level (envelope, slide, content, item), and MUST NOT reject a deck for carrying them.',
+      'A reader MUST accept a `type` it does not know and render it per the contract below.',
+    ],
+    ruleWhyTitle: 'Why this replaces migration freedom',
+    ruleWhy: [
+      'Deckyard has a migration chain because it owns both ends of the line: an old deck is read, migrated forward in memory, and written back in the current shape. That freedom stops at our own storage. **A reader we do not own does not run our migration chain.** For anything published, a migration is therefore not a fix, it is a break that we happen to survive.',
+      'The rule is what we trade that freedom for, and it is worth more: it is why a reader written today still works in three years without tracking our releases. The form is borrowed from atproto’s Lexicon on purpose - same problem, same answer, and no reason to invent a second dialect of it.',
+    ],
+
+    unknownTitle: 'A type your reader has never heard of',
+    unknownLead:
+      'This is what "nothing is dropped" means at the hardest point: a type you have no declaration for at all, from a fork you have never seen. It is a specified rendering, not an error path.',
+    unknownInCaption: 'A slide from a fork you do not know',
+    unknownOutCaption: 'What a conforming reader shows',
+    unknownOutBadge: 'Unknown type',
+    unknownOutNote:
+      'Every string in author order, every array element as a repeated item, the type named on the slide, and the presenter note honoured because it is an envelope key and does not depend on the type.',
+    unknownRules: [
+      {
+        must: 'MUST render the slide.',
+        body: 'Dropping it silently changes the slide count, the numbering and the argument the deck is making. A reader MUST NOT reject the deck either: one unknown type is not a malformed deck.',
+      },
+      {
+        must: 'MUST render every string-valued entry of `content` as text,',
+        body: "in the order the keys appear in `content` - a producer writes them in the declared field order, so that order is the author's. A reader whose parser does not preserve member order MUST pick a stable order (lexicographic will do) rather than an arbitrary one. Non-string scalars render as their text form; the empty string means unset and MAY be skipped.",
+      },
+      {
+        must: 'MUST render each element of an array-valued entry as a repeated item,',
+        body: 'in array order, applying rule 2 within each element. This is the `collection` contract, the honest reading of an array whose meaning is unknown: it may be reflowed, it may not be reordered or truncated.',
+      },
+      {
+        must: 'MUST show the type reference,',
+        body: 'as written in `type`, on or beside the slide. A viewer has to be able to tell a generic rendering from an authored one; silently pretty output is how "we support Deckyard" becomes untrue without anyone noticing.',
+      },
+      {
+        must: 'MUST honour the global slide keys it already knows',
+        body: '- notes, duration, visibility, and the accessibility and background keys. Those are envelope-level and their meaning does not depend on the type.',
+      },
+      {
+        must: 'SHOULD render it in the deck’s theme,',
+        body: 'so an unknown type reads as a plain slide rather than as breakage.',
+      },
+      {
+        must: 'MUST NOT invent content.',
+        body: 'No synthesized headings, no filled-in blanks, no reordering. Rendering less faithfully than the author wrote is a degradation; rendering something the author did not write is a bug.',
+      },
+    ],
+    unknownNested:
+      'A value that is neither a scalar nor an array or object of scalars - a nested payload a reader cannot interpret - MAY be omitted. Rule 7 outranks completeness.',
+    precedenceTitle: 'And it is the last resort, not the first',
+    precedenceLead:
+      'Three cases, in order. Most of what looks like an unknown type is really a known type you have not implemented, and that case has a better answer.',
+    precedenceColHas: 'The reader has',
+    precedenceColDoes: 'It does',
+    precedence: [
+      { has: 'The type, implemented', does: 'Renders it natively.' },
+      {
+        has: 'The declaration but no implementation',
+        does: 'Uses `structure` plus the item contract, or the declared `fallback`.',
+      },
+      { has: 'Nothing but the slide', does: 'The seven rules above.' },
+    ],
+
+    referenceNote:
+      'The exhaustive tables - every envelope field, every manifest field, every slide type with its facets - are in the documentation, which is the half the site search indexes.',
   },
 };

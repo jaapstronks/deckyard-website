@@ -14,7 +14,7 @@ import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
 import Schematic from '@/components/spec/Schematic.astro';
 import SpecReference from '@/components/spec/SpecReference.astro';
-import { ui, type Lang } from '@/i18n';
+import { ui, localizePath, type Lang } from '@/i18n';
 import { withSpec, liveSchemaUrl, LIVE_INSTANCE } from '@/lib/spec';
 import { withFacts } from '@/lib/facts';
 import { inlineCode } from '@/lib/inline';
@@ -26,6 +26,8 @@ import {
   typesWithStructure,
   repeatingFields,
   structureCoverage,
+  slideRuntimes,
+  typesWithRuntime,
   type SlideType,
   type SlideTypeField,
 } from '@/lib/slideTypes';
@@ -103,6 +105,32 @@ const countLabel = (n: number) =>
       <p>{t.structureRule}</p>
       <cite>{t.structureRuleSource}</cite>
     </blockquote>
+  </Section>
+
+  <!-- ============ the second facet ============ -->
+  <!-- Deliberately short and deliberately here, beside `structure`, rather than
+       folded into the cards: the two facets are peers, and the useful thing
+       about this one is how lopsided it is. Most of the catalogue asks nothing
+       of a session at all, which is what makes a server-free reader realistic. -->
+  <Section>
+    <SectionHead title={t.runtimeTitle} />
+    <div class="spec-prose" data-reveal>
+      {t.runtimeBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+    <dl class="spec-defs ty-runtimes" data-reveal>
+      {
+        slideRuntimes.map((r) => (
+          <div>
+            <dt>
+              {t.runtimeLabels[r.name] ?? r.name} <code>{r.name}</code>
+              <span class="ty-runtime-count">{countLabel(typesWithRuntime(r.name).length)}</span>
+            </dt>
+            <dd set:html={prose(t.runtimeContracts[r.name] ?? r.meaning)} />
+          </div>
+        ))
+      }
+    </dl>
+    <p class="spec-note" data-reveal set:html={prose(t.runtimeEdge)} />
   </Section>
 
   <!-- ============ the registry, by structure ============ -->
@@ -253,6 +281,33 @@ const countLabel = (n: number) =>
                       <span>
                         {t.identityLabel}: <code>{type.id}</code>
                       </span>
+                      {/* The two facets a type declares beyond its structure,
+                          and the promise attached to its name. All three are
+                          generated, and all three are what /spec/conformance/
+                          reasons about - a reader deciding what to build looks
+                          at the type, not at the argument. */}
+                      <span>
+                        {t.tierLabel}: <code>{type.tier}</code>
+                      </span>
+                      {type.runtime && (
+                        <span>
+                          {t.runtimeLabel}: <code>{type.runtime}</code>
+                          {/* The sub-declaration a `live` type carries, in
+                              brackets because it qualifies the value rather
+                              than standing beside it as a second facet. */}
+                          {type.interaction && (
+                            <>
+                              {' '}
+                              (<code>{type.interaction}</code>)
+                            </>
+                          )}
+                        </span>
+                      )}
+                      {type.fallback && (
+                        <span>
+                          {t.fallbackLabel}: <code>{type.fallback}</code>
+                        </span>
+                      )}
                       <a href={liveSchemaUrl(type.name)} target="_blank" rel="noopener">
                         {t.schemaLinkLabel}
                       </a>
@@ -299,9 +354,10 @@ const countLabel = (n: number) =>
         </tbody>
       </table>
     </div>
-    <!-- A worked example rather than a form to fill in: the sentence is the
-         deliverable, and the two numbers in it are counted here so it cannot
-         be quoted at a figure that has since moved. -->
+    <!-- The worked example is still here, because it is the answer with
+         scripting off and because one concrete sentence beats a control nobody
+         clicks. The claim builder on /spec/conformance/ is the same sentence for
+         any combination, so this links there rather than restating it. -->
     <div class="ty-claim" data-reveal>
       <h3>{t.conformanceExampleTitle}</h3>
       <p
@@ -311,6 +367,11 @@ const countLabel = (n: number) =>
             .replace('{total}', String(active.length))
         )}
       />
+      <p class="ty-claim-more">
+        <a href={localizePath('/spec/conformance/', lang)}>
+          {t.conformanceLinkLabel}<span aria-hidden="true"> →</span>
+        </a>
+      </p>
     </div>
   </Section>
 
@@ -613,12 +674,37 @@ const countLabel = (n: number) =>
     text-transform: uppercase;
     color: var(--ink-mute);
   }
+  .ty-claim-more {
+    margin-top: 0.9rem;
+  }
+  .ty-claim-more a {
+    font-variation-settings: 'wght' 600;
+    white-space: nowrap;
+  }
   .ty-claim p {
     margin: 0.7rem 0 0;
     font-family: var(--mono);
     font-size: 0.9rem;
     line-height: 1.6;
     color: var(--ink);
+  }
+
+  /* The runtime vocabulary reuses the shared definition rows; only the two
+     things a plain <dt> cannot carry are added - the raw value beside its label,
+     and how many types declare it. */
+  .ty-runtimes dt code {
+    font-family: var(--mono);
+    font-size: 0.8em;
+    font-weight: 400;
+    color: var(--ink-mute);
+  }
+  .ty-runtime-count {
+    display: block;
+    margin-top: 0.15rem;
+    font-family: var(--mono);
+    font-size: var(--step--3);
+    font-weight: 400;
+    color: var(--brass-text);
   }
 
   /* ---------- the grid ---------- */

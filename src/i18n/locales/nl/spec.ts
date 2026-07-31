@@ -8,6 +8,10 @@ export const spec: SpecContent = {
         title: 'Het Deckyard-deckformaat',
         blurb: 'Wat het is, uit welke twee lagen het bestaat en wat je ermee mag.',
       },
+      conformance: {
+        title: 'Conformance',
+        blurb: 'Wat een tweede implementatie moet bouwen, en wat ze daarna mag claimen.',
+      },
       'deck-format': {
         title: 'Het deckformaat',
         blurb: 'De draagbare envelop, veld voor veld: slides, types, versies, degradatie.',
@@ -109,7 +113,7 @@ export const spec: SpecContent = {
       },
       {
         term: 'Conformiteit',
-        def: 'Een meegeleverd voorbeelddeck en een round-triptest in de core-repo werken vandaag al als conformiteitsfixture. Die publiceren als downloadbare set is de volgende stap.',
+        def: 'Twee niveaus, opgeschreven: niveau 1 is de envelop, de zes structuurcontracten en het onbekend-type-contract; niveau 2 voegt de negen normatieve slidetypes toe. Geen van beide groeit mee als er een slidetype bij komt. Wat je met elk niveau mag zeggen, staat op de conformance-pagina.',
       },
     ],
   },
@@ -385,6 +389,29 @@ export const spec: SpecContent = {
     notForTitle: 'Pak iets anders als',
     schemaLinkLabel: 'JSON Schema',
     identityLabel: 'Identiteit',
+    tierLabel: 'Tier',
+    runtimeLabel: 'Runtime',
+    fallbackLabel: 'Valt terug op',
+
+    runtimeTitle: 'Het tweede facet: wat er achter een slide moet draaien',
+    runtimeBody: [
+      'Een type declareert ook een `runtime`: wat de presenterende sessie voor dat type moet doen, bovenop het serveren van de slide. Dat is een andere vraag dan `structure`, en het is degene die bepaalt of een lezer überhaupt een server nodig heeft.',
+      'Anders dan `structure` is dit facet gemeten in plaats van ontworpen. Negen modules in core schreven dezelfde vier typenamen uit om één vraag te beantwoorden: verzamelt deze slide antwoorden uit de zaal? Ze waren aan de randen al uit elkaar gaan lopen. Geen van de negen wilde weten wélk type het was; ze wilden een eigenschap die het type niet declareerde.',
+    ],
+    runtimeLabels: {
+      static: 'Statisch',
+      timed: 'Met klok',
+      live: 'Live',
+    },
+    runtimeContracts: {
+      static:
+        'De sessie doet er niets voor. De slide mag zelf best gedrag in de browser hebben; dat is de zaak van de slide, niet van de sessie.',
+      timed:
+        'De presentator draait een klok op de slide. De timerstand leeft in het presentatievenster; de sessie bewaart of aggregeert hem niet.',
+      live: 'De zaal antwoordt, en de sessie verzamelt en aggregeert die antwoorden als toestand die de presentator opent en sluit.',
+    },
+    runtimeEdge:
+      'De grens ligt bij sessietoestand, niet bij "heeft gedrag", zodat de lastige gevallen uit de definitie volgen in plaats van stuk voor stuk beslecht te worden. `countdown-slide` is `timed`: een klok, geen zaal. `lead-capture-slide` is `static`, ook al verzamelt het duidelijk iets uit de zaal, want de inzendingen gaan via een eigen endpoint naar leadopslag en bereiken de sessie nooit. `follow-invite-slide` is dat ook: die rendert de deelnamecode die de sessie heeft uitgegeven, en dat is invoer voor de rendering, geen toestand die de sessie bijhoudt.',
 
     conformanceTitle: 'Claim structuren, geen types',
     conformanceBody: [
@@ -396,6 +423,7 @@ export const spec: SpecContent = {
     conformanceColClaim: 'Wat ondersteunen betekent',
     conformanceClaim: 'Leest alle {n}, zonder uitzondering per type.',
     conformanceExampleTitle: 'Hoe zo’n claim eruitziet',
+    conformanceLinkLabel: 'Bouw de claim voor je eigen lezer',
     conformanceExample:
       'Leest het deck-formaat, slidestructuren `singleton` en `collection` ({n} van de {total} core-types). Andere structuren komen binnen als benoemde placeholder.',
 
@@ -417,5 +445,259 @@ export const spec: SpecContent = {
     ],
     referenceNote:
       'Dezelfde registry als één platte, doorzoekbare tabel - elk veld, elke limiet, elke optie, zonder de tekeningen - staat in de documentatie.',
+  },
+
+  conformance: {
+    metaTitle: 'Conformance - specificatie - Deckyard',
+    metaDescription:
+      'Wat een tweede implementatie moet bouwen om te kunnen zeggen dat ze Deckyard-decks leest: twee conformance-niveaus, zes itemcontracten, negen normatieve slidetypes en een vastgelegd contract voor een type dat ze nooit gezien heeft.',
+    heroKicker: 'Specificatie',
+    heroTitle: 'Wat er nodig is om een Deckyard-deck te lezen',
+    heroIntro:
+      'Een formaat publiceren is een belofte doen, en een belofte zonder grens is er geen. Deze pagina trekt die grens: wat je moet bouwen, wat je daarna mag zeggen dat je ondersteunt, en wat er gebeurt op elk punt waar je lezer iets tegenkomt dat hij niet kent.',
+
+    levelsTitle: 'Conformance kent twee niveaus',
+    levelsLead:
+      'Het punt van de splitsing is dat niveau 1 niet meegroeit met het aantal slidetypes. Een lezer die negen typecontracten leert, kent negen dingen en is verouderd op de dag dat er een tiende gepubliceerd wordt. Een lezer die zes structuurcontracten leert, kan een type renderen dat nog niet bestond toen hij gebouwd werd.',
+    levels: [
+      {
+        badge: 'Niveau 1',
+        name: 'Structuur',
+        implement:
+          'De envelop, de zes `structure`-contracten, en het gedrag bij een type dat je niet herkent.',
+        claim: 'Leest Deckyard-decks',
+        body: 'Elk deck rendert en er valt niets weg. Sommige slides renderen generiek in plaats van zoals ze geschreven zijn, en dat is een degradatie die je zelf hebt aangekondigd, geen storing die de lezer ontdekt.',
+      },
+      {
+        badge: 'Niveau 2',
+        name: 'Core-profiel',
+        implement: 'Niveau 1, plus de veldcontracten van de negen tier-1-types, plus `fallback`.',
+        claim: 'Rendert het Deckyard-core-profiel',
+        body: 'Elk deck rendert zoals het geschreven is, op de degradatie na die elk type voor zichzelf declareert. Dit is het realistische doel: een weekend werk, geen catalogus.',
+      },
+    ],
+    levelsNote:
+      'Geen van beide niveaus vraagt om alle types. Dat is het hele ontwerp: een conformance-claim die groeit zodra iemand een slidetype toevoegt, is een claim die niemand kan waarmaken.',
+
+    builderTitle: 'De claim die je mag publiceren',
+    builderLead:
+      'Vink aan wat je werkelijk rendert. De zin eronder is degene die je in je eigen documentatie mag zetten, en de getallen erachter zijn geteld op de gepubliceerde registry, niet geschat.',
+    builderStructuresLabel: 'Structuren die je rendert',
+    builderProfileLabel: 'De negen tier-1-types, veld voor veld',
+    builderProfileHint:
+      'Hun eigen veldcontracten, niet alleen hun structuur. Dit is wat niveau 2 van niveau 1 scheidt.',
+    builderCoverage: '{n} van {total}',
+    builderCoverageLabel: 'rendert zoals geschreven',
+    builderDegradeLabel: 'degradeert via een gedeclareerde fallback of het onbekend-type-contract',
+    builderClaimLabel: 'Wat je mag zeggen',
+    builderClaimNone:
+      'Nog niets. Een lezer die geen enkele structuur rendert, kan niet claimen dat hij het formaat leest.',
+    builderClaimStructures:
+      'Leest het Deckyard-deckformaat. Slidestructuren {structures} renderen zoals geschreven ({n} van de {total} types); elke andere slide rendert via het onbekend-type-contract.',
+    builderClaimProfile:
+      'Rendert het Deckyard-core-profiel. Slidestructuren {structures} renderen zoals geschreven ({n} van de {total} types); elke andere slide degradeert via zijn gedeclareerde fallback.',
+    builderStaticNote:
+      'Met scripting aan bouwt deze pagina de zin voor je. Zonder: noem de structuren die je rendert, tel op de slidetypepagina hoeveel types dat zijn, en zeg waar de rest naar degradeert.',
+
+    contractTitle: 'De zes itemcontracten',
+    contractLead:
+      'Elk slidetype declareert één structure, en die declaratie is de interop-valuta: ze zegt wat de content bevat, of het aantal iets betekent, en wat een lezer die verder niets van het type weet ermee mag doen.',
+    contractCarriesLabel: 'De content bevat',
+    contractCountLabel: 'Het aantal betekent',
+    contractReaderLabel: 'Een lezer die alleen dit kent',
+    contractTypesLabel: 'Types die het declareren',
+    contractExampleLabel: 'Hoe dat eruitziet',
+    contracts: {
+      singleton: {
+        carries: 'Geen herhaalde array.',
+        count: 'Niets te tellen.',
+        reader: 'Rendert de benoemde velden, in declaratievolgorde.',
+      },
+      collection: {
+        carries: 'Precies één array met items.',
+        count: 'De keuze van de auteur.',
+        reader:
+          'Itereert. Herschikken, pagineren of over slides splitsen mag; herordenen of afkappen niet.',
+      },
+      'fixed-collection': {
+        carries: 'Precies één array, met `minItems === maxItems`.',
+        count: 'Onderdeel van de betekenis van het type.',
+        reader:
+          'Itereert, maar laat nooit items weg en vult nooit bij om een layout te laten passen. Vier kwadranten is wat een matrix een matrix maakt.',
+      },
+      tabular: {
+        carries: 'Precies één array met items: de rijen.',
+        count: 'De keuze van de auteur.',
+        reader:
+          'Behandelt items als rijen en itemsleutels als kolommen, met een gedeelde kolomverzameling.',
+      },
+      dataset: {
+        carries: 'Een gecodeerde payload plus de codering.',
+        count: 'Zit in de payload.',
+        reader:
+          'Decodeert naar rijen en valt terug op `tabular`. Alleen de visuele codering gaat verloren.',
+      },
+      chrome: {
+        carries: 'Helemaal geen contentvelden.',
+        count: 'Niets te tellen.',
+        reader: 'Rendert de beat die de slide inneemt, of laat de slide weg. Allebei verliesvrij.',
+      },
+    },
+    contractNotes: [
+      '**`collection` en `fixed-collection` verschillen alleen in of het aantal betekenis draagt.** Precies daarom zijn het twee structuren en niet één: een lijst van zes mag je in twee kolommen herschikken, een vierkwadrantenmatrix mag je niet tot drie terugbrengen.',
+      '**`dataset` is de enige structuur waarvan de payload niet te controleren is.** Het contract zegt dat ook, in plaats van te doen alsof, en benoemt de degradatie in plaats van een lezer er zelf een te laten verzinnen.',
+    ],
+
+    tiersTitle: 'Drie tiers, één normatief',
+    tiersLead:
+      'De herformulering die een gepubliceerde typeverzameling draaglijk maakt, is niet "welke types halen we weg" maar "welke types beloven we". Weghalen is destructief en onomkeerbaar zodra een naam eenmaal buiten staat; een tier is gratis en omkeerbaar. Er is dus niets weggehaald.',
+    tiers: [
+      {
+        badge: 'Tier 1',
+        name: 'Core-profiel',
+        what: 'Negen types.',
+        promise: 'Normatief. Wat een conforme implementatie rendert.',
+      },
+      {
+        badge: 'Tier 2',
+        name: 'Deckyard-set',
+        what: 'De overige types die wij shippen.',
+        promise: 'Wij publiceren en documenteren ze, maar ze versioneren mee met de app.',
+      },
+      {
+        badge: 'Tier 3',
+        name: 'Extensie',
+        what: 'Fork-types, org-types, types van derden.',
+        promise:
+          'De belofte van de declarant, niet die van ons. Wij beloven er niets over, en we negeren ze niet.',
+      },
+    ],
+    profileTitle: 'De negen',
+    profileLead:
+      'Een tier is een eigenschap van de naam, niet van de definitie. Een fork die `title-slide` overschrijft, beantwoordt een tier-1-naam en erft de tier-1-belofte; dat is wat het kiezen van die naam betekent.',
+    profileCriterion:
+      'De keuze is een criterium, geen smaak: dit is de minimale verzameling om een gewone presentatie zonder verlies uit te drukken - titel, sectiebreuk, proza, opsomming, citaat, beeld, beeld-met-tekst, tabel, afsluiting. Alles daarbuiten voegt expressiviteit toe die binnen de negen een aanvaardbare degradatie heeft.',
+    profileNoChart:
+      'Een grafiektype staat er bewust niet in. Het vereist een grafiekbibliotheek, en het slaagcriterium voor een tweede implementatie is een weekend werk; een profiel dat een charting-runtime eist, is geen instapdrempel meer.',
+
+    mapTitle: 'Elk ander type degradeert naar één van die negen',
+    mapLead:
+      'Dit is de regel die de tiers iets waard maakt: **elk tier-2-type declareert een `fallback` naar een tier-1-type.** Een funnel valt terug op een lijst, een gallery op beelden, een grafiek op een tabel. Zo rendert een lezer die alleen de negen kent élk Deckyard-deck zonder inhoud te laten vallen.',
+    mapDegradeLabel: '{n} degraderen hiernaartoe',
+    mapNote:
+      'De `fallback` noemt een tier-1-contract, geen één-op-één slidewissel. Een gallery die terugvalt op `image-slide` betekent "deze inhoud is beeld, render het zoals je beeld rendert", en een lezer mag er meer dan één slide van maken.',
+    mapGapLabel: 'Declareert geen fallback',
+
+    idTitle: 'Eén identiteit, drie spellingen',
+    idLead:
+      'De canonieke id is reverse-DNS: wie het domein bezit, mag het type definiëren, en daarmee zijn conflicten structureel uitgesloten in plaats van sociaal geregeld. Het achtervoegsel -slide gaat van de canonieke naam af, want "slide" staat al in de autoriteit.',
+    idColSpelling: 'Spelling',
+    idColExample: 'Voorbeeld',
+    idColWhere: 'Waar je hem tegenkomt',
+    idSpellings: [
+      {
+        spelling: 'Canoniek reverse-DNS',
+        where:
+          'Het `slideTypes`-manifest, `GET /api/slide-types`, alles wat nieuw gepubliceerd wordt.',
+      },
+      {
+        spelling: 'Gekwalificeerd',
+        where: 'Decks die tegen het eerdere identiteitsmodel geschreven zijn.',
+      },
+      {
+        spelling: 'Kale sleutel',
+        where: '`slides[].type`, in elk deck, toen en nu.',
+      },
+    ],
+    idExampleCaption:
+      'Eén slide, drie manieren om zijn type te noemen. Een lezer MOET alle drie accepteren.',
+    idStorage:
+      '**Opslag is niet verhuisd.** `slides[].type` bevat nog steeds de kale sleutel, dus de hernoeming heeft geen enkel deck een herschrijving gekost en er valt niets te migreren. Een lezer MOET de drie spellingen als één identiteit behandelen; het gepubliceerde JSON Schema legt aan alle drie hetzelfde contentcontract op.',
+    idVersion:
+      'Het achtervoegsel `@version` is een compatibiliteitshint over een definitie, geen ander type. Een lezer die de genoemde versie niet heeft, rendert de versie die hij wel heeft, en MAG `title-slide@2` niet als onbekend type behandelen.',
+
+    ruleTitle: 'De evolutieregel',
+    rule: 'Binnen een naam alleen toevoegen. Betekenis wijzigen is een naam wijzigen.',
+    ruleLead:
+      'Normatief, en geldig voor elke gepubliceerde naam: een slidetype, een contentsleutel, een envelopsleutel, een enum-waarde. De twee blokken hieronder wijzigen hetzelfde type op wat een gelijke manier lijkt, en maar één ervan laat elk ooit geschreven deck geldig.',
+    ruleOkLabel: 'Mag',
+    ruleOkCaption: 'Een nieuwe optionele sleutel. Elk bestaand deck blijft geldig.',
+    ruleBadLabel: 'Mag niet',
+    ruleBadCaption:
+      'Een nieuwe verplichte sleutel. Elk bestaand deck is met terugwerkende kracht ongeldig.',
+    producerTitle: 'Wat een producent verschuldigd is',
+    producer: [
+      'Een gepubliceerde naam MOET zijn betekenis houden zolang hij bestaat. Moet de betekenis veranderen, dan verandert de naam en gaat de oude de deprecatie-ladder af.',
+      'Optionele sleutels MOGEN altijd worden toegevoegd. Een nieuwe **verplichte** sleutel MAG NIET aan een gepubliceerd type worden toegevoegd: dat maakt elk bestaand deck met terugwerkende kracht ongeldig, en dat is een hernoeming die zich voordoet als compatibel.',
+      'Een waardenruimte verbreden is additief (een nieuwe enum-waarde, een nieuwe spelling van een type-id). **Versmallen is dat niet** en vraagt een nieuwe naam.',
+      'Er verdwijnt niets stilletjes. Een naam die weggaat, wordt eerst deprecated, en tier 1 valt onder de staande stabiliteitsbelofte.',
+    ],
+    readerTitle: 'Wat een lezer verschuldigd is',
+    reader: [
+      'Een lezer MOET sleutels negeren die hij niet kent, op elk niveau (envelop, slide, content, item), en MAG een deck niet afwijzen omdat het ze bevat.',
+      'Een lezer MOET een `type` accepteren dat hij niet kent, en het renderen volgens het contract hieronder.',
+    ],
+    ruleWhyTitle: 'Waarom dit migratievrijheid vervangt',
+    ruleWhy: [
+      'Deckyard heeft een migratieketen omdat het beide kanten van de lijn bezit: een oud deck wordt gelezen, in het geheugen vooruit gemigreerd, en in de huidige vorm teruggeschreven. Die vrijheid stopt bij onze eigen opslag. **Een lezer die wij niet bezitten, draait onze migratieketen niet.** Voor alles wat gepubliceerd is, is een migratie dus geen reparatie maar een breuk die wij toevallig overleven.',
+      'De regel is wat we voor die vrijheid terugkrijgen, en hij is meer waard: hij is de reden dat een lezer die vandaag geschreven wordt over drie jaar nog werkt zonder onze releases te volgen. De vorm is bewust geleend van atproto’s Lexicon - hetzelfde probleem, hetzelfde antwoord, en geen reden om er een tweede dialect van te verzinnen.',
+    ],
+
+    unknownTitle: 'Een type dat je lezer nooit gezien heeft',
+    unknownLead:
+      'Dit is wat "er valt niets weg" betekent op het lastigste punt: een type waarvoor je helemaal geen declaratie hebt, uit een fork die je nooit gezien hebt. Het is een vastgelegde rendering, geen foutpad.',
+    unknownInCaption: 'Een slide uit een fork die je niet kent',
+    unknownOutCaption: 'Wat een conforme lezer toont',
+    unknownOutBadge: 'Onbekend type',
+    unknownOutNote:
+      'Elke string in auteursvolgorde, elk array-element als herhaald item, de typenaam op de slide, en de presentatienotitie gehonoreerd omdat het een envelopsleutel is die niet van het type afhangt.',
+    unknownRules: [
+      {
+        must: 'MOET de slide renderen.',
+        body: 'Weglaten verandert stilzwijgend het aantal slides, de nummering en het betoog dat het deck voert. Een lezer MAG het deck ook niet afwijzen: één onbekend type maakt een deck niet ongeldig.',
+      },
+      {
+        must: 'MOET elke stringwaarde in `content` als tekst renderen,',
+        body: 'in de volgorde waarin de sleutels in `content` staan - een producent schrijft ze in de gedeclareerde veldvolgorde, dus dat is de volgorde van de auteur. Een lezer wiens parser die volgorde niet bewaart, MOET een stabiele volgorde kiezen (alfabetisch volstaat) in plaats van een willekeurige. Niet-string-scalairen renderen als hun tekstvorm; de lege string betekent niet-ingevuld en MAG worden overgeslagen.',
+      },
+      {
+        must: 'MOET elk element van een array-waarde als een herhaald item renderen,',
+        body: 'in arrayvolgorde, met regel 2 binnen elk element. Dat is het `collection`-contract, de eerlijke lezing van een array waarvan de betekenis onbekend is: herschikken mag, herordenen of afkappen niet.',
+      },
+      {
+        must: 'MOET de typenaam tonen,',
+        body: 'zoals die in `type` staat, op of naast de slide. Een kijker moet een generieke rendering van een geschreven rendering kunnen onderscheiden; stil mooie uitvoer is precies hoe "wij ondersteunen Deckyard" onwaar wordt zonder dat iemand het merkt.',
+      },
+      {
+        must: 'MOET de globale slidesleutels honoreren die hij al kent',
+        body: '- notities, duur, zichtbaarheid, en de toegankelijkheids- en achtergrondsleutels. Die zijn envelopniveau en hun betekenis hangt niet van het type af.',
+      },
+      {
+        must: 'ZOU de slide in het thema van het deck moeten renderen,',
+        body: 'zodat een onbekend type leest als een gewone slide en niet als kapotte software.',
+      },
+      {
+        must: 'MAG geen inhoud verzinnen.',
+        body: 'Geen bedachte koppen, geen ingevulde gaten, geen herordening. Minder getrouw renderen dan de auteur schreef is een degradatie; iets renderen dat de auteur niet schreef is een fout.',
+      },
+    ],
+    unknownNested:
+      'Een waarde die geen scalair is en ook geen array of object van scalairen - een geneste payload die een lezer niet kan interpreteren - MAG worden weggelaten. Regel 7 gaat voor volledigheid.',
+    precedenceTitle: 'En het is het laatste redmiddel, niet het eerste',
+    precedenceLead:
+      'Drie gevallen, in volgorde. Het meeste wat op een onbekend type lijkt, is in werkelijkheid een bekend type dat je niet geïmplementeerd hebt, en dat geval heeft een beter antwoord.',
+    precedenceColHas: 'De lezer heeft',
+    precedenceColDoes: 'Hij doet',
+    precedence: [
+      { has: 'Het type, geïmplementeerd', does: 'Rendert het native.' },
+      {
+        has: 'De declaratie maar geen implementatie',
+        does: 'Gebruikt `structure` plus het itemcontract, of de gedeclareerde `fallback`.',
+      },
+      { has: 'Niets dan de slide', does: 'De zeven regels hierboven.' },
+    ],
+
+    referenceNote:
+      'De uitputtende tabellen - elk envelopveld, elk manifestveld, elk slidetype met zijn facetten - staan in de documentatie, de helft die de zoekfunctie van de site indexeert.',
   },
 };

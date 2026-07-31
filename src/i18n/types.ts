@@ -963,6 +963,22 @@ export interface SpecContent {
     notForTitle: string;
     schemaLinkLabel: string;
     identityLabel: string;
+    /**
+     * The three facets on a card's meta line beside its identity. `tier` is the
+     * only one that is a promise rather than a description, which is why it is
+     * a bare number here and gets its argument on /spec/conformance/.
+     */
+    tierLabel: string;
+    runtimeLabel: string;
+    fallbackLabel: string;
+
+    /** The second facet: what the presenting session has to do for a type. */
+    runtimeTitle: string;
+    runtimeBody: string[];
+    runtimeLabels: Record<string, string>;
+    runtimeContracts: Record<string, string>;
+    /** The three types whose value falls out of the definition rather than the name. */
+    runtimeEdge: string;
 
     /**
      * The conformance claim. The point of the facet for anyone outside this
@@ -980,6 +996,8 @@ export interface SpecContent {
     conformanceExampleTitle: string;
     /** Carries {n} and {total}. */
     conformanceExample: string;
+    /** Into the claim builder, which does the same sentence for any combination. */
+    conformanceLinkLabel: string;
 
     globalTitle: string;
     globalBody: string[];
@@ -993,10 +1011,150 @@ export interface SpecContent {
     /** This page keeps its cards; the flat, searchable table is in the docs. */
     referenceNote: string;
   };
+
+  /**
+   * /spec/conformance/ - what a second implementation has to build.
+   *
+   * The one page on the site carrying normative text (MUST / MUST NOT), so it is
+   * shaped around widgets rather than paragraphs: the numbered duties stay
+   * verbatim because they are the contract, and everything that can be shown
+   * instead of described - the claim you may publish, the six item contracts,
+   * the fallback map, what an unrecognised type renders as - is a component fed
+   * from the generated registry rather than a sentence somebody has to keep
+   * true by hand.
+   */
+  conformance: {
+    metaTitle: string;
+    metaDescription: string;
+    heroKicker: string;
+    heroTitle: string;
+    heroIntro: string;
+
+    /** The two conformance levels. The point is that level 1 does not grow. */
+    levelsTitle: string;
+    levelsLead: string;
+    levels: {
+      badge: string;
+      name: string;
+      /** What you have to build. */
+      implement: string;
+      /** The sentence you are then entitled to publish. */
+      claim: string;
+      /** What that claim is worth to somebody handing you a deck. */
+      body: string;
+    }[];
+    levelsNote: string;
+
+    /**
+     * The claim builder: tick what you render, read back the sentence you may
+     * publish and how many of the types it covers. It replaces a worked example
+     * that could only ever show one combination.
+     */
+    builderTitle: string;
+    builderLead: string;
+    builderStructuresLabel: string;
+    builderProfileLabel: string;
+    builderProfileHint: string;
+    /** `{n}` of `{total}`: types that render the way they were authored. */
+    builderCoverage: string;
+    builderCoverageLabel: string;
+    builderDegradeLabel: string;
+    builderClaimLabel: string;
+    /** The three claim shapes, by how much is ticked. `{structures}`, `{n}`, `{total}`. */
+    builderClaimNone: string;
+    builderClaimStructures: string;
+    builderClaimProfile: string;
+    /** Shown instead of the widget when scripting is off. */
+    builderStaticNote: string;
+
+    /** The six item contracts, as tabs with a worked `content` object each. */
+    contractTitle: string;
+    contractLead: string;
+    contractCarriesLabel: string;
+    contractCountLabel: string;
+    contractReaderLabel: string;
+    contractTypesLabel: string;
+    contractExampleLabel: string;
+    contracts: Record<
+      string,
+      {
+        /** What the content carries. */
+        carries: string;
+        /** What the item count means, if anything. */
+        count: string;
+        /** What a reader that knows only this does. */
+        reader: string;
+      }
+    >;
+    contractNotes: string[];
+
+    /** Three tiers, one normative. */
+    tiersTitle: string;
+    tiersLead: string;
+    tiers: { badge: string; name: string; what: string; promise: string }[];
+    profileTitle: string;
+    profileLead: string;
+    profileCriterion: string;
+    profileNoChart: string;
+
+    /** The fallback map: every tier-2 type under the tier-1 contract it degrades to. */
+    mapTitle: string;
+    mapLead: string;
+    /** `{n}` types degrade to this contract. */
+    mapDegradeLabel: string;
+    mapNote: string;
+    /** Shown only if a tier-2 type ever stops declaring a fallback. */
+    mapGapLabel: string;
+
+    /** One identity, three spellings. */
+    idTitle: string;
+    idLead: string;
+    idColSpelling: string;
+    idColExample: string;
+    idColWhere: string;
+    idSpellings: { spelling: string; where: string }[];
+    idExampleCaption: string;
+    idStorage: string;
+    idVersion: string;
+
+    /** The evolution rule, shown as a permitted / forbidden pair. */
+    ruleTitle: string;
+    rule: string;
+    ruleLead: string;
+    ruleOkLabel: string;
+    ruleOkCaption: string;
+    ruleBadLabel: string;
+    ruleBadCaption: string;
+    producerTitle: string;
+    /** Numbered duties. Normative, so the wording is fixed. */
+    producer: string[];
+    readerTitle: string;
+    reader: string[];
+    ruleWhyTitle: string;
+    ruleWhy: string[];
+
+    /** The unknown-type contract, shown as a deck in and a rendering out. */
+    unknownTitle: string;
+    unknownLead: string;
+    unknownInCaption: string;
+    unknownOutCaption: string;
+    unknownOutBadge: string;
+    unknownOutNote: string;
+    unknownRules: { must: string; body: string }[];
+    unknownNested: string;
+    precedenceTitle: string;
+    precedenceLead: string;
+    precedenceColHas: string;
+    precedenceColDoes: string;
+    precedence: { has: string; does: string }[];
+
+    referenceNote: string;
+  };
 }
 
 /** The pages that make up /spec/, in reading order. */
-export type SpecPageId = 'index' | 'deck-format' | 'deck-bundle' | 'schemas' | 'slide-types';
+export type SpecPageId =
+  'index' | 'conformance' | 'deck-format' | 'deck-bundle' | 'schemas' | 'slide-types';
 
 export interface Content extends LocaleMeta {
   nav: NavContent;
