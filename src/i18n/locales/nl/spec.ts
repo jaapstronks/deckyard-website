@@ -324,7 +324,7 @@ export const spec: SpecContent = {
       'De tekening op elke kaart is hetzelfde abstracte diagram dat de editor in zijn slidekiezer tekent, uit dezelfde beschrijving van de layout. Het toont structuur in plaats van een verkleinde schermafdruk, en dat is het enige wat op dit formaat leesbaar blijft.',
     ],
 
-    structureTitle: 'Zes vormen, geen achtendertig losse dingen',
+    structureTitle: 'Zes vormen, geen zesendertig losse dingen',
     structureBody: [
       'Een platte lijst types zegt niets over hoe ze zich tot elkaar verhouden, dus lijkt elk type iets aparts om te bouwen. Dat zijn ze niet. Elk type declareert een `structure`: de vorm van zijn primaire inhoud, los van waar de slide over gaat en hoe hij eruitziet. Zes waarden dekken ze allemaal, zonder restcategorie.',
       'Dit is de as om tegenaan te bouwen. De categorieën waar een editor types onder wegzet mengen bekendheid, payload en gedrag tijdens het presenteren; dat is meubilair. `structure` is af te leiden uit het veldschema, en dus kan een declaratie die liegt door een test worden betrapt. Core draait die test.',
@@ -388,7 +388,7 @@ export const spec: SpecContent = {
 
     conformanceTitle: 'Claim structuren, geen types',
     conformanceBody: [
-      'Een tweede implementatie wil bijna nooit alle achtendertig, en had tot nu toe geen manier om dat te zeggen: of ze beweerde Deckyard-decks te lezen en viel stilletjes om op een grafiek, of ze zei niets en niemand kon nagaan wat ze deed. Structuren geven de claim een rand. Ondersteun je een structuur, dan ondersteun je elk type erin, want ze delen één contract.',
+      'Een tweede implementatie wil bijna nooit alle zesendertig, en had tot nu toe geen manier om dat te zeggen: of ze beweerde Deckyard-decks te lezen en viel stilletjes om op een grafiek, of ze zei niets en niemand kon nagaan wat ze deed. Structuren geven de claim een rand. Ondersteun je een structuur, dan ondersteun je elk type erin, want ze delen één contract.',
       'Een lezer die de structuur dekt die hij geclaimd heeft en voor de rest een benoemde placeholder toont, is een correcte gedeeltelijke implementatie en geen kapotte. Daar is het gespecificeerde degraderen van het formaat voor.',
     ],
     conformanceColStructure: 'Structuur',
@@ -401,7 +401,7 @@ export const spec: SpecContent = {
 
     globalTitle: 'De velden die elk type meedraagt',
     globalBody: [
-      'Negen velden worden aan elk slidetype toegevoegd in plaats van per type gedeclareerd: twee voor wat een schermlezer aankondigt, zes voor een achtergrondbeeld per slide en hoe dat behandeld wordt, en één voor het themalogo. Ze staan hier één keer in plaats van achtendertig keer hierboven.',
+      'Negen velden worden aan elk slidetype toegevoegd in plaats van per type gedeclareerd: twee voor wat een schermlezer aankondigt, zes voor een achtergrondbeeld per slide en hoe dat behandeld wordt, en één voor het themalogo. Ze staan hier één keer in plaats van zesendertig keer hierboven.',
     ],
 
     deprecatedTitle: 'Uitgefaseerde types',

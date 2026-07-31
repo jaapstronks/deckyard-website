@@ -321,7 +321,7 @@ export const spec: SpecContent = {
       'The glyph on each card is the same abstract diagram the editor draws in its slide picker, from the same description of the layout. It shows structure rather than a shrunk-down screenshot, which is the only thing that stays legible this small.',
     ],
 
-    structureTitle: 'Six shapes, not thirty-eight peers',
+    structureTitle: 'Six shapes, not thirty-six peers',
     structureBody: [
       'A flat list of types says nothing about how any of them relate, so every type looks like a separate thing to build. They are not. Each type declares a `structure`: the shape of its primary content, independent of what the slide is about and how it looks. Six values cover all of them, with no "other" bucket.',
       'This is the axis worth building against. The categories an editor shelves types under mix familiarity, payload and runtime behaviour, and they are furniture; `structure` is derivable from the field schema, which means a declaration that lies about it can be caught by a test, and core runs one.',
@@ -385,7 +385,7 @@ export const spec: SpecContent = {
 
     conformanceTitle: 'Claim structures, not types',
     conformanceBody: [
-      'A second implementation almost never wants all thirty-eight, and until now it had no way to say so: either it claimed to read Deckyard decks and quietly fell over on a chart, or it said nothing and nobody could tell what it did. Structures give the claim an edge. Support a structure and you support every type in it, because they share one contract.',
+      'A second implementation almost never wants all thirty-six, and until now it had no way to say so: either it claimed to read Deckyard decks and quietly fell over on a chart, or it said nothing and nobody could tell what it did. Structures give the claim an edge. Support a structure and you support every type in it, because they share one contract.',
       "A reader that covers a structure it has claimed and renders an unknown-type placeholder for the rest is a correct partial implementation, not a broken one. That is what the format's specified degradation is for.",
     ],
     conformanceColStructure: 'Structure',
@@ -398,7 +398,7 @@ export const spec: SpecContent = {
 
     globalTitle: 'The fields every type carries',
     globalBody: [
-      'Nine fields are added to every slide type rather than declared on each one: two for what a screen reader announces, six for a per-slide background image and how it is treated, and one for the theme logo. They are listed once here instead of thirty-eight times above.',
+      'Nine fields are added to every slide type rather than declared on each one: two for what a screen reader announces, six for a per-slide background image and how it is treated, and one for the theme logo. They are listed once here instead of thirty-six times above.',
     ],
 
     deprecatedTitle: 'Retired types',

@@ -40,6 +40,7 @@
         "shared/slide-types/types/",
         "client/views/editor/slide-type-schematics.js",
         "client/views/editor/slide-type-picker/data.js",
+        "shared/slide-types/authoring-companions.js",
         "server/utils/ai/slide-catalog/"
       ],
       "sourceHash": "25911338fd5d7bcc",
