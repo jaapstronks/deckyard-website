@@ -8,6 +8,8 @@ export const hosting: HostingContent = {
   heroTitle: 'Deckyard draait waar jij wil',
   heroIntro:
     'De software is MIT-gelicentieerd en gemaakt om zelf te hosten, dus zelf draaien is het standaardpad en dat blijft zo. Maar iemand moet die server wel bijhouden, en niet elke organisatie heeft die iemand. Daarom draaien wij ook instances.',
+  cardIntro:
+    'Zelf draaien vanaf één Docker Compose-bestand, of laat ons een eigen instance voor je draaien, op je eigen domein, in Europa.',
 
   routesTitle: 'Twee deuren, dezelfde software',
   routesLead:

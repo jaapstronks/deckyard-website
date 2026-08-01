@@ -28,6 +28,18 @@
 // Not enforced by a test on purpose. A word count is a proxy for "does this
 // still read as one line under a button", and the only way to know that is to
 // open the page.
+//
+// ---------------------------------------------------------------------------
+// `cardIntro`: the line on the share card
+//
+// Every page listed in og/targets.ts gets a generated share card, and the card
+// clamps its intro to two lines of roughly 80 characters. A card also travels
+// without its page: a sentence that says "below" or "this site" stops meaning
+// anything the moment the link is pasted into a chat. So the important pages
+// carry a `cardIntro` written for the card itself - standalone, under ~150
+// characters, no self-reference. The field is optional: a page without one
+// falls back to the leading whole sentences of its hero copy (og/targets.ts),
+// so no page is ever without a card, only without a hand-written one.
 // ---------------------------------------------------------------------------
 
 /** Locale-level scalars, not page copy. */
@@ -374,6 +386,8 @@ export interface FeaturesContent {
   heroKicker: string;
   heroTitle: string;
   heroIntro: string;
+  /** Share-card intro; see the cardIntro note at the top of this file. */
+  cardIntro?: string;
 
   groups: {
     /** Structural. Keys the docs href in the component. */
@@ -439,6 +453,8 @@ export interface StructuredContent {
   kicker: string;
   title: string;
   dek: string;
+  /** Share-card intro; see the cardIntro note at the top of this file. */
+  cardIntro?: string;
   stats: { value: string; label: string }[];
   s1Title: string;
   s1Body: string[];
@@ -628,6 +644,8 @@ export interface CompareContent {
   heroKicker: string;
   heroTitle: string;
   heroIntro: string;
+  /** Share-card intro; see the cardIntro note at the top of this file. */
+  cardIntro?: string;
 
   tableTitle: string;
   tableLead: string;
@@ -675,6 +693,8 @@ export interface AccessibilityContent {
   heroKicker: string;
   heroTitle: string;
   heroIntro: string;
+  /** Share-card intro; see the cardIntro note at the top of this file. */
+  cardIntro?: string;
 
   /** What the structure yields, field type by field type. */
   followsTitle: string;
@@ -709,6 +729,8 @@ export interface HostingContent {
   heroKicker: string;
   heroTitle: string;
   heroIntro: string;
+  /** Share-card intro; see the cardIntro note at the top of this file. */
+  cardIntro?: string;
 
   /** The two doors: run it yourself, or have it run for you. */
   routesTitle: string;
@@ -777,6 +799,8 @@ export interface SpecContent {
     heroKicker: string;
     heroTitle: string;
     heroIntro: string;
+    /** Share-card intro; see the cardIntro note at the top of this file. */
+    cardIntro?: string;
 
     /** The two layers, which is the thing people get wrong first. */
     layersTitle: string;
@@ -817,6 +841,8 @@ export interface SpecContent {
     heroKicker: string;
     heroTitle: string;
     heroIntro: string;
+    /** Share-card intro; see the cardIntro note at the top of this file. */
+    cardIntro?: string;
     introBody: string[];
 
     envelopeTitle: string;
@@ -873,6 +899,8 @@ export interface SpecContent {
     heroKicker: string;
     heroTitle: string;
     heroIntro: string;
+    /** Share-card intro; see the cardIntro note at the top of this file. */
+    cardIntro?: string;
     /** Copy may carry {activeCount} / {liveCount}; lib/facts.ts fills them in. */
     introBody: string[];
 
@@ -972,6 +1000,8 @@ export interface SpecContent {
     heroKicker: string;
     heroTitle: string;
     heroIntro: string;
+    /** Share-card intro; see the cardIntro note at the top of this file. */
+    cardIntro?: string;
 
     /** The two conformance levels. The point is that level 1 does not grow. */
     levelsTitle: string;

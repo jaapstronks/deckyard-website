@@ -8,6 +8,7 @@ export const accessibility: AccessibilityContent = {
   heroTitle: 'A slide deck cannot be made accessible afterwards',
   heroIntro:
     'PowerPoint and everything shaped like it hands you a drawing: shapes at coordinates, where a heading is text that happens to be bigger. No amount of care at the end turns that into something a screen reader can read out, and it is the same reason a deck is hard to keep on-brand or to generate predictably. Slides need what a web page has: a fixed structure, with fields that know what they are. Back to the drawing board, then - or rather, off it.',
+  cardIntro: 'A typed slide projects to real headings, lists and tables. A drawing never will.',
 
   followsTitle: 'What the structure yields',
   followsLead:

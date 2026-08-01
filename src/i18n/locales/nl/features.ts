@@ -7,7 +7,9 @@ export const features: FeaturesContent = {
   heroKicker: 'De volledige inventaris',
   heroTitle: 'Alles wat er al in zit',
   heroIntro:
-    'De rest van deze site voert één argument tegelijk. Deze pagina is de lijst: wat Deckyard vandaag doet, gegroepeerd per moment waarop je het nodig hebt, met de documentatie één klik verderop.',
+    'Wat Deckyard vandaag doet, gegroepeerd per moment waarop je het nodig hebt, met de documentatie één klik verderop.',
+  cardIntro:
+    'Wat Deckyard vandaag doet: slidetypes, thema’s, AI op je eigen sleutel, samenwerken, live publiek, publiceren en exporteren.',
 
   groups: [
     {

@@ -35,6 +35,8 @@ export const spec: SpecContent = {
     heroTitle: 'Een deck is een bestand van jou, in een formaat dat iedereen mag implementeren',
     heroIntro:
       'Deckyard bewaart presentaties in een formaat dat is opgeschreven, geversioneerd en vrij te implementeren. Geen exportknop die er achteraf bij is gezet, maar de vorm waarin de software zelf werkt.',
+    cardIntro:
+      'Opgeschreven, geversioneerd en vrij te implementeren. Geen exportknop die er achteraf bij is gezet, maar de vorm waarin de software zelf werkt.',
 
     layersTitle: 'Twee lagen, en het verschil doet ertoe',
     layersLead:
@@ -108,6 +110,8 @@ export const spec: SpecContent = {
     heroTitle: 'Het deckformaat',
     heroIntro:
       'De draagbare, geversioneerde vorm waarin een presentatie wordt geserialiseerd, zodat een tweede implementatie hem kan lezen, renderen en round-trippen zonder de server of de opslag van Deckyard.',
+    cardIntro:
+      'Een JSON-envelop voor de data, een ZIP-pakket voor de bestanden, en gegenereerde schema’s waar een tweede implementatie op kan bouwen.',
     introBody: [
       'Een deck is data, geen rendering. Het formaat is met opzet eenvoudig: slides zijn een platte reeks van `{ type, content }`, en niets erin hangt af van de machine waar het vandaan komt.',
     ],
@@ -206,6 +210,8 @@ export const spec: SpecContent = {
     heroTitle: 'Slidetypes',
     heroIntro:
       'De woordenschat waarin een deck geschreven is. Elk type declareert zijn eigen velden, en die declaratie is wat je hieronder ziet.',
+    cardIntro:
+      'De woordenschat waarin een deck geschreven is: elk ingebouwd type met zijn velden en limieten, gegenereerd uit de core-registry.',
     introBody: [
       'Een slidetype is een klein contract: een naam, een set velden en een vorm. Het is geen sjabloon dat je invult en daarna verschuift, en juist daarom kan hetzelfde deck op elk formaat renderen, op elk thema, naar HTML of PDF, en gelezen worden door iets dat geen mens is. Core levert er {activeCount}, allemaal gedeclareerd in één registry; de tekening op elke kaart hieronder is hetzelfde abstracte diagram dat de editor in zijn eigen slidekiezer tekent, uit dezelfde beschrijving van de layout.',
     ],
@@ -296,6 +302,8 @@ export const spec: SpecContent = {
     heroTitle: 'Wat er nodig is om een Deckyard-deck te lezen',
     heroIntro:
       'Een formaat publiceren is een belofte doen, en een belofte zonder grens is er geen. Deze pagina trekt die grens: wat je moet bouwen, wat je daarna mag zeggen dat je ondersteunt, en wat er gebeurt op elk punt waar je lezer iets tegenkomt dat hij niet kent.',
+    cardIntro:
+      'Wat een tweede implementatie moet bouwen, wat ze daarna mag claimen, en wat er gebeurt als een reader een onbekend type tegenkomt.',
 
     levelsTitle: 'Conformance kent twee niveaus',
     levelsLead:
