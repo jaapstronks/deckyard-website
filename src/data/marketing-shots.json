@@ -26,5 +26,75 @@
     "width": 1200,
     "height": 675,
     "slot": 600
+  },
+  "editor-form-nl": {
+    "png": "/images/marketing/editor-form-nl-1320.png",
+    "webp": "/images/marketing/editor-form-nl-1320.webp",
+    "width": 1320,
+    "height": 825,
+    "slot": 660
+  },
+  "editor-form-en": {
+    "png": "/images/marketing/editor-form-en-1320.png",
+    "webp": "/images/marketing/editor-form-en-1320.webp",
+    "width": 1320,
+    "height": 825,
+    "slot": 660
+  },
+  "presenter-view-nl": {
+    "png": "/images/marketing/presenter-view-nl-1320.png",
+    "webp": "/images/marketing/presenter-view-nl-1320.webp",
+    "width": 1320,
+    "height": 825,
+    "slot": 660
+  },
+  "presenter-view-en": {
+    "png": "/images/marketing/presenter-view-en-1320.png",
+    "webp": "/images/marketing/presenter-view-en-1320.webp",
+    "width": 1320,
+    "height": 825,
+    "slot": 660
+  },
+  "comments-nl": {
+    "png": "/images/marketing/comments-nl-1320.png",
+    "webp": "/images/marketing/comments-nl-1320.webp",
+    "width": 1320,
+    "height": 825,
+    "slot": 660
+  },
+  "comments-en": {
+    "png": "/images/marketing/comments-en-1320.png",
+    "webp": "/images/marketing/comments-en-1320.webp",
+    "width": 1320,
+    "height": 825,
+    "slot": 660
+  },
+  "share-link-rules-nl": {
+    "png": "/images/marketing/share-link-rules-nl-960.png",
+    "webp": "/images/marketing/share-link-rules-nl-960.webp",
+    "width": 960,
+    "height": 1302,
+    "slot": 480
+  },
+  "share-link-rules-en": {
+    "png": "/images/marketing/share-link-rules-en-960.png",
+    "webp": "/images/marketing/share-link-rules-en-960.webp",
+    "width": 960,
+    "height": 1254,
+    "slot": 480
+  },
+  "ai-fills-fields-nl": {
+    "png": "/images/marketing/ai-fills-fields-nl-960.png",
+    "webp": "/images/marketing/ai-fills-fields-nl-960.webp",
+    "width": 960,
+    "height": 1094,
+    "slot": 480
+  },
+  "ai-fills-fields-en": {
+    "png": "/images/marketing/ai-fills-fields-en-960.png",
+    "webp": "/images/marketing/ai-fills-fields-en-960.webp",
+    "width": 960,
+    "height": 1094,
+    "slot": 480
   }
 }

@@ -20,8 +20,10 @@ import SiteLayout from '@/layouts/SiteLayout.astro';
 import PageHero from '@/components/layout/PageHero.astro';
 import Section from '@/components/layout/Section.astro';
 import Button from '@/components/ui/Button.astro';
+import Screenshot from '@/components/ui/Screenshot.astro';
 import { ui, localizePath, type Lang } from '@/i18n';
 import { withFacts } from '@/lib/facts';
+import type { ShotName } from '@/lib/shots';
 
 interface Props {
   lang: Lang;
@@ -44,7 +46,32 @@ const DOCS: Record<string, string> = {
   out: '/docs/publishing/',
 };
 
+// Which capture heads which group. Same split as DOCS: the file is structural,
+// the alt text beside it is copy, so the picture lives here and `shotAlt` lives
+// in src/i18n/locales/<lang>/features.ts. A group needs both to get a figure.
+//
+// `brand` has none on purpose. The argument there is that a theme is a JSON
+// file, and no screen in the app shows that; the picture it wants is a
+// composition of themes/brand.json beside the deck it produces, which is a
+// site-side artifact nobody has drawn yet. A theme editor screenshot would
+// illustrate the opposite of the claim.
+const SHOTS: Record<string, ShotName> = {
+  making: 'editor-form',
+  ai: 'ai-fills-fields',
+  together: 'comments',
+  room: 'presenter-view',
+  out: 'share-link-rules',
+};
+
+// The two dialog captures are taller than they are wide. At the full width of
+// the items column they would run past a screen height on their own, so they are
+// drawn narrower and centred; the landscape three take the column.
+const PORTRAIT = new Set<ShotName>(['share-link-rules', 'ai-fills-fields']);
+
 const hostingHref = localizePath('/hosting/', lang);
+// Only the first figure on the page is worth fetching eagerly; the rest are
+// several screens down.
+const firstShotId = t.groups.find((g) => SHOTS[g.id] && g.shotAlt)?.id;
 ---
 
 <SiteLayout title={t.metaTitle} description={t.metaDescription}>
@@ -69,14 +96,33 @@ const hostingHref = localizePath('/hosting/', lang);
               )}
             </div>
 
-            <ul class="group-items">
-              {group.items.map((item, i) => (
-                <li data-reveal data-reveal-delay={i === 0 ? undefined : Math.min(i, 4) * 60}>
-                  <h3>{withFacts(item.title)}</h3>
-                  <p>{item.body}</p>
-                </li>
-              ))}
-            </ul>
+            <div class="group-body-col">
+              {SHOTS[group.id] && group.shotAlt && (
+                <div
+                  class:list={[
+                    'group-shot',
+                    PORTRAIT.has(SHOTS[group.id]) && 'group-shot-portrait',
+                  ]}
+                  data-reveal
+                >
+                  <Screenshot
+                    name={SHOTS[group.id]}
+                    lang={lang}
+                    alt={group.shotAlt}
+                    eager={group.id === firstShotId}
+                  />
+                </div>
+              )}
+
+              <ul class="group-items">
+                {group.items.map((item, i) => (
+                  <li data-reveal data-reveal-delay={i === 0 ? undefined : Math.min(i, 4) * 60}>
+                    <h3>{withFacts(item.title)}</h3>
+                    <p>{item.body}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </section>
         ))
       }
@@ -153,6 +199,27 @@ const hostingHref = localizePath('/hosting/', lang);
     color: var(--brass-text);
     text-decoration-thickness: 1px;
     text-underline-offset: 3px;
+  }
+
+  /* The right-hand column: the figure, then the cards. A grid rather than a
+     bare wrapper so the gap between the two is the same measure the cards use
+     between themselves. */
+  .group-body-col {
+    display: grid;
+    gap: var(--space-md);
+    /* The cards below are a grid, and a grid item defaults to min-width:auto. */
+    min-width: 0;
+  }
+
+  .group-shot {
+    min-width: 0;
+  }
+  /* The two dialog captures are portrait. Given the whole column they would be
+     taller than the viewport before the first card appears, so they keep the
+     column's centre line at a readable width instead. */
+  .group-shot-portrait {
+    max-width: 30rem;
+    margin-inline: auto;
   }
 
   .group-items {

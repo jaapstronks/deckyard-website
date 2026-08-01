@@ -396,6 +396,15 @@ export interface FeaturesContent {
     /** Label on the link into the docs. */
     moreLabel: string;
     /**
+     * Alt text for the group's screenshot.
+     *
+     * The figure only renders when the group id is also in the `SHOTS` map in
+     * FeaturesPage.astro: the picture is structural (which capture, which
+     * derivative) and the alt is copy, so neither half can conjure the other.
+     * A group with no shot leaves this out.
+     */
+    shotAlt?: string;
+    /**
      * @budget 25 words per body
      */
     items: { title: string; body: string }[];

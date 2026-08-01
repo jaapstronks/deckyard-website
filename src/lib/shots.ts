@@ -28,12 +28,18 @@ const SHOTS = shots as Record<string, Shot>;
 /**
  * Base names, i.e. everything before the `-nl` / `-en`.
  *
- * Only what a page draws. `editor-form` is captured and committed but has no
- * derivative yet, so it is deliberately absent: adding it here without adding it
- * to the derive script would move the failure from "no such name" to a build
- * that throws in `shot()`.
+ * Only what a page draws, and only what the derive script writes: a name here
+ * without an entry in `WIDTHS` moves the failure from "no such name" at compile
+ * time to a build that throws in `shot()`.
  */
-export type ShotName = 'poll-live' | 'join-screen';
+export type ShotName =
+  | 'poll-live'
+  | 'join-screen'
+  | 'editor-form'
+  | 'presenter-view'
+  | 'comments'
+  | 'share-link-rules'
+  | 'ai-fills-fields';
 
 /**
  * The shot of that name in that language.

@@ -17,6 +17,8 @@ export const features: FeaturesContent = {
       body: 'Er is geen canvas en geen tekstvak om neer te zetten. Elke slide is een gedeclareerd type met benoemde velden, dus het ontwerp is één keer beslist, in het thema, niet per slide.',
       teaser: 'Gedeclareerde types, benoemde velden, en een bibliotheek van wat je al maakte.',
       moreLabel: 'Documentatie over bewerken',
+      shotAlt:
+        'De Deckyard-editor met een funnelslide open: benoemde velden links, de gerenderde slide rechts.',
       items: [
         {
           title: '{count} gedeclareerde slidetypes',
@@ -77,6 +79,8 @@ export const features: FeaturesContent = {
       body: 'AI zet jij aan, jij betaalt hem, en hij mag alleen velden invullen die al een gedeclareerde vorm hebben. Er zit geen model tussen dat jij niet hebt gekozen.',
       teaser: 'Jouw aanbieder, jouw sleutel, en velden waar hij niet omheen ontwerpt.',
       moreLabel: 'Documentatie over AI',
+      shotAlt:
+        'De vertaalvoorvertoning: elk gedeclareerd veld van de slide bij naam, met de brontekst en de vertaling die het model voorstelt naast elkaar.',
       items: [
         {
           title: 'Je eigen API-sleutel',
@@ -107,6 +111,8 @@ export const features: FeaturesContent = {
       body: 'Decks worden meestal door een paar mensen onder tijdsdruk geschreven. Dat vraagt om echte rechten, om reacties op de slide zelf, en om een weg terug naar wat er gisteren stond.',
       teaser: 'Rechten per persoon, reacties op de slide, en een weg terug.',
       moreLabel: 'Documentatie over samenwerken',
+      shotAlt:
+        'Het reactiepaneel open naast de slidevoorvertoning, met één open draadje en één afgehandeld draadje.',
       items: [
         {
           title: 'Rechten per persoon',
@@ -137,6 +143,8 @@ export const features: FeaturesContent = {
       body: 'Een vraag aan de zaal is een slidetype als elk ander, dus de antwoorden horen bij het deck in plaats van bij een tweede tool die je er ook nog bij open had staan.',
       teaser: 'Polls, Q&A en een telefoon in elke hand, zonder tweede tool.',
       moreLabel: 'Documentatie over presenteren',
+      shotAlt:
+        'Presentatorweergave: de huidige slide, een klok met streeftijd van 20 minuten, de volgende slide als miniatuur en de sprekersnotities bij deze slide.',
       items: [
         {
           title: 'Polls en schalen',
@@ -171,6 +179,8 @@ export const features: FeaturesContent = {
       body: 'Een deck vertrekt in de vorm die je nodig hebt: een link, een embed, één bestand, of een document voor een tool die deze niet is. Altijd, en zonder het aan iemand te vragen.',
       teaser: 'Een link, een embed, één HTML-bestand, PDF, PowerPoint of JSON.',
       moreLabel: 'Documentatie over publiceren',
+      shotAlt:
+        'Het deeldialoogvenster voor een link: rechten, toegang, vervaldatum en wachtwoord ingesteld, met daaronder de aangemaakte link op uitnodiging.',
       items: [
         {
           title: 'Publiceren met een link',
