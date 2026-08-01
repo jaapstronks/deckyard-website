@@ -17,11 +17,11 @@ const isBlog = currentPath.includes('/blog');
 const isDocs = currentPath.startsWith('/docs');
 const isSpec = currentPath.includes('/spec');
 const isStructured = currentPath.includes('/structured-slides');
-const isCompare = currentPath.includes('/compare');
+const isFeatures = currentPath.includes('/features');
 const homeHref = localizePath('/', lang);
 const blogHref = localizePath('/blog/', lang);
 const structuredHref = localizePath('/structured-slides/', lang);
-const compareHref = localizePath('/compare/', lang);
+const featuresHref = localizePath('/features/', lang);
 const specHref = localizePath('/spec/', lang);
 // Docs are English-only; the link stays on the root docs regardless of locale.
 const docsHref = '/docs/creating/';
@@ -37,14 +37,14 @@ const docsHref = '/docs/creating/';
     <div class="header-actions">
       <nav class="site-nav" id="site-nav" aria-label="Primary">
         <!-- The row reads left to right as one question getting narrower: what
-             is this / how does it compare / is the file mine / how do I run it /
+             is this / what is in it / is the file mine / how do I run it /
              is it alive. Hosting used to stand where "How it works" now does -
              a commercial door in front of a product the nav did not mention.
              See the note on NavContent for what that rule leaves out. -->
         <a href={structuredHref} aria-current={isStructured ? 'page' : undefined}
           >{t.nav.howItWorks}</a
         >
-        <a href={compareHref} aria-current={isCompare ? 'page' : undefined}>{t.nav.compare}</a>
+        <a href={featuresHref} aria-current={isFeatures ? 'page' : undefined}>{t.nav.features}</a>
         <!-- The format spec is in the primary nav, not the footer: a standard
              nobody can find from the front page is not being offered as one. -->
         <a href={specHref} aria-current={isSpec ? 'page' : undefined}>{t.nav.spec}</a>
