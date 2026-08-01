@@ -8,6 +8,8 @@ export const accessibility: AccessibilityContent = {
   heroTitle: 'Een slidedeck maak je achteraf niet toegankelijk',
   heroIntro:
     'PowerPoint en alles wat erop lijkt geeft je een tekening: vormen op coördinaten, waarin een kop tekst is die toevallig groter staat. Geen zorgvuldigheid achteraf maakt daar iets van dat een screenreader fatsoenlijk voorleest, en het is dezelfde reden dat een deck lastig huisstijlvast te houden is en lastig voorspelbaar te genereren. Slides hebben nodig wat een webpagina heeft: een vaste structuur, met velden die weten wat ze zijn. Terug naar de tekentafel dus - of eigenlijk: eraf.',
+  cardIntro:
+    'Een getypeerde slide projecteert naar echte koppen, lijsten en tabellen. Een tekening doet dat nooit.',
 
   followsTitle: 'Wat er uit de structuur volgt',
   followsLead:

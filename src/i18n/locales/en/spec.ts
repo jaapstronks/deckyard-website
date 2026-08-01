@@ -34,6 +34,8 @@ export const spec: SpecContent = {
     heroTitle: 'A deck is a file you own, in a format anybody may implement',
     heroIntro:
       'Deckyard stores presentations in a format that is written down, versioned, and free to implement. Not an export option bolted on afterwards; the shape the software works in.',
+    cardIntro:
+      'Written down, versioned and free to implement. Not an export option bolted on afterwards, but the shape the software works in.',
 
     layersTitle: 'Two layers, and the difference matters',
     layersLead:
@@ -107,6 +109,8 @@ export const spec: SpecContent = {
     heroTitle: 'The deck format',
     heroIntro:
       "The portable, versioned shape a presentation serializes to, so a second implementation can read, render and round-trip it without Deckyard's server or its storage.",
+    cardIntro:
+      'A JSON envelope for the data, a ZIP package for the assets, and generated schemas a second implementation can build against.',
     introBody: [
       'A deck is data, not a rendering. The format is deliberately plain: slides are a flat array of `{ type, content }`, and nothing in it depends on the machine it came from.',
     ],
@@ -205,6 +209,8 @@ export const spec: SpecContent = {
     heroTitle: 'Slide types',
     heroIntro:
       'The vocabulary a deck is written in. Each type declares its own fields, and that declaration is what you see below.',
+    cardIntro:
+      'The vocabulary a deck is written in: every built-in type with its fields and limits, generated from the core registry.',
     introBody: [
       'A slide type is a small contract: a name, a set of fields, and a shape. It is not a template you fill in and then push around, which is why the same deck can render at any size, on any theme, into HTML or PDF, and be read by something that is not a person. Core ships {activeCount} of them, all declared in one registry; the glyph on each card below is the abstract diagram the editor draws in its own slide picker, from the same description of the layout.',
     ],
@@ -295,6 +301,8 @@ export const spec: SpecContent = {
     heroTitle: 'What it takes to read a Deckyard deck',
     heroIntro:
       'Publishing a format is a promise, and a promise without an edge is not one. This page draws the edge: what you have to build, what you may then say you support, and what happens at every point where your reader meets something it does not know.',
+    cardIntro:
+      'What a second implementation has to build, what it may then claim, and what happens when a reader meets a type it does not know.',
 
     levelsTitle: 'Conformance has two levels',
     levelsLead:

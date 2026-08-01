@@ -7,7 +7,9 @@ export const features: FeaturesContent = {
   heroKicker: 'The full inventory',
   heroTitle: 'Everything that is already in there',
   heroIntro:
-    'The rest of this site makes one argument at a time. This page is the list: what Deckyard does today, grouped by the moment you need it, with the documentation one link away.',
+    'What Deckyard does today, grouped by the moment you need it, with the documentation one link away.',
+  cardIntro:
+    'What Deckyard does today: slide types, themes, AI on your own key, collaboration, live audiences, publishing and export.',
 
   groups: [
     {

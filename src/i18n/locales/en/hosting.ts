@@ -8,6 +8,8 @@ export const hosting: HostingContent = {
   heroTitle: 'Deckyard runs where you want it',
   heroIntro:
     'The software is MIT licensed and made to be self-hosted, so running it yourself is the default path and always will be. But somebody has to keep that server patched, and not every organisation has that person. So we also run instances.',
+  cardIntro:
+    'Run it yourself from one Docker Compose file, or have us run a dedicated instance on your own domain, in Europe.',
 
   routesTitle: 'Two doors, same software',
   routesLead:

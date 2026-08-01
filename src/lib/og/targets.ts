@@ -17,9 +17,30 @@ export interface OgTarget {
 }
 
 /**
+ * The card's intro is clamped to two lines of roughly 80 characters, and a
+ * card travels without its page. So when hero copy has to stand in for it, it
+ * gets cut down to its leading whole sentences within that budget - a clean
+ * stop beats an ellipsis through a clause. Hand-written card copy
+ * (`cardIntro` in the locale files) skips this entirely.
+ */
+const INTRO_BUDGET = 160;
+function leadSentences(copy: string): string {
+  if (copy.length <= INTRO_BUDGET) return copy;
+  const sentences = copy.match(/[^.!?]+[.!?]+["')\]]?(\s+|$)/g) ?? [copy];
+  let out = '';
+  for (const sentence of sentences) {
+    if (out && (out + sentence).trim().length > INTRO_BUDGET) break;
+    out += sentence;
+  }
+  return out.trim() || copy;
+}
+
+/**
  * Marketing pages, one entry per route under src/pages/[...locale]/.
- * The card takes the page's own hero copy rather than its <title>, because the
- * hero is the human sentence and the meta title carries an SEO suffix.
+ * The card takes the page's `cardIntro` when the locale provides one, and the
+ * leading sentences of its hero copy otherwise - the hero rather than the
+ * <title>, because the hero is the human sentence and the meta title carries
+ * an SEO suffix.
  *
  * The homepage is deliberately absent: it keeps the hand-made card in
  * public/images/og/, which sells the product rather than naming a page.
@@ -38,7 +59,7 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     card: (t) => ({
       label: t.features.heroKicker,
       title: t.features.heroTitle,
-      intro: t.features.heroIntro,
+      intro: t.features.cardIntro ?? leadSentences(t.features.heroIntro),
     }),
   },
   {
@@ -46,7 +67,7 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     card: (t) => ({
       label: t.hosting.heroKicker,
       title: t.hosting.heroTitle,
-      intro: t.hosting.heroIntro,
+      intro: t.hosting.cardIntro ?? leadSentences(t.hosting.heroIntro),
     }),
   },
   {
@@ -54,7 +75,7 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     card: (t) => ({
       label: t.accessibility.heroKicker,
       title: t.accessibility.heroTitle,
-      intro: t.accessibility.heroIntro,
+      intro: t.accessibility.cardIntro ?? leadSentences(t.accessibility.heroIntro),
     }),
   },
   {
@@ -62,7 +83,7 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     card: (t) => ({
       label: t.compare.heroKicker,
       title: t.compare.heroTitle,
-      intro: t.compare.heroIntro,
+      intro: t.compare.cardIntro ?? leadSentences(t.compare.heroIntro),
     }),
   },
   {
@@ -70,7 +91,7 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     card: (t) => ({
       label: t.structured.kicker,
       title: t.structured.title,
-      intro: t.structured.dek,
+      intro: t.structured.cardIntro ?? leadSentences(t.structured.dek),
     }),
   },
   {
@@ -78,7 +99,7 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     card: (t) => ({
       label: t.spec.index.heroKicker,
       title: t.spec.index.heroTitle,
-      intro: t.spec.index.heroIntro,
+      intro: t.spec.index.cardIntro ?? leadSentences(t.spec.index.heroIntro),
     }),
   },
   {
@@ -86,7 +107,7 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     card: (t) => ({
       label: t.spec.conformance.heroKicker,
       title: t.spec.conformance.heroTitle,
-      intro: t.spec.conformance.heroIntro,
+      intro: t.spec.conformance.cardIntro ?? leadSentences(t.spec.conformance.heroIntro),
     }),
   },
   {
@@ -94,7 +115,7 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     card: (t) => ({
       label: t.spec.format.heroKicker,
       title: t.spec.format.heroTitle,
-      intro: t.spec.format.heroIntro,
+      intro: t.spec.format.cardIntro ?? leadSentences(t.spec.format.heroIntro),
     }),
   },
   {
@@ -102,7 +123,7 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     card: (t) => ({
       label: t.spec.types.heroKicker,
       title: t.spec.types.heroTitle,
-      intro: t.spec.types.heroIntro,
+      intro: t.spec.types.cardIntro ?? leadSentences(t.spec.types.heroIntro),
     }),
   },
 ];
@@ -158,7 +179,7 @@ async function collectTargets(): Promise<OgTarget[]> {
           year: 'numeric',
         }).format(post.data.pubDate),
         title: post.data.title,
-        intro: post.data.description ?? post.data.intro,
+        intro: leadSentences(post.data.description ?? post.data.intro),
       },
     });
   }
@@ -172,7 +193,7 @@ async function collectTargets(): Promise<OgTarget[]> {
         label: ui.en.nav.docs,
         meta: docsSection(entry.id),
         title: entry.data.title,
-        intro: entry.data.description,
+        intro: entry.data.description && leadSentences(entry.data.description),
       },
     });
   }

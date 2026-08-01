@@ -7,6 +7,8 @@ export const structured: StructuredContent = {
   kicker: 'Hoe het werkt',
   title: 'Een slide die weet wat hij is',
   dek: 'De meeste programma’s behandelen een slide als een canvas: een rechthoek waar je vakjes op legt, daar waar het goed uitkomt. Deckyard behandelt hem als een record met een type. Het klinkt als een technisch detail. Het is de reden dat al het andere op deze site kan bestaan.',
+  cardIntro:
+    'Een slide is een record met een type, geen canvas waar je vormen op sleept. Uit die ene keuze komt al het andere voort.',
   stats: [
     { value: '{count}', label: 'slidetypes, elk met eigen velden' },
     { value: '1', label: 'gepubliceerd schema, uit de code gegenereerd' },

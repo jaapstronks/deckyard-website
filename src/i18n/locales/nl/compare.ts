@@ -8,6 +8,8 @@ export const compare: CompareContent = {
   heroTitle: 'Wat je erbij krijgt, en wat je opgeeft',
   heroIntro:
     'Bijna iedereen die hier terechtkomt maakt zijn decks nu in PowerPoint, Google Slides, Canva of Gamma. Deze pagina zegt daarom plat waar elk van die vier goed in is, wat het je kost, en wanneer Deckyard het verkeerde antwoord is. Een vergelijking die wij op elke rij winnen zegt namelijk niets.',
+  cardIntro:
+    'Waar PowerPoint, Google Slides, Canva en Gamma goed in zijn, wat ze je kosten, en wanneer Deckyard het verkeerde antwoord is.',
 
   tableTitle: 'Vijf manieren om een deck te maken',
   tableLead:

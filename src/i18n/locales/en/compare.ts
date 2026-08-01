@@ -8,6 +8,8 @@ export const compare: CompareContent = {
   heroTitle: 'What you gain, and what you give up',
   heroIntro:
     'Almost everybody arriving here already makes decks in PowerPoint, Google Slides, Canva or Gamma. So this page says plainly what each of those is good at, what it costs you, and where Deckyard is the wrong answer. A comparison we win every row of would tell you nothing.',
+  cardIntro:
+    'What PowerPoint, Google Slides, Canva and Gamma each do well, what they cost you, and where Deckyard is the wrong answer.',
 
   tableTitle: 'Five ways to make a deck',
   tableLead:
