@@ -33,8 +33,9 @@ export const heroDecks: Partial<Record<Lang, HeroDeck>> = {
   // The two decks are not translations of each other and do not need to be. The
   // Dutch one introduces Deckyard; this one is a deck somebody would actually
   // give - a lemonade stand reporting a quarter to its investors - which is the
-  // better demonstration now that the page around it explains the product. 1.17
-  // MB, and none of it fetched until somebody presses play.
+  // better demonstration now that the page around it explains the product. 587
+  // kB since core's export stopped shipping the editor stylesheet, and none of
+  // it fetched until somebody presses play.
   en: {
     src: '/decks/sunnyside-lemonade-stand-en.html',
     poster: '/images/hero/deck-poster-en.webp',
