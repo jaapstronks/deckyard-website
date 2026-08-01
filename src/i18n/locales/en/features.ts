@@ -17,6 +17,8 @@ export const features: FeaturesContent = {
       body: 'There is no canvas and no text box to place. Every slide is a declared type with named fields, so the design was decided once, in the theme, and never again per slide.',
       teaser: 'Declared types, named fields, and a library of what you already made.',
       moreLabel: 'Editing docs',
+      shotAlt:
+        'The Deckyard editor with a funnel slide open: named fields on the left, the rendered slide on the right.',
       items: [
         {
           title: '{count} declared slide types',
@@ -77,6 +79,8 @@ export const features: FeaturesContent = {
       body: 'AI is switched on by you, paid for by you, and confined to filling in fields that already have a declared shape. There is no model in the middle you did not pick.',
       teaser: 'Your provider, your key, and fields it cannot design its way out of.',
       moreLabel: 'AI docs',
+      shotAlt:
+        'The translation preview: each declared field of the slide listed by name, with the source text and the model’s suggested translation side by side.',
       items: [
         {
           title: 'Bring your own key',
@@ -107,6 +111,8 @@ export const features: FeaturesContent = {
       body: 'Decks are usually written by a few people under time pressure. That means real permissions, comments where the slide is, and a way back to what it said yesterday.',
       teaser: 'Permissions per person, comments on the slide, and a way back.',
       moreLabel: 'Collaboration docs',
+      shotAlt:
+        'The comments panel open next to the slide preview, with one open thread and one resolved thread.',
       items: [
         {
           title: 'Permissions per person',
@@ -137,6 +143,8 @@ export const features: FeaturesContent = {
       body: 'A question to the room is a slide type like any other, so the answers are part of the deck rather than a second tool you also had to open.',
       teaser: 'Polls, Q&A and a phone in every hand, without a second tool.',
       moreLabel: 'Presenter docs',
+      shotAlt:
+        'Presenter view: the current slide, a clock with a 20-minute target, the next slide as a thumbnail, and the speaker notes for this slide.',
       items: [
         {
           title: 'Polls and scales',
@@ -171,6 +179,8 @@ export const features: FeaturesContent = {
       body: 'A deck leaves in the shape you need it: a link, an embed, a single file, or a document for a tool that is not this one. All of it at any moment, without asking anyone.',
       teaser: 'A link, an embed, a single HTML file, PDF, PowerPoint or JSON.',
       moreLabel: 'Publishing docs',
+      shotAlt:
+        'The share dialog for a link: permission, access, expiry and password set, with the resulting invite-only link listed below.',
       items: [
         {
           title: 'Publish with a link',
