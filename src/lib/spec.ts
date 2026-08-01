@@ -88,20 +88,16 @@ export const EXAMPLE_ENVELOPE = `{
   "version": ${ENVELOPE_VERSION},
   "title": "My deck",
   "theme": "default",
-  "slideTypes": {
-    "title-slide": "core/title-slide",
-    "quote-slide": "core/quote-slide"
-  },
   "slides": [
-    { "type": "title-slide", "content": { "title": "Hello", "background": "lime" } },
-    { "type": "quote-slide", "content": { "quote": "A deck is data.", "attribution": "Deckyard" } }
+    { "type": "eu.deckyard.slide.title", "content": { "title": "Hello", "background": "lime" } },
+    { "type": "eu.deckyard.slide.quote", "content": { "quote": "A deck is data.", "attribution": "Deckyard" } }
   ]
 }`;
 
 /**
  * The same deck, short enough for the homepage.
  *
- * Five keys instead of the full envelope, and the slide bodies elided, because
+ * Three keys instead of the full envelope, and the slide bodies elided, because
  * the front page is making a claim rather than documenting a field: this is
  * JSON, it names its own format and version, and every slide names a declared
  * type. Someone who wants the rest clicks through and meets the deck above,
@@ -112,12 +108,12 @@ export const EXAMPLE_ENVELOPE_BRIEF = `{
   "format": "${FORMAT_MAGIC}",
   "version": ${ENVELOPE_VERSION},
   "slides": [
-    { "type": "title-slide", "content": { … } },
-    { "type": "quote-slide", "content": { … } }
+    { "type": "eu.deckyard.slide.title", "content": { … } },
+    { "type": "eu.deckyard.slide.quote", "content": { … } }
   ]
 }`;
 
-export const EXAMPLE_SLIDE = `{ "type": "content-slide", "content": { "title": "Why", "body": "..." } }`;
+export const EXAMPLE_SLIDE = `{ "type": "eu.deckyard.slide.content", "content": { "title": "Why", "body": "..." } }`;
 
 /**
  * The archive listing, and nothing else. The explanation of each entry lives in

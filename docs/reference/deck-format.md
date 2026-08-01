@@ -1,6 +1,6 @@
 ---
 title: "Deck format"
-description: "The portable deck envelope, field by field: slides, the identity manifest, asset refs, round-trip and versioning."
+description: "The portable deck envelope, field by field: slides, type identity, asset refs, round-trip and versioning."
 ---
 
 The deck format is Deckyard's **portable, versioned deck interchange format** — the
@@ -32,9 +32,8 @@ guarantees and what is still open, see [the format spec](/spec/deck-format/).
   "version": 1,
   "title": "My deck",
   "theme": "default",
-  "slideTypes": { "title-slide": "core/title-slide" },
   "slides": [
-    { "type": "title-slide", "content": { "title": "Hello", "background": "lime" } }
+    { "type": "eu.deckyard.slide.title", "content": { "title": "Hello", "background": "lime" } }
   ]
 }
 ```
@@ -47,34 +46,32 @@ guarantees and what is still open, see [the format spec](/spec/deck-format/).
 | `version`    | integer | Format version. <!--gen:envelope-version-->1<!--/gen:envelope-version--> today. Bumped only on a breaking envelope change (see [Versioning](#versioning)).      |
 | `title`      | string  | Human title of the deck.                                                                                                                                       |
 | `theme`      | string  | Theme id the deck was authored against (e.g. `"default"`). A reader that lacks the theme falls back to its own default; content is unaffected.                  |
-| `slideTypes` | object  | Identity manifest: bare type key → `namespace/name[@version]` (see below).                                                                                      |
 | `slides`     | array   | Ordered list of slides, each `{ type, content }`.                                                                                                              |
 
 The envelope is **lenient**: unknown top-level keys are ignored by the importer,
 not rejected. This keeps forward-compatibility — a newer producer can add fields
 an older reader simply skips.
 
-## `slideTypes` — the identity manifest
+## Type identity — one spelling on `slides[].type`
 
-`slideTypes` records which slide-type **definitions** a deck was written against,
-as a map of the bare type key to its qualified identity:
+Each slide names its type once, on `slides[].type`, in the **canonical id**:
+reverse-DNS for a declarant with a domain (`eu.deckyard.slide.title`),
+`namespace/name` for one without (`acme/hero`). Core types are published under
+`eu.deckyard.slide`, with the `-slide` suffix dropped from the canonical name
+because `slide` is already in the authority.
 
-```json
-"slideTypes": {
-  "title-slide": "core/title-slide",
-  "quote-slide": "core/quote-slide"
-}
-```
-
-- The value is `namespace/name[@version]`. Core types resolve to the `core/`
-  namespace; a custom type carries its own namespace (e.g. `acme/hero`).
-- It is **recomputed from the registry on every export** (never hand-maintained),
-  so it cannot drift from the slides it describes. The CI fixture test asserts
-  the committed example's manifest equals the recomputed one.
-- `slides[].type` stays the **bare key** for back-compat; the manifest is the
-  place a reader learns which definition/version each key needs. A qualified ref
-  in `slides[].type` (e.g. `core/title-slide`) also imports — it resolves by
-  identity, and storage keeps the bare local name.
+- **One type has one id, and comparing ids is comparing strings** — after
+  stripping an optional `@version` suffix. There is no alias table and no
+  separate manifest: the id itself names the definition (and optionally the
+  version) a slide was written against.
+- Two older spellings — the bare registry key (`title-slide`) and the qualified
+  form (`core/title-slide`) — are **pre-convergence residue, not part of the
+  format**. The importer still accepts them and normalizes on ingest, but export
+  and the read APIs emit the canonical id. A second implementation owes the old
+  spellings nothing and may treat them as unknown types.
+- `@version` (`eu.deckyard.slide.title@2`) is a compatibility hint about a
+  definition, not a different type. A reader that lacks the named version
+  renders the version it has; it must not treat the id as unknown.
 
 See [custom slide types](/docs/customization/custom-slide-types/) for how a
 namespace of your own enters the registry.
@@ -84,10 +81,10 @@ namespace of your own enters the registry.
 Each slide is:
 
 ```json
-{ "type": "content-slide", "content": { "title": "Why", "body": "..." } }
+{ "type": "eu.deckyard.slide.content", "content": { "title": "Why", "body": "..." } }
 ```
 
-- **`type`** — the slide-type key (bare, or a qualified `namespace/name` ref).
+- **`type`** — the slide type's canonical id (see above).
 - **`content`** — an object whose shape is defined by that slide type's field
   registry. Absent or `""` fields mean "unset"; the importer fills type defaults
   and never blanks a required field.

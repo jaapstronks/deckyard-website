@@ -43,7 +43,7 @@ export const spec: SpecContent = {
         badge: 'Layer 1',
         name: 'The deck format',
         what: 'JSON. The data.',
-        body: 'A flat, readable envelope: a title, a theme, a manifest of the slide types used, and an ordered array of slides. No server ids, no timestamps, no storage leftovers. You can open it in a text editor and understand it.',
+        body: 'A flat, readable envelope: a title, a theme, and an ordered array of slides, each one naming its type. No server ids, no timestamps, no storage leftovers. You can open it in a text editor and understand it.',
       },
       {
         badge: 'Layer 2',
@@ -112,16 +112,16 @@ export const spec: SpecContent = {
     ],
 
     envelopeTitle: 'The envelope',
-    envelopeBody: ['Six top-level fields. Everything else about a deck lives inside `slides`.'],
+    envelopeBody: ['Five top-level fields. Everything else about a deck lives inside `slides`.'],
     leniency:
       'The envelope is lenient. Unknown top-level keys are ignored by an importer, never rejected, so a newer producer can add a field that an older reader simply skips.',
     envelopeRefNote:
-      'Each of the six fields, its type and what a reader should do with it, is written out in the documentation.',
+      'Each of the five fields, its type and what a reader should do with it, is written out in the documentation.',
 
-    slidesTitle: 'Slides, and the manifest that names their types',
+    slidesTitle: 'Slides, and the one spelling of a type id',
     slidesBody: [
       'A slide is a type and a content object whose shape that type defines. An absent or empty field means "unset": an importer fills the type\'s defaults and never blanks a required field. Portable slides carry no id, because ids are a storage concern and are regenerated on import.',
-      '`slideTypes` records which type definitions the deck was written against, as a map from the bare key to a qualified `namespace/name[@version]` identity. It is recomputed from the registry on every export and never hand-maintained, so it cannot drift from the slides it describes. This is how a second implementation learns which definitions a deck needs.',
+      "`slides[].type` is the type's canonical id, and a type has exactly one: reverse-DNS for a declarant with a domain (`eu.deckyard.slide.title`), `namespace/name` for one without. The id names the definition the slide was written against and may pin a version (`@2`), so there is no separate manifest to cross-check. Two older spellings - the bare registry key `title-slide` and the qualified `core/title-slide` - are pre-convergence residue, not part of the format: Deckyard still accepts and normalizes them on import, but what it exports is canonical, and a second implementation owes them nothing.",
     ],
 
     schemaTitle: 'Content schemas',
@@ -205,13 +205,8 @@ export const spec: SpecContent = {
     heroTitle: 'Slide types',
     heroIntro:
       'The vocabulary a deck is written in. Each type declares its own fields, and that declaration is what you see below.',
-    stats: [
-      { value: '{count}', label: 'Built-in types' },
-      { value: '{audienceCount}', label: 'The audience takes part in' },
-      { value: '1', label: 'Place any of this is written down' },
-    ],
     introBody: [
-      'A slide type is a small contract: a name, a set of fields, and a shape. It is not a template you fill in and then push around, which is why the same deck can render at any size, on any theme, into HTML or PDF, and be read by something that is not a person. The glyph on each card is the abstract diagram the editor draws in its own slide picker, from the same description of the layout.',
+      'A slide type is a small contract: a name, a set of fields, and a shape. It is not a template you fill in and then push around, which is why the same deck can render at any size, on any theme, into HTML or PDF, and be read by something that is not a person. Core ships {activeCount} of them, all declared in one registry; the glyph on each card below is the abstract diagram the editor draws in its own slide picker, from the same description of the layout.',
     ],
 
     structureLead:
@@ -246,9 +241,9 @@ export const spec: SpecContent = {
       dataset: 'Dataset',
       chrome: 'Chrome',
     },
-    filterAudienceLabel: 'The audience takes part',
+    filterAudienceLabel: 'Audience types only',
     filterAudienceHint:
-      'Types where the room answers, rates or joins in, rather than only watching.',
+      'Only the types where the room itself does something - answer a poll, rate a statement, leave feedback - rather than only watch.',
     resultCount: '{n} types shown',
     emptyResult: 'No types match those filters.',
 
@@ -273,21 +268,8 @@ export const spec: SpecContent = {
     runtimeLabel: 'Runtime',
     fallbackLabel: 'Falls back to',
 
-    runtimeTitle: 'What has to be running behind a slide',
-    runtimeLead:
-      'A type also declares a `runtime`: what the presenting session has to do for it beyond serving the slide. It is the facet that decides whether a reader needs a server at all, and most of the catalogue asks for nothing.',
-    runtimeLabels: {
-      static: 'Static',
-      timed: 'Timed',
-      live: 'Live',
-    },
-    runtimeContracts: {
-      static:
-        'The session does nothing for it. The slide may still have client-side behaviour of its own; that is the slide’s business, not the session’s.',
-      timed:
-        'The presenter drives a clock on the slide. The timer state lives in the presenting window; the session neither holds nor aggregates it.',
-      live: 'The audience answers, and the session collects and aggregates those answers as state the presenter opens and closes.',
-    },
+    runtimeNote:
+      'A type also declares a `runtime`: what the presenting session has to do for it beyond serving the slide. For nearly the whole catalogue the answer is nothing - a `static` type renders with no server in the picture. The {liveCount} `live` types are the exception: the audience answers, and the session collects and aggregates those answers as state the presenter opens and closes. One type, the countdown, is `timed` - its clock runs in the presenting window and asks nothing of the session.',
 
     globalTitle: 'The fields every type carries',
     globalBody: [
@@ -427,7 +409,7 @@ export const spec: SpecContent = {
       'A published name MUST keep its meaning for as long as it exists. If the meaning has to change, the name changes, and the old one is deprecated rather than removed silently.',
       'Optional keys MAY be added at any time. A new **required** key MUST NOT be added to a published type: that turns every existing deck retroactively invalid, and it is a rename wearing a compatible-looking hat. Widening a value space is additive; **narrowing it is not.**',
       'A reader MUST ignore keys it does not know, at every level - envelope, slide, content, item - and MUST NOT reject a deck for carrying them.',
-      'A reader MUST treat the three spellings of a type id as one identity: the canonical reverse-DNS name, the qualified `namespace/name`, and the bare key that `slides[].type` still holds in every deck. A `@version` suffix is a compatibility hint about a definition, not a different type, so `title-slide@2` MUST NOT be treated as unknown.',
+      'A reader MUST compare type ids as strings, after stripping an optional `@version` suffix: one type has one id, and there is no alias table to learn. The two older spellings of a core id - the bare `title-slide` and the qualified `core/title-slide` - are pre-convergence residue, not part of the format; a reader owes them nothing and MAY treat them as unknown types, which the unknown-type contract renders without loss. The `@version` suffix is a compatibility hint about a definition, not a different type, so `eu.deckyard.slide.title@2` MUST NOT be treated as unknown.',
     ],
 
     unknownTitle: 'A type your reader has never heard of',

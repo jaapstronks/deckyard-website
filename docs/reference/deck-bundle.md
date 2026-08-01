@@ -83,7 +83,7 @@ The file extension is unaffected either way.
 ## `deck.json`
 
 The portable deck (`presentationToDeck` output: `format`, `version`, `title`,
-`theme`, the `slideTypes` identity manifest, and `slides` — see
+`theme` and `slides` — see
 [Deck format](/docs/reference/deck-format/)). Asset refs in slide content are
 rewritten from `/uploads/x.png` to the bundle ref `assets/<hash>.<ext>`. External
 (`http(s)://`) image URLs are left untouched — they are already portable and are

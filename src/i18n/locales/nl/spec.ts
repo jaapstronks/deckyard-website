@@ -44,7 +44,7 @@ export const spec: SpecContent = {
         badge: 'Laag 1',
         name: 'Het deckformaat',
         what: 'JSON. De data.',
-        body: 'Een platte, leesbare envelop: een titel, een thema, een manifest van de gebruikte slidetypes en een geordende reeks slides. Geen server-ids, geen timestamps, geen restanten van opslag. Je opent het in een teksteditor en je snapt wat er staat.',
+        body: 'Een platte, leesbare envelop: een titel, een thema en een geordende reeks slides, elk met de naam van zijn type. Geen server-ids, geen timestamps, geen restanten van opslag. Je opent het in een teksteditor en je snapt wat er staat.',
       },
       {
         badge: 'Laag 2',
@@ -113,16 +113,16 @@ export const spec: SpecContent = {
     ],
 
     envelopeTitle: 'De envelop',
-    envelopeBody: ['Zes velden op het hoogste niveau. Al het andere zit in `slides`.'],
+    envelopeBody: ['Vijf velden op het hoogste niveau. Al het andere zit in `slides`.'],
     leniency:
       'De envelop is inschikkelijk. Onbekende sleutels op het hoogste niveau worden door een importeur genegeerd en nooit geweigerd, zodat een nieuwere schrijver een veld kan toevoegen dat een oudere lezer simpelweg overslaat.',
     envelopeRefNote:
-      'Alle zes velden staan uitgeschreven in de documentatie: hun type, en wat een lezer ermee hoort te doen.',
+      'Alle vijf velden staan uitgeschreven in de documentatie: hun type, en wat een lezer ermee hoort te doen.',
 
-    slidesTitle: 'Slides, en het manifest dat hun types noemt',
+    slidesTitle: 'Slides, en de ene spelling van een type-id',
     slidesBody: [
       'Een slide is een type plus een content-object waarvan dat type de vorm bepaalt. Een afwezig of leeg veld betekent "niet ingevuld": een importeur vult de standaardwaarden van het type in en maakt een verplicht veld nooit leeg. Draagbare slides hebben geen id, want ids horen bij opslag en worden bij import opnieuw gegenereerd.',
-      '`slideTypes` legt vast tegen welke typedefinities een deck is geschreven, als een afbeelding van de kale sleutel naar een volledige identiteit `namespace/naam[@versie]`. Het wordt bij elke export opnieuw uit de registry berekend en nooit met de hand bijgehouden, dus het kan niet afdrijven van de slides die het beschrijft. Zo leert een tweede implementatie welke definities een deck nodig heeft.',
+      '`slides[].type` is de canonieke id van het type, en een type heeft er precies één: reverse-DNS voor een declarant met een domein (`eu.deckyard.slide.title`), `namespace/naam` voor een declarant zonder. De id noemt zelf al de definitie waartegen de slide geschreven is en mag een versie vastpinnen (`@2`), dus er is geen apart manifest om ernaast te leggen. Twee oudere spellingen - de kale registrysleutel `title-slide` en de gekwalificeerde `core/title-slide` - zijn restanten van vóór de convergentie, geen onderdeel van het formaat: Deckyard accepteert en normaliseert ze nog bij import, maar wat het exporteert is canoniek, en een tweede implementatie is ze niets verschuldigd.',
     ],
 
     schemaTitle: "Contentschema's",
@@ -206,13 +206,8 @@ export const spec: SpecContent = {
     heroTitle: 'Slidetypes',
     heroIntro:
       'De woordenschat waarin een deck geschreven is. Elk type declareert zijn eigen velden, en die declaratie is wat je hieronder ziet.',
-    stats: [
-      { value: '{count}', label: 'Ingebouwde types' },
-      { value: '{audienceCount}', label: 'Waarbij de zaal meedoet' },
-      { value: '1', label: 'Plek waar dit staat opgeschreven' },
-    ],
     introBody: [
-      'Een slidetype is een klein contract: een naam, een set velden en een vorm. Het is geen sjabloon dat je invult en daarna verschuift, en juist daarom kan hetzelfde deck op elk formaat renderen, op elk thema, naar HTML of PDF, en gelezen worden door iets dat geen mens is. De tekening op elke kaart is hetzelfde abstracte diagram dat de editor in zijn eigen slidekiezer tekent, uit dezelfde beschrijving van de layout.',
+      'Een slidetype is een klein contract: een naam, een set velden en een vorm. Het is geen sjabloon dat je invult en daarna verschuift, en juist daarom kan hetzelfde deck op elk formaat renderen, op elk thema, naar HTML of PDF, en gelezen worden door iets dat geen mens is. Core levert er {activeCount}, allemaal gedeclareerd in één registry; de tekening op elke kaart hieronder is hetzelfde abstracte diagram dat de editor in zijn eigen slidekiezer tekent, uit dezelfde beschrijving van de layout.',
     ],
 
     structureLead:
@@ -247,9 +242,9 @@ export const spec: SpecContent = {
       dataset: 'Dataset',
       chrome: 'Chrome',
     },
-    filterAudienceLabel: 'De zaal doet mee',
+    filterAudienceLabel: 'Alleen publiekstypes',
     filterAudienceHint:
-      'Types waarbij het publiek antwoordt, beoordeelt of meedoet, in plaats van alleen toekijkt.',
+      'Alleen de types waarbij de zaal zelf iets doet - een poll beantwoorden, een stelling beoordelen, feedback achterlaten - in plaats van alleen kijken.',
     resultCount: '{n} types getoond',
     emptyResult: 'Geen types die aan die filters voldoen.',
 
@@ -274,21 +269,8 @@ export const spec: SpecContent = {
     runtimeLabel: 'Runtime',
     fallbackLabel: 'Valt terug op',
 
-    runtimeTitle: 'Wat er achter een slide moet draaien',
-    runtimeLead:
-      'Een type declareert ook een `runtime`: wat de presenterende sessie voor dat type moet doen, bovenop het serveren van de slide. Dit is het facet dat bepaalt of een lezer überhaupt een server nodig heeft, en het grootste deel van de catalogus vraagt niets.',
-    runtimeLabels: {
-      static: 'Statisch',
-      timed: 'Met klok',
-      live: 'Live',
-    },
-    runtimeContracts: {
-      static:
-        'De sessie doet er niets voor. De slide mag zelf best gedrag in de browser hebben; dat is de zaak van de slide, niet van de sessie.',
-      timed:
-        'De presentator draait een klok op de slide. De timerstand leeft in het presentatievenster; de sessie bewaart of aggregeert hem niet.',
-      live: 'De zaal antwoordt, en de sessie verzamelt en aggregeert die antwoorden als toestand die de presentator opent en sluit.',
-    },
+    runtimeNote:
+      'Een type declareert ook een `runtime`: wat de presenterende sessie ervoor moet doen, bovenop het serveren van de slide. Voor bijna de hele catalogus is dat niets - een `static` type rendert zonder server in beeld. De {liveCount} `live` types zijn de uitzondering: de zaal antwoordt, en de sessie verzamelt en aggregeert die antwoorden als toestand die de presentator opent en sluit. Eén type, de countdown, is `timed` - zijn klok loopt in het presentatievenster en vraagt niets van de sessie.',
 
     globalTitle: 'De velden die elk type meedraagt',
     globalBody: [
@@ -431,7 +413,7 @@ export const spec: SpecContent = {
       'Een gepubliceerde naam MOET zijn betekenis houden zolang hij bestaat. Moet de betekenis veranderen, dan verandert de naam, en de oude wordt eerst deprecated in plaats van stilletjes weggehaald.',
       'Optionele sleutels MOGEN altijd worden toegevoegd. Een nieuwe **verplichte** sleutel MAG NIET aan een gepubliceerd type worden toegevoegd: dat maakt elk bestaand deck met terugwerkende kracht ongeldig, en het is een hernoeming die zich voordoet als compatibel. Een waardenruimte verbreden is additief; **versmallen is dat niet.**',
       'Een lezer MOET sleutels negeren die hij niet kent, op elk niveau - envelop, slide, content, item - en MAG een deck niet afwijzen omdat het ze bevat.',
-      'Een lezer MOET de drie spellingen van een type-id als één identiteit behandelen: de canonieke reverse-DNS-naam, de gekwalificeerde `namespace/naam`, en de kale sleutel die `slides[].type` in elk deck nog steeds bevat. Een achtervoegsel `@version` is een compatibiliteitshint over een definitie, geen ander type, dus `title-slide@2` MAG niet als onbekend gelden.',
+      'Een lezer MOET type-ids vergelijken als strings, na het afknippen van een optioneel achtervoegsel `@version`: één type heeft één id, en er is geen aliastabel om te leren. De twee oudere spellingen van een core-id - de kale `title-slide` en de gekwalificeerde `core/title-slide` - zijn restanten van vóór de convergentie en geen onderdeel van het formaat; een lezer is ze niets verschuldigd en MAG ze als onbekend type behandelen, wat het onbekend-type-contract zonder verlies rendert. Het achtervoegsel `@version` is een compatibiliteitshint over een definitie, geen ander type, dus `eu.deckyard.slide.title@2` MAG niet als onbekend gelden.',
     ],
 
     unknownTitle: 'Een type dat je lezer nooit gezien heeft',
