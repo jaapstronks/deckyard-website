@@ -206,13 +206,8 @@ export const spec: SpecContent = {
     heroTitle: 'Slidetypes',
     heroIntro:
       'De woordenschat waarin een deck geschreven is. Elk type declareert zijn eigen velden, en die declaratie is wat je hieronder ziet.',
-    stats: [
-      { value: '{count}', label: 'Ingebouwde types' },
-      { value: '{audienceCount}', label: 'Waarbij de zaal meedoet' },
-      { value: '1', label: 'Plek waar dit staat opgeschreven' },
-    ],
     introBody: [
-      'Een slidetype is een klein contract: een naam, een set velden en een vorm. Het is geen sjabloon dat je invult en daarna verschuift, en juist daarom kan hetzelfde deck op elk formaat renderen, op elk thema, naar HTML of PDF, en gelezen worden door iets dat geen mens is. De tekening op elke kaart is hetzelfde abstracte diagram dat de editor in zijn eigen slidekiezer tekent, uit dezelfde beschrijving van de layout.',
+      'Een slidetype is een klein contract: een naam, een set velden en een vorm. Het is geen sjabloon dat je invult en daarna verschuift, en juist daarom kan hetzelfde deck op elk formaat renderen, op elk thema, naar HTML of PDF, en gelezen worden door iets dat geen mens is. Core levert er {activeCount}, allemaal gedeclareerd in één registry; de tekening op elke kaart hieronder is hetzelfde abstracte diagram dat de editor in zijn eigen slidekiezer tekent, uit dezelfde beschrijving van de layout.',
     ],
 
     structureLead:
@@ -247,9 +242,9 @@ export const spec: SpecContent = {
       dataset: 'Dataset',
       chrome: 'Chrome',
     },
-    filterAudienceLabel: 'De zaal doet mee',
+    filterAudienceLabel: 'Alleen publiekstypes',
     filterAudienceHint:
-      'Types waarbij het publiek antwoordt, beoordeelt of meedoet, in plaats van alleen toekijkt.',
+      'Alleen de types waarbij de zaal zelf iets doet - een poll beantwoorden, een stelling beoordelen, feedback achterlaten - in plaats van alleen kijken.',
     resultCount: '{n} types getoond',
     emptyResult: 'Geen types die aan die filters voldoen.',
 
@@ -274,21 +269,8 @@ export const spec: SpecContent = {
     runtimeLabel: 'Runtime',
     fallbackLabel: 'Valt terug op',
 
-    runtimeTitle: 'Wat er achter een slide moet draaien',
-    runtimeLead:
-      'Een type declareert ook een `runtime`: wat de presenterende sessie voor dat type moet doen, bovenop het serveren van de slide. Dit is het facet dat bepaalt of een lezer überhaupt een server nodig heeft, en het grootste deel van de catalogus vraagt niets.',
-    runtimeLabels: {
-      static: 'Statisch',
-      timed: 'Met klok',
-      live: 'Live',
-    },
-    runtimeContracts: {
-      static:
-        'De sessie doet er niets voor. De slide mag zelf best gedrag in de browser hebben; dat is de zaak van de slide, niet van de sessie.',
-      timed:
-        'De presentator draait een klok op de slide. De timerstand leeft in het presentatievenster; de sessie bewaart of aggregeert hem niet.',
-      live: 'De zaal antwoordt, en de sessie verzamelt en aggregeert die antwoorden als toestand die de presentator opent en sluit.',
-    },
+    runtimeNote:
+      'Een type declareert ook een `runtime`: wat de presenterende sessie ervoor moet doen, bovenop het serveren van de slide. Voor bijna de hele catalogus is dat niets - een `static` type rendert zonder server in beeld. De {liveCount} `live` types zijn de uitzondering: de zaal antwoordt, en de sessie verzamelt en aggregeert die antwoorden als toestand die de presentator opent en sluit. Eén type, de countdown, is `timed` - zijn klok loopt in het presentatievenster en vraagt niets van de sessie.',
 
     globalTitle: 'De velden die elk type meedraagt',
     globalBody: [

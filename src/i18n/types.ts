@@ -863,8 +863,7 @@ export interface SpecContent {
     heroKicker: string;
     heroTitle: string;
     heroIntro: string;
-    /** Copy carries {count} / {audienceCount}; lib/facts.ts fills them in. */
-    stats: { value: string; label: string }[];
+    /** Copy may carry {activeCount} / {liveCount}; lib/facts.ts fills them in. */
     introBody: string[];
 
     /**
@@ -926,15 +925,12 @@ export interface SpecContent {
     fallbackLabel: string;
 
     /**
-     * The second facet, as a legend rather than a section. What the presenting
-     * session has to do for a type decides whether a reader needs a server at
-     * all, so the three values are named; the argument for why the facet exists
-     * is core's business, not a spec reader's.
+     * The second facet, as one paragraph rather than a section. What the
+     * presenting session has to do for a type decides whether a reader needs a
+     * server at all - but nearly the whole catalogue asks for nothing, so the
+     * two exceptions are named in passing instead of tabled as three peers.
      */
-    runtimeTitle: string;
-    runtimeLead: string;
-    runtimeLabels: Record<string, string>;
-    runtimeContracts: Record<string, string>;
+    runtimeNote: string;
 
     globalTitle: string;
     globalBody: string[];

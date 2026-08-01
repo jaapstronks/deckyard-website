@@ -205,13 +205,8 @@ export const spec: SpecContent = {
     heroTitle: 'Slide types',
     heroIntro:
       'The vocabulary a deck is written in. Each type declares its own fields, and that declaration is what you see below.',
-    stats: [
-      { value: '{count}', label: 'Built-in types' },
-      { value: '{audienceCount}', label: 'The audience takes part in' },
-      { value: '1', label: 'Place any of this is written down' },
-    ],
     introBody: [
-      'A slide type is a small contract: a name, a set of fields, and a shape. It is not a template you fill in and then push around, which is why the same deck can render at any size, on any theme, into HTML or PDF, and be read by something that is not a person. The glyph on each card is the abstract diagram the editor draws in its own slide picker, from the same description of the layout.',
+      'A slide type is a small contract: a name, a set of fields, and a shape. It is not a template you fill in and then push around, which is why the same deck can render at any size, on any theme, into HTML or PDF, and be read by something that is not a person. Core ships {activeCount} of them, all declared in one registry; the glyph on each card below is the abstract diagram the editor draws in its own slide picker, from the same description of the layout.',
     ],
 
     structureLead:
@@ -246,9 +241,9 @@ export const spec: SpecContent = {
       dataset: 'Dataset',
       chrome: 'Chrome',
     },
-    filterAudienceLabel: 'The audience takes part',
+    filterAudienceLabel: 'Audience types only',
     filterAudienceHint:
-      'Types where the room answers, rates or joins in, rather than only watching.',
+      'Only the types where the room itself does something - answer a poll, rate a statement, leave feedback - rather than only watch.',
     resultCount: '{n} types shown',
     emptyResult: 'No types match those filters.',
 
@@ -273,21 +268,8 @@ export const spec: SpecContent = {
     runtimeLabel: 'Runtime',
     fallbackLabel: 'Falls back to',
 
-    runtimeTitle: 'What has to be running behind a slide',
-    runtimeLead:
-      'A type also declares a `runtime`: what the presenting session has to do for it beyond serving the slide. It is the facet that decides whether a reader needs a server at all, and most of the catalogue asks for nothing.',
-    runtimeLabels: {
-      static: 'Static',
-      timed: 'Timed',
-      live: 'Live',
-    },
-    runtimeContracts: {
-      static:
-        'The session does nothing for it. The slide may still have client-side behaviour of its own; that is the slide’s business, not the session’s.',
-      timed:
-        'The presenter drives a clock on the slide. The timer state lives in the presenting window; the session neither holds nor aggregates it.',
-      live: 'The audience answers, and the session collects and aggregates those answers as state the presenter opens and closes.',
-    },
+    runtimeNote:
+      'A type also declares a `runtime`: what the presenting session has to do for it beyond serving the slide. For nearly the whole catalogue the answer is nothing - a `static` type renders with no server in the picture. The {liveCount} `live` types are the exception: the audience answers, and the session collects and aggregates those answers as state the presenter opens and closes. One type, the countdown, is `timed` - its clock runs in the presenting window and asks nothing of the session.',
 
     globalTitle: 'The fields every type carries',
     globalBody: [

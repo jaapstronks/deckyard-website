@@ -24,8 +24,6 @@ import {
   slideStructures,
   typesWithStructure,
   repeatingFields,
-  slideRuntimes,
-  typesWithRuntime,
   type SlideType,
   type SlideTypeField,
 } from '@/lib/slideTypes';
@@ -70,47 +68,21 @@ const countLabel = (n: number) =>
   heroIntro={t.heroIntro}
 >
   <!-- ============ the framing ============ -->
-  <Section>
-    <dl class="ty-stats" data-reveal>
-      {
-        t.stats.map((s) => (
-          <div>
-            <dt>{withFacts(s.value)}</dt>
-            <dd>{s.label}</dd>
-          </div>
-        ))
-      }
-    </dl>
-    <div class="spec-prose ty-intro" data-reveal data-reveal-delay="80">
-      {t.introBody.map((p) => <p set:html={prose(p)} />)}
-    </div>
-  </Section>
-
-  <!-- ============ the two facets, as a legend ============ -->
-  <!-- Both facets used to be a section of their own, arguing for themselves. The
-       `structure` argument belongs on /spec/conformance/, where it is the thing
-       somebody builds against; here the six values only have to earn the six
-       headings below. `runtime` gets the same treatment: named, contracted, and
-       left at that. -->
+  <!-- One prose block: what a type is, how the grid is grouped, and the runtime
+       facet in passing. The stat row that opened the page (36 / 6 / 1) is gone -
+       two of the three numbers said nothing a reader could use, and the third
+       disagreed with the conformance page's 33, which counts what a new deck can
+       actually use. The one count worth keeping now lives in the first sentence.
+       `runtime` was a three-row legend here, which gave `timed` - one type, the
+       countdown - the same weight as the twenty-eight `static` ones; a facet
+       whose answer is "nothing" for nearly every type is a paragraph, not a
+       table. -->
   <Section>
     <div class="spec-prose" data-reveal>
+      {t.introBody.map((p) => <p set:html={prose(withFacts(p))} />)}
       <p set:html={prose(t.structureLead)} />
-      <h2>{t.runtimeTitle}</h2>
-      <p set:html={prose(t.runtimeLead)} />
+      <p set:html={prose(withFacts(t.runtimeNote))} />
     </div>
-    <dl class="spec-defs ty-runtimes" data-reveal>
-      {
-        slideRuntimes.map((r) => (
-          <div>
-            <dt>
-              {t.runtimeLabels[r.name] ?? r.name} <code>{r.name}</code>
-              <span class="ty-runtime-count">{countLabel(typesWithRuntime(r.name).length)}</span>
-            </dt>
-            <dd set:html={prose(t.runtimeContracts[r.name] ?? r.meaning)} />
-          </div>
-        ))
-      }
-    </dl>
   </Section>
 
   <!-- ============ the registry, by structure ============ -->
@@ -418,47 +390,6 @@ const countLabel = (n: number) =>
 </script>
 
 <style>
-  /* ---------- the stat row ---------- */
-  .ty-stats {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0;
-    padding: 0;
-    border-top: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-  }
-  .ty-stats > div {
-    flex: 1 1 13rem;
-    min-width: 0;
-    padding: 1rem 1.4rem;
-    border-right: 1px solid var(--line);
-  }
-  .ty-stats > div:first-child {
-    padding-left: 0;
-  }
-  .ty-stats > div:last-child {
-    border-right: 0;
-  }
-  .ty-stats dt {
-    font-family: var(--display);
-    font-variation-settings: 'wght' 660;
-    font-size: 2rem;
-    line-height: 1;
-    letter-spacing: -0.03em;
-    color: var(--green);
-    font-variant-numeric: tabular-nums;
-  }
-  .ty-stats dd {
-    margin: 0.45rem 0 0;
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    line-height: 1.5;
-    color: var(--ink-mute);
-  }
-  .ty-intro {
-    margin-top: var(--space-lg);
-  }
-
   /* ---------- toolbar ---------- */
   .ty-toolbar {
     display: flex;
@@ -561,24 +492,6 @@ const countLabel = (n: number) =>
     font-size: 0.88rem;
     line-height: 1.55;
     color: var(--ink-mute);
-  }
-
-  /* The runtime vocabulary reuses the shared definition rows; only the two
-     things a plain <dt> cannot carry are added - the raw value beside its label,
-     and how many types declare it. */
-  .ty-runtimes dt code {
-    font-family: var(--mono);
-    font-size: 0.8em;
-    font-weight: 400;
-    color: var(--ink-mute);
-  }
-  .ty-runtime-count {
-    display: block;
-    margin-top: 0.15rem;
-    font-family: var(--mono);
-    font-size: var(--step--3);
-    font-weight: 400;
-    color: var(--brass-text);
   }
 
   /* ---------- the grid ---------- */
