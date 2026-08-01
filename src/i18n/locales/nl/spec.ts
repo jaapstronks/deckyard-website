@@ -249,7 +249,7 @@ export const spec: SpecContent = {
     },
     filterAudienceLabel: 'De zaal doet mee',
     filterAudienceHint:
-      'Types waarbij het publiek antwoordt, beoordeelt of meekijkt, in plaats van alleen toekijkt.',
+      'Types waarbij het publiek antwoordt, beoordeelt of meedoet, in plaats van alleen toekijkt.',
     resultCount: '{n} types getoond',
     emptyResult: 'Geen types die aan die filters voldoen.',
 
@@ -301,6 +301,7 @@ export const spec: SpecContent = {
     ],
     deprecatedBadge: 'Uitgefaseerd',
 
+    liveNote: 'Het schema van elk type wordt ook live geserveerd, door elke draaiende installatie:',
     referenceNote:
       'Niets op deze pagina is met de hand ingetikt: de lijst, de aantallen, de veldtabellen en de tekeningen worden uit de core-registry gegenereerd. Dezelfde registry als één platte, doorzoekbare tabel staat in de documentatie.',
   },
@@ -420,7 +421,7 @@ export const spec: SpecContent = {
     ruleTitle: 'De evolutieregel',
     rule: 'Binnen een naam alleen toevoegen. Betekenis wijzigen is een naam wijzigen.',
     ruleLead:
-      'Normatief, en geldig voor elke gepubliceerde naam: een slidetype, een contentsleutel, een envelopsleutel, een enum-waarde. Deckyard migreert zijn eigen opslag vooruit, maar een lezer die wij niet bezitten draait onze migratieketen niet, dus voor alles wat gepubliceerd is, is een migratie geen reparatie. De twee blokken hieronder wijzigen hetzelfde type op wat een gelijke manier lijkt, en maar één ervan laat elk ooit geschreven deck geldig.',
+      'Normatief, en geldig voor elke gepubliceerde naam: een slidetype, een contentsleutel, een envelopsleutel, een enum-waarde. Deckyard migreert zijn eigen opslag vooruit, maar een lezer die wij niet bezitten draait onze migratieketen niet, dus voor alles wat gepubliceerd is, is een migratie geen reparatie. De twee blokken hieronder maken dezelfde wijziging aan hetzelfde type, en maar één van de twee houdt elk ooit geschreven deck geldig.',
     ruleOkLabel: 'Mag',
     ruleOkCaption: 'Een nieuwe optionele sleutel. Elk bestaand deck blijft geldig.',
     ruleBadLabel: 'Mag niet',

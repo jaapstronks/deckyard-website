@@ -28,7 +28,6 @@ import {
   EXAMPLE_SLIDE,
   EXAMPLE_BUNDLE_LAYOUT,
   BUNDLE_ENTRIES,
-  SCHEMA_BASE,
 } from '@/lib/spec';
 import { inlineCode } from '@/lib/inline';
 
@@ -79,7 +78,6 @@ const prose = (text: string) => inlineCode(withSpec(text));
     <div class="spec-prose" data-reveal>
       <h2>{t.schemaTitle}</h2>
       {t.schemaBody.map((p) => <p set:html={prose(p)} />)}
-      <p><code>{SCHEMA_BASE}/slide-types/&lt;type&gt;.schema.json</code></p>
 
       <h2>{t.assetsTitle}</h2>
       {t.assetsBody.map((p) => <p set:html={prose(p)} />)}

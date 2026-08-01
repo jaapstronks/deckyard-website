@@ -86,7 +86,7 @@ export const spec: SpecContent = {
       },
       {
         term: 'Content shape',
-        def: 'Versioned separately, under its own schema version, with a migration runner and a lenient read contract. New keys are additive; old decks keep opening.',
+        def: 'Versioned separately, under its own schema version ({schemaVersion} today), with a migration runner and a lenient read contract. New keys are additive; old decks keep opening.',
       },
       {
         term: 'Implementation',
@@ -300,6 +300,7 @@ export const spec: SpecContent = {
     ],
     deprecatedBadge: 'Retired',
 
+    liveNote: "Each type's schema is also served live, by any running instance:",
     referenceNote:
       'Nothing on this page is typed by hand: the list, the counts, the field tables and the glyphs are generated from the core registry. The same registry as one flat, searchable table is in the documentation.',
   },

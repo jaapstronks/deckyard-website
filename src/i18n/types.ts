@@ -943,6 +943,8 @@ export interface SpecContent {
     deprecatedBody: string[];
     deprecatedBadge: string;
 
+    /** The sentence that introduces the live schema endpoint at the foot. */
+    liveNote: string;
     /** This page keeps its cards; the flat, searchable table is in the docs. */
     referenceNote: string;
   };
