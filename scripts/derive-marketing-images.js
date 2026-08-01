@@ -27,7 +27,7 @@
 // does not have, and re-capturing at a different viewport cannot silently leave
 // a wrong ratio behind reserving the wrong amount of space.
 //
-// Run after every `npm run capture` in ../deckyard that touches these six:
+// Run after every `npm run capture` in ../deckyard that touches any of these:
 //
 //     npm run derive-images
 //
@@ -46,21 +46,38 @@ const MANIFEST = join(ROOT, 'src/data/marketing-shots.json');
 
 // name -> { width: derivative pixel width, slot: CSS px it is drawn at }
 //
-// Only the shots a page actually draws are listed. `editor-form-{nl,en}` is
-// delivered and committed as a source, but nothing renders it yet: the promoted
-// homepage block went to the room rather than the editor, and /features stays a
-// text inventory until tranche 2 can give all six groups a picture. Deriving it
-// anyway would ship ~370 kB of unreferenced PNG and webp - which is how
-// public/images/marketing/ came to hold three files nobody used. When it lands
-// on a page, add it back at { width: 2240, slot: 1120 }: it needs the full
-// container, because the field labels are the argument and at half of one they
-// are grey texture.
+// Only the shots a page actually draws are listed. Deriving one nothing renders
+// ships a few hundred kB of unreferenced PNG and webp, which is how
+// public/images/marketing/ came to hold three files nobody used.
 const WIDTHS = {
-  // Two shots side by side, so each gets half the container minus the gap.
+  // Two shots side by side on the homepage, so each gets half the container
+  // minus the gap.
   'poll-live-nl': { width: 1200, slot: 600 },
   'poll-live-en': { width: 1200, slot: 600 },
   'join-screen-nl': { width: 1200, slot: 600 },
   'join-screen-en': { width: 1200, slot: 600 },
+
+  // The /features groups. Each figure sits at the top of the items column, not
+  // across the container: the sticky group head takes the left 20rem, so the
+  // column tops out at 660 CSS px once the container stops growing. Measured on
+  // the built page, not estimated - re-measure if the group grid changes.
+  'editor-form-nl': { width: 1320, slot: 660 },
+  'editor-form-en': { width: 1320, slot: 660 },
+  'presenter-view-nl': { width: 1320, slot: 660 },
+  'presenter-view-en': { width: 1320, slot: 660 },
+  'comments-nl': { width: 1320, slot: 660 },
+  'comments-en': { width: 1320, slot: 660 },
+
+  // The two portrait dialogs. Their sources are 1124 and 1524 px wide and much
+  // taller than they are wide, so they are drawn narrower than the column and
+  // centred in it (`.group-shot-portrait`, max-width 30rem) - at full column
+  // width they would run metres down the page. share-link-rules is the one case
+  // where the derivative is not a clean 2x of the source, which is why
+  // `withoutEnlargement` is on the resize below.
+  'share-link-rules-nl': { width: 960, slot: 480 },
+  'share-link-rules-en': { width: 960, slot: 480 },
+  'ai-fills-fields-nl': { width: 960, slot: 480 },
+  'ai-fills-fields-en': { width: 960, slot: 480 },
 };
 
 const kb = (b) => `${Math.round(b.length / 1024)} kB`;
