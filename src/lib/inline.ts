@@ -1,6 +1,6 @@
 // Inline code spans in copy.
 //
-// The spec pages talk about field names constantly - `slideTypes`, `version`,
+// The spec pages talk about field names constantly - `slides[].type`, `version`,
 // `additionalProperties` - and a sentence that names a key without marking it as
 // one is harder to read than the same sentence with a bit of markup in it. The
 // alternative was splitting every such paragraph into an array of fragments in

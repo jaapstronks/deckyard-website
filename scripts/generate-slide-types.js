@@ -374,9 +374,8 @@ function exampleEnvelope(format) {
   "version": ${format.envelopeVersion},
   "title": "My deck",
   "theme": "default",
-  "slideTypes": { "title-slide": "core/title-slide" },
   "slides": [
-    { "type": "title-slide", "content": { "title": "Hello", "background": "lime" } }
+    { "type": "eu.deckyard.slide.title", "content": { "title": "Hello", "background": "lime" } }
   ]
 }`;
 }

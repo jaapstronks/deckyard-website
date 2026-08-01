@@ -43,7 +43,7 @@ export const spec: SpecContent = {
         badge: 'Layer 1',
         name: 'The deck format',
         what: 'JSON. The data.',
-        body: 'A flat, readable envelope: a title, a theme, a manifest of the slide types used, and an ordered array of slides. No server ids, no timestamps, no storage leftovers. You can open it in a text editor and understand it.',
+        body: 'A flat, readable envelope: a title, a theme, and an ordered array of slides, each one naming its type. No server ids, no timestamps, no storage leftovers. You can open it in a text editor and understand it.',
       },
       {
         badge: 'Layer 2',
@@ -112,16 +112,16 @@ export const spec: SpecContent = {
     ],
 
     envelopeTitle: 'The envelope',
-    envelopeBody: ['Six top-level fields. Everything else about a deck lives inside `slides`.'],
+    envelopeBody: ['Five top-level fields. Everything else about a deck lives inside `slides`.'],
     leniency:
       'The envelope is lenient. Unknown top-level keys are ignored by an importer, never rejected, so a newer producer can add a field that an older reader simply skips.',
     envelopeRefNote:
-      'Each of the six fields, its type and what a reader should do with it, is written out in the documentation.',
+      'Each of the five fields, its type and what a reader should do with it, is written out in the documentation.',
 
-    slidesTitle: 'Slides, and the manifest that names their types',
+    slidesTitle: 'Slides, and the one spelling of a type id',
     slidesBody: [
       'A slide is a type and a content object whose shape that type defines. An absent or empty field means "unset": an importer fills the type\'s defaults and never blanks a required field. Portable slides carry no id, because ids are a storage concern and are regenerated on import.',
-      '`slideTypes` records which type definitions the deck was written against, as a map from the bare key to a qualified `namespace/name[@version]` identity. It is recomputed from the registry on every export and never hand-maintained, so it cannot drift from the slides it describes. This is how a second implementation learns which definitions a deck needs.',
+      "`slides[].type` is the type's canonical id, and a type has exactly one: reverse-DNS for a declarant with a domain (`eu.deckyard.slide.title`), `namespace/name` for one without. The id names the definition the slide was written against and may pin a version (`@2`), so there is no separate manifest to cross-check. Two older spellings - the bare registry key `title-slide` and the qualified `core/title-slide` - are pre-convergence residue, not part of the format: Deckyard still accepts and normalizes them on import, but what it exports is canonical, and a second implementation owes them nothing.",
     ],
 
     schemaTitle: 'Content schemas',
@@ -427,7 +427,7 @@ export const spec: SpecContent = {
       'A published name MUST keep its meaning for as long as it exists. If the meaning has to change, the name changes, and the old one is deprecated rather than removed silently.',
       'Optional keys MAY be added at any time. A new **required** key MUST NOT be added to a published type: that turns every existing deck retroactively invalid, and it is a rename wearing a compatible-looking hat. Widening a value space is additive; **narrowing it is not.**',
       'A reader MUST ignore keys it does not know, at every level - envelope, slide, content, item - and MUST NOT reject a deck for carrying them.',
-      'A reader MUST treat the three spellings of a type id as one identity: the canonical reverse-DNS name, the qualified `namespace/name`, and the bare key that `slides[].type` still holds in every deck. A `@version` suffix is a compatibility hint about a definition, not a different type, so `title-slide@2` MUST NOT be treated as unknown.',
+      'A reader MUST compare type ids as strings, after stripping an optional `@version` suffix: one type has one id, and there is no alias table to learn. The two older spellings of a core id - the bare `title-slide` and the qualified `core/title-slide` - are pre-convergence residue, not part of the format; a reader owes them nothing and MAY treat them as unknown types, which the unknown-type contract renders without loss. The `@version` suffix is a compatibility hint about a definition, not a different type, so `eu.deckyard.slide.title@2` MUST NOT be treated as unknown.',
     ],
 
     unknownTitle: 'A type your reader has never heard of',
