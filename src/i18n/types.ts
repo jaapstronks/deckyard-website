@@ -45,7 +45,7 @@ export interface LocaleMeta {
  * The primary nav answers one question - *what is this, and does it check out* -
  * and everything else is a footer column. That rule is what decides the five:
  *
- *   How it works · Compared · Format spec · Docs · Blog · GitHub
+ *   How it works · Features · Format spec · Docs · Blog · GitHub
  *
  * It is why `hosting` is no longer among them. Hosting is a commercial door, it
  * stood first in the row, and it was answering a question nobody has yet on a
@@ -53,12 +53,13 @@ export interface LocaleMeta {
  * the install widget on the homepage (install it yourself / have it run for
  * you), on /features, and in the footer.
  *
- * And it is why `features` is not among them either, which is the closer call.
- * The inventory is a real page and a launch visitor does look for it - but a nav
- * offering both "How it works" and "Features" asks the reader to guess which one
- * holds what they want, and the homepage hands the whole thing over in an index
- * band with a link per group. So: one door to the idea in the nav, the inventory
- * one scroll down and first in the footer.
+ * `features` and `compare` have traded places once. Features was left out to
+ * spare the reader a guess between "How it works" and "Features" - but that
+ * put the mid-funnel comparison in the nav while the inventory, the page a
+ * launch visitor actually asks for (and since tranche 2 the illustrated one),
+ * was a scroll away. So the nav keeps one door per question: the argument, the
+ * inventory, the standard, the manual, the pulse. Compared sits in the footer's
+ * Product column and in the pages that raise the question.
  */
 export interface NavContent {
   sandbox: string;
@@ -68,12 +69,12 @@ export interface NavContent {
    * the implementation's word for it; the nav says what the page is.
    */
   howItWorks: string;
-  /** Label for /features/, the full inventory. Footer, and the homepage index. */
+  /** Label for /features/, the full inventory. Nav, footer, homepage index. */
   features: string;
   changelog: string;
   /** Label for /hosting/. Footer and the homepage install section, not the nav. */
   hosting: string;
-  /** Label for /compare/. */
+  /** Label for /compare/. Footer's Product column, not the nav. */
   compare: string;
   /** Label for /accessibility/. In the footer's meta row, where a statement of
    *  conformance belongs, rather than in a column of product pages. */
