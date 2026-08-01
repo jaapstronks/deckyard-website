@@ -19,13 +19,13 @@ import { withSpec, liveSchemaUrl, LIVE_INSTANCE } from '@/lib/spec';
 import { withFacts } from '@/lib/facts';
 import { inlineCode } from '@/lib/inline';
 import {
-  slideTypes,
   globalFields,
   deprecatedTypes,
   slideStructures,
   typesWithStructure,
   repeatingFields,
-  structureCoverage,
+  slideRuntimes,
+  typesWithRuntime,
   type SlideType,
   type SlideTypeField,
 } from '@/lib/slideTypes';
@@ -37,7 +37,6 @@ const { lang } = Astro.props;
 const t = ui[lang].spec.types;
 
 const prose = (text: string) => inlineCode(withSpec(text));
-const active = slideTypes.filter((type) => !type.deprecated);
 
 /**
  * The registry, grouped by the `structure` facet rather than by the editor's
@@ -52,9 +51,6 @@ const active = slideTypes.filter((type) => !type.deprecated);
 const structureGroups = slideStructures
   .map((s) => ({ ...s, types: typesWithStructure(s.name) }))
   .filter((s) => s.types.length > 0);
-
-/** The claim the conformance table is worth making: the two biggest shapes. */
-const headlineStructures = structureCoverage(['singleton', 'collection']);
 
 /** A field's limit, or an em rule when it has none. */
 const limitOf = (f: SlideTypeField) => (f.maxLength ? String(f.maxLength) : t.noLimit);
@@ -90,19 +86,31 @@ const countLabel = (n: number) =>
     </div>
   </Section>
 
-  <!-- ============ the facet ============ -->
+  <!-- ============ the two facets, as a legend ============ -->
+  <!-- Both facets used to be a section of their own, arguing for themselves. The
+       `structure` argument belongs on /spec/conformance/, where it is the thing
+       somebody builds against; here the six values only have to earn the six
+       headings below. `runtime` gets the same treatment: named, contracted, and
+       left at that. -->
   <Section>
-    <SectionHead title={t.structureTitle} />
     <div class="spec-prose" data-reveal>
-      {t.structureBody.map((p) => <p set:html={prose(p)} />)}
+      <p set:html={prose(t.structureLead)} />
+      <h2>{t.runtimeTitle}</h2>
+      <p set:html={prose(t.runtimeLead)} />
     </div>
-    <!-- Quoted policy from core's own reference page, kept verbatim: it is the
-         rule that decides where a type boundary is, and a paraphrase on this
-         side would be a second wording of a decision that has one. -->
-    <blockquote class="ty-rule" data-reveal>
-      <p>{t.structureRule}</p>
-      <cite>{t.structureRuleSource}</cite>
-    </blockquote>
+    <dl class="spec-defs ty-runtimes" data-reveal>
+      {
+        slideRuntimes.map((r) => (
+          <div>
+            <dt>
+              {t.runtimeLabels[r.name] ?? r.name} <code>{r.name}</code>
+              <span class="ty-runtime-count">{countLabel(typesWithRuntime(r.name).length)}</span>
+            </dt>
+            <dd set:html={prose(t.runtimeContracts[r.name] ?? r.meaning)} />
+          </div>
+        ))
+      }
+    </dl>
   </Section>
 
   <!-- ============ the registry, by structure ============ -->
@@ -253,6 +261,33 @@ const countLabel = (n: number) =>
                       <span>
                         {t.identityLabel}: <code>{type.id}</code>
                       </span>
+                      {/* The two facets a type declares beyond its structure,
+                          and the promise attached to its name. All three are
+                          generated, and all three are what /spec/conformance/
+                          reasons about - a reader deciding what to build looks
+                          at the type, not at the argument. */}
+                      <span>
+                        {t.tierLabel}: <code>{type.tier}</code>
+                      </span>
+                      {type.runtime && (
+                        <span>
+                          {t.runtimeLabel}: <code>{type.runtime}</code>
+                          {/* The sub-declaration a `live` type carries, in
+                              brackets because it qualifies the value rather
+                              than standing beside it as a second facet. */}
+                          {type.interaction && (
+                            <>
+                              {' '}
+                              (<code>{type.interaction}</code>)
+                            </>
+                          )}
+                        </span>
+                      )}
+                      {type.fallback && (
+                        <span>
+                          {t.fallbackLabel}: <code>{type.fallback}</code>
+                        </span>
+                      )}
                       <a href={liveSchemaUrl(type.name)} target="_blank" rel="noopener">
                         {t.schemaLinkLabel}
                       </a>
@@ -267,51 +302,6 @@ const countLabel = (n: number) =>
     }
 
     <p class="ty-empty" data-types-empty hidden>{t.emptyResult}</p>
-  </Section>
-
-  <!-- ============ conformance ============ -->
-  <Section>
-    <SectionHead title={t.conformanceTitle} />
-    <div class="spec-prose" data-reveal>
-      {t.conformanceBody.map((p) => <p set:html={prose(p)} />)}
-    </div>
-    <div class="spec-tablewrap" data-reveal>
-      <table class="spec-table">
-        <thead>
-          <tr>
-            <th scope="col">{t.conformanceColStructure}</th>
-            <th scope="col">{t.conformanceColTypes}</th>
-            <th scope="col">{t.conformanceColClaim}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            structureGroups.map((group) => (
-              <tr>
-                <th scope="row">
-                  <code>{group.name}</code>
-                </th>
-                <td>{group.types.length}</td>
-                <td>{t.conformanceClaim.replace('{n}', String(group.types.length))}</td>
-              </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
-    <!-- A worked example rather than a form to fill in: the sentence is the
-         deliverable, and the two numbers in it are counted here so it cannot
-         be quoted at a figure that has since moved. -->
-    <div class="ty-claim" data-reveal>
-      <h3>{t.conformanceExampleTitle}</h3>
-      <p
-        set:html={prose(
-          t.conformanceExample
-            .replace('{n}', String(headlineStructures))
-            .replace('{total}', String(active.length))
-        )}
-      />
-    </div>
   </Section>
 
   <!-- ============ the shared fields ============ -->
@@ -363,11 +353,13 @@ const countLabel = (n: number) =>
     </ul>
   </Section>
 
-  <!-- ============ provenance ============ -->
+  <!-- ============ where it comes from ============ -->
+  <!-- One line and the live endpoint, where there used to be a section arguing
+       that the page is generated. The claim is worth making once; the story of
+       the number that said 36, 38 and 44 in three places is repo history. -->
   <Section>
     <div class="spec-prose" data-reveal>
-      <h2>{t.provenanceTitle}</h2>
-      {t.provenanceBody.map((p) => <p set:html={prose(p)} />)}
+      <p>{t.liveNote}</p>
       <p><code>{LIVE_INSTANCE}/api/v1/schema/slide-types/&lt;type&gt;.json</code></p>
     </div>
     <SpecReference lang={lang} href="/docs/reference/slide-types/" note={t.referenceNote} />
@@ -522,30 +514,6 @@ const countLabel = (n: number) =>
     }
   }
 
-  /* ---------- the quoted rule ---------- */
-  .ty-rule {
-    max-width: 42rem;
-    margin: var(--space-md) 0 0;
-    padding-left: 1.2rem;
-    border-left: 3px solid var(--brass);
-  }
-  .ty-rule p {
-    margin: 0;
-    font-family: var(--display);
-    font-variation-settings: 'wght' 520;
-    font-size: var(--step-1);
-    line-height: 1.4;
-    color: var(--ink);
-  }
-  .ty-rule cite {
-    display: block;
-    margin-top: 0.7rem;
-    font-style: normal;
-    font-family: var(--mono);
-    font-size: var(--step--3);
-    color: var(--ink-mute);
-  }
-
   /* ---------- a structure group ---------- */
   .ty-group + .ty-group {
     margin-top: var(--space-lg);
@@ -595,30 +563,22 @@ const countLabel = (n: number) =>
     color: var(--ink-mute);
   }
 
-  /* ---------- the conformance claim ---------- */
-  .ty-claim {
-    max-width: 46rem;
-    margin: var(--space-md) 0 0;
-    padding: 1.1rem 1.3rem;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-md);
+  /* The runtime vocabulary reuses the shared definition rows; only the two
+     things a plain <dt> cannot carry are added - the raw value beside its label,
+     and how many types declare it. */
+  .ty-runtimes dt code {
+    font-family: var(--mono);
+    font-size: 0.8em;
+    font-weight: 400;
+    color: var(--ink-mute);
   }
-  .ty-claim h3 {
-    margin: 0;
+  .ty-runtime-count {
+    display: block;
+    margin-top: 0.15rem;
     font-family: var(--mono);
     font-size: var(--step--3);
     font-weight: 400;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-mute);
-  }
-  .ty-claim p {
-    margin: 0.7rem 0 0;
-    font-family: var(--mono);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: var(--ink);
+    color: var(--brass-text);
   }
 
   /* ---------- the grid ---------- */

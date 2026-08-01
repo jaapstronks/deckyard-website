@@ -1,15 +1,21 @@
 ---
-// /spec/deck-format/ - what the envelope is and what it guarantees.
+// /spec/deck-format/ - the format itself, both layers on one page.
+//
+// This used to be three pages: the envelope, the archive around it, and the
+// schemas beside them. They are one artifact seen from three angles, and each of
+// the three had to restate the other two before it could say anything. Read top
+// to bottom it is now: what a deck is, what its slides carry, what validates
+// them, and what the archive adds when the pixels have to travel too.
 //
 // The example JSON comes from lib/spec.ts, not from the locale files: the format
 // is the same in every language, and a JSON example duplicated per locale is a
 // JSON example that will eventually disagree with itself. The locale carries the
 // sentences.
 //
-// The field-by-field tables are deliberately NOT here. They answer "what does
-// field X do", which is a search, and only /docs/ is indexed by the site search.
-// The code blocks stay: "we have a good format, see the docs" is a weaker claim
-// than showing the envelope.
+// The field-by-field tables and the export/import endpoints are deliberately NOT
+// here. They answer "what does field X do", which is a search, and only /docs/ is
+// indexed by the site search. The code blocks stay: showing the envelope is a
+// stronger claim than describing it.
 import SpecShell from '@/components/spec/SpecShell.astro';
 import Section from '@/components/layout/Section.astro';
 import SectionHead from '@/components/layout/SectionHead.astro';
@@ -20,8 +26,8 @@ import {
   withSpec,
   EXAMPLE_ENVELOPE,
   EXAMPLE_SLIDE,
-  EXAMPLE_ROUNDTRIP,
-  SCHEMA_BASE,
+  EXAMPLE_BUNDLE_LAYOUT,
+  BUNDLE_ENTRIES,
 } from '@/lib/spec';
 import { inlineCode } from '@/lib/inline';
 
@@ -55,19 +61,12 @@ const prose = (text: string) => inlineCode(withSpec(text));
     <CodeBlock code={EXAMPLE_ENVELOPE} caption={shared.sourceNote} />
 
     <p class="spec-note" set:html={prose(t.leniency)} />
-    <!-- Beside the leniency note rather than under Versioning: both say what a
-         reader has to tolerate, and this one is the difference between opening
-         the decks that exist and opening the decks we happen to write today. -->
-    <p class="spec-note" set:html={prose(t.legacySentinel)} />
     <SpecReference lang={lang} href="/docs/reference/deck-format/" note={t.envelopeRefNote} />
   </Section>
 
-  <!-- ============ the identity manifest ============ -->
+  <!-- ============ slides + the identity manifest ============ -->
   <Section variant="tint">
     <div class="spec-prose" data-reveal>
-      <h2>{t.manifestTitle}</h2>
-      {t.manifestBody.map((p) => <p set:html={prose(p)} />)}
-
       <h2>{t.slidesTitle}</h2>
       {t.slidesBody.map((p) => <p set:html={prose(p)} />)}
     </div>
@@ -79,18 +78,50 @@ const prose = (text: string) => inlineCode(withSpec(text));
     <div class="spec-prose" data-reveal>
       <h2>{t.schemaTitle}</h2>
       {t.schemaBody.map((p) => <p set:html={prose(p)} />)}
-      <p><code>{SCHEMA_BASE}/slide-types/&lt;type&gt;.schema.json</code></p>
 
       <h2>{t.assetsTitle}</h2>
       {t.assetsBody.map((p) => <p set:html={prose(p)} />)}
     </div>
   </Section>
 
-  <!-- ============ round-trip + degradation ============ -->
+  <!-- ============ layer 2: the package ============ -->
+  <!-- Leads with the archive listing, because seeing four entries in a fixed
+       order explains the container faster than a paragraph about it can. -->
   <Section variant="tint">
-    <SectionHead title={t.roundTripTitle} />
+    <SectionHead title={t.packageTitle} lead={t.packageLead} />
     <div class="spec-prose" data-reveal>
-      {t.roundTripBody.map((p) => <p set:html={prose(p)} />)}
+      {t.packageBody.map((p) => <p set:html={prose(p)} />)}
+    </div>
+    <CodeBlock code={EXAMPLE_BUNDLE_LAYOUT} label={t.packageTitle} />
+    <dl class="spec-defs">
+      {
+        BUNDLE_ENTRIES.map((e) => (
+          <div>
+            <dt>
+              <code>{e.entry}</code>
+            </dt>
+            <dd set:html={prose(t.layoutNotes[e.key] ?? '')} />
+          </div>
+        ))
+      }
+    </dl>
+    <ul class="guarantees">
+      {
+        t.guarantees.map((g, i) => (
+          <li data-reveal data-reveal-delay={Math.min(i, 4) * 60}>
+            <h3>{g.title}</h3>
+            <p set:html={prose(g.body)} />
+          </li>
+        ))
+      }
+    </ul>
+    <SpecReference lang={lang} href="/docs/reference/deck-bundle/" note={t.packageRefNote} />
+  </Section>
+
+  <!-- ============ round-trip + degradation ============ -->
+  <Section>
+    <SectionHead title={t.degradeTitle} />
+    <div class="spec-prose" data-reveal>
       <p set:html={prose(t.degradeLead)} />
     </div>
     <dl class="spec-defs">
@@ -110,28 +141,48 @@ const prose = (text: string) => inlineCode(withSpec(text));
        reader owes a deck it does not fully understand, and this is the other
        half of the same duty. Kept in step with the security considerations in
        the media-type registration - one claim, one wording. -->
-  <Section>
+  <Section variant="tint">
     <div class="spec-prose" data-reveal>
       <h2>{t.securityTitle}</h2>
       {t.securityBody.map((p) => <p set:html={prose(p)} />)}
-    </div>
-  </Section>
 
-  <!-- ============ versioning ============ -->
-  <Section variant="tint">
-    <div class="spec-prose" data-reveal>
       <h2>{t.versioningTitle}</h2>
       {t.versioningBody.map((p) => <p set:html={prose(p)} />)}
     </div>
   </Section>
-
-  <!-- ============ the API surface ============ -->
-  <Section>
-    <SectionHead title={t.apiTitle} lead={t.apiLead} />
-    <div class="spec-prose" data-reveal>
-      {t.apiBody.map((p) => <p set:html={prose(p)} />)}
-    </div>
-    <CodeBlock code={EXAMPLE_ROUNDTRIP} label="curl" />
-    <SpecReference lang={lang} href="/docs/reference/deck-format/" note={t.apiRefNote} />
-  </Section>
 </SpecShell>
+
+<style>
+  .guarantees {
+    list-style: none;
+    margin: var(--space-md) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 800px) {
+    .guarantees {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+    }
+  }
+  .guarantees li {
+    padding: 1.2rem 1.4rem 1.3rem;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+  .guarantees h3 {
+    margin: 0 0 0.45rem;
+    font-size: 1.1rem;
+    font-variation-settings: 'wght' 620;
+    letter-spacing: -0.015em;
+  }
+  .guarantees p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-soft);
+  }
+</style>

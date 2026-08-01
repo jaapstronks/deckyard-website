@@ -37,6 +37,8 @@
       "sources": [
         "shared/slide-types/registry.js",
         "shared/slide-types/structure.js",
+        "shared/slide-types/runtime.js",
+        "shared/slide-types/tiers.js",
         "shared/slide-types/types/",
         "client/views/editor/slide-type-schematics.js",
         "client/views/editor/slide-type-picker/data.js",

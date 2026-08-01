@@ -82,27 +82,19 @@ const marketingPages: { path: string; card: (t: Content) => CardInput }[] = [
     }),
   },
   {
+    path: '/spec/conformance',
+    card: (t) => ({
+      label: t.spec.conformance.heroKicker,
+      title: t.spec.conformance.heroTitle,
+      intro: t.spec.conformance.heroIntro,
+    }),
+  },
+  {
     path: '/spec/deck-format',
     card: (t) => ({
       label: t.spec.format.heroKicker,
       title: t.spec.format.heroTitle,
       intro: t.spec.format.heroIntro,
-    }),
-  },
-  {
-    path: '/spec/deck-bundle',
-    card: (t) => ({
-      label: t.spec.bundle.heroKicker,
-      title: t.spec.bundle.heroTitle,
-      intro: t.spec.bundle.heroIntro,
-    }),
-  },
-  {
-    path: '/spec/schemas',
-    card: (t) => ({
-      label: t.spec.schemas.heroKicker,
-      title: t.spec.schemas.heroTitle,
-      intro: t.spec.schemas.heroIntro,
     }),
   },
   {

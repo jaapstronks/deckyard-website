@@ -52,6 +52,8 @@ export const MARKER_FILES = [
 const CORE_SOURCES = {
   registry: 'shared/slide-types/registry.js',
   structure: 'shared/slide-types/structure.js',
+  runtime: 'shared/slide-types/runtime.js',
+  tiers: 'shared/slide-types/tiers.js',
   schematics: 'client/views/editor/slide-type-schematics.js',
   picker: 'client/views/editor/slide-type-picker/data.js',
   companions: 'shared/slide-types/authoring-companions.js',
@@ -123,6 +125,8 @@ function oneLine(text) {
 async function buildData() {
   const registry = await coreImport(CORE_SOURCES.registry);
   const structureModule = await coreImport(CORE_SOURCES.structure);
+  const runtimeModule = await coreImport(CORE_SOURCES.runtime);
+  const tiersModule = await coreImport(CORE_SOURCES.tiers);
   const schematics = await coreImport(CORE_SOURCES.schematics);
   const picker = await coreImport(CORE_SOURCES.picker);
   const companions = await coreImport(CORE_SOURCES.companions);
@@ -130,6 +134,15 @@ async function buildData() {
 
   const { SLIDE_TYPES, CORE_SLIDE_TYPE_NAMES, SLIDE_TYPE_IDS, GLOBAL_SLIDE_FIELD_KEYS } = registry;
   const { SLIDE_STRUCTURES, SLIDE_STRUCTURE_NAMES, slideStructure } = structureModule;
+  const {
+    SLIDE_RUNTIMES,
+    SLIDE_RUNTIME_NAMES,
+    LIVE_INTERACTIONS,
+    LIVE_INTERACTION_NAMES,
+    slideRuntime,
+    slideLiveInteraction,
+  } = runtimeModule;
+  const { SLIDE_TIERS, CORE_PROFILE, slideTypeTier, slideFallback } = tiersModule;
   const { SLIDE_TYPE_SCHEMATIC } = schematics;
   // The picker declares its shelves; the one-line description of a type moved to
   // the authoring companions, which is where core keeps the prose it puts on the
@@ -165,6 +178,22 @@ async function buildData() {
       // that declares none, which is core's own answer and not a default this
       // side invents - a type missing from the facet has to look missing.
       structure: slideStructure(def) || null,
+      // The `runtime` facet: what the presenting session has to do for the type
+      // beyond serving it. Same rule as `structure` - core's '' becomes null
+      // rather than a default, so a type outside the facet reads as outside it.
+      runtime: slideRuntime(def) || null,
+      // Only a `live` type carries one, and core asserts that in both
+      // directions, so this is null on everything else by construction.
+      interaction: slideLiveInteraction(def) || null,
+      // Which of the three promises covers this name. Resolved off the *name*,
+      // the way core resolves it: the tier is what we promise about a name, so a
+      // fork answering a core name inherits that promise rather than escaping
+      // it. Everything this file publishes is core, hence 1 or 2 only.
+      tier: slideTypeTier(name),
+      // The tier-1 contract a reader that implements only the core profile
+      // should degrade this type to. Empty on a tier-1 type, which *is* the
+      // floor, so null here says "nothing to degrade to" rather than "missing".
+      fallback: slideFallback(def) || null,
       // "Does the audience take part?" - the filter that separates Deckyard from
       // a slide editor. Derived, not asserted: a type counts when the editor
       // shelves it under interaction or the agent catalog files it as
@@ -210,6 +239,30 @@ async function buildData() {
       name,
       meaning: SLIDE_STRUCTURES[name],
     })),
+    // The `runtime` vocabulary, same shape and same reason. Three values, and
+    // unlike `structure` they are wildly unbalanced - which is the useful part:
+    // the large majority of the catalogue asks nothing of a session at all.
+    runtimes: SLIDE_RUNTIME_NAMES.map((name) => ({
+      name,
+      meaning: SLIDE_RUNTIMES[name],
+    })),
+    // The sub-declaration a `live` type carries. Not a third facet: these are
+    // the values the follow API already puts on the wire as `interaction.type`.
+    interactions: LIVE_INTERACTION_NAMES.map((name) => ({
+      name,
+      meaning: LIVE_INTERACTIONS[name],
+    })),
+    // The tier ladder. Core keys it by number because "tier 1" is how everyone
+    // says it; the site needs the same numbers to sort by, so the key stays a
+    // number here too rather than being renamed into a slug.
+    tiers: Object.entries(SLIDE_TIERS).map(([tier, meaning]) => ({
+      tier: Number(tier),
+      meaning,
+    })),
+    // The nine normative types, in core's own order. Order is the argument -
+    // title, section break, prose, enumeration, quotation, image, image-text,
+    // table, closing is a presentation read start to end - so it is not sorted.
+    coreProfile: [...CORE_PROFILE],
     globalFields,
     types,
   };
@@ -433,7 +486,15 @@ function fieldTable(fields) {
 function typeSection(type) {
   const lines = [`### ${type.label} — \`${type.name}\``, ''];
 
-  const meta = [`Identity \`${type.id}\``];
+  // The declared facets belong on the searchable half too: somebody holding a
+  // `content` object and asking "does my renderer need a session for this?", or
+  // "what do I degrade this to?", is searching, not browsing /spec/slide-types/.
+  const meta = [`Identity \`${type.id}\``, `tier ${type.tier}`];
+  if (type.structure) meta.push(`structure \`${type.structure}\``);
+  if (type.runtime) {
+    meta.push(`runtime \`${type.runtime}\`${type.interaction ? ` (\`${type.interaction}\`)` : ''}`);
+  }
+  if (type.fallback) meta.push(`falls back to \`${type.fallback}\``);
   if (type.audience) meta.push('the audience takes part');
   if (type.deprecated) meta.push('**retired**');
   lines.push(`${meta.join(' · ')}.`, '');
@@ -489,6 +550,26 @@ export function buildSlideTypeDoc(data, format) {
     '- **Limit** is the maximum length in characters, where the type declares one.',
     '- **Options** lists the accepted values of an enumerated field.',
     '- Every type also accepts the [global fields](#fields-every-type-carries) below.',
+    '',
+    'The line under each heading carries what the type declares about itself, none',
+    "of which is part of its JSON Schema - the schema describes a slide's content,",
+    'and these are statements about the type:',
+    '',
+    '- **Tier** is how far our promise goes. Tier 1 is the normative core profile a',
+    '  conforming implementation renders; tier 2 we ship and publish, but it versions',
+    '  with the app.',
+    '- **Structure** is the shape of the primary content, and it is the axis worth',
+    '  building a reader against: six values cover every type.',
+    '- **Runtime** is what the presenting session has to do beyond serving the slide',
+    '  (`static` - nothing, `timed` - a presenter-driven clock, `live` - the audience',
+    '  answers and the session aggregates), with the kind of answer a `live` type',
+    '  collects in brackets.',
+    '- **Falls back to** is the tier-1 contract to degrade to when you have not',
+    '  implemented the type. Every tier-2 type declares one, which is why a reader',
+    '  that knows only the nine still renders every deck without dropping content.',
+    '',
+    'All four are readable from `GET /api/slide-types` on any instance, and the',
+    'argument behind them is on [the conformance page](/spec/conformance/).',
     '',
     `Each type's JSON Schema is served at`,
     `\`${schemaBase}/slide-types/<type>.schema.json\` — see`,

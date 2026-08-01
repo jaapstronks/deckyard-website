@@ -24,6 +24,26 @@ for, see [Slide Types](/docs/slide-types/).
 - **Options** lists the accepted values of an enumerated field.
 - Every type also accepts the [global fields](#fields-every-type-carries) below.
 
+The line under each heading carries what the type declares about itself, none
+of which is part of its JSON Schema - the schema describes a slide's content,
+and these are statements about the type:
+
+- **Tier** is how far our promise goes. Tier 1 is the normative core profile a
+  conforming implementation renders; tier 2 we ship and publish, but it versions
+  with the app.
+- **Structure** is the shape of the primary content, and it is the axis worth
+  building a reader against: six values cover every type.
+- **Runtime** is what the presenting session has to do beyond serving the slide
+  (`static` - nothing, `timed` - a presenter-driven clock, `live` - the audience
+  answers and the session aggregates), with the kind of answer a `live` type
+  collects in brackets.
+- **Falls back to** is the tier-1 contract to degrade to when you have not
+  implemented the type. Every tier-2 type declares one, which is why a reader
+  that knows only the nine still renders every deck without dropping content.
+
+All four are readable from `GET /api/slide-types` on any instance, and the
+argument behind them is on [the conformance page](/spec/conformance/).
+
 Each type's JSON Schema is served at
 `https://deckyard.eu/schema/v3/slide-types/<type>.schema.json` — see
 [JSON Schemas](/docs/reference/schemas/) for how to fetch it.
@@ -49,7 +69,7 @@ type rather than declared on each one. They are listed here once instead of 36 t
 
 ### Title slide — `title-slide`
 
-Identity `core/title-slide`.
+Identity `eu.deckyard.slide.title` · tier 1 · structure `singleton` · runtime `static`.
 
 Big title and subtitle to open with.
 
@@ -66,7 +86,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Section title — `chapter-title-slide`
 
-Identity `core/chapter-title-slide`.
+Identity `eu.deckyard.slide.chapter-title` · tier 1 · structure `singleton` · runtime `static`.
 
 Section divider between topics.
 
@@ -81,7 +101,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Text slide — `content-slide`
 
-Identity `core/content-slide`.
+Identity `eu.deckyard.slide.content` · tier 1 · structure `singleton` · runtime `static`.
 
 A heading with body text.
 
@@ -107,7 +127,7 @@ Layout variants: `one-column` (One column), `two-column` (Text in two columns), 
 
 ### List — `list-slide`
 
-Identity `core/list-slide`.
+Identity `eu.deckyard.slide.list` · tier 1 · structure `collection` · runtime `static`.
 
 A bulleted or numbered list.
 
@@ -133,7 +153,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Quote — `quote-slide`
 
-Identity `core/quote-slide`.
+Identity `eu.deckyard.slide.quote` · tier 1 · structure `singleton` · runtime `static`.
 
 A pull quote with attribution.
 
@@ -167,7 +187,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Image + text — `image-text-slide`
 
-Identity `core/image-text-slide`.
+Identity `eu.deckyard.slide.image-text` · tier 1 · structure `singleton` · runtime `static`.
 
 An image beside text.
 
@@ -214,7 +234,7 @@ Layout variants: `text` (Text only), `split-narrow` (Image 1/3), `split-half` (I
 
 ### Video — `video-slide`
 
-Identity `core/video-slide`.
+Identity `eu.deckyard.slide.video` · tier 2 · structure `singleton` · runtime `static` · falls back to `content-slide`.
 
 An embedded video.
 
@@ -229,7 +249,7 @@ An embedded video.
 
 ### Image blocks — `team-cards-slide`
 
-Identity `core/team-cards-slide`.
+Identity `eu.deckyard.slide.team-cards` · tier 2 · structure `collection` · runtime `static` · falls back to `list-slide`.
 
 Image blocks in a grid.
 
@@ -435,7 +455,7 @@ Each item in `members`:
 
 ### Logo wall — `logo-wall-slide`
 
-Identity `core/logo-wall-slide`.
+Identity `eu.deckyard.slide.logo-wall` · tier 2 · structure `collection` · runtime `static` · falls back to `image-slide`.
 
 A wall of logos.
 
@@ -508,7 +528,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Image slide — `image-slide`
 
-Identity `core/image-slide`.
+Identity `eu.deckyard.slide.image` · tier 1 · structure `singleton` · runtime `static`.
 
 A single full-bleed image.
 
@@ -533,7 +553,7 @@ A single full-bleed image.
 
 ### Embed — `embed-slide`
 
-Identity `core/embed-slide`.
+Identity `eu.deckyard.slide.embed` · tier 2 · structure `singleton` · runtime `static` · falls back to `content-slide`.
 
 Embed an external page or iframe.
 
@@ -547,7 +567,7 @@ Embed an external page or iframe.
 
 ### Gallery — `gallery-slide`
 
-Identity `core/gallery-slide`.
+Identity `eu.deckyard.slide.gallery` · tier 2 · structure `collection` · runtime `static` · falls back to `image-slide`.
 
 A grid of images.
 
@@ -574,7 +594,7 @@ Each item in `images`:
 
 ### Icon cards — `icon-card-grid-slide`
 
-Identity `core/icon-card-grid-slide`.
+Identity `eu.deckyard.slide.icon-card-grid` · tier 2 · structure `collection` · runtime `static` · falls back to `list-slide`.
 
 Cards with an icon and label.
 
@@ -622,7 +642,7 @@ Each item in `items`:
 
 ### Text blocks — `text-blocks-slide`
 
-Identity `core/text-blocks-slide`.
+Identity `eu.deckyard.slide.text-blocks` · tier 2 · structure `collection` · runtime `static` · falls back to `list-slide`.
 
 Several labelled text blocks.
 
@@ -699,7 +719,7 @@ Each item in `blocks`:
 
 ### Process — `process-slide`
 
-Identity `core/process-slide`.
+Identity `eu.deckyard.slide.process` · tier 2 · structure `collection` · runtime `static` · falls back to `list-slide`.
 
 Sequential steps with arrows.
 
@@ -729,7 +749,7 @@ Each item in `steps`:
 
 ### Timeline — `timeline-slide`
 
-Identity `core/timeline-slide`.
+Identity `eu.deckyard.slide.timeline` · tier 2 · structure `collection` · runtime `static` · falls back to `list-slide`.
 
 Events along a timeline.
 
@@ -753,7 +773,7 @@ Each item in `items`:
 
 ### Table — `table-slide`
 
-Identity `core/table-slide`.
+Identity `eu.deckyard.slide.table` · tier 1 · structure `tabular` · runtime `static`.
 
 A data table.
 
@@ -786,7 +806,7 @@ Each item in `rows`:
 
 ### KPI — `kpi-metrics-slide`
 
-Identity `core/kpi-metrics-slide`.
+Identity `eu.deckyard.slide.kpi-metrics` · tier 2 · structure `collection` · runtime `static` · falls back to `list-slide`.
 
 Big numbers with deltas.
 
@@ -814,7 +834,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Chart — `chart-slide`
 
-Identity `core/chart-slide`.
+Identity `eu.deckyard.slide.chart` · tier 2 · structure `dataset` · runtime `static` · falls back to `table-slide`.
 
 A bar, line or pie chart.
 
@@ -839,7 +859,7 @@ Layout variants: `block-left` (Left), `block-center` (Centred).
 
 ### Comparison — `comparison-slide`
 
-Identity `core/comparison-slide`.
+Identity `eu.deckyard.slide.comparison` · tier 2 · structure `singleton` · runtime `static` · falls back to `table-slide`.
 
 Two options side by side.
 
@@ -857,7 +877,7 @@ Two options side by side.
 
 ### Matrix — `matrix-slide`
 
-Identity `core/matrix-slide`.
+Identity `eu.deckyard.slide.matrix` · tier 2 · structure `fixed-collection` · runtime `static` · falls back to `table-slide`.
 
 A 2×2 quadrant matrix.
 
@@ -879,7 +899,7 @@ Each item in `cells`:
 
 ### Funnel — `funnel-slide`
 
-Identity `core/funnel-slide`.
+Identity `eu.deckyard.slide.funnel` · tier 2 · structure `collection` · runtime `static` · falls back to `list-slide`.
 
 Stages narrowing to a goal.
 
@@ -910,7 +930,7 @@ Each item in `stages`:
 
 ### Pyramid — `pyramid-slide`
 
-Identity `core/pyramid-slide`.
+Identity `eu.deckyard.slide.pyramid` · tier 2 · structure `collection` · runtime `static` · falls back to `list-slide`.
 
 A layered hierarchy pyramid.
 
@@ -931,7 +951,7 @@ Each item in `levels`:
 
 ### Cycle — `cycle-slide`
 
-Identity `core/cycle-slide`.
+Identity `eu.deckyard.slide.cycle` · tier 2 · structure `collection` · runtime `static` · falls back to `list-slide`.
 
 A repeating cycle of stages.
 
@@ -963,7 +983,7 @@ Each item in `stages`:
 
 ### Countdown timer — `countdown-slide`
 
-Identity `core/countdown-slide` · the audience takes part.
+Identity `eu.deckyard.slide.countdown` · tier 2 · structure `singleton` · runtime `timed` · falls back to `content-slide` · the audience takes part.
 
 A countdown timer.
 
@@ -980,7 +1000,7 @@ A countdown timer.
 
 ### Poll — `poll-slide`
 
-Identity `core/poll-slide` · the audience takes part.
+Identity `eu.deckyard.slide.poll` · tier 2 · structure `fixed-collection` · runtime `live` (`poll`) · falls back to `list-slide` · the audience takes part.
 
 A live audience poll.
 
@@ -997,7 +1017,7 @@ A live audience poll.
 
 ### Likert (agree/disagree) — `likert-slide`
 
-Identity `core/likert-slide` · the audience takes part.
+Identity `eu.deckyard.slide.likert` · tier 2 · structure `fixed-collection` · runtime `live` (`likert`) · falls back to `list-slide` · the audience takes part.
 
 An agree/disagree rating.
 
@@ -1020,7 +1040,7 @@ An agree/disagree rating.
 
 ### Likert slider (1–10) — `likert-slider-slide`
 
-Identity `core/likert-slider-slide` · the audience takes part.
+Identity `eu.deckyard.slide.likert-slider` · tier 2 · structure `singleton` · runtime `live` (`likert`) · falls back to `content-slide` · the audience takes part.
 
 A 1–10 slider rating.
 
@@ -1033,7 +1053,7 @@ A 1–10 slider rating.
 
 ### Feedback — `feedback-slide`
 
-Identity `core/feedback-slide` · the audience takes part.
+Identity `eu.deckyard.slide.feedback` · tier 2 · structure `singleton` · runtime `live` (`feedback`) · falls back to `content-slide` · the audience takes part.
 
 Collect open text feedback.
 
@@ -1045,7 +1065,7 @@ Collect open text feedback.
 
 ### Follow-along invite — `follow-invite-slide`
 
-Identity `core/follow-invite-slide` · the audience takes part.
+Identity `eu.deckyard.slide.follow-invite` · tier 2 · structure `chrome` · runtime `static` · falls back to `content-slide` · the audience takes part.
 
 A QR code to follow along.
 
@@ -1055,7 +1075,7 @@ No type-specific fields; it carries the global fields only.
 
 ### Payoff — `payoff-slide`
 
-Identity `core/payoff-slide`.
+Identity `eu.deckyard.slide.payoff` · tier 2 · structure `chrome` · runtime `static` · falls back to `end-slide`.
 
 A closing payoff statement.
 
@@ -1063,7 +1083,7 @@ No type-specific fields; it carries the global fields only.
 
 ### Custom HTML — `custom-html-slide`
 
-Identity `core/custom-html-slide`.
+Identity `eu.deckyard.slide.custom-html` · tier 2 · structure `singleton` · runtime `static` · falls back to `content-slide`.
 
 Your own HTML and CSS, for anything else.
 
@@ -1075,7 +1095,7 @@ Your own HTML and CSS, for anything else.
 
 ### End / Contact — `end-slide`
 
-Identity `core/end-slide`.
+Identity `eu.deckyard.slide.end` · tier 1 · structure `singleton` · runtime `static`.
 
 A closing slide with contact details.
 
@@ -1101,7 +1121,7 @@ not have to.
 
 ### Card stack — `card-stack-slide`
 
-Identity `core/card-stack-slide` · **retired**.
+Identity `eu.deckyard.slide.card-stack` · tier 2 · structure `collection` · runtime `static` · falls back to `list-slide` · **retired**.
 
 | Key | Label | Type | Required | Limit | Options |
 | --- | --- | --- | --- | --- | --- |
@@ -1137,7 +1157,7 @@ Each item in `items`:
 
 ### Lead Capture — `lead-capture-slide`
 
-Identity `core/lead-capture-slide` · **retired**.
+Identity `eu.deckyard.slide.lead-capture` · tier 2 · structure `singleton` · runtime `static` · falls back to `content-slide` · **retired**.
 
 | Key | Label | Type | Required | Limit | Options |
 | --- | --- | --- | --- | --- | --- |
@@ -1154,7 +1174,7 @@ Identity `core/lead-capture-slide` · **retired**.
 
 ### Content columns — `content-columns-slide`
 
-Identity `core/content-columns-slide` · **retired**.
+Identity `eu.deckyard.slide.content-columns` · tier 2 · structure `collection` · runtime `static` · falls back to `content-slide` · **retired**.
 
 | Key | Label | Type | Required | Limit | Options |
 | --- | --- | --- | --- | --- | --- |

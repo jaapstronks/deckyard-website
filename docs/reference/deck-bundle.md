@@ -13,7 +13,7 @@ The layout is OCF/EPUB-inspired.
 
 :::note
 This page is the field-level reference. For why the package is shaped this way,
-see [the package spec](/spec/deck-bundle/). For the deck it carries, see
+see [the format spec](/spec/deck-format/). For the deck it carries, see
 [Deck format](/docs/reference/deck-format/).
 :::
 

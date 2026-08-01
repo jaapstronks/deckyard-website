@@ -31,10 +31,8 @@
     },
     "lang": {
       "type": "string",
-      "enum": [
-        "nl",
-        "en-GB"
-      ]
+      "pattern": "^[a-zA-Z]{2,3}(-[a-zA-Z]{3}){0,3}(-[a-zA-Z]{4})?(-([a-zA-Z]{2}|[0-9]{3}))?(-([a-zA-Z0-9]{5,8}|[0-9][a-zA-Z0-9]{3}))*(-[a-wy-zA-WY-Z0-9](-[a-zA-Z0-9]{2,8})+)*(-[xX](-[a-zA-Z0-9]{1,8})+)?$",
+      "description": "BCP 47 language tag (e.g. `nl`, `en-GB`, `pt-BR`). The format places no restriction beyond well-formedness; which tags a given implementation authors in is its own choice."
     },
     "settings": {
       "type": "object"
@@ -62,44 +60,8 @@
         },
         "type": {
           "type": "string",
-          "enum": [
-            "card-stack-slide",
-            "chapter-title-slide",
-            "chart-slide",
-            "comparison-slide",
-            "content-columns-slide",
-            "content-slide",
-            "countdown-slide",
-            "custom-html-slide",
-            "cycle-slide",
-            "embed-slide",
-            "end-slide",
-            "feedback-slide",
-            "follow-invite-slide",
-            "funnel-slide",
-            "gallery-slide",
-            "icon-card-grid-slide",
-            "image-slide",
-            "image-text-slide",
-            "kpi-metrics-slide",
-            "lead-capture-slide",
-            "likert-slide",
-            "likert-slider-slide",
-            "list-slide",
-            "logo-wall-slide",
-            "matrix-slide",
-            "payoff-slide",
-            "poll-slide",
-            "process-slide",
-            "pyramid-slide",
-            "quote-slide",
-            "table-slide",
-            "team-cards-slide",
-            "text-blocks-slide",
-            "timeline-slide",
-            "title-slide",
-            "video-slide"
-          ]
+          "pattern": "^(?:[a-z0-9][a-z0-9-]*(?:\\.[a-z0-9][a-z0-9-]*)+\\.[a-z0-9][a-z0-9-]*|(?:(?:[a-z0-9][a-z0-9-]*(?:\\.[a-z0-9][a-z0-9-]*)+|[a-z0-9][a-z0-9-]*)/)?[a-z0-9][a-z0-9-]*)(?:@[0-9A-Za-z][0-9A-Za-z.-]*)?$",
+          "description": "Slide-type reference: the canonical reverse-DNS id (`eu.deckyard.slide.title`), or the equivalent `name`, `namespace/name` or `…@version` spelling. Known types are discriminated below in every spelling; an unknown type is valid and its content is unconstrained."
         },
         "parentId": {
           "type": [
@@ -134,7 +96,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "card-stack-slide"
+                "enum": [
+                  "card-stack-slide",
+                  "core/card-stack-slide",
+                  "eu.deckyard.slide.card-stack",
+                  "card-stack"
+                ]
               }
             }
           },
@@ -150,7 +117,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "chapter-title-slide"
+                "enum": [
+                  "chapter-title-slide",
+                  "core/chapter-title-slide",
+                  "eu.deckyard.slide.chapter-title",
+                  "chapter-title"
+                ]
               }
             }
           },
@@ -166,7 +138,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "chart-slide"
+                "enum": [
+                  "chart-slide",
+                  "core/chart-slide",
+                  "eu.deckyard.slide.chart",
+                  "chart"
+                ]
               }
             }
           },
@@ -182,7 +159,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "comparison-slide"
+                "enum": [
+                  "comparison-slide",
+                  "core/comparison-slide",
+                  "eu.deckyard.slide.comparison",
+                  "comparison"
+                ]
               }
             }
           },
@@ -198,7 +180,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "content-columns-slide"
+                "enum": [
+                  "content-columns-slide",
+                  "core/content-columns-slide",
+                  "eu.deckyard.slide.content-columns",
+                  "content-columns"
+                ]
               }
             }
           },
@@ -214,7 +201,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "content-slide"
+                "enum": [
+                  "content-slide",
+                  "core/content-slide",
+                  "eu.deckyard.slide.content",
+                  "content"
+                ]
               }
             }
           },
@@ -230,7 +222,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "countdown-slide"
+                "enum": [
+                  "countdown-slide",
+                  "core/countdown-slide",
+                  "eu.deckyard.slide.countdown",
+                  "countdown"
+                ]
               }
             }
           },
@@ -246,7 +243,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "custom-html-slide"
+                "enum": [
+                  "custom-html-slide",
+                  "core/custom-html-slide",
+                  "eu.deckyard.slide.custom-html",
+                  "custom-html"
+                ]
               }
             }
           },
@@ -262,7 +264,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "cycle-slide"
+                "enum": [
+                  "cycle-slide",
+                  "core/cycle-slide",
+                  "eu.deckyard.slide.cycle",
+                  "cycle"
+                ]
               }
             }
           },
@@ -278,7 +285,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "embed-slide"
+                "enum": [
+                  "embed-slide",
+                  "core/embed-slide",
+                  "eu.deckyard.slide.embed",
+                  "embed"
+                ]
               }
             }
           },
@@ -294,7 +306,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "end-slide"
+                "enum": [
+                  "end-slide",
+                  "core/end-slide",
+                  "eu.deckyard.slide.end",
+                  "end"
+                ]
               }
             }
           },
@@ -310,7 +327,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "feedback-slide"
+                "enum": [
+                  "feedback-slide",
+                  "core/feedback-slide",
+                  "eu.deckyard.slide.feedback",
+                  "feedback"
+                ]
               }
             }
           },
@@ -326,7 +348,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "follow-invite-slide"
+                "enum": [
+                  "follow-invite-slide",
+                  "core/follow-invite-slide",
+                  "eu.deckyard.slide.follow-invite",
+                  "follow-invite"
+                ]
               }
             }
           },
@@ -342,7 +369,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "funnel-slide"
+                "enum": [
+                  "funnel-slide",
+                  "core/funnel-slide",
+                  "eu.deckyard.slide.funnel",
+                  "funnel"
+                ]
               }
             }
           },
@@ -358,7 +390,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "gallery-slide"
+                "enum": [
+                  "gallery-slide",
+                  "core/gallery-slide",
+                  "eu.deckyard.slide.gallery",
+                  "gallery"
+                ]
               }
             }
           },
@@ -374,7 +411,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "icon-card-grid-slide"
+                "enum": [
+                  "icon-card-grid-slide",
+                  "core/icon-card-grid-slide",
+                  "eu.deckyard.slide.icon-card-grid",
+                  "icon-card-grid"
+                ]
               }
             }
           },
@@ -390,7 +432,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "image-slide"
+                "enum": [
+                  "image-slide",
+                  "core/image-slide",
+                  "eu.deckyard.slide.image",
+                  "image"
+                ]
               }
             }
           },
@@ -406,7 +453,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "image-text-slide"
+                "enum": [
+                  "image-text-slide",
+                  "core/image-text-slide",
+                  "eu.deckyard.slide.image-text",
+                  "image-text"
+                ]
               }
             }
           },
@@ -422,7 +474,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "kpi-metrics-slide"
+                "enum": [
+                  "kpi-metrics-slide",
+                  "core/kpi-metrics-slide",
+                  "eu.deckyard.slide.kpi-metrics",
+                  "kpi-metrics"
+                ]
               }
             }
           },
@@ -438,7 +495,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "lead-capture-slide"
+                "enum": [
+                  "lead-capture-slide",
+                  "core/lead-capture-slide",
+                  "eu.deckyard.slide.lead-capture",
+                  "lead-capture"
+                ]
               }
             }
           },
@@ -454,7 +516,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "likert-slide"
+                "enum": [
+                  "likert-slide",
+                  "core/likert-slide",
+                  "eu.deckyard.slide.likert",
+                  "likert"
+                ]
               }
             }
           },
@@ -470,7 +537,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "likert-slider-slide"
+                "enum": [
+                  "likert-slider-slide",
+                  "core/likert-slider-slide",
+                  "eu.deckyard.slide.likert-slider",
+                  "likert-slider"
+                ]
               }
             }
           },
@@ -486,7 +558,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "list-slide"
+                "enum": [
+                  "list-slide",
+                  "core/list-slide",
+                  "eu.deckyard.slide.list",
+                  "list"
+                ]
               }
             }
           },
@@ -502,7 +579,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "logo-wall-slide"
+                "enum": [
+                  "logo-wall-slide",
+                  "core/logo-wall-slide",
+                  "eu.deckyard.slide.logo-wall",
+                  "logo-wall"
+                ]
               }
             }
           },
@@ -518,7 +600,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "matrix-slide"
+                "enum": [
+                  "matrix-slide",
+                  "core/matrix-slide",
+                  "eu.deckyard.slide.matrix",
+                  "matrix"
+                ]
               }
             }
           },
@@ -534,7 +621,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "payoff-slide"
+                "enum": [
+                  "payoff-slide",
+                  "core/payoff-slide",
+                  "eu.deckyard.slide.payoff",
+                  "payoff"
+                ]
               }
             }
           },
@@ -550,7 +642,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "poll-slide"
+                "enum": [
+                  "poll-slide",
+                  "core/poll-slide",
+                  "eu.deckyard.slide.poll",
+                  "poll"
+                ]
               }
             }
           },
@@ -566,7 +663,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "process-slide"
+                "enum": [
+                  "process-slide",
+                  "core/process-slide",
+                  "eu.deckyard.slide.process",
+                  "process"
+                ]
               }
             }
           },
@@ -582,7 +684,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "pyramid-slide"
+                "enum": [
+                  "pyramid-slide",
+                  "core/pyramid-slide",
+                  "eu.deckyard.slide.pyramid",
+                  "pyramid"
+                ]
               }
             }
           },
@@ -598,7 +705,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "quote-slide"
+                "enum": [
+                  "quote-slide",
+                  "core/quote-slide",
+                  "eu.deckyard.slide.quote",
+                  "quote"
+                ]
               }
             }
           },
@@ -614,7 +726,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "table-slide"
+                "enum": [
+                  "table-slide",
+                  "core/table-slide",
+                  "eu.deckyard.slide.table",
+                  "table"
+                ]
               }
             }
           },
@@ -630,7 +747,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "team-cards-slide"
+                "enum": [
+                  "team-cards-slide",
+                  "core/team-cards-slide",
+                  "eu.deckyard.slide.team-cards",
+                  "team-cards"
+                ]
               }
             }
           },
@@ -646,7 +768,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "text-blocks-slide"
+                "enum": [
+                  "text-blocks-slide",
+                  "core/text-blocks-slide",
+                  "eu.deckyard.slide.text-blocks",
+                  "text-blocks"
+                ]
               }
             }
           },
@@ -662,7 +789,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "timeline-slide"
+                "enum": [
+                  "timeline-slide",
+                  "core/timeline-slide",
+                  "eu.deckyard.slide.timeline",
+                  "timeline"
+                ]
               }
             }
           },
@@ -678,7 +810,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "title-slide"
+                "enum": [
+                  "title-slide",
+                  "core/title-slide",
+                  "eu.deckyard.slide.title",
+                  "title"
+                ]
               }
             }
           },
@@ -694,7 +831,12 @@
           "if": {
             "properties": {
               "type": {
-                "const": "video-slide"
+                "enum": [
+                  "video-slide",
+                  "core/video-slide",
+                  "eu.deckyard.slide.video",
+                  "video"
+                ]
               }
             }
           },

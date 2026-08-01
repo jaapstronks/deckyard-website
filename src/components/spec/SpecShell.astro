@@ -32,9 +32,8 @@ const t = ui[lang].spec.shared;
 const HREFS: Record<SpecPageId, string> = {
   index: '/spec/',
   'deck-format': '/spec/deck-format/',
-  'deck-bundle': '/spec/deck-bundle/',
-  schemas: '/spec/schemas/',
   'slide-types': '/spec/slide-types/',
+  conformance: '/spec/conformance/',
 };
 
 const others = (Object.keys(HREFS) as SpecPageId[]).filter((id) => id !== page);

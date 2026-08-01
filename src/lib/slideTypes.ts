@@ -28,7 +28,11 @@ export interface SlideTypeLayoutVariant {
 export interface SlideType {
   /** Bare registry key, and the value in a deck's `slides[].type`. */
   name: string;
-  /** Qualified identity: `namespace/name[@version]`. */
+  /**
+   * The canonical identity: reverse-DNS (`eu.deckyard.slide.title`). It is a
+   * second spelling of `name`, never a second type, and storage never moved -
+   * `slides[].type` still carries the bare key.
+   */
   id: string;
   label: string;
   deprecated: boolean;
@@ -39,6 +43,23 @@ export interface SlideType {
    * a gap in the facet has to look like a gap.
    */
   structure: SlideStructure | null;
+  /**
+   * What the presenting session has to do for the type beyond serving it.
+   * `null` on the same terms as `structure`: core's own gap, not a default.
+   */
+  runtime: SlideRuntime | null;
+  /**
+   * What kind of answer a `live` type collects. `null` on every other runtime,
+   * which core asserts in both directions rather than this side assuming.
+   */
+  interaction: LiveInteraction | null;
+  /** How far the promise goes. Everything published here is 1 or 2. */
+  tier: SlideTier;
+  /**
+   * The tier-1 contract to degrade to when a reader has not implemented this
+   * type. `null` on a tier-1 type, which is the floor and has nothing below it.
+   */
+  fallback: string | null;
   /** True when the audience takes part rather than only watching. */
   audience: boolean;
   description: string | null;
@@ -84,11 +105,59 @@ export interface SlideStructureEntry {
   meaning: string;
 }
 
+/**
+ * The `runtime` facet: what the presenting session has to do for a slide type
+ * beyond serving it.
+ *
+ * A different question from `structure`, and answered a different way.
+ * `structure` is about the content and is derivable from the field schema, so a
+ * declaration that lies is catchable by a test. `runtime` is a fact about the
+ * server that nothing in the schema can confirm, so core guards it from the
+ * other end: no module may re-derive the live set by hand, which is the
+ * measurement that produced the facet in the first place.
+ *
+ * The line is drawn at *session state*, not at "has behaviour". That is what
+ * makes `countdown-slide` `timed` rather than `live`, and `lead-capture-slide`
+ * `static` even though it plainly collects from the room - its submissions go
+ * to lead storage over their own endpoint and never reach the session.
+ */
+export type SlideRuntime = 'static' | 'timed' | 'live';
+
+/** The kind of answer a `live` type collects. Meaningless on any other runtime. */
+export type LiveInteraction = 'poll' | 'likert' | 'feedback';
+
+/**
+ * The tier ladder, and the only one of the three facets that is a *promise*
+ * rather than a description. Tier 1 is normative; tier 2 we ship and publish but
+ * it versions with the app; tier 3 is a fork's or a third party's declaration,
+ * so nothing published from core carries it.
+ */
+export type SlideTier = 1 | 2 | 3;
+
+export interface SlideRuntimeEntry {
+  name: SlideRuntime;
+  meaning: string;
+}
+
+export interface LiveInteractionEntry {
+  name: LiveInteraction;
+  meaning: string;
+}
+
+export interface SlideTierEntry {
+  tier: SlideTier;
+  meaning: string;
+}
+
 const registry = data as unknown as {
   count: number;
   activeCount: number;
   deprecatedCount: number;
   structures: SlideStructureEntry[];
+  runtimes: SlideRuntimeEntry[];
+  interactions: LiveInteractionEntry[];
+  tiers: SlideTierEntry[];
+  coreProfile: string[];
   globalFields: SlideTypeField[];
   types: SlideType[];
 };
@@ -150,4 +219,68 @@ export function repeatingFields(type: SlideType): SlideTypeField[] {
 export function structureCoverage(structures: SlideStructure[]): number {
   const wanted = new Set(structures);
   return slideTypes.filter((t) => !t.deprecated && t.structure && wanted.has(t.structure)).length;
+}
+
+// ---------------------------------------------------------------------------
+// The `runtime` facet
+// ---------------------------------------------------------------------------
+
+/** The vocabulary, in core's declaration order. */
+export const slideRuntimes: SlideRuntimeEntry[] = registry.runtimes;
+
+/** The three answer kinds a `live` type can declare. */
+export const liveInteractions: LiveInteractionEntry[] = registry.interactions;
+
+/** Active types with a given runtime, in registration order. */
+export function typesWithRuntime(runtime: SlideRuntime): SlideType[] {
+  return slideTypes.filter((t) => t.runtime === runtime && !t.deprecated);
+}
+
+// ---------------------------------------------------------------------------
+// Tiers and the fallback map
+// ---------------------------------------------------------------------------
+
+/** The tier vocabulary, as core states it. */
+export const slideTiers: SlideTierEntry[] = registry.tiers;
+
+/**
+ * The nine normative types, in core's order rather than sorted. The order is
+ * the argument: title, section break, prose, enumeration, quotation, image,
+ * image-with-text, table, closing is a presentation read start to end.
+ */
+export const coreProfile: SlideType[] = registry.coreProfile
+  .map((name) => slideTypes.find((t) => t.name === name))
+  .filter((t): t is SlideType => Boolean(t));
+
+/** Active types in a tier, in registration order. */
+export function typesInTier(tier: SlideTier): SlideType[] {
+  return slideTypes.filter((t) => t.tier === tier && !t.deprecated);
+}
+
+/**
+ * Every tier-1 type with the tier-2 types that degrade to it. This is the whole
+ * argument of the tier split in one data structure: five of the nine absorb all
+ * twenty-seven of the rest, so a reader that implements only the core profile
+ * still renders every deck without dropping content.
+ *
+ * Built from the declarations rather than from a hand-kept list, so a tier-2
+ * type that ever loses its `fallback` disappears from a column here instead of
+ * being quietly counted in one.
+ */
+export function fallbackMap(): { target: SlideType; sources: SlideType[] }[] {
+  return coreProfile
+    .map((target) => ({
+      target,
+      sources: slideTypes.filter((t) => !t.deprecated && t.fallback === target.name),
+    }))
+    .filter((row) => row.sources.length > 0);
+}
+
+/**
+ * Active tier-2 types that declare no fallback. Expected to be empty, and shown
+ * rather than assumed: the claim "every tier-2 type declares one" is only worth
+ * making on a page that would visibly break if it stopped being true.
+ */
+export function unmappedTypes(): SlideType[] {
+  return slideTypes.filter((t) => !t.deprecated && t.tier === 2 && !t.fallback);
 }

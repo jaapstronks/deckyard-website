@@ -261,11 +261,29 @@ Other rules:
 
 ## The `/spec/` section
 
-Five pages under `src/pages/[...locale]/spec/` that put the deck format on the
-site as a **standard**, not as an implementation detail: `/spec/`,
-`/spec/deck-format/`, `/spec/deck-bundle/`, `/spec/schemas/` and
-`/spec/slide-types/`. Marketing register, deliberately not Starlight - in the
-docs a spec drowns between "how do I make a poll".
+Four pages under `src/pages/[...locale]/spec/` that put the deck format on the
+site as a **standard**, not as an implementation detail: `/spec/` (the
+argument), `/spec/deck-format/` (the format, both layers and the schemas),
+`/spec/slide-types/` (the catalogue) and `/spec/conformance/` (what a second
+implementation must build). Marketing register, deliberately not Starlight - in
+the docs a spec drowns between "how do I make a poll".
+
+**Four is a ceiling, not a coincidence.** It was six: the archive layer and the
+schemas had routes of their own, and each of the three had to restate the other
+two before it could say anything. `redirects` in `astro.config.mjs` keeps the two
+retired URLs reachable. The same pressure produced the rule below, which is the
+one worth keeping:
+
+> A section is worth a page when it answers a question the other pages do not.
+> A justification for a decision this project made is not that question.
+
+What that ruled out, so it does not come back: why the `runtime` facet was
+measured rather than designed, why a tier beats removing a type, why the
+evolution rule is preferable to migration freedom, that the type count used to
+say 36, 38 and 44 in three places. All of it true, none of it a thing a reader
+deciding whether to build against the format needs. Lookups (the three spellings
+of a type id, the export/import endpoints, every field of the manifest) went the
+other way, into `docs/reference/`, which is the half the site search indexes.
 
 Two things are load-bearing:
 
