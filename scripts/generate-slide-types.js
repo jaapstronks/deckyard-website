@@ -123,14 +123,18 @@ function oneLine(text) {
 }
 
 /**
- * The named exports this script destructures out of core, per module.
+ * Every name this script reads off a core module. One entry per key in
+ * CORE_SOURCES, and the list is exhaustive on purpose: it is the contract with
+ * core, so a name that is read anywhere below belongs here.
  *
- * Checked up front so a missing one is a sentence instead of a TypeError forty
- * lines later. Core's dead-export sweep (deckyard#536) un-exported three of
- * these at once - `SLIDE_STRUCTURES`, `SLIDE_RUNTIMES`, `LIVE_INTERACTIONS` -
- * because the grep that found them ran inside core, and this script is their
- * only consumer, in another repo. Without a preflight that surfaces as one
- * crash per constant: fix one, run again, crash on the next.
+ * Checked before anything is shaped, so a missing name is a sentence rather
+ * than a TypeError four hundred lines in - or worse, `undefined` rendered into
+ * a published schema URL, which is what an un-exported SCHEMA_BASE_URI did.
+ *
+ * Core's dead-export sweep (deckyard#536) un-exported four of these at once.
+ * Not carelessly: the grep that found them ran inside core, and every one of
+ * them has its only consumer here, in another repo. Fixing them one crash at a
+ * time cost two round trips before this list existed.
  */
 const REQUIRED_EXPORTS = {
   registry: ['SLIDE_TYPES', 'CORE_SLIDE_TYPE_NAMES', 'SLIDE_TYPE_IDS', 'GLOBAL_SLIDE_FIELD_KEYS'],
@@ -148,39 +152,46 @@ const REQUIRED_EXPORTS = {
   picker: ['PICKER_GROUP_ORDER', 'PICKER_GROUP_KEYS'],
   companions: ['SLIDE_TYPE_DESCRIPTION'],
   catalog: ['getCoreSlideCatalog'],
+  deck: ['presentationToDeck'],
+  bundle: ['DECK_MIMETYPE', 'DECK_BUNDLE_VERSION'],
+  jsonSchema: ['SCHEMA_BASE_URI', 'deckJsonSchema', 'slideTypeContentSchema'],
+  schemaVersion: ['CURRENT_SCHEMA_VERSION'],
 };
 
-/** Report every export core is missing at once, then stop. */
-function requireExports(modules) {
+/**
+ * Import every core module, verify the whole contract, and hand back the lot.
+ * Reports all missing names together: the point of the list is that one run
+ * tells core everything it has to put back.
+ */
+async function loadCore() {
+  const modules = {};
+  for (const key of Object.keys(CORE_SOURCES)) {
+    modules[key] = await coreImport(CORE_SOURCES[key]);
+  }
+
   const missing = [];
   for (const [key, names] of Object.entries(REQUIRED_EXPORTS)) {
     for (const name of names) {
       if (modules[key][name] === undefined) missing.push(`${CORE_SOURCES[key]}: ${name}`);
     }
   }
-  if (!missing.length) return;
-  console.error(
-    `Core no longer exports ${missing.length} thing(s) this script reads:\n` +
-      missing.map((m) => `  ${m}`).join('\n') +
-      '\n\nThe committed src/data/slide-types.json is what the build uses, so the site is\n' +
-      'not broken - it is just frozen at the last successful run. Re-exporting these in\n' +
-      '../deckyard is the fix; deleting them there is not, because this repo is the\n' +
-      'consumer core greps for and does not find.'
-  );
-  process.exit(1);
+  if (missing.length) {
+    console.error(
+      `Core no longer exports ${missing.length} thing(s) this script reads:\n` +
+        missing.map((m) => `  ${m}`).join('\n') +
+        '\n\nThe committed src/data/slide-types.json is what the build uses, so the site is\n' +
+        'not broken - it is just frozen at the last successful run. Re-exporting these in\n' +
+        '../deckyard is the fix; deleting them there is not, because this repo is the\n' +
+        'consumer core greps for and does not find.'
+    );
+    process.exit(1);
+  }
+
+  return modules;
 }
 
 async function buildData() {
-  const registry = await coreImport(CORE_SOURCES.registry);
-  const structureModule = await coreImport(CORE_SOURCES.structure);
-  const runtimeModule = await coreImport(CORE_SOURCES.runtime);
-  const tiersModule = await coreImport(CORE_SOURCES.tiers);
-  const schematics = await coreImport(CORE_SOURCES.schematics);
-  const picker = await coreImport(CORE_SOURCES.picker);
-  const companions = await coreImport(CORE_SOURCES.companions);
-  const catalog = await coreImport(CORE_SOURCES.catalog);
-
-  requireExports({
+  const {
     registry,
     structure: structureModule,
     runtime: runtimeModule,
@@ -189,7 +200,7 @@ async function buildData() {
     picker,
     companions,
     catalog,
-  });
+  } = await loadCore();
 
   const { SLIDE_TYPES, CORE_SLIDE_TYPE_NAMES, SLIDE_TYPE_IDS, GLOBAL_SLIDE_FIELD_KEYS } = registry;
   const { SLIDE_STRUCTURES, SLIDE_STRUCTURE_NAMES, slideStructure } = structureModule;
@@ -337,10 +348,7 @@ async function buildData() {
  * trusted to describe the format.
  */
 async function buildFormatData() {
-  const deck = await coreImport(CORE_SOURCES.deck);
-  const bundle = await coreImport(CORE_SOURCES.bundle);
-  const jsonSchema = await coreImport(CORE_SOURCES.jsonSchema);
-  const schemaVersion = await coreImport(CORE_SOURCES.schemaVersion);
+  const { deck, bundle, jsonSchema, schemaVersion } = await loadCore();
 
   // The magic string and the envelope version are not exported as constants:
   // they are written into the envelope. So ask for an envelope and read them off
@@ -692,8 +700,7 @@ export function buildSlideTypeDoc(data, format) {
  *   Only a schema-version bump opens a new directory.
  */
 async function buildSchemaFiles(format) {
-  const registry = await coreImport(CORE_SOURCES.registry);
-  const jsonSchema = await coreImport(CORE_SOURCES.jsonSchema);
+  const { registry, jsonSchema } = await loadCore();
   const { SLIDE_TYPES, CORE_SLIDE_TYPE_NAMES } = registry;
 
   const core = {};
