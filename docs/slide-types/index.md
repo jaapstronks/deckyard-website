@@ -3,7 +3,7 @@ title: "Slide Types Overview"
 description: "Complete guide to all slide types available in Deckyard"
 ---
 
-Deckyard includes <!--gen:slide-type-count-->36<!--/gen:slide-type-count--> built-in slide types organized into categories. Each slide type has specific fields, default values, and rendering behavior.
+Deckyard includes <!--gen:slide-type-count-->34<!--/gen:slide-type-count--> built-in slide types organized into categories. Each slide type has specific fields, default values, and rendering behavior.
 
 ![Slide type picker showing available categories](/images/screenshots/slide-type-picker-new.png)
 
