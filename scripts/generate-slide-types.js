@@ -122,6 +122,54 @@ function oneLine(text) {
     .trim();
 }
 
+/**
+ * The named exports this script destructures out of core, per module.
+ *
+ * Checked up front so a missing one is a sentence instead of a TypeError forty
+ * lines later. Core's dead-export sweep (deckyard#536) un-exported three of
+ * these at once - `SLIDE_STRUCTURES`, `SLIDE_RUNTIMES`, `LIVE_INTERACTIONS` -
+ * because the grep that found them ran inside core, and this script is their
+ * only consumer, in another repo. Without a preflight that surfaces as one
+ * crash per constant: fix one, run again, crash on the next.
+ */
+const REQUIRED_EXPORTS = {
+  registry: ['SLIDE_TYPES', 'CORE_SLIDE_TYPE_NAMES', 'SLIDE_TYPE_IDS', 'GLOBAL_SLIDE_FIELD_KEYS'],
+  structure: ['SLIDE_STRUCTURES', 'SLIDE_STRUCTURE_NAMES', 'slideStructure'],
+  runtime: [
+    'SLIDE_RUNTIMES',
+    'SLIDE_RUNTIME_NAMES',
+    'LIVE_INTERACTIONS',
+    'LIVE_INTERACTION_NAMES',
+    'slideRuntime',
+    'slideLiveInteraction',
+  ],
+  tiers: ['SLIDE_TIERS', 'CORE_PROFILE', 'slideTypeTier', 'slideFallback'],
+  schematics: ['SLIDE_TYPE_SCHEMATIC'],
+  picker: ['PICKER_GROUP_ORDER', 'PICKER_GROUP_KEYS'],
+  companions: ['SLIDE_TYPE_DESCRIPTION'],
+  catalog: ['getCoreSlideCatalog'],
+};
+
+/** Report every export core is missing at once, then stop. */
+function requireExports(modules) {
+  const missing = [];
+  for (const [key, names] of Object.entries(REQUIRED_EXPORTS)) {
+    for (const name of names) {
+      if (modules[key][name] === undefined) missing.push(`${CORE_SOURCES[key]}: ${name}`);
+    }
+  }
+  if (!missing.length) return;
+  console.error(
+    `Core no longer exports ${missing.length} thing(s) this script reads:\n` +
+      missing.map((m) => `  ${m}`).join('\n') +
+      '\n\nThe committed src/data/slide-types.json is what the build uses, so the site is\n' +
+      'not broken - it is just frozen at the last successful run. Re-exporting these in\n' +
+      '../deckyard is the fix; deleting them there is not, because this repo is the\n' +
+      'consumer core greps for and does not find.'
+  );
+  process.exit(1);
+}
+
 async function buildData() {
   const registry = await coreImport(CORE_SOURCES.registry);
   const structureModule = await coreImport(CORE_SOURCES.structure);
@@ -131,6 +179,17 @@ async function buildData() {
   const picker = await coreImport(CORE_SOURCES.picker);
   const companions = await coreImport(CORE_SOURCES.companions);
   const catalog = await coreImport(CORE_SOURCES.catalog);
+
+  requireExports({
+    registry,
+    structure: structureModule,
+    runtime: runtimeModule,
+    tiers: tiersModule,
+    schematics,
+    picker,
+    companions,
+    catalog,
+  });
 
   const { SLIDE_TYPES, CORE_SLIDE_TYPE_NAMES, SLIDE_TYPE_IDS, GLOBAL_SLIDE_FIELD_KEYS } = registry;
   const { SLIDE_STRUCTURES, SLIDE_STRUCTURE_NAMES, slideStructure } = structureModule;
