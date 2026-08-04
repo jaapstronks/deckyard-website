@@ -164,11 +164,17 @@ const blogHref = localizePath('/blog/', lang);
   }
   .article-body :global(pre) {
     background: var(--green-deep);
-    color: #e8efe9;
+    color: var(--ink-inverse);
     padding: 20px 24px;
+    border: 1px solid transparent;
     border-radius: var(--radius-md);
     overflow-x: auto;
     font-size: 0.86em;
+  }
+  /* Same repair as the spec code block: on the dark page the plate has to say
+     where it starts, and on the light page it already did. */
+  :global(:root[data-theme='dark']) .article-body :global(pre) {
+    border-color: var(--green-wash-line);
   }
   .article-body :global(pre code) {
     background: none;

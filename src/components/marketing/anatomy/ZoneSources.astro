@@ -318,7 +318,12 @@ const t = ui[lang].anatomy;
     font-weight: 700;
   }
 
-  /* a loose note */
+  /* a loose note.
+     The one window in the pile that is not a document: it is a sticky note, so
+     it is yellow paper rather than a surface token, and it keeps its own pair of
+     colours in both themes. On dark the paper goes to a lit amber the way a note
+     under a desk lamp does - a #fdf6dc rectangle would be the brightest thing on
+     the page, and turning it grey would stop it being a sticky note at all. */
   .src-note {
     padding: 0.85rem calc(0.9rem + var(--pad-r)) 0.85rem calc(0.9rem + var(--pad-l));
     background: #fdf6dc;
@@ -326,6 +331,10 @@ const t = ui[lang].anatomy;
     line-height: 1.62;
     color: #4a4023;
     min-height: 7rem;
+  }
+  :global(:root[data-theme='dark']) .src-note {
+    background: #2b2416;
+    color: #e9ddba;
   }
   .src-note p {
     margin: 0 0 0.55em;

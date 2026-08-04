@@ -101,7 +101,7 @@ const sub = (copy: string) => withSpec(withFacts(copy));
     font-size: 0.62rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(242, 239, 230, 0.62);
+    color: color-mix(in srgb, var(--ink-inverse) 62%, transparent);
   }
   .aif-panel--open .aif-label {
     color: var(--brass-bright);
@@ -135,12 +135,12 @@ const sub = (copy: string) => withSpec(withFacts(copy));
   .aif-key {
     font-family: var(--mono);
     font-size: 0.72rem;
-    color: rgba(242, 239, 230, 0.92);
+    color: color-mix(in srgb, var(--ink-inverse) 92%, transparent);
   }
   .aif-note {
     font-size: 0.8rem;
     line-height: 1.45;
-    color: rgba(242, 239, 230, 0.62);
+    color: color-mix(in srgb, var(--ink-inverse) 62%, transparent);
   }
   .aif-val {
     font-family: var(--mono);
@@ -154,14 +154,14 @@ const sub = (copy: string) => withSpec(withFacts(copy));
     text-align: center;
     font-size: 0.9rem;
     line-height: 1;
-    color: rgba(242, 239, 230, 0.5);
+    color: color-mix(in srgb, var(--ink-inverse) 50%, transparent);
   }
 
   .aif figcaption {
     margin-top: 0.35rem;
     font-size: 0.82rem;
     line-height: 1.55;
-    color: rgba(242, 239, 230, 0.72);
+    color: color-mix(in srgb, var(--ink-inverse) 72%, transparent);
   }
 
   /* Told apart by a border colour, which is exactly what a forced palette takes

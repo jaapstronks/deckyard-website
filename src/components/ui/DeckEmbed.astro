@@ -335,6 +335,18 @@ const frameSrc = `${src}${src.includes('?') ? '&' : '?'}ui=min`;
     overflow: hidden;
     background: #000;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+
+    /* The overlay controls paint their own white plate over the black stage, so
+       inside here green is the light-surface green whatever the page is doing.
+       Re-pointing the token for the subtree is the same move .section-dark
+       makes, in the other direction: the plate decides, not the page. */
+    --green: #254d38;
+  }
+  /* The stage is black and the page is near-black, so the frame ends nowhere.
+     A hairline gives it back an edge; the drop shadow has nothing left to
+     darken and stops carrying it. */
+  :global(:root[data-theme='dark']) .deck-embed__stage {
+    box-shadow: 0 0 0 1px var(--line);
   }
 
   .deck-embed__frame,

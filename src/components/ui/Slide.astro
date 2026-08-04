@@ -154,25 +154,33 @@ const max = Math.max(1, ...(bars ?? []).map((b) => b.value));
   .slide {
     /* ---- house style ----
        The theme control writes these inline; the values here are Deckyard's
-       own, which is why switching back to it just clears the overrides. */
-    --t-bg: var(--card);
-    --t-ink: var(--ink);
-    --t-accent: var(--green-bright);
-    --t-head: var(--ink);
-    --t-muted: var(--ink-mute);
-    --t-rule: var(--sage);
+       own, which is why switching back to it just clears the overrides.
+
+       Literal colours rather than the site's surface tokens, and that is the
+       whole point: a slide is a picture of what Deckyard produces, so it shows
+       the house style the deck was authored in. A reader who switches this site
+       to dark has said something about reading this page, not about the deck -
+       the same reason the three preset swatches in anatomy/data.ts are hex and
+       the product screenshots stay light. These are the light-theme values of
+       --card / --ink / --green-bright / --ink-mute / --sage / --line, frozen. */
+    --t-bg: #ffffff;
+    --t-ink: #1c1917;
+    --t-accent: #2d6b4a;
+    --t-head: #1c1917;
+    --t-muted: #6e675f;
+    --t-rule: #dfe8e0;
     --t-radius: var(--radius-sm);
     --t-font-head: var(--display);
     --t-font-body: var(--body);
     --t-font-eye: var(--mono);
     --t-eye-ls: 0.14em;
     --t-node: 50%;
-    --t-border: 1px solid var(--line);
+    --t-border: 1px solid #e2ddd3;
     /* The tint on whatever a route just added. It is real text on the slide's
        own background, so it is a theme token like the rest rather than a fixed
        brass: the one dark house style needs the bright end of the range where
        the light ones need the dark end. */
-    --t-fresh: var(--brass-text);
+    --t-fresh: #8a6209;
 
     /* ---- type scale ----
        All in cqi (1% of the slide's own width), so a slide renders the same at

@@ -15,4 +15,5 @@ export const nav: NavContent = {
   homeAria: 'Deckyard home',
   languageAria: 'Language',
   menuAria: 'Menu',
+  themeAria: 'Dark theme',
 };

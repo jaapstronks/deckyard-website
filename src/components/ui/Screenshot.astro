@@ -79,7 +79,21 @@ const src = shot(name, lang);
      colour because it is 0.72rem mono, which is where 4.5:1 starts to matter. */
   :global(.section-dark) .shot {
     --shot-border: rgba(255, 255, 255, 0.18);
-    --shot-caption-fg: rgba(242, 239, 230, 0.82);
+    --shot-caption-fg: color-mix(in srgb, var(--ink-inverse) 82%, transparent);
+  }
+
+  /* These are pictures of a light application and they stay that way - there is
+     no dark mode in the editor to photograph, and a filtered screenshot would be
+     a picture of something that does not exist. So on the dark page the shot is
+     the brightest thing on screen, and a hairline around it does nothing: it
+     needs a frame that says "window onto the product" rather than "image that
+     failed to load the theme". A mat in the card colour, a brighter edge around
+     that, and the deep shadow, so it sits on the page instead of glowing off it. */
+  :global(:root[data-theme='dark']) .shot img {
+    --shot-border: color-mix(in srgb, var(--ink-inverse) 20%, transparent);
+    padding: 6px;
+    background: var(--card);
+    box-shadow: var(--shadow-lg);
   }
 
   /* A screenshot told apart from the page by a hairline disappears when the

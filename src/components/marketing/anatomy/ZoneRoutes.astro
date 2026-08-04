@@ -521,7 +521,7 @@ function demoFor(kind: 'timeline' | 'chart') {
   .bub.is-self {
     justify-self: end;
     background: var(--green-wash);
-    border-color: #cadbcf;
+    border-color: var(--green-wash-line);
   }
   .bub-who {
     display: block;
@@ -612,7 +612,7 @@ function demoFor(kind: 'timeline' | 'chart') {
     margin: 0 -1rem -1rem;
     padding: 1rem;
     background: var(--green-wash);
-    border-top: 1px solid #cadbcf;
+    border-top: 1px solid var(--green-wash-line);
     border-radius: 0 0 calc(var(--radius-sm) - 1px) calc(var(--radius-sm) - 1px);
   }
   @media (min-width: 760px) {
@@ -651,11 +651,16 @@ function demoFor(kind: 'timeline' | 'chart') {
     flex-direction: column;
     min-width: 0;
   }
+  /* The record fragment: a dark plate with its own palette, which is why the two
+     colours here are literals and not tokens - they belong to the plate, not to
+     the page. What the page does decide is whether the plate has an edge; on
+     dark it sits on a green tint barely lighter than itself. */
   .stored {
     margin: 0 0 0.75rem;
     padding: 0.6rem 0.7rem;
     background: var(--green-deep);
     color: #d8e5dc;
+    border: 1px solid transparent;
     border-radius: var(--radius-sm);
     font-family: var(--mono);
     font-size: 0.66rem;
@@ -668,6 +673,9 @@ function demoFor(kind: 'timeline' | 'chart') {
   }
   .stored :global(.s) {
     color: #9fd6b4;
+  }
+  :global(:root[data-theme='dark']) .stored {
+    border-color: var(--green-wash-line);
   }
 
   .gate {

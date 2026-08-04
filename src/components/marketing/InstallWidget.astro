@@ -184,12 +184,18 @@ Tell me the URL to open and the edit/present links for anything you create.`;
        flips it. The copy button's ring is offset onto this background, not
        onto the button, so this is the pairing that has to clear 3:1. */
     --focus-ring: var(--brass-bright);
-    background: var(--green-deep, #14281b);
+    background: var(--green-deep);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--radius-md);
     overflow: hidden;
     box-shadow: var(--shadow-lg);
     text-align: left;
+  }
+  /* The terminal is a dark plate on a dark page now, and an 8%-white edge is not
+     an edge at that point. The shadow cannot carry it either - there is nothing
+     under it left to darken - so the border does the work. */
+  :global(:root[data-theme='dark']) .terminal {
+    border-color: var(--green-wash-line);
   }
   .terminal-bar {
     display: flex;
@@ -233,14 +239,14 @@ Tell me the URL to open and the edit/present links for anything you create.`;
     font-family: var(--mono);
     font-size: 0.92rem;
     line-height: 1.5;
-    color: var(--paper);
+    color: var(--ink-inverse);
   }
   .terminal-code code {
     font-family: inherit;
   }
   .terminal-code--prompt {
     white-space: pre-wrap;
-    color: rgba(245, 243, 236, 0.9);
+    color: color-mix(in srgb, var(--ink-inverse) 90%, transparent);
     font-size: 0.84rem;
   }
   .term-prompt {
@@ -256,7 +262,7 @@ Tell me the URL to open and the edit/present links for anything you create.`;
     font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    color: var(--green-deep, #14281b);
+    color: var(--green-deep);
     background: var(--brass-soft);
     border: none;
     border-radius: var(--radius-sm);

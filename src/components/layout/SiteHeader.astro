@@ -78,6 +78,57 @@ const docsHref = '/docs/creating/';
 
       <a class="nav-cta" href={sandboxUrl(lang)} target="_blank" rel="noopener">{t.nav.sandbox}</a>
 
+      <!-- One button, two states, told by `aria-pressed` and by the glyph
+           morphing between a sun and a moon. It sits here rather than in
+           .site-nav because it is not a place you can go: folding it into the
+           mobile drawer would hide the control behind the hamburger.
+
+           aria-pressed starts false in the HTML and is corrected by the script
+           below on load, because the page is static and the theme is not: what
+           the reader stored is only known in the browser. -->
+      <button
+        type="button"
+        class="theme-toggle"
+        aria-label={t.nav.themeAria}
+        aria-pressed="false"
+        data-theme-toggle
+      >
+        <svg
+          class="theme-icon"
+          viewBox="0 0 24 24"
+          width="20"
+          height="20"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <!-- The bite is a mask stop, so #000 here is an alpha value and not a
+               colour: parked clear of the disc it is a sun, slid over the
+               shoulder it is a crescent. -->
+          <mask id="theme-icon-bite">
+            <rect x="0" y="0" width="24" height="24" fill="#fff"></rect>
+            <circle class="theme-icon-bite" cx="12" cy="12" r="6" fill="#000"></circle>
+          </mask>
+          <g class="theme-icon-orb">
+            <circle cx="12" cy="12" r="5" fill="currentColor" mask="url(#theme-icon-bite)"></circle>
+          </g>
+          <g
+            class="theme-icon-rays"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+          >
+            <line x1="12" y1="1.6" x2="12" y2="3.4"></line>
+            <line x1="12" y1="20.6" x2="12" y2="22.4"></line>
+            <line x1="1.6" y1="12" x2="3.4" y2="12"></line>
+            <line x1="20.6" y1="12" x2="22.4" y2="12"></line>
+            <line x1="4.7" y1="4.7" x2="6" y2="6"></line>
+            <line x1="18" y1="18" x2="19.3" y2="19.3"></line>
+            <line x1="4.7" y1="19.3" x2="6" y2="18"></line>
+            <line x1="18" y1="6" x2="19.3" y2="4.7"></line>
+          </g>
+        </svg>
+      </button>
+
       <button
         type="button"
         class="nav-toggle"
@@ -134,6 +185,43 @@ const docsHref = '/docs/creating/';
   }
   initNavToggle();
   document.addEventListener('astro:page-load', initNavToggle);
+
+  // Theme toggle. The resolving, storing and <html data-theme> writing all
+  // happen in the inline head script in SiteLayout.astro - it has to run before
+  // the first paint, so it cannot live here. This half only owns the button:
+  // it flips the stored preference and keeps aria-pressed honest.
+  //
+  // Writing 'light' or 'dark' explicitly, never '', is the point of clicking:
+  // '' means "follow the OS", which is where the reader already was.
+  function syncThemeToggle() {
+    const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+    if (!toggle) return;
+    toggle.setAttribute('aria-pressed', String(document.documentElement.dataset.theme === 'dark'));
+  }
+
+  function initThemeToggle() {
+    const toggle = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+    if (!toggle) return;
+    syncThemeToggle();
+    if (toggle.dataset.bound) return;
+    toggle.dataset.bound = 'true';
+
+    toggle.addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      try {
+        localStorage.setItem('starlight-theme', next);
+      } catch {
+        // Private mode, or storage denied. The click still applies for this page.
+      }
+      window.__deckyardApplyTheme?.();
+      syncThemeToggle();
+    });
+  }
+  initThemeToggle();
+  document.addEventListener('astro:page-load', initThemeToggle);
+  // Fired by the head script, so the button also follows an OS-preference
+  // change while the reader is on "follow the OS".
+  document.addEventListener('deckyard:themechange', syncThemeToggle);
 </script>
 
 <style>
@@ -159,7 +247,7 @@ const docsHref = '/docs/creating/';
   /* Same width as the drawer breakpoint in chrome.css, which is where the bar
      turns into a list of full-width rows. A media query cannot read a token, so
      if one of the two moves the other has to move with it. */
-  @media (max-width: 940px) {
+  @media (max-width: 1000px) {
     .nav-gh-label {
       position: static;
       width: auto;
@@ -190,5 +278,53 @@ const docsHref = '/docs/creating/';
   .nav-cta:hover {
     background: var(--brass-bright);
     color: var(--green-deep);
+  }
+
+  /* Sun to moon, as one shape rather than two icons crossfading. The disc never
+     leaves; the mask slides a second disc over its shoulder and bites a crescent
+     out of it while the rays collapse into the middle. Two icons swapping would
+     have been a change of subject - this is the same light, seen at night.
+
+     The button chrome is in chrome.css, which owns the frame; the morph is here,
+     which owns the glyph, and so is its reduced-motion opt-out. */
+  .theme-icon {
+    display: block;
+    overflow: visible;
+  }
+  .theme-icon-orb,
+  .theme-icon-rays {
+    transform-origin: 12px 12px;
+  }
+  .theme-icon-orb {
+    transition: transform var(--dur-component) var(--ease-settle);
+  }
+  /* Parked far enough off the disc that it takes nothing out of it. */
+  .theme-icon-bite {
+    transform: translate(13px, -7px);
+    transition: transform var(--dur-component) var(--ease-settle);
+  }
+  .theme-icon-rays {
+    transition:
+      transform var(--dur-component) var(--ease-settle),
+      opacity var(--dur-micro) ease;
+  }
+
+  :global(:root[data-theme='dark']) .theme-icon-orb {
+    transform: scale(1.2);
+  }
+  :global(:root[data-theme='dark']) .theme-icon-bite {
+    transform: translate(5.5px, -5px);
+  }
+  :global(:root[data-theme='dark']) .theme-icon-rays {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .theme-icon-orb,
+    .theme-icon-bite,
+    .theme-icon-rays {
+      transition: none;
+    }
   }
 </style>

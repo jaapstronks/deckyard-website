@@ -17,4 +17,5 @@ export const nav: NavContent = {
   homeAria: 'Deckyard startpagina',
   languageAria: 'Taal',
   menuAria: 'Menu',
+  themeAria: 'Donker thema',
 };

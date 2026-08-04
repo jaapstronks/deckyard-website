@@ -47,6 +47,12 @@ const name = label ?? caption;
        .section-dark does for everything it contains. */
     --focus-ring: var(--brass-bright);
   }
+  /* On the dark page the plate is 1.2:1 against the page behind it, so the one
+     thing that says "this is a block" is the border - which is --line, drawn for
+     a hairline between two light surfaces. Give it the green edge instead. */
+  :global(:root[data-theme='dark']) .spec-code {
+    border-color: var(--green-wash-line);
+  }
   .spec-code pre {
     margin: 0;
     padding: 1.1rem 1.3rem;
@@ -54,16 +60,16 @@ const name = label ?? caption;
     font-family: var(--mono);
     font-size: 0.78rem;
     line-height: 1.7;
-    color: #e8e4d8;
+    color: var(--ink-inverse);
     tab-size: 2;
   }
   .spec-code figcaption {
     padding: 0.6rem 1.3rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1px solid color-mix(in srgb, var(--ink-inverse) 12%, transparent);
     font-family: var(--mono);
     font-size: var(--step--3);
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: rgba(232, 228, 216, 0.62);
+    color: color-mix(in srgb, var(--ink-inverse) 62%, transparent);
   }
 </style>

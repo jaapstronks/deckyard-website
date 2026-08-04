@@ -87,7 +87,7 @@
     color var(--dur-micro) ease;
 }
 .anatomy [data-span].is-used {
-  box-shadow: inset 0 -1.5px 0 rgba(184, 134, 15, 0.55);
+  box-shadow: inset 0 -1.5px 0 color-mix(in srgb, var(--brass-text) 65%, transparent);
 }
 .anatomy [data-span].is-lit {
   background: var(--brass);
