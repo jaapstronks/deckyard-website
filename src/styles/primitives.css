@@ -23,19 +23,23 @@
     max-width: 760px;
   }
 
+  /* The plate is --green and the text is --paper, not a fixed white: on the
+     dark page --green is the light end of the brand and --paper is the
+     near-black, so the pairing inverts with the page instead of putting white
+     on a light green. */
   .skip-link {
     position: absolute;
     left: -9999px;
     top: 0;
     background: var(--green);
-    color: #fff;
+    color: var(--paper);
     padding: 10px 18px;
     border-radius: 0 0 var(--radius-sm) 0;
     z-index: 100;
   }
   .skip-link:focus {
     left: 0;
-    color: #fff;
+    color: var(--paper);
   }
 
   /* Text for screen readers only. Clipped rather than display:none or
@@ -181,15 +185,19 @@
   /* A dark section is a surface swap, not a pile of descendant overrides: it
      re-points the semantic tokens and every component inside picks them up.
      Add a new component that reads these tokens and it works on dark for
-     free - no rule here has to know it exists. */
+     free - no rule here has to know it exists.
+
+     These values are absolute on purpose. The band is green-deep whatever the
+     page is, so what sits on it is decided by the band and not by the theme -
+     which is why it needed no changes when the page itself learned to go dark. */
   .section-dark {
     background:
       radial-gradient(1200px 500px at 80% -10%, rgba(45, 107, 74, 0.55), transparent 60%),
       var(--green-deep);
-    color: #f2efe6;
+    color: var(--ink-inverse);
 
     --heading-fg: #fff;
-    --lead-fg: rgba(242, 239, 230, 0.82);
+    --lead-fg: color-mix(in srgb, var(--ink-inverse) 82%, transparent);
     --kicker-fg: var(--brass-soft);
     --kicker-rule: var(--brass-soft);
 
@@ -223,6 +231,17 @@
        exactly this reason - flip them once and every component follows. */
     --focus-ring: var(--brass-bright);
     --error-fg: #ffb4a0;
+  }
+
+  /* What the band cannot keep absolute is where it ends. On stone its own
+     darkness is the boundary; on the dark page green-deep is 1.2:1 against
+     --paper, so the section would begin and end nowhere. Warm the corner glow
+     and give it two real edges. */
+  :root[data-theme='dark'] .section-dark {
+    background:
+      radial-gradient(1200px 500px at 80% -10%, rgba(45, 107, 74, 0.72), transparent 62%),
+      var(--green-deep);
+    border-block: 1px solid var(--green-wash-line);
   }
 
   .section-head {

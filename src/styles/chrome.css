@@ -123,6 +123,38 @@
     transform: translateY(-6px) rotate(-45deg);
   }
 
+  /* ---------- Theme toggle ----------
+     Same box as the hamburger, on purpose: they are the two controls in the bar
+     that are buttons rather than links, and a reader should be able to tell that
+     at a glance. It keeps the hamburger's size at every width, though, because
+     unlike the drawer it is not a mobile affordance - which theme you are
+     reading in is not a place you can navigate to, so it never folds away.
+
+     The morph between the two glyphs belongs to SiteHeader.astro, which owns
+     the SVG; this rule only owns the button around it. */
+
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition:
+      color var(--dur-micro) ease,
+      border-color var(--dur-micro) ease,
+      background var(--dur-micro) ease;
+  }
+  .theme-toggle:hover {
+    color: var(--brass-text);
+    border-color: var(--brass-bright);
+  }
+
   /* ---------- Language switcher ----------
      A dropdown that scales to any number of locales. */
 
@@ -244,17 +276,18 @@
      Collapse the nav links + language switcher into a hamburger drawer.
      Logo and the CTA stay visible in the bar.
 
-     940px, not the 700px this was when the nav held four one-word labels. S5
+     1000px, not the 700px this was when the nav held four one-word labels. S5
      put five in it, two of them phrases, and measured where the row stops
-     fitting beside the brand and the CTA: 860px in Dutch, 780px in English.
-     940 clears the longer of the two with room for a label that grows.
+     fitting beside the brand and the CTA: 860px in Dutch, 780px in English,
+     which is what made it 940. The theme toggle then added a 40px button plus
+     its gap to the right-hand cluster, so the same measurement moved with it.
 
      `.nav-gh-label` in SiteHeader.astro carries the same number - the GitHub
      link is a bare mark in the bar and a mark plus its label in the drawer, so
      the two have to switch together. Media queries cannot read a custom
      property, so it is written twice on purpose; move both. */
 
-  @media (max-width: 940px) {
+  @media (max-width: 1000px) {
     .nav-toggle {
       display: inline-flex;
     }
@@ -336,14 +369,16 @@
 
   /* ---------- Footer ---------- */
 
+  /* The footer is green-deep in both themes - it is a plate, not a surface -
+     so everything on it is --ink-inverse rather than --ink. */
   .site-footer {
     background: var(--green-deep);
-    color: rgba(242, 239, 230, 0.75);
+    color: color-mix(in srgb, var(--ink-inverse) 75%, transparent);
     padding-block: var(--space-2xl);
     font-size: 0.92rem;
   }
   .site-footer a {
-    color: #f2efe6;
+    color: var(--ink-inverse);
     text-decoration: none;
   }
   .site-footer a:hover {
@@ -364,6 +399,8 @@
     font-variation-settings:
       'opsz' 40,
       'wght' 640;
+    /* White, not --ink-inverse: the wordmark is the one thing in the footer
+       that is meant to be brighter than the copy around it. */
     font-size: 1.15rem;
     color: #fff;
   }
@@ -404,7 +441,7 @@
   .footer-meta {
     margin-top: 40px;
     padding-top: 22px;
-    border-top: 1px solid rgba(242, 239, 230, 0.14);
+    border-top: 1px solid color-mix(in srgb, var(--ink-inverse) 14%, transparent);
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
@@ -415,7 +452,7 @@
     text-transform: uppercase;
     letter-spacing: 0.12em;
     /* 0.5 landed on 4.45:1 - just under the bar for text this small. */
-    color: rgba(242, 239, 230, 0.62);
+    color: color-mix(in srgb, var(--ink-inverse) 62%, transparent);
   }
   /* The legal row: the accessibility statement and the studio. A list rather
      than two loose links, because they are two items of one kind, and it keeps
@@ -442,6 +479,13 @@
     --focus-ring: var(--brass-bright);
   }
 
+  /* On stone the footer announces itself by being the dark thing at the bottom
+     of the page. On the dark page it is 1.2:1 against --paper, so it needs a
+     line to start at - the same repair .section-dark gets. */
+  :root[data-theme='dark'] .site-footer {
+    border-top: 1px solid var(--green-wash-line);
+  }
+
   /* ---------- Forced colours + reduced motion ----------
      The frame's own, since the frame owns the drawer and the dropdown. */
 
@@ -451,6 +495,19 @@
     .lang-menu-item.is-active {
       text-decoration: underline;
       text-underline-offset: 4px;
+    }
+
+    /* The toggle's state survives a forced palette in the glyph - a crescent is
+       still a crescent - but the button around it is told apart from its
+       neighbour by a border the user's palette replaces, and the pressed state
+       by nothing at all. Name both. Border-box sizing means the thicker border
+       eats into the padding rather than moving the row. */
+    .theme-toggle {
+      border-color: CanvasText;
+    }
+    .theme-toggle[aria-pressed='true'] {
+      border-color: Highlight;
+      border-width: 3px;
     }
   }
 

@@ -6,10 +6,22 @@
    Type family is shared with Dreamkit (Bricolage / Funnel / Space Mono);
    palette and surfaces are Deckyard's own: forest green + brass on warm
    stone, soft radii, layered shadows.
+
+   The palette names are roles, not values: paper is the page, card is a
+   raised surface, line is a hairline, ink is text. That is what makes a dark
+   theme a re-declaration of the same vocabulary rather than a second one -
+   see the :root[data-theme='dark'] block below, and read the note on it
+   before adding a raw colour to a component.
    ============================================================ */
 
 @layer tokens {
   :root {
+    /* Two surfaces, and the browser has to be told which one it is looking at
+       or it renders form controls, scrollbars and the canvas from the OS
+       preference instead of from the page. The value is a property rather
+       than a <meta> so it can flip with the theme attribute. */
+    color-scheme: light;
+
     /* ---- Palette ---- */
     --paper: #f5f3ef;
     --paper-warm: #efe9df;
@@ -35,6 +47,16 @@
 
     --sage: #dfe8e0;
     --line: #e2ddd3;
+    /* The hairline that belongs to --green-wash, the way --line belongs to
+       --paper. It was written out six times across the footer, the anatomy
+       routes and the CTA band before it had a name. */
+    --green-wash-line: #cadbcf;
+
+    /* Ink on a plate that is dark whatever the page is: the CTA band, the
+       footer, a terminal, a code block. It is NOT --ink flipped - it stays
+       put when the page goes dark, because the plate under it was already
+       dark. Six rules used to spell it out as #f2efe6. */
+    --ink-inverse: #f2efe6;
 
     /* ---- Type families ---- */
     --display: 'Bricolage Grotesque Variable', 'Bricolage Grotesque', system-ui, sans-serif;
@@ -98,6 +120,72 @@
     --header-h: 64px;
   }
 
+  /* ---- Dark surface ----
+     The same vocabulary, re-valued. `data-theme` is written on <html> by the
+     inline script in SiteLayout.astro, which mirrors Starlight's own
+     ThemeProvider exactly (localStorage key `starlight-theme`, '' meaning
+     auto), so the docs and the marketing site can never disagree about which
+     theme the reader asked for.
+
+     Why the raw palette flips and not only the semantics: roughly 450 rules
+     in components read --card / --line / --ink* / --paper* directly, and a
+     component <style> block is unlayered, so nothing in this layer can
+     override a rule there. Re-declaring the *values* is the only edit that
+     reaches all of them at once. Four rules for anything added later:
+
+       - **Elevation inverts.** On light, a raised surface is lighter than the
+         page (--card is white on stone). On dark it is still lighter, so
+         --card sits above --paper rather than below it.
+       - **--green-deep does not flip.** It is the dark plate itself - the CTA
+         band, the footer, the terminal, a code block - and a dark plate on a
+         dark page is still a plate. What flips is --green, which is the brand
+         as a glyph or a fill on the page surface and has to be readable on it.
+       - **Brass is the accent**, exactly as .section-dark has always had it:
+         links, kickers, the primary button and the focus ring all go brass,
+         and --brass-text (brass that has to survive as small type) points at
+         --brass-bright, which is 8.2:1 here where the light-surface brass
+         would be 1.4:1.
+       - **Shadows are not tinted drops any more.** On stone a shadow is a soft
+         green-grey; on near-black it has to be black, and the card gets a
+         faint light inset instead so it keeps an edge where a drop shadow has
+         nothing left to darken.
+
+     Contrast, measured against --paper unless noted: body ink 16.2:1, --ink-soft
+     12.2:1, --ink-mute 7.1:1 (6.1:1 on --card), --green 8.5:1, --brass-soft
+     11.6:1, --brass-text/--brass-bright 8.2:1, --error-fg 10.9:1, focus ring
+     8.2:1 (5.3:1 on --sage, the lightest surface it lands on). The hairlines are
+     decorative and sit at 1.7:1 on --paper and 1.5:1 on --card, which is more
+     separation than the light theme's 1.2:1 and 1.4:1, not less. */
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+
+    --paper: #15120f;
+    --paper-warm: #201b17;
+    --card: #26211b;
+    --ink: var(--ink-inverse);
+    --ink-soft: #d6d0c3;
+    --ink-mute: #a79f92;
+
+    /* --green-deep is deliberately absent: it is the plate, not the page. */
+    --green: #6fbf92;
+    --green-bright: #8fd4ac;
+    --green-wash: #1c2b23;
+    --green-wash-line: #31463a;
+
+    --brass-text: var(--brass-bright);
+
+    --sage: #2c3a32;
+    --line: #443c33;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5), 0 4px 14px rgba(0, 0, 0, 0.38);
+    --shadow-md:
+      0 2px 6px rgba(0, 0, 0, 0.55), 0 14px 40px rgba(0, 0, 0, 0.46),
+      inset 0 1px 0 rgba(242, 239, 230, 0.06);
+    --shadow-lg:
+      0 4px 10px rgba(0, 0, 0, 0.6), 0 30px 70px rgba(0, 0, 0, 0.55),
+      inset 0 1px 0 rgba(242, 239, 230, 0.07);
+  }
+
   /* ---- Surface semantics ----
      Everything whose colour depends on the surface it sits on reads these
      rather than the palette directly. A dark section then only has to flip
@@ -145,5 +233,35 @@
 
     --note-fg: var(--ink-mute);
     --status-fg: var(--green);
+  }
+
+  /* The dark page's semantics. Almost line for line what .section-dark has
+     always set, which is the point: the CTA band was the site's first dark
+     surface and it already worked out where brass goes. The two differ only
+     where the band can count on green under it and the page cannot - the
+     fields, which read the surface tokens here instead of fixed whites. */
+  :root[data-theme='dark'] {
+    --kicker-fg: var(--brass-soft);
+    --kicker-rule: var(--brass-soft);
+
+    --focus-ring: var(--brass-bright);
+    --error-fg: #ffb4a0;
+
+    --link-fg: var(--brass-soft);
+    --link-fg-hover: var(--brass-bright);
+
+    --btn-primary-bg: var(--brass-bright);
+    --btn-primary-fg: var(--green-deep);
+    --btn-primary-bg-hover: var(--brass-soft);
+
+    --btn-ghost-fg: var(--brass-soft);
+    --btn-ghost-border: var(--brass-soft);
+    --btn-ghost-bg-hover: var(--brass-soft);
+    --btn-ghost-fg-hover: var(--green-deep);
+
+    --field-focus-border: var(--brass-soft);
+    --field-focus-ring: rgba(240, 200, 77, 0.18);
+
+    --status-fg: var(--brass-soft);
   }
 }

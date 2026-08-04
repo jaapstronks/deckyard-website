@@ -102,9 +102,52 @@ const organizationSchema = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <!-- The site has one surface, a light one. Saying so keeps a browser in
-         dark mode from rendering form controls and scrollbars dark against it. -->
-    <meta name="color-scheme" content="light" />
+
+    <!-- Theme, resolved before anything paints. `color-scheme` is a token now
+         (tokens.css) rather than a meta, because it has to flip with the page.
+         This meta is the browser-chrome colour and the script below keeps it in
+         step; it sits above the script so there is something to update on the
+         first run.
+
+         The script is Starlight's ThemeProvider contract to the letter: the same
+         `starlight-theme` key, the same empty string for "follow the OS" (never
+         the word auto), the same inverted media query - light only when the OS
+         says light - and the same resolved value on <html data-theme>. Sharing
+         the contract is the whole reason docs and marketing cannot disagree
+         about which theme the reader asked for; they are two halves of one site
+         reading one preference. -->
+    <meta name="theme-color" content="#254d38" />
+    <script is:inline>
+      (() => {
+        const readStored = () => {
+          try {
+            return localStorage.getItem('starlight-theme') || '';
+          } catch {
+            return '';
+          }
+        };
+        const query = window.matchMedia('(prefers-color-scheme: light)');
+        const apply = () => {
+          const stored = readStored();
+          const theme =
+            (stored || (query.matches ? 'light' : 'dark')) === 'light' ? 'light' : 'dark';
+          document.documentElement.dataset.theme = theme;
+          const meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', theme === 'light' ? '#254d38' : '#15120f');
+          document.dispatchEvent(new CustomEvent('deckyard:themechange', { detail: theme }));
+        };
+        window.__deckyardApplyTheme = apply;
+        apply();
+        if (window.__deckyardThemeBound) return;
+        window.__deckyardThemeBound = true;
+        // ClientRouter swaps <html>, taking data-theme with it.
+        document.addEventListener('astro:after-swap', () => window.__deckyardApplyTheme());
+        // Nothing stored means "follow the OS", so follow it while it changes.
+        query.addEventListener('change', () => {
+          if (!readStored()) window.__deckyardApplyTheme();
+        });
+      })();
+    </script>
 
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -123,7 +166,6 @@ const organizationSchema = {
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#254d38" />
 
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonicalUrl} />

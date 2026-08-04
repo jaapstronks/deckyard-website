@@ -98,6 +98,13 @@ export interface NavContent {
   homeAria: string;
   languageAria: string;
   menuAria: string;
+  /**
+   * The theme toggle's accessible name. Fixed, not a description of what the
+   * next click does: the button carries `aria-pressed`, so a name that flipped
+   * between "Dark theme" and "Light theme" would say the state twice and
+   * disagree with itself the moment the two got out of step.
+   */
+  themeAria: string;
 }
 
 export interface WaitlistContent {
