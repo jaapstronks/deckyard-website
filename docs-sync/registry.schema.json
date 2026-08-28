@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deckyard.dev/schemas/docs-sync-registry.schema.json",
+  "title": "docs-sync registry",
+  "description": "The manifest of doc artifacts (pages, screenshots, videos) and the deckyard-core source paths each one depends on. Validated by check-staleness.mjs before any hashing: a malformed registry is a build error, not a drift report.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["coreRepo", "artifacts"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "coreRepo": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Path to the deckyard core checkout, relative to this repo root."
+    },
+    "note": { "type": "string" },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/artifact" }
+    }
+  },
+  "$defs": {
+    "hash16": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{16}$",
+      "description": "A 16-hex-character baseline hash, or null when never baselined."
+    },
+    "recipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "module", "hash"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "module": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path to the core recipe module, relative to this repo root (so it starts with the same ../deckyard prefix as coreRepo)."
+        },
+        "hash": { "$ref": "#/$defs/hash16" }
+      }
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "docPages", "sources", "sourceHash", "lang"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+          "description": "Stable kebab-case slug. Uniqueness is enforced by the checker, not by this schema."
+        },
+        "type": { "enum": ["doc", "screenshot", "video"] },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The file on disk this entry is about, relative to this repo root."
+        },
+        "docPages": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "The page(s) that surface this artifact. May be empty."
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Core paths (files or directories) that, when they change, make this artifact stale."
+        },
+        "sourceHash": { "$ref": "#/$defs/hash16" },
+        "lang": {
+          "type": "string",
+          "pattern": "^[a-z]{2}(-[A-Z]{2})?$",
+          "description": "Language of the artifact itself (for a screenshot or video: of the recorded UI, not of any overlay text)."
+        },
+        "capturedAt": {
+          "type": "string",
+          "format": "date",
+          "description": "YYYY-MM-DD the screenshot or video was last recorded."
+        },
+        "recipe": {
+          "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/recipe" }],
+          "description": "How the capture factory regenerates this artifact, or null when it is made by hand."
+        }
+      },
+      "allOf": [
+        {
+          "$comment": "A screenshot is a PNG in this repo, produced either by hand or by a recipe, so it always claims a file and a capture date and always answers the recipe question.",
+          "if": { "properties": { "type": { "const": "screenshot" } }, "required": ["type"] },
+          "then": { "required": ["path", "capturedAt", "recipe"] }
+        },
+        {
+          "$comment": "A video take is rendered in the private deckyard-video repo and only lands in public/videos/ once the launch video ships, so until then it claims no file on disk.",
+          "if": { "properties": { "type": { "const": "video" } }, "required": ["type"] },
+          "then": {
+            "required": ["capturedAt", "recipe"],
+            "properties": { "path": false }
+          }
+        },
+        {
+          "$comment": "A doc entry is prose, and prose is not captured and has no capture recipe. It may still name a path: two entries track a generated data file (src/data/*.json) rather than a set of pages.",
+          "if": { "properties": { "type": { "const": "doc" } }, "required": ["type"] },
+          "then": { "properties": { "capturedAt": false, "recipe": false } }
+        }
+      ]
+    }
+  }
+}

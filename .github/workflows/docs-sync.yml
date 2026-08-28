@@ -1,0 +1,87 @@
+name: Docs sync
+
+# Does the documentation still match the code it documents?
+#
+# Separate from verify.yml on purpose. That one asks whether *this repo* is
+# sound (format, types, build) and needs nothing but this checkout. This one
+# needs the deckyard core checkout beside it, and a red result means something
+# else: not "the site is broken" but "a page, screenshot or clip is now
+# describing code that moved on".
+#
+# What turns it red is deliberately narrower than what it reports — see
+# docs-sync/README.md § What the gate blocks on. Regenerable artifacts (the
+# ones carrying a capture recipe) are fully gated, because the fix is a capture
+# run. Hand-made ones are gated on structure only; their content drift is
+# printed to the job summary, where the backlog can be seen without blocking a
+# docs PR on a review nobody scheduled.
+
+on:
+  pull_request:
+    paths:
+      - 'docs-sync/**'
+      - 'docs/**'
+      - 'public/images/**'
+      - '.github/workflows/docs-sync.yml'
+  push:
+    branches: [main]
+  # Core moves without anyone pushing here, so drift appears in a repo that is
+  # not being touched. A weekly sweep is the right grain for docs drift; a
+  # cross-repo dispatch on every core tag would need a PAT and would say the
+  # same thing louder.
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+concurrency:
+  group: docs-sync-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs-sync:
+    runs-on: ubuntu-latest
+    steps:
+      # check-staleness.mjs resolves core from registry.coreRepo ("../deckyard"),
+      # so the two checkouts have to be siblings under the workspace root.
+      - name: Checkout website
+        uses: actions/checkout@v4
+        with:
+          path: deckyard-website
+
+      - name: Checkout deckyard core
+        uses: actions/checkout@v4
+        with:
+          repository: jaapstronks/deckyard
+          path: deckyard
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+          cache-dependency-path: |
+            deckyard-website/package-lock.json
+            deckyard/package-lock.json
+
+      - name: Install website dependencies
+        run: npm ci
+        working-directory: deckyard-website
+
+      # The recipe half of the check imports core's own hashRecipeGraph(), so
+      # core needs its dependencies installed, not just checked out.
+      - name: Install core dependencies
+        run: npm ci
+        working-directory: deckyard
+
+      - name: Check docs staleness
+        working-directory: deckyard-website
+        run: |
+          set -o pipefail
+          {
+            echo '## docs-sync'
+            echo
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          status=0
+          node docs-sync/check-staleness.mjs | tee -a "$GITHUB_STEP_SUMMARY" || status=$?
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          exit $status

@@ -20,6 +20,7 @@ one status.
 | File | What it is |
 |------|-----------|
 | `registry.json` | The manifest: every artifact → its core source paths + a baseline hash. Hand-maintained. |
+| `registry.schema.json` | The shape `registry.json` must have. Validated on every run, before any hashing. |
 | `audit-since-capture.mjs` | **Current backlog.** Uses git history in core to rank screenshots by how much source changed *since each was captured*. Owns `STALENESS.md`. |
 | `check-staleness.mjs` | **Forward tripwire.** Hashes each artifact's sources and reports drift *since the last baseline*. For CI / pre-push. |
 | `seed-registry.mjs` | One-shot bootstrapper that built `registry.json`. Keep for reference; don't re-run without intent (it overwrites). |
@@ -36,12 +37,30 @@ Two questions, two tools:
 # Rank the current backlog and (re)write STALENESS.md
 node docs-sync/audit-since-capture.mjs --report
 
-# Tripwire: what drifted since the last baseline (exits 1 if anything is stale)
+# Tripwire: what drifted since the last baseline (exits 1 if anything is gated)
 node docs-sync/check-staleness.mjs
 
-# After you've reviewed/updated the affected docs, re-baseline the hashes
-node docs-sync/check-staleness.mjs --update
+# After you've re-captured or reviewed specific artifacts, re-baseline those
+node docs-sync/check-staleness.mjs --update --only shot-editor-full,shot-theme-editor-full
+
+# Re-baseline everything. Rarely what you want; see "A baseline is a claim".
+node docs-sync/check-staleness.mjs --update --all
 ```
+
+Exit codes: `0` clean, `1` something gated needs attention, `2` the registry or
+the checkout is unusable (schema error, duplicate id, core missing or not
+installed, bad arguments).
+
+### A baseline is a claim
+
+`sourceHash` does not mean "this is what the code looked like once". It means
+**someone looked at this artifact against this code and it was right**. So
+`--update` will not take a blanket instruction: it needs `--only <ids>` (the
+entries you actually re-captured or reviewed) or an explicit `--all`. A bare
+`--update` exits 2 and says so. This matters because the registry was seeded
+with hashes written at bootstrap time, not at review time — 116 of 118 entries
+were `stale` on the day the gate was built, and one `--update` would have turned
+that backlog into 118 claims nobody had made.
 
 Tripwire statuses:
 
@@ -50,6 +69,9 @@ Tripwire statuses:
   a bare `STALE` means review the doc around it.
 - `source-gone` — every source path for this artifact has disappeared from core.
   Strong signal the feature was removed or renamed; the doc may need deleting.
+- `source-moved` — *some* source paths are gone and the rest are still there.
+  Almost always a file that moved into a directory of its own; the fix is
+  repointing `sources`, not deleting the doc.
 - `recipe-gone` — the recipe module named in `recipe.module` is no longer in
   core. The artifact can no longer be regenerated; the entry needs repointing
   or deleting.
@@ -76,10 +98,25 @@ Tripwire statuses:
 }
 ```
 
-A **video** entry is the same shape with `type: "video"` and no `path`: the MP4
-is rendered in the private `deckyard-video` repo and only lands in
-`public/videos/` once the launch video ships, so until then the entry claims no
-file on disk (a `doc` entry omits `path` for the same reason). `lang` is the
+Which fields an entry carries depends on its `type`, and
+`registry.schema.json` enforces exactly that:
+
+| | `path` | `capturedAt` | `recipe` |
+|---|---|---|---|
+| `screenshot` | required | required | required (`null` when hand-made) |
+| `video` | forbidden | required | required (`null` when hand-made) |
+| `doc` | optional | forbidden | forbidden |
+
+A **video** entry has no `path`: the MP4 is rendered in the private
+`deckyard-video` repo and only lands in `public/videos/` once the launch video
+ships, so until then the entry claims no file on disk. A **doc** entry is prose,
+which is never *captured* and has no capture recipe — but it may still name a
+path, because two entries (`data-deck-format-constants`,
+`data-slide-type-registry`) track a generated data file under `src/data/` rather
+than a set of pages. `path` means one thing throughout: **the file on disk this
+entry is about**, when there is one.
+
+`lang` is the
 language of the *recorded UI*, not of the overlay text — one take is rendered
 into every language from `copy/<lang>.json`, so it stays one registry entry.
 `capturedAt` is when the take was last recorded.
@@ -121,9 +158,37 @@ that message rather than skipping the recipe half silently.
 Entries still without a `recipe` are captured by hand and only the source axis
 guards them.
 
+## What the gate blocks on
+
+`check-staleness.mjs` runs in CI (`.github/workflows/docs-sync.yml`: on PRs
+touching docs, on pushes to `main`, and weekly — core moves without anyone
+pushing here). What it *reports* is wider than what it *blocks* on, and one
+property of the entry decides which:
+
+| entry | `stale` (source or recipe drift) | `source-gone` · `source-moved` · `recipe-gone` · `new` · schema error |
+|---|---|---|
+| **has a `recipe`** | red | red |
+| **no `recipe`** (hand-made) | reported in the job summary | red |
+
+The reasoning is the cost of the fix. A regenerable artifact is repaired by a
+capture run, so "this screenshot matches the code" is a claim we can keep true,
+and anything less would let the factory's whole point rot. A hand-made artifact
+is repaired by a docs review, and blocking every PR on a review nobody has
+scheduled does not get it written — it gets the gate switched off. Structure is
+gated in both rows: a source path that moved or vanished is a mechanical fix
+(repoint `sources`), and a malformed entry means the check is measuring
+something other than what it claims.
+
+**This exception is temporary, and it is meant to be deleted.** The direction is
+that every artifact gets a recipe; the day the report-only column is empty, the
+row collapses and `stale` is red everywhere. That is one condition to remove in
+`check-staleness.mjs`, not a design to maintain.
+
 ## Suggested cadence
 
-1. `check-staleness.mjs` runs in CI (or a pre-push hook) and fails when anything
-   is `stale`/`source-gone`.
-2. You review the flagged pages, update text / re-capture screenshots.
-3. `--update` to re-baseline, commit.
+1. `check-staleness.mjs` gates in CI (see above) and reports the hand-made
+   backlog in the job summary.
+2. Fix what it names: **re-capture** the recipe-driven artifacts
+   (`node capture/run.js <id>` in core), **review** the hand-made ones — the
+   ranked backlog lives in `STALENESS.md`.
+3. `--update --only <the ids you just fixed>` to re-baseline, commit.
