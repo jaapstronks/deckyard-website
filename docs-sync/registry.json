@@ -2296,6 +2296,46 @@
       ],
       "sourceHash": "4928338286df5b9f",
       "lang": "en"
+    },
+    {
+      "id": "video-agent-fills-fields",
+      "type": "video",
+      "docPages": [],
+      "sources": [
+        "client/views/editor/editor-form/header-actions.js",
+        "client/views/editor/modals/translate-slide-modal.js",
+        "server/routes/api/presentations/translate-fields.js"
+      ],
+      "sourceHash": "6e6643da8cd3fad9",
+      "lang": "nl",
+      "capturedAt": "2026-08-28",
+      "recipe": {
+        "id": "agent-fills-fields",
+        "module": "../deckyard/capture/recipes/agent-fills-fields.js",
+        "hash": "2a0541cd343b30f9"
+      }
+    },
+    {
+      "id": "video-form-drives-slide",
+      "type": "video",
+      "docPages": [],
+      "sources": [
+        "client/lib/slide-runtime/slide-render.js",
+        "client/styles/slides/01-layout-and-title/90-funnel-slide.css",
+        "client/views/editor/bulk-edit-modal.js",
+        "client/views/editor/editor-form.js",
+        "client/views/editor/editor-form/",
+        "shared/slide-types/types/funnel-slide.js",
+        "shared/slide-types/types/funnel-slide/authoring.js"
+      ],
+      "sourceHash": "3fff36c9df978692",
+      "lang": "nl",
+      "capturedAt": "2026-08-28",
+      "recipe": {
+        "id": "form-drives-slide",
+        "module": "../deckyard/capture/recipes/form-drives-slide.js",
+        "hash": "69c355f383fba4bb"
+      }
     }
   ]
 }
