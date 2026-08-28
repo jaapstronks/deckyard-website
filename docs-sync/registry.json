@@ -271,7 +271,6 @@
       "sources": [
         "server/integrations/",
         "server/routes/api/notion/",
-        "server/routes/api/notion.js",
         "server/routes/api/stock-media.js"
       ],
       "sourceHash": "8f071f5edd9d78d4",
@@ -290,7 +289,8 @@
         "client/lib/slide-runtime/",
         "client/views/follow/",
         "server/routes/api/questions.js",
-        "server/routes/api/follow.js"
+        "server/routes/api/follow/",
+        "server/routes/api/follow-codes.js"
       ],
       "sourceHash": "059ddd90f038f869",
       "lang": "en"
@@ -342,7 +342,8 @@
       ],
       "sources": [
         "client/views/presenter/",
-        "server/routes/api/present-sessions.js"
+        "server/routes/api/live-sessions.js",
+        "server/routes/api/live-session-audience.js"
       ],
       "sourceHash": "0968f4c546ecc0f6",
       "lang": "en"
@@ -358,7 +359,7 @@
       ],
       "sources": [
         "server/routes/api/publish.js",
-        "server/routes/api/share-links.js",
+        "server/routes/api/share-links/",
         "client/views/editor/publish-export/",
         "client/views/share-viewer/"
       ],
@@ -758,7 +759,8 @@
       ],
       "sources": [
         "client/views/presenter/",
-        "server/routes/api/present-sessions.js"
+        "server/routes/api/live-sessions.js",
+        "server/routes/api/live-session-audience.js"
       ],
       "sourceHash": "0968f4c546ecc0f6",
       "lang": "en",
@@ -774,7 +776,7 @@
       ],
       "sources": [
         "server/routes/api/publish.js",
-        "server/routes/api/share-links.js",
+        "server/routes/api/share-links/",
         "client/views/editor/publish-export/",
         "client/views/share-viewer/"
       ],
@@ -815,13 +817,13 @@
         "client/views/editor/editor-controller.js",
         "client/views/editor/slide-list.js"
       ],
-      "sourceHash": "17a2aa481e91c990",
+      "sourceHash": "2fbd45e8ffcc4731",
       "lang": "en",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "editor-full",
         "module": "../deckyard/capture/recipes/editor-full.js",
-        "hash": "80fdc80a47987cfb"
+        "hash": "5d4658c9408446e9"
       }
     },
     {
@@ -989,7 +991,6 @@
       "sources": [
         "server/integrations/",
         "server/routes/api/notion/",
-        "server/routes/api/notion.js",
         "server/routes/api/stock-media.js"
       ],
       "sourceHash": "8f071f5edd9d78d4",
@@ -1008,7 +1009,8 @@
         "client/lib/slide-runtime/",
         "client/views/follow/",
         "server/routes/api/questions.js",
-        "server/routes/api/follow.js"
+        "server/routes/api/follow/",
+        "server/routes/api/follow-codes.js"
       ],
       "sourceHash": "059ddd90f038f869",
       "lang": "en",
@@ -1024,7 +1026,8 @@
       ],
       "sources": [
         "client/views/presenter/",
-        "server/routes/api/present-sessions.js"
+        "server/routes/api/live-sessions.js",
+        "server/routes/api/live-session-audience.js"
       ],
       "sourceHash": "0968f4c546ecc0f6",
       "lang": "en",
@@ -1061,7 +1064,6 @@
       "sources": [
         "server/integrations/",
         "server/routes/api/notion/",
-        "server/routes/api/notion.js",
         "server/routes/api/stock-media.js"
       ],
       "sourceHash": "8f071f5edd9d78d4",
@@ -1138,7 +1140,7 @@
       ],
       "sources": [
         "server/routes/api/publish.js",
-        "server/routes/api/share-links.js",
+        "server/routes/api/share-links/",
         "client/views/editor/publish-export/",
         "client/views/share-viewer/"
       ],
@@ -1156,7 +1158,7 @@
       ],
       "sources": [
         "server/routes/api/publish.js",
-        "server/routes/api/share-links.js",
+        "server/routes/api/share-links/",
         "client/views/editor/publish-export/",
         "client/views/share-viewer/"
       ],
@@ -1197,7 +1199,8 @@
         "client/lib/slide-runtime/",
         "client/views/follow/",
         "server/routes/api/questions.js",
-        "server/routes/api/follow.js"
+        "server/routes/api/follow/",
+        "server/routes/api/follow-codes.js"
       ],
       "sourceHash": "059ddd90f038f869",
       "lang": "en",
@@ -1215,7 +1218,8 @@
         "client/lib/slide-runtime/",
         "client/views/follow/",
         "server/routes/api/questions.js",
-        "server/routes/api/follow.js"
+        "server/routes/api/follow/",
+        "server/routes/api/follow-codes.js"
       ],
       "sourceHash": "059ddd90f038f869",
       "lang": "en",
@@ -1256,13 +1260,13 @@
         "client/views/editor/modals/translate-slide-modal.js",
         "shared/llm-vendors.js"
       ],
-      "sourceHash": "064a972a3e59bc6d",
+      "sourceHash": "b526fea10780b9c8",
       "lang": "en",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "ai-fills-fields-en",
         "module": "../deckyard/capture/recipes/ai-fills-fields-en.js",
-        "hash": "56a173abd2a466a7"
+        "hash": "a248bfc874ffd264"
       }
     },
     {
@@ -1278,13 +1282,13 @@
         "client/views/editor/modals/translate-slide-modal.js",
         "shared/llm-vendors.js"
       ],
-      "sourceHash": "064a972a3e59bc6d",
+      "sourceHash": "b526fea10780b9c8",
       "lang": "nl",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "ai-fills-fields-nl",
         "module": "../deckyard/capture/recipes/ai-fills-fields-nl.js",
-        "hash": "934ca015fa094ef5"
+        "hash": "28f5cfefaec25436"
       }
     },
     {
@@ -1302,13 +1306,13 @@
         "client/lib/comments/",
         "server/routes/api/collaborators.js"
       ],
-      "sourceHash": "cf2673e15329966b",
+      "sourceHash": "7090d655e237891b",
       "lang": "en",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "comments-en",
         "module": "../deckyard/capture/recipes/comments-en.js",
-        "hash": "bbb3c10f3f3ce82a"
+        "hash": "664b09b3dd90323a"
       }
     },
     {
@@ -1326,13 +1330,13 @@
         "client/lib/comments/",
         "server/routes/api/collaborators.js"
       ],
-      "sourceHash": "cf2673e15329966b",
+      "sourceHash": "7090d655e237891b",
       "lang": "nl",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "comments-nl",
         "module": "../deckyard/capture/recipes/comments-nl.js",
-        "hash": "c406f10183485123"
+        "hash": "f4f47fb508d57b8b"
       }
     },
     {
@@ -1348,13 +1352,13 @@
         "shared/slide-types/types/funnel-slide.js",
         "client/styles/slides/01-layout-and-title/90-funnel-slide.css"
       ],
-      "sourceHash": "b418d18d2e60e10f",
+      "sourceHash": "7462fc6f00dddb9b",
       "lang": "en",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "editor-form-en",
         "module": "../deckyard/capture/recipes/editor-form-en.js",
-        "hash": "52c21ac01b354052"
+        "hash": "ce64b8ea454b4fe9"
       }
     },
     {
@@ -1370,13 +1374,13 @@
         "shared/slide-types/types/funnel-slide.js",
         "client/styles/slides/01-layout-and-title/90-funnel-slide.css"
       ],
-      "sourceHash": "b418d18d2e60e10f",
+      "sourceHash": "7462fc6f00dddb9b",
       "lang": "nl",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "editor-form-nl",
         "module": "../deckyard/capture/recipes/editor-form-nl.js",
-        "hash": "bbc942136b9fe540"
+        "hash": "c67ab7d47f653b19"
       }
     },
     {
@@ -1390,15 +1394,16 @@
         "shared/slide-types/types/follow-invite-slide",
         "shared/slide-types/types/follow-invite-slide.js",
         "client/styles/slides/03-components/15-follow-invite.css",
-        "server/routes/api/present-sessions.js"
+        "server/routes/api/live-sessions.js",
+        "server/routes/api/live-session-audience.js"
       ],
-      "sourceHash": "c96e056d20779e8d",
+      "sourceHash": "4ef792cf2aef5252",
       "lang": "en",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "join-screen-en",
         "module": "../deckyard/capture/recipes/join-screen-en.js",
-        "hash": "53a832e65e33c534"
+        "hash": "fc30733d7fed9fe8"
       }
     },
     {
@@ -1412,15 +1417,16 @@
         "shared/slide-types/types/follow-invite-slide",
         "shared/slide-types/types/follow-invite-slide.js",
         "client/styles/slides/03-components/15-follow-invite.css",
-        "server/routes/api/present-sessions.js"
+        "server/routes/api/live-sessions.js",
+        "server/routes/api/live-session-audience.js"
       ],
-      "sourceHash": "c96e056d20779e8d",
+      "sourceHash": "4ef792cf2aef5252",
       "lang": "nl",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "join-screen-nl",
         "module": "../deckyard/capture/recipes/join-screen-nl.js",
-        "hash": "e4ec5c23d3df9b9d"
+        "hash": "29a54fe24f51d9b7"
       }
     },
     {
@@ -1436,13 +1442,13 @@
         "client/styles/slides/03-components/10-poll.css",
         "server/storage/interactions.js"
       ],
-      "sourceHash": "8ee1fc29e7c0e10d",
+      "sourceHash": "9bb0cb16c6cf9b1f",
       "lang": "en",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "poll-live-en",
         "module": "../deckyard/capture/recipes/poll-live-en.js",
-        "hash": "acbfb948d036136a"
+        "hash": "0bef3e38f7147ced"
       }
     },
     {
@@ -1458,13 +1464,13 @@
         "client/styles/slides/03-components/10-poll.css",
         "server/storage/interactions.js"
       ],
-      "sourceHash": "8ee1fc29e7c0e10d",
+      "sourceHash": "9bb0cb16c6cf9b1f",
       "lang": "nl",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "poll-live-nl",
         "module": "../deckyard/capture/recipes/poll-live-nl.js",
-        "hash": "e98931856e1ad00e"
+        "hash": "1d387700c798d95f"
       }
     },
     {
@@ -1474,15 +1480,16 @@
       "docPages": [],
       "sources": [
         "client/views/presenter/",
-        "server/routes/api/present-sessions.js"
+        "server/routes/api/live-sessions.js",
+        "server/routes/api/live-session-audience.js"
       ],
-      "sourceHash": "9bc1cd9cfe7780c2",
+      "sourceHash": "82b43fe9a49e8895",
       "lang": "en",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "presenter-view-en",
         "module": "../deckyard/capture/recipes/presenter-view-en.js",
-        "hash": "0bcdabcb780bf31e"
+        "hash": "a708e3ec1b282138"
       }
     },
     {
@@ -1492,15 +1499,16 @@
       "docPages": [],
       "sources": [
         "client/views/presenter/",
-        "server/routes/api/present-sessions.js"
+        "server/routes/api/live-sessions.js",
+        "server/routes/api/live-session-audience.js"
       ],
-      "sourceHash": "9bc1cd9cfe7780c2",
+      "sourceHash": "82b43fe9a49e8895",
       "lang": "nl",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "presenter-view-nl",
         "module": "../deckyard/capture/recipes/presenter-view-nl.js",
-        "hash": "520d113a073b2686"
+        "hash": "7244c5f64b9f9ef7"
       }
     },
     {
@@ -1509,18 +1517,18 @@
       "path": "public/images/marketing/share-link-rules-en.png",
       "docPages": [],
       "sources": [
-        "server/routes/api/share-links.js",
+        "server/routes/api/share-links/",
         "server/storage/share-links/",
         "client/views/editor/modals/share-modal/",
         "client/views/editor/publish-export/"
       ],
-      "sourceHash": "a368efb6c0ea5242",
+      "sourceHash": "3c8818c3d88c9c3a",
       "lang": "en",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "share-link-rules-en",
         "module": "../deckyard/capture/recipes/share-link-rules-en.js",
-        "hash": "61da676040cac880"
+        "hash": "83aa7688387695ef"
       }
     },
     {
@@ -1529,18 +1537,18 @@
       "path": "public/images/marketing/share-link-rules-nl.png",
       "docPages": [],
       "sources": [
-        "server/routes/api/share-links.js",
+        "server/routes/api/share-links/",
         "server/storage/share-links/",
         "client/views/editor/modals/share-modal/",
         "client/views/editor/publish-export/"
       ],
-      "sourceHash": "a368efb6c0ea5242",
+      "sourceHash": "3c8818c3d88c9c3a",
       "lang": "nl",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "share-link-rules-nl",
         "module": "../deckyard/capture/recipes/share-link-rules-nl.js",
-        "hash": "55f65138fd24edb9"
+        "hash": "d464a41175fd763f"
       }
     },
     {
@@ -1627,7 +1635,8 @@
       ],
       "sources": [
         "client/views/presenter/",
-        "server/routes/api/present-sessions.js"
+        "server/routes/api/live-sessions.js",
+        "server/routes/api/live-session-audience.js"
       ],
       "sourceHash": "0968f4c546ecc0f6",
       "lang": "en",
@@ -1700,7 +1709,8 @@
       ],
       "sources": [
         "client/views/presenter/",
-        "server/routes/api/present-sessions.js"
+        "server/routes/api/live-sessions.js",
+        "server/routes/api/live-session-audience.js"
       ],
       "sourceHash": "0968f4c546ecc0f6",
       "lang": "en",
@@ -1716,7 +1726,8 @@
       ],
       "sources": [
         "client/views/presenter/",
-        "server/routes/api/present-sessions.js"
+        "server/routes/api/live-sessions.js",
+        "server/routes/api/live-session-audience.js"
       ],
       "sourceHash": "0968f4c546ecc0f6",
       "lang": "en",
@@ -1773,7 +1784,7 @@
       ],
       "sources": [
         "server/routes/api/publish.js",
-        "server/routes/api/share-links.js",
+        "server/routes/api/share-links/",
         "client/views/editor/publish-export/",
         "client/views/share-viewer/"
       ],
@@ -1791,7 +1802,7 @@
       ],
       "sources": [
         "server/routes/api/publish.js",
-        "server/routes/api/share-links.js",
+        "server/routes/api/share-links/",
         "client/views/editor/publish-export/",
         "client/views/share-viewer/"
       ],
@@ -1968,7 +1979,8 @@
       ],
       "sources": [
         "client/views/presenter/",
-        "server/routes/api/present-sessions.js"
+        "server/routes/api/live-sessions.js",
+        "server/routes/api/live-session-audience.js"
       ],
       "sourceHash": "0968f4c546ecc0f6",
       "lang": "en",
@@ -2013,13 +2025,13 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "74bf7fffb30db3ae",
+      "sourceHash": "6590cab96d66b4e8",
       "lang": "en",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "slide-type-picker-new",
         "module": "../deckyard/capture/recipes/slide-type-picker-new.js",
-        "hash": "a22daf1aee13fe1d"
+        "hash": "9239a72c6f6e5b36"
       }
     },
     {
@@ -2073,7 +2085,8 @@
         "client/lib/slide-runtime/",
         "client/views/follow/",
         "server/routes/api/questions.js",
-        "server/routes/api/follow.js"
+        "server/routes/api/follow/",
+        "server/routes/api/follow-codes.js"
       ],
       "sourceHash": "059ddd90f038f869",
       "lang": "en",
@@ -2176,13 +2189,13 @@
         "shared/theme-normalize.js",
         "shared/theme-fonts.js"
       ],
-      "sourceHash": "fee366ee9e80a14f",
+      "sourceHash": "84274bab15b9c9ad",
       "lang": "en",
-      "capturedAt": "2026-08-01",
+      "capturedAt": "2026-08-28",
       "recipe": {
         "id": "theme-editor-full",
         "module": "../deckyard/capture/recipes/theme-editor-full.js",
-        "hash": "d12c604a8b0ec171"
+        "hash": "f979d13267e80756"
       }
     },
     {
@@ -2312,7 +2325,7 @@
       "recipe": {
         "id": "agent-fills-fields",
         "module": "../deckyard/capture/recipes/agent-fills-fields.js",
-        "hash": "2a0541cd343b30f9"
+        "hash": "ba10588b3934e38b"
       }
     },
     {
