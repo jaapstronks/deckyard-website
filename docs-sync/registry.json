@@ -1260,7 +1260,7 @@
         "client/views/editor/modals/translate-slide-modal.js",
         "shared/llm-vendors.js"
       ],
-      "sourceHash": "cace49ca1ca0c542",
+      "sourceHash": "b526fea10780b9c8",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
@@ -1282,7 +1282,7 @@
         "client/views/editor/modals/translate-slide-modal.js",
         "shared/llm-vendors.js"
       ],
-      "sourceHash": "cace49ca1ca0c542",
+      "sourceHash": "b526fea10780b9c8",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
@@ -2025,7 +2025,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "37a45db3ed4b4621",
+      "sourceHash": "6590cab96d66b4e8",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
