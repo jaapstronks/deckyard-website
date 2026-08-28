@@ -392,4 +392,10 @@ if (MODE_JSON) {
 }
 
 // Exit non-zero when anything gated needs attention (useful in CI / pre-commit).
-process.exit(gatedCount > 0 && !MODE_UPDATE ? 1 : 0);
+//
+// `process.exitCode`, not `process.exit()`. Writing to a pipe is asynchronous
+// once it passes the 64 KiB pipe buffer, and `process.exit()` discards whatever
+// has not been flushed — so `--json | parser` silently lost everything past
+// byte 65536 and handed the reader a report that ends mid-string. Setting the
+// code lets Node exit on its own, after the write drains.
+process.exitCode = gatedCount > 0 && !MODE_UPDATE ? 1 : 0;
