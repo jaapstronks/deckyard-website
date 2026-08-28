@@ -192,3 +192,26 @@ row collapses and `stale` is red everywhere. That is one condition to remove in
    (`node capture/run.js <id>` in core), **review** the hand-made ones — the
    ranked backlog lives in `STALENESS.md`.
 3. `--update --only <the ids you just fixed>` to re-baseline, commit.
+
+Step 2 is automated for the regenerable half. A **`deckyard-capture` timer on
+dev-server-1** runs `npm run refresh` in the private `deckyard-video` repo
+weekly, ahead of this repo's Monday 06:00 UTC sweep: it installs core, brings
+the app up, re-captures every recipe, re-renders every clip, re-baselines the
+entries it actually regenerated, and opens a PR here with the diff and this
+checker's report as the description. So by the time the gate would go red on
+recipe-driven drift, the fix is usually already sitting in a pull request.
+
+Three things it leaves alone, all for the same reason — a baseline is a claim
+that someone looked, and this run did not:
+
+- **Hand-made entries.** No recipe, so nothing was regenerated. Their drift
+  stays report-only and lands in the PR description as a reminder.
+- **Recipes that failed to capture.** Their old baseline stays put and the gate
+  stays red, which is the correct outcome: nobody has a fresh artifact.
+- **`source-gone` / `source-moved` / `recipe-gone`.** A path in the registry is
+  wrong; that is a registry edit, not a capture run.
+
+It never merges, and running it anywhere but dev-server-1 is a mistake rather
+than a convenience: headless Chrome does not render pixel-identically across
+operating systems, so a second recording host produces drift that is real in
+the bytes and meaningless in substance.
