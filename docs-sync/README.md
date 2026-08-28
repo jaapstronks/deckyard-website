@@ -7,10 +7,13 @@ mechanical** instead of something you notice months later.
 
 ## The idea in one line
 
-Every doc artifact (a page, a screenshot, later a video) declares which core
-**source paths** it depends on. We store a content hash of those paths. When the
-hash changes, the artifact is flagged `stale`. Same registry, three artifact
-types.
+Every doc artifact (a page, a screenshot, a video) declares which core **source
+paths** it depends on. We store a content hash of those paths. When the hash
+changes, the artifact is flagged `stale`. Same registry, three artifact types.
+
+Artifacts the capture factory produces carry a second hash, over the recipe's
+module graph, so a changed recipe flags them too. Two ways to go out of date,
+one status.
 
 ## Files
 
@@ -42,10 +45,14 @@ node docs-sync/check-staleness.mjs --update
 
 Tripwire statuses:
 
-- `stale` — the source hash changed since baseline. The doc/screenshot probably
-  needs a review or a re-capture.
+- `stale` — the source hash changed since baseline, **or** the recipe's module
+  graph did. The report names which: `recipe changed: <id>` means re-record,
+  a bare `STALE` means review the doc around it.
 - `source-gone` — every source path for this artifact has disappeared from core.
   Strong signal the feature was removed or renamed; the doc may need deleting.
+- `recipe-gone` — the recipe module named in `recipe.module` is no longer in
+  core. The artifact can no longer be regenerated; the entry needs repointing
+  or deleting.
 - `new` — artifact has no baseline hash yet. Run `--update` once you trust its
   current state.
 - `ok` — source unchanged since baseline.
@@ -69,6 +76,31 @@ Tripwire statuses:
 }
 ```
 
+A **video** entry is the same shape with `type: "video"` and no `path`: the MP4
+is rendered in the private `deckyard-video` repo and only lands in
+`public/videos/` once the launch video ships, so until then the entry claims no
+file on disk (a `doc` entry omits `path` for the same reason). `lang` is the
+language of the *recorded UI*, not of the overlay text — one take is rendered
+into every language from `copy/<lang>.json`, so it stays one registry entry.
+`capturedAt` is when the take was last recorded.
+
+```jsonc
+{
+  "id": "video-form-drives-slide",   // "video-" + the recipe id
+  "type": "video",
+  "docPages": [],                    // no page surfaces the clips yet
+  "sources": ["client/views/editor/bulk-edit-modal.js", "…"],
+  "sourceHash": "…",
+  "lang": "nl",
+  "capturedAt": "2026-08-28",
+  "recipe": {
+    "id": "form-drives-slide",
+    "module": "../deckyard/capture/recipes/form-drives-slide.js",
+    "hash": "…"                      // hashRecipeGraph(), printed by `node capture/run.js --list`
+  }
+}
+```
+
 `sources` accepts files *or* directories. Directories are hashed recursively
 (skipping `node_modules`, `.git`, `dist`, …). Keep the paths as specific as
 possible — a whole-directory dependency flags stale on every unrelated change
@@ -76,12 +108,18 @@ inside it, a single-file dependency only when that file moves.
 
 ## How this connects to the screenshot / video factory
 
-`recipe` is the seam. Today it's `null` and screenshots/videos are captured by
-hand. The capture factory (built in **deckyard**, output landing here — see the
-`_meta` briefing to deckyard) will fill `recipe` with a state-setup + Playwright
-action so a `stale` artifact can be **regenerated automatically**, not just
-flagged. The registry data model already carries `type`, `sources`, `lang` and
-`recipe` so screenshots and videos share one pipeline.
+`recipe` is the seam, and it is live: an entry that carries one names the core
+recipe that regenerates the artifact, plus a hash of that recipe's whole module
+graph. `node capture/run.js --list` in core prints both the id and the hash, and
+after a capture run it prints the `recipe` block to paste here.
+
+The hash is computed by core's own `hashRecipeGraph()`, imported from the core
+checkout — one definition, in the repo that owns recipes. That is why this check
+needs core's dependencies **installed**, not just checked out; it exits 2 with
+that message rather than skipping the recipe half silently.
+
+Entries still without a `recipe` are captured by hand and only the source axis
+guards them.
 
 ## Suggested cadence
 
