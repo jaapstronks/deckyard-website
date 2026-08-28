@@ -1352,7 +1352,7 @@
         "shared/slide-types/types/funnel-slide.js",
         "client/styles/slides/01-layout-and-title/90-funnel-slide.css"
       ],
-      "sourceHash": "7462fc6f00dddb9b",
+      "sourceHash": "41370fe108122bb6",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
@@ -1374,7 +1374,7 @@
         "shared/slide-types/types/funnel-slide.js",
         "client/styles/slides/01-layout-and-title/90-funnel-slide.css"
       ],
-      "sourceHash": "7462fc6f00dddb9b",
+      "sourceHash": "41370fe108122bb6",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
@@ -2025,7 +2025,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "6590cab96d66b4e8",
+      "sourceHash": "23c8046970516d85",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
@@ -2341,7 +2341,7 @@
         "shared/slide-types/types/funnel-slide.js",
         "shared/slide-types/types/funnel-slide/authoring.js"
       ],
-      "sourceHash": "3fff36c9df978692",
+      "sourceHash": "7306eff945fed818",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
