@@ -817,7 +817,7 @@
         "client/views/editor/editor-controller.js",
         "client/views/editor/slide-list.js"
       ],
-      "sourceHash": "2fbd45e8ffcc4731",
+      "sourceHash": "e97729de2754cf10",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
@@ -1260,13 +1260,13 @@
         "client/views/editor/modals/translate-slide-modal.js",
         "shared/llm-vendors.js"
       ],
-      "sourceHash": "b526fea10780b9c8",
+      "sourceHash": "19ea3e2bccee60b0",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "ai-fills-fields-en",
         "module": "../deckyard/capture/recipes/ai-fills-fields-en.js",
-        "hash": "a248bfc874ffd264"
+        "hash": "f4c8398177a7b01f"
       }
     },
     {
@@ -1282,13 +1282,13 @@
         "client/views/editor/modals/translate-slide-modal.js",
         "shared/llm-vendors.js"
       ],
-      "sourceHash": "b526fea10780b9c8",
+      "sourceHash": "19ea3e2bccee60b0",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "ai-fills-fields-nl",
         "module": "../deckyard/capture/recipes/ai-fills-fields-nl.js",
-        "hash": "28f5cfefaec25436"
+        "hash": "e2147dbe391a7591"
       }
     },
     {
@@ -1312,7 +1312,7 @@
       "recipe": {
         "id": "comments-en",
         "module": "../deckyard/capture/recipes/comments-en.js",
-        "hash": "664b09b3dd90323a"
+        "hash": "cb14358e3833a78b"
       }
     },
     {
@@ -1336,7 +1336,7 @@
       "recipe": {
         "id": "comments-nl",
         "module": "../deckyard/capture/recipes/comments-nl.js",
-        "hash": "f4f47fb508d57b8b"
+        "hash": "e33f9a5c61dc4907"
       }
     },
     {
@@ -1352,13 +1352,13 @@
         "shared/slide-types/types/funnel-slide.js",
         "client/styles/slides/01-layout-and-title/90-funnel-slide.css"
       ],
-      "sourceHash": "41370fe108122bb6",
+      "sourceHash": "89eae21bd42272f4",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "editor-form-en",
         "module": "../deckyard/capture/recipes/editor-form-en.js",
-        "hash": "ce64b8ea454b4fe9"
+        "hash": "b1b992c0d29f3d2c"
       }
     },
     {
@@ -1374,13 +1374,13 @@
         "shared/slide-types/types/funnel-slide.js",
         "client/styles/slides/01-layout-and-title/90-funnel-slide.css"
       ],
-      "sourceHash": "41370fe108122bb6",
+      "sourceHash": "89eae21bd42272f4",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "editor-form-nl",
         "module": "../deckyard/capture/recipes/editor-form-nl.js",
-        "hash": "c67ab7d47f653b19"
+        "hash": "3a3b4634cea9aaf5"
       }
     },
     {
@@ -1397,13 +1397,13 @@
         "server/routes/api/live-sessions.js",
         "server/routes/api/live-session-audience.js"
       ],
-      "sourceHash": "4ef792cf2aef5252",
+      "sourceHash": "59a478b703683825",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "join-screen-en",
         "module": "../deckyard/capture/recipes/join-screen-en.js",
-        "hash": "fc30733d7fed9fe8"
+        "hash": "263ce2449319c627"
       }
     },
     {
@@ -1420,13 +1420,13 @@
         "server/routes/api/live-sessions.js",
         "server/routes/api/live-session-audience.js"
       ],
-      "sourceHash": "4ef792cf2aef5252",
+      "sourceHash": "59a478b703683825",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "join-screen-nl",
         "module": "../deckyard/capture/recipes/join-screen-nl.js",
-        "hash": "29a54fe24f51d9b7"
+        "hash": "1b16c391d5e0ccbf"
       }
     },
     {
@@ -1442,13 +1442,13 @@
         "client/styles/slides/03-components/10-poll.css",
         "server/storage/interactions.js"
       ],
-      "sourceHash": "9bb0cb16c6cf9b1f",
+      "sourceHash": "71eff3aea37e2652",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "poll-live-en",
         "module": "../deckyard/capture/recipes/poll-live-en.js",
-        "hash": "0bef3e38f7147ced"
+        "hash": "c5e002e36e2741d5"
       }
     },
     {
@@ -1464,13 +1464,13 @@
         "client/styles/slides/03-components/10-poll.css",
         "server/storage/interactions.js"
       ],
-      "sourceHash": "9bb0cb16c6cf9b1f",
+      "sourceHash": "71eff3aea37e2652",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "poll-live-nl",
         "module": "../deckyard/capture/recipes/poll-live-nl.js",
-        "hash": "1d387700c798d95f"
+        "hash": "3267b91aefdd5248"
       }
     },
     {
@@ -1483,13 +1483,13 @@
         "server/routes/api/live-sessions.js",
         "server/routes/api/live-session-audience.js"
       ],
-      "sourceHash": "82b43fe9a49e8895",
+      "sourceHash": "97e41099fd9f53be",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "presenter-view-en",
         "module": "../deckyard/capture/recipes/presenter-view-en.js",
-        "hash": "a708e3ec1b282138"
+        "hash": "755feae4d4f152ec"
       }
     },
     {
@@ -1502,13 +1502,13 @@
         "server/routes/api/live-sessions.js",
         "server/routes/api/live-session-audience.js"
       ],
-      "sourceHash": "82b43fe9a49e8895",
+      "sourceHash": "97e41099fd9f53be",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "presenter-view-nl",
         "module": "../deckyard/capture/recipes/presenter-view-nl.js",
-        "hash": "7244c5f64b9f9ef7"
+        "hash": "a12304d6524aca6a"
       }
     },
     {
@@ -1522,13 +1522,13 @@
         "client/views/editor/modals/share-modal/",
         "client/views/editor/publish-export/"
       ],
-      "sourceHash": "3c8818c3d88c9c3a",
+      "sourceHash": "ceef759a60fab12c",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "share-link-rules-en",
         "module": "../deckyard/capture/recipes/share-link-rules-en.js",
-        "hash": "83aa7688387695ef"
+        "hash": "e4fae2f6acc54745"
       }
     },
     {
@@ -2025,7 +2025,7 @@
         "client/views/editor/convert-slide-action.js",
         "client/views/editor/slide-type-schematics.js"
       ],
-      "sourceHash": "23c8046970516d85",
+      "sourceHash": "89495192e102f7bd",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
@@ -2319,13 +2319,13 @@
         "client/views/editor/modals/translate-slide-modal.js",
         "server/routes/api/presentations/translate-fields.js"
       ],
-      "sourceHash": "6e6643da8cd3fad9",
+      "sourceHash": "8037041f07ad9383",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "agent-fills-fields",
         "module": "../deckyard/capture/recipes/agent-fills-fields.js",
-        "hash": "ba10588b3934e38b"
+        "hash": "6c508efe215fdf43"
       }
     },
     {
@@ -2341,13 +2341,13 @@
         "shared/slide-types/types/funnel-slide.js",
         "shared/slide-types/types/funnel-slide/authoring.js"
       ],
-      "sourceHash": "7306eff945fed818",
+      "sourceHash": "1c32cee07581d894",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "form-drives-slide",
         "module": "../deckyard/capture/recipes/form-drives-slide.js",
-        "hash": "69c355f383fba4bb"
+        "hash": "05594c6572056b31"
       }
     }
   ]
