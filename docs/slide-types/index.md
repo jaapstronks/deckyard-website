@@ -58,6 +58,7 @@ Structured content in card formats:
 ### Special Purpose
 Specialized slide types:
 - **Quote Slide** - Highlighted quotations with attribution
+- **Callout** - One insight, warning or definition on its own slide
 - **Payoff Slide** - Tagline or slogan slides
 - **Comparison** - Side-by-side comparisons
 - **Process** - Step-by-step process flows

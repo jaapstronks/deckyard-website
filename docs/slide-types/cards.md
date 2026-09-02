@@ -163,6 +163,37 @@ Highlight a quotation with attribution.
 
 ---
 
+## Callout Slide
+
+One insight, warning or definition on a slide of its own. The `variant` picks the accent and icon, and tells the audience how to read the slide.
+
+### Fields
+
+| Field | Required | Description |
+|-------|----------|-------------|
+| `variant` | Yes | `insight`, `warning`, `definition`, `note` or `tip` |
+| `label` | No | Eyebrow text. For `definition`, the term being defined. Leave it empty for the other variants and the slide shows the matching label ("Warning", "Tip") in the deck's language |
+| `body` | Yes | One or two sentences, markdown. For `definition`, the meaning of the term |
+| `source` | No | Where the insight or definition comes from |
+| `background` | No | Background color |
+
+### Design
+
+- One idea, large, alone on the slide
+- Accent color and icon follow the variant
+- Short by design: the slide's force comes from having nothing else on it
+
+### Use Cases
+
+- The takeaway the deck is building toward
+- A gotcha the audience must not miss
+- Pinning down a term before you use it
+- A short aside or tip that would clutter a content slide
+
+Use it sparingly; a callout every third slide stops being a contrast. For a pull quote with a named speaker, use the Quote slide. For two options weighed against each other, use the Comparison slide.
+
+---
+
 ## Payoff Slide
 
 Display a tagline or slogan prominently.
