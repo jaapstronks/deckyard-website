@@ -102,8 +102,8 @@ from the same `fields[]` registry that drives validation and the editor — one
 source, no hand-synced copy. The schemas are served live and are versioned by
 `$id`:
 
-- Per-type: <!--gen:schema-url-type-->`https://deckyard.eu/schema/v4/slide-types/<type>.schema.json`<!--/gen:schema-url-type-->
-- Whole deck (discriminated by `type`): <!--gen:schema-url-deck-->`https://deckyard.eu/schema/v4/deck.schema.json`<!--/gen:schema-url-deck-->
+- Per-type: <!--gen:schema-url-type-->`https://deckyard.eu/schema/v11/slide-types/<type>.schema.json`<!--/gen:schema-url-type-->
+- Whole deck (discriminated by `type`): <!--gen:schema-url-deck-->`https://deckyard.eu/schema/v11/deck.schema.json`<!--/gen:schema-url-deck-->
 - Reflected at runtime alongside `GET /api/v1/slide-types`.
 
 Schemas are **lenient contracts, not gates**: `additionalProperties` is allowed
@@ -170,7 +170,7 @@ all three places.
 - `version` is the **envelope** version, bumped only for a breaking change to the
   envelope shape itself. It is <!--gen:envelope-version-->1<!--/gen:envelope-version--> today.
 - Slide **content** shape is versioned independently by the schema `$id`
-  (`/v<N>/…`), currently version <!--gen:schema-version-->4<!--/gen:schema-version-->,
+  (`/v<N>/…`), currently version <!--gen:schema-version-->11<!--/gen:schema-version-->,
   tied to the storage `schemaVersion` and its migration runner. A reader validates
   content against the schema version it understands; the lenient contract lets it
   tolerate newer keys.

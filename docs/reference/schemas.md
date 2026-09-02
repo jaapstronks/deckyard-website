@@ -39,7 +39,7 @@ actually talking to rather than from a copy.
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://deckyard.eu/schema/v4/slide-types/quote-slide.schema.json",
+  "$id": "https://deckyard.eu/schema/v11/slide-types/quote-slide.schema.json",
   "title": "quote-slide slide content",
   "type": "object",
   "properties": {
@@ -58,12 +58,12 @@ actually talking to rather than from a copy.
 Schemas are versioned by their `$id`, which carries the major version in its
 path:
 
-- Per type: <!--gen:schema-url-type-->`https://deckyard.eu/schema/v4/slide-types/<type>.schema.json`<!--/gen:schema-url-type-->
-- Whole deck: <!--gen:schema-url-deck-->`https://deckyard.eu/schema/v4/deck.schema.json`<!--/gen:schema-url-deck-->
+- Per type: <!--gen:schema-url-type-->`https://deckyard.eu/schema/v11/slide-types/<type>.schema.json`<!--/gen:schema-url-type-->
+- Whole deck: <!--gen:schema-url-deck-->`https://deckyard.eu/schema/v11/deck.schema.json`<!--/gen:schema-url-deck-->
 
 **Two version numbers, do not conflate them.** The version in the `$id` is the
 **content-shape** version, currently
-<!--gen:schema-version-->4<!--/gen:schema-version-->. The `version` field in a
+<!--gen:schema-version-->11<!--/gen:schema-version-->. The `version` field in a
 deck envelope is the **envelope** version, currently
 <!--gen:envelope-version-->1<!--/gen:envelope-version-->. They move on separate
 axes, which is exactly why they have drifted apart. See

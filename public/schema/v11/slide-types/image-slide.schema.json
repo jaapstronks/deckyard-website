@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://deckyard.eu/schema/v11/slide-types/image-slide.schema.json",
+  "title": "image-slide slide content",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "maxLength": 80,
+      "title": "Title"
+    },
+    "subheading": {
+      "type": "string",
+      "maxLength": 140,
+      "title": "Subheading"
+    },
+    "bottomSubheading": {
+      "type": "string",
+      "maxLength": 200,
+      "title": "Bottom subheading"
+    },
+    "image": {
+      "type": "string",
+      "title": "Image"
+    },
+    "imageRole": {
+      "type": "string",
+      "enum": [
+        "content",
+        "decorative",
+        ""
+      ],
+      "title": "Image role"
+    },
+    "alt": {
+      "type": "string",
+      "maxLength": 180,
+      "title": "Alt text"
+    },
+    "caption": {
+      "type": "string",
+      "maxLength": 160,
+      "title": "Caption"
+    },
+    "fit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Image fit"
+    },
+    "bleed": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Edge-to-edge"
+    },
+    "background": {
+      "type": "string",
+      "title": "Background"
+    },
+    "zoomSteps": {
+      "type": "string",
+      "enum": [
+        "",
+        "corners",
+        "horizontal",
+        "vertical",
+        "quadrants",
+        "custom"
+      ],
+      "title": "Zoom steps",
+      "description": "Enable step-through zoom regions during presentation."
+    },
+    "zoomLevel": {
+      "anyOf": [
+        {
+          "type": "number",
+          "minimum": 1.2,
+          "maximum": 5
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Zoom level",
+      "description": "Zoom magnification (default: 2x). Higher = more zoom."
+    },
+    "zoomPositions": {
+      "type": "string",
+      "maxLength": 500,
+      "title": "Custom zoom positions",
+      "description": "Custom positions as JSON array. X/Y are percentages (0-100)."
+    },
+    "a11yTitle": {
+      "type": "string",
+      "maxLength": 140,
+      "title": "Accessibility title",
+      "description": "Optional. Screen readers announce this when the slide becomes active. Prefer a short, descriptive phrase."
+    },
+    "a11ySummary": {
+      "type": "string",
+      "maxLength": 280,
+      "title": "Accessibility summary",
+      "description": "Optional extra context for screen readers (announced after the title). Keep it brief."
+    },
+    "slideBgImage": {
+      "type": "string",
+      "title": "Background image",
+      "description": "Optional. Fills the whole slide behind the content. Large images are resized automatically; use the focus control to pick which part stays visible when cropped."
+    },
+    "slideBgFit": {
+      "type": "string",
+      "enum": [
+        "cover",
+        "contain",
+        ""
+      ],
+      "title": "Background fit"
+    },
+    "slideBgFocusX": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Background focus X"
+    },
+    "slideBgFocusY": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "const": ""
+        }
+      ],
+      "title": "Background focus Y"
+    },
+    "slideBgOverlay": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "none",
+        "light",
+        "dark",
+        "gradient-top",
+        "gradient-bottom",
+        ""
+      ],
+      "title": "Background overlay",
+      "description": "Auto adds a subtle scrim only when the image is too busy for readable text. Gradient options darken one edge behind the text."
+    },
+    "slideBgText": {
+      "type": "string",
+      "enum": [
+        "auto",
+        "light",
+        "dark",
+        ""
+      ],
+      "title": "Text colour",
+      "description": "Auto picks the theme text colour with the best contrast for the background image. Light/dark force it. (Legacy \"default\" is treated as the theme default.)"
+    },
+    "slideLogo": {
+      "type": "string",
+      "enum": [
+        "none",
+        "top-right",
+        ""
+      ],
+      "title": "Theme logo",
+      "description": "Show the active theme logo in a corner of this slide."
+    }
+  },
+  "additionalProperties": true
+}
