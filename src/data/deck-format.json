@@ -5,5 +5,5 @@
   "mime": "application/vnd.deckyard.deck",
   "bundleVersion": 1,
   "schemaBaseUri": "https://deckyard.eu/schema",
-  "schemaVersion": 4
+  "schemaVersion": 11
 }
