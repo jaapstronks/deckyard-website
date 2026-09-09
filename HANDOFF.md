@@ -1,28 +1,27 @@
-# Review-en-mergesessie: PR #79, de schema's op v13
+# Review-en-mergesessie: PR #73, de screenshot-refresh van docs-sync
 
 **Model: Fable.** Review en merge-oordeel, in elke repo Fable.
 
 ## Stand bij vertrek
 
-2026-09-09 @mbp (Opus). PR #79 open: <https://github.com/jaapstronks/deckyard-website/pull/79>, branch `sync-schema-v13`, één commit `b1682cc` bovenop `bd283c2`. `npm run verify` groen. Dit bestand zit in een aparte commit op `main` bovenop de PR-basis.
+2026-09-09 @mbp (Fable). PR #79 is gereviewd, gesquasht en gedeployed: `b4e75ea` op `main`, de schema's staan live op `https://deckyard.eu/schema/v13/` en `/schema/v3/deck.schema.json` (de IANA-belofte) geeft nog 200. Branch `sync-schema-v13` is opgeruimd. De werkboom heeft nog steeds dat ene ongerelateerde, ongetrackte concept (`src/content/blog/nl/betere-presentatie-tools.md`). Laten liggen.
 
-De werkboom heeft nog steeds dat ene ongerelateerde, ongetrackte concept (`src/content/blog/nl/betere-presentatie-tools.md`). Laten liggen.
+`npm run check-slide-types` is hierna rood tegen een core-checkout die voor zijn tag uitloopt (core `HEAD` en werkboom staan op 15, de release `v1.32.0` op 13). Dat is beleid: de site publiceert alleen wat op een release-tag staat. Niet "oplossen" door 14 of 15 te publiceren; zodra core een release met een hogere schemaversie knipt volgt een syncsessie van dezelfde vorm als #79 (Opus).
 
-**De vorige opdracht ging uit van schemaversie 14 en dat klopte niet.** Gemeten: core's werkboom staat op 15, `HEAD` op 14, en de laatste release `v1.32.0` (4 sep) op **13**. De site publiceerde 11. De handoff zei "is de release lager dan 14: stop", maar die regel bestond om ongepubliceerde versies van de site te houden, en 13 is wél uitgebracht - decks die de huidige release schrijft dragen een `$id` onder `/schema/v13/` die deckyard.eu niet serveerde. Daarom is er gesynct naar 13 in plaats van gestopt. Dat oordeel is het eerste wat je in de review toetst; verwerp het gerust, de PR is niet gemerged.
+**`docs-sync` staat op `main` al minstens vijf pushes rood** (gated stale screenshots). PR #73 is de refresh die dat moet verhelpen en wacht sinds 6 september op review: <https://github.com/jaapstronks/deckyard-website/pull/73>, branch `docs-sync/refresh-2026-09-06-2011`, 2 bestanden, 16+/16-, `verify` groen, `docs-sync` op de PR zelf ook rood.
 
 ## De opdracht
 
-1. **Toets de afwijking hierboven.** Eens: door met de review. Oneens: sluit de PR met een regel waarom, zet de reden in dit bestand en laat de drift staan. Er is niets tussenin - half publiceren kan niet, een `$id`-pad is er of is er niet.
-2. **Review de PR.** Vier dingen die de moeite waard zijn: (a) `public/schema/v3`, `v4` en `v11` staan er nog, want onder een gepubliceerd versiepad wordt nooit iets verwijderd en `v3` staat in de IANA-registratie; (b) de markerspans in `docs/reference/deck-format.md`, `schemas.md` en `slide-types.md` staan alle drie op 13 en de envelope-versie staat nog op 1 (twee versienummers, niet verwarren); (c) de PR beweert dat de v13-schema's byte-identiek zijn aan v11 op de `$id` na - narekenen kost één `diff` met `sed 's#/v11/#/vN/#g'`; (d) 34 types, dezelfde namen als in v11, dus geen nieuwe type zonder pagina in `docs/slide-types/`.
-3. **Merge** (squash) als het klopt, en deploy. Meet daarna live na dat `https://deckyard.eu/schema/v13/deck.schema.json` en één per-type schema 200 geven, en dat `/schema/v3/deck.schema.json` nog steeds 200 geeft (de IANA-belofte).
-4. **`npm run check-slide-types` blijft hierna rood** tegen een core-checkout die voor zijn tag uitloopt. Dat is beleid, geen storing: de check leest core's bestanden, niet zijn git HEAD, en de site publiceert alleen wat op een release-tag staat. Groen is hij tegen `v1.32.0`. Niet "oplossen" door 14 of 15 te publiceren. Zodra core een release met 14/15 knipt is er weer een syncsessie; dat is dan een Opus-opdracht van dezelfde vorm.
-5. Merge-housekeeping: branch `sync-schema-v13` opruimen. Deze repo heeft geen `docs/plans/` of `TODO.md`, dus er is verder niets af te vinken.
-6. Journal-entry in `JAAP-KB/journal/2026-MM-DD.md` (auto-write).
-7. **Overschrijf dit bestand** met de volgende opdracht, en sluit je antwoord af met de sluitregel (`/handoff` + sessiesoort + model van de nieuwe handoff).
+1. **Review PR #73.** Het is een automatische refresh vanaf `dev-server-1`: negen artefacten opnieuw gebaselined, drie captures mislukt (`poll-live-en`, `presenter-view-nl`, `presenter-view-en`, alle drie een 20s-timeout) en twee nog steeds stale (`shot-marketing-presenter-view-en`/`-nl`). Toets drie dingen: (a) de negen nieuwe beelden tonen wat de pagina belooft (open ze, vergelijk met de kopij eromheen; een screenshot van een lege editor of een half geladen paneel is geen refresh); (b) de PR-branch ligt drie dagen achter op `main`, rebase of merge-conflicten met #78/#79 zijn onwaarschijnlijk (andere bestanden) maar controleer het; (c) waarom `docs-sync` op de PR zelf nog rood is: alleen de twee presenter-view-artefacten, of meer.
+2. **Merge** (squash) als de negen kloppen. Een deelrefresh is beter dan vijf dagen rood; de twee presenter-views mogen stale blijven zolang dat de enige reden is.
+3. **De presenter-view-captures zijn een core-kwestie**, niet van deze repo: het recept in `deckyard/capture/` loopt tegen een timeout. Spoke naar hub gaat altijd via een briefing: `../_meta/scripts/briefings.sh new --from deckyard-website --to deckyard --topic capture-presenter-view-timeout --needs agent --size S`. Zet erin wat de drie captures deden en welke run het was (PR-body van #73 heeft de details).
+4. **Merge-housekeeping**: branch opruimen. Deze repo heeft geen `docs/plans/` of `TODO.md`, dus er is verder niets af te vinken.
+5. Journal-entry in `JAAP-KB/journal/2026-MM-DD.md` (auto-write).
+6. **Overschrijf dit bestand** met de volgende opdracht, en sluit je antwoord af met de sluitregel (`/handoff` + sessiesoort + model van de nieuwe handoff).
 
-## Ter context, twee signalen die niet in deze opdracht zitten
+## Ter context, signalen die niet in deze opdracht zitten
 
-- `docs-sync` staat op `main` al minstens vier pushes rood (14 gated stale screenshots). PR #73 is de refresh en wacht op review.
+- Drie stokoude PR's staan nog open: #34 (eerste blogpost met figuren), #12 (structured-slides explainer) en #1 (repositionering). De explainer en de repositionering staan allang op de site via andere routes; dit zijn hoogstwaarschijnlijk dode branches. Sluiten met een regel is een Jaap-beslissing, geen agent-beslissing; noem het één keer.
 - Deze repo staat nog niet op de werkwijze: geen `docs/plans/`, geen `TODO.md`. Een `/workflow-init` hier moet weten dat `docs/` de bron is van de gebruikersdocumentatie die naar Starlight gesynct wordt, en dus niet de planningsmap kan zijn.
 
 ## Extra van Jaap
