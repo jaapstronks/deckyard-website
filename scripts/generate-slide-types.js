@@ -394,6 +394,10 @@ export function markerTokens(data, format) {
     'slide-type-active-count': String(data.activeCount),
     magic: code(format.magic),
     mime: code(format.mime),
+    // The registry lays an assignment out under the media type's own name, so
+    // the URL is derived here for the same reason lib/spec.ts derives it: the
+    // docs should not be the place that keeps a link to a renamed type alive.
+    iana: `<https://www.iana.org/assignments/media-types/${format.mime}>`,
     'envelope-version': String(format.envelopeVersion),
     'bundle-version': String(format.bundleVersion),
     'schema-version': String(format.schemaVersion),
