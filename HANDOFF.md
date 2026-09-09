@@ -8,7 +8,7 @@
 
 De werkboom heeft nog steeds dat ene ongerelateerde, ongetrackte concept (`src/content/blog/nl/betere-presentatie-tools.md`). Laten liggen; het hoort niet bij deze PR.
 
-De briefing `2026-09-09--from-deckyard--to-deckyard-website--iana-media-type-registered.md` staat **nog open**, met opzet. De "Done when" zegt dat de registratie *op de site staat*, en dat is pas waar na merge en deploy. Sluiten is stap 4 hieronder.
+De briefing `2026-09-09--from-deckyard--to-deckyard-website--iana-media-type-registered.md` staat **nog open**, met opzet. De "Done when" zegt dat de registratie _op de site staat_, en dat is pas waar na merge en deploy. Sluiten is stap 4 hieronder.
 
 ## De opdracht
 

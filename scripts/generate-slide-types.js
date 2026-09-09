@@ -701,7 +701,10 @@ export function buildSlideTypeDoc(data, format) {
  * - Nothing is ever deleted here. The directory is versioned (v3), and a
  *   published schema URL is a promise: a type that is retired keeps the schema
  *   it was published with, because somebody's deck out there still names it.
- *   Only a schema-version bump opens a new directory.
+ *   Only a schema-version bump opens a new directory. And v3 in particular is
+ *   named by the IANA registration of the media type (2026-08-14) as where the
+ *   schema lives: /schema/v3/deck.schema.json may redirect, never vanish, or
+ *   the registration is wrong and correcting it means another Expert Review.
  */
 async function buildSchemaFiles(format) {
   const { registry, jsonSchema } = await loadCore();
