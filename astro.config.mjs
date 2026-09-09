@@ -14,6 +14,20 @@ export default defineConfig({
   // One entry per locale, listed rather than derived, because a redirect is a
   // promise about a URL that once existed and not a route that should quietly
   // appear for every language added later.
+  //
+  // THREE URLS ARE PERMANENT. The IANA registration of
+  // application/vnd.deckyard.deck (vendor tree, assigned 2026-08-14) names them
+  // as where the specification and the schema live:
+  //
+  //   /spec/deck-bundle/            (already a redirect, the entry below)
+  //   /spec/deck-format/
+  //   /schema/v3/deck.schema.json
+  //
+  // They may be redirected, never removed. A restructuring that drops one
+  // breaks a published registration, and correcting a registration means
+  // another Expert Review at IANA, not an edit here. public/schema/ has moved
+  // on to later versions; v3 stays regardless, which is the never-delete rule
+  // CLAUDE.md already states for published schema paths.
   redirects: {
     '/spec/deck-bundle': '/spec/deck-format/',
     '/spec/schemas': '/spec/deck-format/',

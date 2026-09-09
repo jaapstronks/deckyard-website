@@ -35,10 +35,14 @@ assets/<sha256>.<ext>  The asset bytes, content-addressed by SHA-256 of the
 <!--/gen:example-bundle-layout-->
 
 The media type is <!--gen:mime-->`application/vnd.deckyard.deck`<!--/gen:mime-->.
-It sits in the vendor tree and is not IANA-registered. Packages written before
-1.7.0 carry `application/vnd.slidecreator.deck`, which a reader keeps accepting
-for good; see [Legacy sentinel](/docs/reference/deck-format/#legacy-sentinel).
-The file extension is unaffected either way.
+It is registered with IANA, in the vendor tree, assigned 2026-08-14 after Expert
+Review: <!--gen:iana--><https://www.iana.org/assignments/media-types/application/vnd.deckyard.deck><!--/gen:iana-->.
+That records the name and points at the specification; it is not standards-track,
+and changing the registration goes through the same review. Packages written
+before 1.7.0 carry `application/vnd.slidecreator.deck`, which a reader keeps
+accepting for good; see
+[Legacy sentinel](/docs/reference/deck-format/#legacy-sentinel). The file
+extension is unaffected either way.
 
 ## `manifest.json`
 

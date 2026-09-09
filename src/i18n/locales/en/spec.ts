@@ -91,6 +91,10 @@ export const spec: SpecContent = {
         def: 'Versioned separately, under its own schema version ({schemaVersion} today), with a migration runner and a lenient read contract. New keys are additive; old decks keep opening.',
       },
       {
+        term: 'Media type',
+        def: "`{mime}`, registered in IANA's vendor tree on 14 August 2026. Expert Review, not standards-track: it records the name and points here. Changing the registration goes through the same review the first request did.",
+      },
+      {
         term: 'Implementation',
         def: 'The reference implementation is Deckyard itself, MIT-licensed. The specification text carries its own licence, CC0-1.0, so a second implementation can lift the wording into its own document without asking. Nothing about reading or writing this format requires permission, a key, or a fee.',
       },
@@ -154,6 +158,10 @@ export const spec: SpecContent = {
       assets:
         'The asset bytes, addressed by the SHA-256 of their own content. Identical bytes are stored once.',
     },
+    mediaTypeNote:
+      "That media type is registered. `{mime}` was assigned in IANA's vendor tree on 14 August 2026, by Expert Review. A vendor-tree registration is not standardisation: it records the name, establishes that it is nobody else's, and points at this specification.",
+    mediaTypeLinkLabel: 'The registration template',
+
     guarantees: [
       {
         title: 'Self-contained',
