@@ -1,17 +1,23 @@
 ---
 // Email capture via self-hosted Listmonk (same instance as Dreamkit).
 // List: "Deckyard launch updates" (id 13, double opt-in) on listmonk.dreamkit.eu.
+// With `pilot`, a checkbox adds a second `l` field for "Deckyard pilot" (id 15,
+// also double opt-in); Listmonk's form endpoint takes any number of `l` values,
+// and one confirmation click covers both lists.
 import { ui, defaultLang, type Lang } from '@/i18n';
 
 const LISTMONK_URL = 'https://listmonk.dreamkit.eu/subscription/form';
 const LIST_UUID = '7c6489d5-d6a8-40c0-be60-bd0918cbdc06';
+const PILOT_LIST_UUID = '520e6163-18c8-4ca7-a67e-4a396c1ccab8';
 
 interface Props {
   id: string;
   lang?: Lang;
   buttonLabel?: string;
+  /** Show the "I want to join the pilot" checkbox. */
+  pilot?: boolean;
 }
-const { id, lang = defaultLang, buttonLabel } = Astro.props;
+const { id, lang = defaultLang, buttonLabel, pilot = false } = Astro.props;
 const t = ui[lang].waitlist;
 const label = buttonLabel ?? t.button;
 ---
@@ -41,6 +47,14 @@ const label = buttonLabel ?? t.button;
       aria-describedby={`${id}-note`}
     />
     <button class="btn btn-primary" type="submit">{label}</button>
+    {
+      pilot && (
+        <label class="waitlist-pilot">
+          <input type="checkbox" name="l" value={PILOT_LIST_UUID} />
+          <span>{t.pilotLabel}</span>
+        </label>
+      )
+    }
   </form>
   <!-- role="status" as well as aria-live: the two are equivalent on paper, but
        a region that carries the role is announced far more reliably by older
@@ -125,6 +139,25 @@ const label = buttonLabel ?? t.button;
   }
   .waitlist-form input[type='email']::placeholder {
     color: var(--field-placeholder);
+  }
+
+  /* Full-width row under the email + button pair. accent-color follows the
+     field tokens so the tick reads on a dark section too. */
+  .waitlist-pilot {
+    flex-basis: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.92rem;
+    color: var(--field-fg);
+    cursor: pointer;
+  }
+  .waitlist-pilot input {
+    flex: none;
+    width: 1.1em;
+    height: 1.1em;
+    margin: 0.2em 0 0;
+    accent-color: var(--field-focus-border);
   }
 
   .waitlist-note {
