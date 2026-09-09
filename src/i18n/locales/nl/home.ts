@@ -11,7 +11,7 @@ export const home: HomeContent = {
     'Deckyard is een open source presentatieplatform dat je zelf host, in plaats van PowerPoint, Canva of Gamma.',
   heroLead:
     'Maken, presenteren, publiceren en samenwerken in één tool: je eigen huisstijl, je eigen data, en AI die slides vult in plaats van ze te ontwerpen.',
-  heroDeckTitle: 'Hoi, dit is Deckyard - een presentatie, geëmbed op deze pagina',
+  heroDeckTitle: 'Limonadekraam Zonnehoek - een presentatie, geëmbed op deze pagina',
   heroDeckPlay: 'Start de presentatie',
   heroDeckNote:
     'Geen screenshot: een echt deck, geëxporteerd uit Deckyard en met één tag in deze pagina gezet.',
