@@ -1,34 +1,25 @@
-# Review-en-mergesessie: PR #78, de IANA-registratie op de site
+# Uitvoersessie: schema-drift tussen core en de site opheffen
 
-**Model: Fable.** Review-en-merge draait in elke repo op Fable (`werkwijze` § Modelkeuze per sessie, sinds 2 sep 2026).
+**Model: Opus.** Gebriefd bouwwerk met een checklist dat een PR oplevert; er valt niets te beslissen.
 
 ## Stand bij vertrek
 
-2026-09-09 @mbp (Opus). `main` op `154ea55`. Open PR: <https://github.com/jaapstronks/deckyard-website/pull/78> op branch `iana-media-type`, één commit (`8125e52`), tien bestanden. `npm run verify` was groen bij vertrek.
+2026-09-09 @mbp (Fable). PR #78 (IANA-registratie) gereviewd, gesquasht naar `main` als `bd283c2`, gedeployd en live nagemeten: `/spec/deck-bundle/`, `/spec/deck-format/` en `/schema/v3/deck.schema.json` geven 200, de registratielink staat op `/spec/deck-format/` en de Mediatype-rij op `/spec/`. De briefing van core is gesloten. Dit bestand zit in een aparte commit bovenop `bd283c2`.
 
-De werkboom heeft nog steeds dat ene ongerelateerde, ongetrackte concept (`src/content/blog/nl/betere-presentatie-tools.md`). Laten liggen; het hoort niet bij deze PR.
+De werkboom heeft nog steeds dat ene ongerelateerde, ongetrackte concept (`src/content/blog/nl/betere-presentatie-tools.md`). Laten liggen.
 
-De briefing `2026-09-09--from-deckyard--to-deckyard-website--iana-media-type-registered.md` staat **nog open**, met opzet. De "Done when" zegt dat de registratie _op de site staat_, en dat is pas waar na merge en deploy. Sluiten is stap 4 hieronder.
+Ter context, twee signalen die niet in deze opdracht zitten: de check `docs-sync` staat op `main` al minstens drie pushes rood (14 gated stale screenshots; PR #73 is de refresh en wacht op review), en deze repo heeft geen `docs/plans/` of `TODO.md`, dus de merge-housekeeping had geen planning-docs om bij te werken. `docs/` is hier de bron van de gebruikersdocumentatie die naar Starlight gesynct wordt; een `/workflow-init` moet daar rekening mee houden.
 
 ## De opdracht
 
-Review PR #78 en merge hem als hij klopt. Wat de PR doet, en waar de review naar moet kijken:
+`npm run check-slide-types` faalt op drie bestanden: `public/schema/v14/index.json`, `docs/reference/deck-format.md` en `docs/reference/schemas.md`. Core zit op schemaversie 14, de gecommitte `src/data/deck-format.json` op 11. Dat betekent ook dat de `$id` van een deck dat core vandaag schrijft niet resolvet op deckyard.eu. Hef die drift op, maar publiceer alleen wat core heeft uitgebracht.
 
-1. **De copy.** `/spec/deck-format/` krijgt een `.spec-note` onder de archieflijst met de registratie plus een link naar het IANA-template; `/spec/` krijgt een `Media type`-rij in de statuslijst; `docs/reference/deck-bundle.md` ontkent de registratie niet meer. Toets op toon: vendor tree, Expert Review, geen standards-track, geen trots. En op de NL-kopij: geen em dashes, en leest ze als Nederlands of als vertaald Engels?
-2. **De URL is afgeleid, nergens getypt.** `IANA_REGISTRATION_URL` in `src/lib/spec.ts` bouwt uit `FORMAT_MIME`; een nieuw `gen:iana`-markertoken doet hetzelfde voor de docs. Controleer dat de handgeschreven marker in `deck-bundle.md` klopt met wat de generator maakt - de vorige sessie deed dat met een node-aanroep op `markerTokens()`, herhaalbaar.
-3. **De afwijking van de briefing.** Er is bewust géén `{iana}`-placeholder aan `withSpec()` toegevoegd, terwijl de vorige handoff daarom vroeg. Redenering staat in de PR-beschrijving: geen enkele copystring drukt de URL als tekst af, dus het token zou dood zijn, en de anchor krijgt de URL als prop (de regel die `SpecReference` zelf stelt). Beoordeel dat oordeel; het is de enige plek waar de uitvoersessie van de opdracht afweek.
-4. **De permanente-URL-belofte** staat op twee plekken: een blok boven `redirects` in `astro.config.mjs` en een bullet in `CLAUDE.md` § The `/spec/` section. Vraag bij de review: komt een sessie die de routing gaat herstructureren daar écht langs, of hoort de regel nog ergens anders bij.
-
-`npm run check-slide-types` faalt op drie bestanden (`public/schema/v14/index.json`, `docs/reference/deck-format.md`, `docs/reference/schemas.md`). Dat is **bestaande drift** van vóór deze branch: core staat verder dan de gecommitte data. Niet in deze PR oplossen; wel een kandidaat voor `queue.md` als je 'm daar wilt hebben.
-
-## Werkwijze
-
-1. `git pull`, dan `../_meta/scripts/briefings.sh open deckyard-website` om te zien of er intussen iets bij is gekomen.
-2. Review PR #78. Merge hem als hij klopt, of laat je bevindingen achter en zeg in één regel wat er nog moet.
-3. Na de merge: branch `iana-media-type` opruimen, en de skill `merge-housekeeping` draaien.
-4. **Sluit de briefing** zodra de merge erdoor is: `../_meta/scripts/briefings.sh close 2026-09-09--from-deckyard--to-deckyard-website--iana-media-type-registered.md`, dan `_meta` committen en pushen.
+1. Stel vast welke schemaversie core op zijn laatste release-tag heeft: `git -C ../deckyard describe --tags` (bij vertrek `v1.32.0`, 20 commits erachter) en de bron van `schemaVersion` in core (`grep -rn schemaVersion ../deckyard/shared`), gelezen op de tag met `git show <tag>:<pad>`. Is dat 14: door naar stap 2. Is het lager: dan zit versie 14 nog niet in een release en hoort hij niet op de site; stop, schrijf dat in dit bestand en laat de check rood.
+2. Core's werkboom is vies (i18n-bestanden) en de generator leest bestanden, niet git HEAD. Draai `npm run sync-slide-types` daarom tegen een schone checkout van de tag: `git -C ../deckyard worktree add /tmp/deckyard-<tag> <tag>` en de generator tijdelijk daarop wijzen (kijk in `scripts/generate-slide-types.js` hoe het pad naar core bepaald wordt), of de i18n-wijzigingen in core stashen en na afloop terugzetten. Ruim de worktree na afloop op.
+3. Lees de diff die de sync oplevert voordat je hem commit: `src/data/*.json`, `public/schema/v14/`, de markerspans in `docs/reference/`, en het type-aantal in `README.md` en `docs/slide-types/index.md`. Nieuwe slide types zonder pagina in `docs/slide-types/` noem je in de PR-beschrijving; die pagina's schrijf je niet zelf. Onder `public/schema/` wordt niets verwijderd, ook `v4` en `v11` niet.
+4. `npm run check-slide-types` en `npm run verify` allebei groen. Branch `sync-schema-v14`, één commit, PR met in de body wat er veranderde en welke versies nu gepubliceerd staan. Niet zelf mergen; `claude-notify-pr` als allerlaatste actie.
 5. Journal-entry in `JAAP-KB/journal/2026-MM-DD.md` (auto-write).
-6. **Overschrijf dit bestand** (`HANDOFF.md` in de root) met de volgende opdracht, en sluit je antwoord af met de sluitregel (`/handoff` + sessiesoort + model van de nieuwe handoff).
+6. **Overschrijf dit bestand** met de review-en-mergesessie voor die PR (Fable), en sluit je antwoord af met de sluitregel (`/handoff` + sessiesoort + model van de nieuwe handoff).
 
 ## Extra van Jaap
 
