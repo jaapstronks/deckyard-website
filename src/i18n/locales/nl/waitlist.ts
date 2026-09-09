@@ -7,5 +7,7 @@ export const waitlist: WaitlistContent = {
   honeypot: 'Laat dit veld leeg',
   statusOk: 'Bijna klaar: check je inbox om je adres te bevestigen.',
   statusError: 'Dat lukte niet. Probeer het zo nog een keer.',
+  pilotLabel:
+    'Ik wil meedoen aan de pilot: drie maanden een eigen instance, in ruil voor je feedback.',
   note: 'Alleen updates rond de lancering, een paar keer per jaar. Double opt-in, geen tracking pixels, opgeslagen op onze eigen Europese server. Uitschrijven met één klik.',
 };

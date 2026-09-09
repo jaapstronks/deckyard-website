@@ -115,6 +115,8 @@ export interface WaitlistContent {
   statusOk: string;
   statusError: string;
   note: string;
+  /** Checkbox label shown when the form is rendered with `pilot`; ticking it also subscribes to the pilot list. */
+  pilotLabel: string;
 }
 
 /**
