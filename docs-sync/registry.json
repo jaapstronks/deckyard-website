@@ -817,7 +817,7 @@
         "client/views/editor/editor-controller.js",
         "client/views/editor/slide-list.js"
       ],
-      "sourceHash": "e97729de2754cf10",
+      "sourceHash": "df3b4a0dad759fb4",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
@@ -1306,13 +1306,13 @@
         "client/lib/comments/",
         "server/routes/api/collaborators.js"
       ],
-      "sourceHash": "7090d655e237891b",
+      "sourceHash": "73089915b741a3d2",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "comments-en",
         "module": "../deckyard/capture/recipes/comments-en.js",
-        "hash": "cb14358e3833a78b"
+        "hash": "067b9a8f2a275410"
       }
     },
     {
@@ -1330,13 +1330,13 @@
         "client/lib/comments/",
         "server/routes/api/collaborators.js"
       ],
-      "sourceHash": "7090d655e237891b",
+      "sourceHash": "73089915b741a3d2",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "comments-nl",
         "module": "../deckyard/capture/recipes/comments-nl.js",
-        "hash": "e33f9a5c61dc4907"
+        "hash": "18806fa7b1360398"
       }
     },
     {
@@ -1522,13 +1522,13 @@
         "client/views/editor/modals/share-modal/",
         "client/views/editor/publish-export/"
       ],
-      "sourceHash": "ceef759a60fab12c",
+      "sourceHash": "55d12fd94739a9ac",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "share-link-rules-en",
         "module": "../deckyard/capture/recipes/share-link-rules-en.js",
-        "hash": "e4fae2f6acc54745"
+        "hash": "a1a6af394bb5190b"
       }
     },
     {
@@ -1542,13 +1542,13 @@
         "client/views/editor/modals/share-modal/",
         "client/views/editor/publish-export/"
       ],
-      "sourceHash": "3c8818c3d88c9c3a",
+      "sourceHash": "55d12fd94739a9ac",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "share-link-rules-nl",
         "module": "../deckyard/capture/recipes/share-link-rules-nl.js",
-        "hash": "d464a41175fd763f"
+        "hash": "e5037e2bd4aa43dd"
       }
     },
     {
@@ -2189,7 +2189,7 @@
         "shared/theme-normalize.js",
         "shared/theme-fonts.js"
       ],
-      "sourceHash": "84274bab15b9c9ad",
+      "sourceHash": "9cf92ce00f327d8f",
       "lang": "en",
       "capturedAt": "2026-08-28",
       "recipe": {
@@ -2319,13 +2319,13 @@
         "client/views/editor/modals/translate-slide-modal.js",
         "server/routes/api/presentations/translate-fields.js"
       ],
-      "sourceHash": "8037041f07ad9383",
+      "sourceHash": "28fefb3d5ecdd110",
       "lang": "nl",
       "capturedAt": "2026-08-28",
       "recipe": {
         "id": "agent-fills-fields",
         "module": "../deckyard/capture/recipes/agent-fills-fields.js",
-        "hash": "6c508efe215fdf43"
+        "hash": "0a1fa60f99976827"
       }
     },
     {
