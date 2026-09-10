@@ -1,5 +1,9 @@
 ## Deckyard Documentation
 
+Dit is de bron van de **gebruikersdocumentatie**: `scripts/sync-docs.js` kopieert deze map bij elke build naar `src/content/docs/docs/`, waar Starlight haar op deckyard.eu publiceert. Alles wat hier staat is dus publiek. Werkdocumenten, todo's en briefs horen daarom niet hier maar in `planning/` (lokaal, gitignored; zie `planning/README.md`), en de interne strategie- en deploynotities staan in `internal/`.
+
+Deze README wordt zelf niet meegekopieerd - `sync-docs.js` slaat elke `README.md` over.
+
 ### For Users
 
 - **[Creating Presentations](/docs/creating/)** - Different ways to create presentations

@@ -21,6 +21,35 @@ Marketing website and user documentation for Deckyard.
 | **deckyard-cloud** | `../deckyard-cloud` | Paid hosted version                     |
 | **ciiic-slides**   | `../ciiic-slides`   | Production fork for CIIIC client        |
 
+## Werkwijze
+
+Deze repo volgt de universele werkwijze (skill `werkwijze` in `~/.claude`):
+
+- **Nu**: `planning/TODO.md` - claimbord + open werk, budget < 1.200 regels.
+- **Briefs**: `planning/briefs/<slug>.md`; uitgevoerd -> `planning/done/`.
+- **Handoff**: `/handoff` leest `HANDOFF.md` in de repo-root; elke
+  werk-afrondende sessie overschrijft 'm en sluit af met de sluitregel.
+- **Rollen**: Fable brieft en beslist; Opus voert één brief per sessie uit
+  en merget nooit de eigen PR. Welk model een review-en-merge-sessie krijgt
+  volgt uit `werkwijze` § Modelkeuze per sessie - niet hier vastleggen.
+- **Ritmes**: `merge-housekeeping` per gedelegeerde merge; `reorg-audit` bij
+  de drift-drempel (`planning/_reconcile/drift-log.md`); `tighten-scan` op
+  aanvraag.
+
+Afwijkingen van de universele werkwijze, beide met dezelfde reden:
+
+1. **De plans-map heet `planning/`, niet `docs/plans/`.** `docs/` is hier de
+   bron van de gebruikersdocumentatie, die `scripts/sync-docs.js` bij elke
+   build integraal naar `src/content/docs/docs/` kopieert en Starlight op
+   deckyard.eu publiceert. Een `docs/plans/` zou als documentatiepagina's op de
+   site belanden.
+2. **`HANDOFF.md` staat in de repo-root en wordt wél getrackt**, terwijl
+   `planning/` gitignored is (zie `.gitignore`). De root is een vaste
+   terugvaloptie van `/handoff`, en de opeenvolgende opdrachten worden daar al
+   maanden gecommit. De rest van `planning/` is lokaal: dit is een publieke
+   repo en de historische briefs in `planning/done/archive/` bevatten
+   onder meer openhartige beoordelingen van met naam genoemde derden.
+
 ## Key Directories
 
 - `src/pages/[...locale]/` - **One route file per page, all languages.** The rest

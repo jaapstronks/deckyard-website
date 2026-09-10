@@ -6,6 +6,8 @@
 
 2026-09-10 @mbp (Opus, afwijking van de Fable-regel omdat de Fable-credits op waren; Jaap gaf daar expliciet toestemming voor). PR #73 is gereviewd, aangevuld, gesquasht en gedeployed: `7b6c2e3` op `main`, en de nieuwe Nederlandse share-links-afbeelding staat geverifieerd live. Er zijn geen open briefings voor deze repo. De werkboom heeft nog steeds dat ene ongerelateerde, ongetrackte concept (`src/content/blog/nl/betere-presentatie-tools.md`). Laten liggen.
 
+Sinds die stand is `/workflow-init` gedraaid: `planning/` is heringericht (TODO, briefs, done, _reconcile) en het werkwijze-blok staat in `CLAUDE.md`. Aan de site is niets veranderd.
+
 Wat de review opleverde en wat je moet weten voordat je aan de opdracht begint:
 
 - Twee `ai-fills-fields`-baselines zijn bewust **niet** meegegaan in de merge. De bron-PNG erachter is een afgekapte capture; die twee horen rood te blijven tot core het recept repareert. Baseline ze niet "even mee".
@@ -28,7 +30,7 @@ Dezelfde spanning is in deze repo al een keer beslecht, en dat is het voorbeeld 
 
 - De sweep-inbox stond vanochtend open en is overgeslagen, omdat een review-en-mergesessie voorgaat. Hij komt bij de volgende `/handoff` vanzelf weer boven.
 - Drie stokoude PR's staan nog open: #34 (eerste blogpost met figuren), #12 (structured-slides explainer) en #1 (repositionering). De explainer en de repositionering staan allang op de site via andere routes; dit zijn hoogstwaarschijnlijk dode branches. Sluiten met een regel is een Jaap-beslissing, geen agent-beslissing.
-- Deze repo staat nog niet op de werkwijze: geen `docs/plans/`, geen `TODO.md`. Een `/workflow-init` hier moet weten dat `docs/` de bron is van de gebruikersdocumentatie die naar Starlight gesynct wordt, en dus niet de planningsmap kan zijn.
+- Deze repo staat sinds 2026-09-10 op de werkwijze. De plans-map heet hier `planning/` in plaats van `docs/plans/`, precies om de reden die hierboven stond: `docs/` is de bron van de gebruikersdocumentatie die naar Starlight gesynct wordt. `planning/TODO.md` is het nu-document, dit bestand blijft de handoff (root is een vaste terugvaloptie van `/handoff`). De opdracht hieronder staat daar als item 1. Beide afwijkingen staan benoemd in `CLAUDE.md` § Werkwijze.
 - `npm run check-slide-types` is rood tegen een core-checkout die voor zijn tag uitloopt (core staat op 15, de release `v1.32.0` op 13). Dat is beleid, geen defect. Zelfde principe als de opdracht hierboven.
 
 ## Extra van Jaap
