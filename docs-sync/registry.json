@@ -1260,13 +1260,13 @@
         "client/views/editor/modals/translate-slide-modal.js",
         "shared/llm-vendors.js"
       ],
-      "sourceHash": "19ea3e2bccee60b0",
+      "sourceHash": "9acd788be12b1353",
       "lang": "en",
-      "capturedAt": "2026-08-28",
+      "capturedAt": "2026-09-10",
       "recipe": {
         "id": "ai-fills-fields-en",
         "module": "../deckyard/capture/recipes/ai-fills-fields-en.js",
-        "hash": "f4c8398177a7b01f"
+        "hash": "5edca1a262d214b4"
       }
     },
     {
@@ -1282,13 +1282,13 @@
         "client/views/editor/modals/translate-slide-modal.js",
         "shared/llm-vendors.js"
       ],
-      "sourceHash": "19ea3e2bccee60b0",
+      "sourceHash": "9acd788be12b1353",
       "lang": "nl",
-      "capturedAt": "2026-08-28",
+      "capturedAt": "2026-09-10",
       "recipe": {
         "id": "ai-fills-fields-nl",
         "module": "../deckyard/capture/recipes/ai-fills-fields-nl.js",
-        "hash": "e2147dbe391a7591"
+        "hash": "79712ad8fe4d0691"
       }
     },
     {
