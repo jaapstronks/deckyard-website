@@ -34,8 +34,22 @@ const format = deckFormat as {
 /** The sentinel in a deck's `format` field, and in the package's mimetype entry. */
 export const FORMAT_MAGIC = format.magic;
 
-/** The media type a package declares. In the vendor tree; not IANA-registered. */
+/**
+ * The media type a package declares. Registered with IANA in the vendor tree on
+ * 2026-08-14, by Expert Review; a recorded name, not a standards-track type.
+ */
 export const FORMAT_MIME = format.mime;
+
+/**
+ * The registration template IANA publishes for that media type.
+ *
+ * Derived rather than typed, for the same reason as everything else in this
+ * file: the registry lays its assignments out under the media type's own name,
+ * so a rename of FORMAT_MIME moves this URL with it instead of leaving a link
+ * that quietly 404s. (Renaming a registered type means a new Expert Review, so
+ * this should not happen - but the site should not be the thing that forgets.)
+ */
+export const IANA_REGISTRATION_URL = `https://www.iana.org/assignments/media-types/${FORMAT_MIME}`;
 
 /** Envelope version. Bumped only for a breaking change to the envelope shape. */
 export const ENVELOPE_VERSION = format.envelopeVersion;

@@ -45,7 +45,7 @@ All four are readable from `GET /api/slide-types` on any instance, and the
 argument behind them is on [the conformance page](/spec/conformance/).
 
 Each type's JSON Schema is served at
-`https://deckyard.eu/schema/v11/slide-types/<type>.schema.json` — see
+`https://deckyard.eu/schema/v13/slide-types/<type>.schema.json` — see
 [JSON Schemas](/docs/reference/schemas/) for how to fetch it.
 
 ## Fields every type carries

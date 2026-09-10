@@ -305,6 +305,16 @@ Two things are load-bearing:
   on deckyard.eu), and **nothing under a published version path is ever deleted**,
   including the schema of a retired type. Only a schema-version bump opens a new
   directory.
+- **Three URLs are permanent, and one of them is a schema path.** The media type
+  `application/vnd.deckyard.deck` was registered with IANA in the vendor tree on
+  2026-08-14, and the registration names `deckyard.eu/spec/deck-bundle/`,
+  `deckyard.eu/spec/deck-format/` and `deckyard.eu/schema/v3/deck.schema.json` as
+  where the format is specified. Those three may be **redirected, never removed** -
+  including `/schema/v3/`, now that `public/schema/` also carries later versions.
+  This binds harder than the site copy does: a page can be rewritten this
+  afternoon, but correcting a published registration means another Expert Review
+  at IANA. The same note sits above `redirects` in `astro.config.mjs`, which is
+  where a restructuring actually passes.
 - **The whole slide-type registry is generated.** `npm run sync-slide-types`
   imports `../deckyard`'s registry, schematic map, picker data and AI catalogue
   and writes `src/data/slide-types.json` + `src/data/deck-format.json`, and fills

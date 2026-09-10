@@ -219,3 +219,11 @@
   line-height: 1.65;
   color: var(--ink-soft);
 }
+
+/* A note may end in a door, the way .spec-ref does: the media-type note hands
+   the reader the IANA template. Same treatment, so the two read as one kind of
+   thing, and unbroken so an arrow never lands alone on the next line. */
+.spec-note a {
+  font-variation-settings: 'wght' 600;
+  white-space: nowrap;
+}

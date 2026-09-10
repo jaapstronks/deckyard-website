@@ -92,6 +92,10 @@ export const spec: SpecContent = {
         def: 'Apart geversioneerd, onder een eigen schemaversie ({schemaVersion} op dit moment), met een migratieloop en een inschikkelijk leescontract. Nieuwe sleutels komen erbij; oude decks blijven opengaan.',
       },
       {
+        term: 'Mediatype',
+        def: '`{mime}`, op 14 augustus 2026 geregistreerd in de vendor tree van IANA. Expert Review, geen standards-track: de naam ligt vast en wijst hierheen. De registratie wijzigen gaat langs dezelfde review als de eerste aanvraag.',
+      },
+      {
         term: 'Implementatie',
         def: 'De referentie-implementatie is Deckyard zelf, onder MIT. De spectekst heeft een eigen licentie, CC0-1.0, zodat een tweede implementatie de formuleringen zonder te vragen in een eigen document kan overnemen. Voor het lezen of schrijven van dit formaat heb je geen toestemming, sleutel of vergoeding nodig.',
       },
@@ -155,6 +159,10 @@ export const spec: SpecContent = {
       assets:
         'De bytes van de beelden, geadresseerd op de SHA-256 van hun eigen inhoud. Identieke bytes worden één keer opgeslagen.',
     },
+    mediaTypeNote:
+      'Dat mediatype is geregistreerd. `{mime}` is op 14 augustus 2026 toegekend in de vendor tree van IANA, na Expert Review. Een registratie in de vendor tree is geen standaardisatie: ze legt de naam vast, stelt vast dat hij van niemand anders is, en wijst naar deze specificatie.',
+    mediaTypeLinkLabel: 'Het registratieformulier',
+
     guarantees: [
       {
         title: 'Zelfdragend',

@@ -115,6 +115,8 @@ export interface WaitlistContent {
   statusOk: string;
   statusError: string;
   note: string;
+  /** Checkbox label shown when the form is rendered with `pilot`; ticking it also subscribes to the pilot list. */
+  pilotLabel: string;
 }
 
 /**
@@ -875,6 +877,14 @@ export interface SpecContent {
     packageBody: string[];
     /** One note per archive entry, keyed by BUNDLE_ENTRIES[].key. */
     layoutNotes: Record<string, string>;
+    /**
+     * The media-type registration, said once, where the archive's first entry
+     * has just introduced the type. The URL is not here: it is derived from the
+     * media type in lib/spec.ts and passed to the anchor as a prop, so a
+     * translator can restate the fact but cannot move the link.
+     */
+    mediaTypeNote: string;
+    mediaTypeLinkLabel: string;
     guarantees: { title: string; body: string }[];
     /** Stands in for the manifest field table, which lives in the docs. */
     packageRefNote: string;
