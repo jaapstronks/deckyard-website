@@ -1,25 +1,26 @@
 # Deckyard Website
 
-Marketing website and user documentation for Deckyard.
+Marketing site and user documentation for Deckyard (deckyard.eu). Astro 5 +
+Starlight. Marketing pages are bilingual (EN at the root, NL under `/nl/`);
+docs are English-only. Static HTML is rsynced to a Hetzner box (Bolster) that
+serves it via Caddy, no CDN (`.github/workflows/deploy.yml`).
 
-## This Repository
+Core (`../deckyard`) is the source of truth for features; `../deckyard-cloud`
+is the hosted version, `../ciiic-slides` a client fork.
 
-**Purpose:** Static marketing site + comprehensive docs (100+ pages)
+## Commands
 
-**Stack:** Astro 5, Starlight (docs theme)
+```bash
+npm install
+npm run dev                # syncs docs + starts dev server
+npm run build              # production build to ./dist/
+npm run verify             # format:check + astro check + build - run before every PR
+npm run format             # fix formatting
+npm run sync-slide-types   # regenerate format data from ../deckyard (see src/data/CLAUDE.md)
+```
 
-**i18n:** Marketing pages are bilingual (EN default at root, NL under `/nl/`). Docs are English-only.
-
-**Output:** Static HTML rsynced to a Hetzner box (Bolster) that serves
-`deckyard.eu` via Caddy. No CDN in front of it. See `.github/workflows/deploy.yml`.
-
-## Related Repositories
-
-| Repo               | Path                | Purpose                                 |
-| ------------------ | ------------------- | --------------------------------------- |
-| **deckyard**       | `../deckyard`       | Core OSS - source of truth for features |
-| **deckyard-cloud** | `../deckyard-cloud` | Paid hosted version                     |
-| **ciiic-slides**   | `../ciiic-slides`   | Production fork for CIIIC client        |
+CI runs `verify` in `.github/workflows/verify.yml`. `astro check` is not
+decoration: it catches copy keys missing from their interface.
 
 ## Werkwijze
 
@@ -29,12 +30,8 @@ Deze repo volgt de universele werkwijze (skill `werkwijze` in `~/.claude`):
 - **Briefs**: `planning/briefs/<slug>.md`; uitgevoerd -> `planning/done/`.
 - **Handoff**: `/handoff` leest `HANDOFF.md` in de repo-root; elke
   werk-afrondende sessie overschrijft 'm en sluit af met de sluitregel.
-- **Rollen**: Fable brieft en beslist; Opus voert één brief per sessie uit
-  en merget nooit de eigen PR. Welk model een review-en-merge-sessie krijgt
-  volgt uit `werkwijze` § Modelkeuze per sessie - niet hier vastleggen.
-- **Ritmes**: `merge-housekeeping` per gedelegeerde merge; `reorg-audit` bij
-  de drift-drempel (`planning/_reconcile/drift-log.md`); `tighten-scan` op
-  aanvraag.
+- **Rollen en ritmes**: zoals in `werkwijze` (uitvoer merget nooit de eigen
+  PR); modelkeuze niet hier vastleggen.
 
 Afwijkingen van de universele werkwijze, beide met dezelfde reden:
 
@@ -42,403 +39,104 @@ Afwijkingen van de universele werkwijze, beide met dezelfde reden:
    bron van de gebruikersdocumentatie, die `scripts/sync-docs.js` bij elke
    build integraal naar `src/content/docs/docs/` kopieert en Starlight op
    deckyard.eu publiceert. Een `docs/plans/` zou als documentatiepagina's op de
-   site belanden.
+   site belanden. Om dezelfde reden staat contributor-naslag nooit in `docs/`
+   maar in geneste `CLAUDE.md`'s (zie § Naslag).
 2. **`HANDOFF.md` staat in de repo-root en wordt wél getrackt**, terwijl
-   `planning/` gitignored is (zie `.gitignore`). De root is een vaste
-   terugvaloptie van `/handoff`, en de opeenvolgende opdrachten worden daar al
-   maanden gecommit. De rest van `planning/` is lokaal: dit is een publieke
-   repo en de historische briefs in `planning/done/archive/` bevatten
+   `planning/` gitignored is. De rest van `planning/` is lokaal: dit is een
+   publieke repo en de historische briefs in `planning/done/archive/` bevatten
    onder meer openhartige beoordelingen van met naam genoemde derden.
 
-## Key Directories
+## Key directories
 
 - `src/pages/[...locale]/` - **One route file per page, all languages.** The rest
-  parameter is `undefined` for EN (so it builds at the root) and the code for
-  every other locale. Never add a `src/pages/nl/` copy of a page.
-- `src/components/`
-  - `layout/` - site frame + page structure: `SiteHeader`, `SiteFooter`,
-    `LanguageSwitcher`, `Section`, `SectionHead`, `PageHero`
-  - `ui/` - small reusable elements: `Button`, `DeckyardMark`, `DeckEmbed`,
-    and `Slide` (the one 16:9 slide renderer - the explainer's big slide, the
-    outcome under each route and the homepage figure are all this component,
-    told apart only by a `variant`)
-  - `marketing/` - page sections that sell, incl. `anatomy/` (the explainer)
-  - `blog/` - `BlogCard`
-  - `pages/` - the page bodies (`HomePage`, `StructuredPage`, ...), each driven
-    by a `lang` prop so markup lives once
-- `src/i18n/` - see the i18n section below
-- `src/styles/` - see the CSS section below
-- `docs/` - Source documentation (markdown)
-- `src/content/docs/` - Docs copied here by sync script
-- `scripts/sync-docs.js` - Copies docs from `./docs/` to Starlight content
+  parameter is `undefined` for EN and the code for every other locale. Never add
+  a `src/pages/nl/` copy of a page. Never put a `.md` file under `src/pages/`: it
+  becomes a route.
+- `src/components/`: `layout/` (site frame, `Section`, `PageHero`), `ui/`
+  (`Button`, `DeckEmbed`, and `Slide`, the one 16:9 renderer told apart only by
+  `variant`), `marketing/` (selling sections, incl. `anatomy/`), `blog/`,
+  `pages/` (page bodies driven by a `lang` prop, so markup lives once).
+- `src/i18n/` - locale registry and copy; `src/styles/` - layered global CSS.
+- `docs/` - source documentation (markdown). Edit here, **never** in
+  `src/content/docs/` (generated by `scripts/sync-docs.js`).
+- `astro.config.mjs` - Starlight config, sidebar, `redirects`.
 
 Imports use the `@/*` alias (`@/components/ui/Button.astro`, `@/i18n`), never
-deep relative paths, so moving a file does not break its importers.
-
-## Before opening a PR
-
-```bash
-npm run verify     # format:check + astro check + build
-npm run format     # fix formatting
-```
-
-CI runs the same three in `.github/workflows/verify.yml`. `astro check` is not
-decoration: it caught two keys that existed in the copy but not in its
-interface, which had gone unnoticed for as long as there was no type check.
-
-## CSS architecture
-
-Global CSS is layered; the order in `src/styles/global.css` **is** the cascade
-contract, so overriding an earlier layer never needs a specificity hack:
-
-| Layer        | File             | Holds                                                                                 |
-| ------------ | ---------------- | ------------------------------------------------------------------------------------- |
-| `tokens`     | `tokens.css`     | `:root` custom properties. No selectors.                                              |
-| `base`       | `base.css`       | Bare element defaults. No classes.                                                    |
-| `primitives` | `primitives.css` | Design-system classes reused across pages (`.section`, `.btn`, `.lead`, `.page-hero`) |
-| `chrome`     | `chrome.css`     | The site frame: header, nav, language switcher, footer                                |
-
-Component `<style>` blocks are deliberately **not** in a layer. Unlayered styles
-outrank every layer, so a component always wins over the global system without
-fighting specificity. The rule:
-
-- **reused across pages** -> a layer in `src/styles/`
-- **owned by one component** -> that component's `<style>` block
-- **shared by sibling components** -> a co-located plain `.css` file next to
-  them (Astro can only scope a style to its own template, so shared chrome
-  cannot be scoped; see `components/marketing/anatomy/anatomy.css`)
-
-Two hard conventions:
-
-1. **Never write a bare `clamp()` for a size.** Use a `--space-*` / `--step-*`
-   token, or add a step to the scale in `tokens.css`. The scales exist because
-   there were 33 unique clamp values, 31 of them used exactly once.
-2. **A dark section is a token flip, not a pile of overrides.** `.section-dark`
-   re-points the semantic tokens (`--btn-primary-bg`, `--field-bg`, `--lead-fg`,
-   ...). A new component that reads those tokens works on dark for free, and no
-   rule in `primitives.css` has to know the component exists.
-
-Component motion owns its own `prefers-reduced-motion` opt-out; don't collect
-them in a global block. The same split applies to `forced-colors: active`: a
-layer or a component repairs the states **it** paints, because a state told
-apart only by a background colour disappears when the user supplies the palette.
-
-Three accessibility tokens follow the same surface-flip rule as the rest:
-
-- **`--brass-text`** is brass as a colour on a glyph. `--brass` / `--brass-bright`
-  / `--brass-soft` are fills, rules and outlines; as small type on a light
-  surface they reach 2.9:1 and 2.0:1, which is a 1.4.3 failure. Text gets
-  `--brass-text`.
-- **`--focus-ring`** is the `:focus-visible` outline, green on light and
-  `--brass-bright` on dark. Any component that paints its own dark plate inside
-  a light section - the install widget's terminal - re-points it, the same way
-  `.section-dark` does.
-- **`--error-fg`** likewise: the light-surface red is 2.2:1 on the dark section
-  the waitlist usually sits on.
-
-Never write `outline: none` on a `:focus` rule. Component styles are unlayered
-and so outrank the layer the global focus ring lives in, which means one of
-them silently cancels the ring site-wide for that element.
-
-`src/lib/roving.ts` gives a `role="tablist"` / `role="radiogroup"` built out of
-buttons the keyboard behaviour those roles promise (arrows, Home/End, one stop
-in the tab order). Claim either role and you owe the reader those keys; call
-`initRovingIn(root)` after wiring the clicks.
-
-## Documentation Structure
-
-18 categories, 100+ pages:
-
-- User: creating, editing, organizing, slide-types, ai, interactions, presenting, publishing, collaboration, libraries, themes, export
-- Admin: admin, configuration, deployment, integrations, developer
-- Format: reference (see below)
-
-## Common Cross-Repo Tasks
-
-| Task                | What to do                                        |
-| ------------------- | ------------------------------------------------- |
-| New feature in core | Add/update docs in `./docs/` matching the feature |
-| API change in core  | Update `./docs/developer/` and API reference      |
-| New slide type      | Add to `./docs/slide-types/`                      |
-
-There is no pricing page and there will not be one: Deckyard is not a SaaS and
-the site does not sell hosted seats. Managed hosting is offered on `/hosting`,
-which is deliberately **not** a plan-and-price table: it presents self-hosting
-and a managed instance as two doors onto the same software, states that hosting
-revenue funds the development, and ends in an email rather than a checkout. No
-tiers, no seat counts, no prices; the first step is a conversation.
-
-## Social cards (og:image)
-
-Every page carries its own share card, generated at build time. Nothing to
-maintain per page: add a page, get a card.
-
-```
-src/lib/og/
-  card.ts       the template - background, eyebrow, title, intro, logo lockup
-  targets.ts    which pages get a card, and what copy goes on it
-  render.ts     satori (layout -> SVG) + resvg (SVG -> PNG)
-  fonts/        three static TTFs, vendored (satori cannot read woff2)
-src/pages/og/[...path].png.ts   the endpoint: one PNG per target
-```
-
-The card route mirrors the page route, so `/nl/blog/de-code-staat-online` gets
-`/og/nl/blog/de-code-staat-online.png`. `targets.ts` is read by both the
-endpoint (to build the images) and the layouts (to point `og:image` at one), so
-a page can never advertise a card that was not generated; a page missing from
-the list silently falls back to the hand-made homepage card.
-
-- **Marketing pages** are listed in `marketingPages` in `targets.ts`. A new
-  route needs one entry there, taking the page's **hero** copy (the human
-  sentence), not its meta title (which carries the SEO suffix).
-- **Blog posts and docs pages** are picked up from their collections, so they
-  need nothing. Docs get their section as a second eyebrow item
-  (`DOCS · DEPLOYMENT`), derived from the path.
-- **The homepage keeps its hand-made card** in `public/images/og/`: it sells
-  the product rather than naming a page. Any page can do the same by passing
-  `ogImage` to `SiteLayout`.
-- **Docs get theirs through a Starlight component override**
-  (`src/components/starlight/Head.astro`), because Starlight's `head` config
-  only takes one static image for the whole docs section.
-
-Editing `card.ts` restyles all ~105 cards at once. They cost roughly 9s of the
-build; iterate on the design by rebuilding and opening `dist/og/**.png`.
-
-## Keeping Docs in Sync
-
-Docs describe deckyard core features. When core changes:
-
-1. Check if docs need updating
-2. Edit markdown in `./docs/` (not `src/content/docs/`)
-3. `npm run dev` auto-syncs to Starlight
-
-## Running Locally
-
-```bash
-npm install
-npm run dev      # Syncs docs + starts dev server
-npm run build    # Production build to ./dist/
-```
-
-## i18n
-
-Built for **n languages**, not two. EN is the default (served at the root, no
-prefix); every other locale gets a `/<code>/` prefix.
-
-```
-src/i18n/
-  index.ts            registry, Lang, routing helpers, EN fallback merge
-  types.ts            one interface per namespace + Content + DeepPartial
-  locales/en/         home.ts, nav.ts, anatomy.ts, ... one file per namespace
-  locales/nl/         same shape
-```
-
-**Adding a language** (additive, never a refactor):
-
-1. add the code to `languages` in `src/i18n/index.ts`,
-2. create `src/i18n/locales/<code>/` with the namespaces you have translated -
-   start with `meta.ts`, everything else is optional,
-3. register it in `overrides`.
-
-Anything you leave out falls back to EN, so a half-translated language still
-builds and reads. Routes, `hreflang` alternates, the language switcher and the
-per-locale RSS feed all derive from the registry, so no page file is touched.
-
-**Adding a page**: add an interface to `types.ts`, one file per locale under
-`locales/<lang>/`, wire it into each `locales/<lang>/index.ts`, and add a single
-route under `src/pages/[...locale]/`.
-
-Other rules:
-
-- Routing is file-based (NOT Astro's global `i18n` config). Do **not** add an
-  `i18n` block to `astro.config.mjs`: Starlight would inherit the extra locales
-  and generate duplicate English-content `/<lang>/docs` pages.
-- **An editorial entry's language is its folder**, never a frontmatter field:
-  `src/content/blog/en/`, `src/content/blog/nl/`, and the same for
-  `src/content/releases/`. The location and the language then cannot disagree,
-  and the two languages cannot collide in the id (the glob loader keys its
-  store on the id and a duplicate is only a build _warning_ - the loser
-  vanishes from the site silently). `src/lib/content.ts` holds the guard, which
-  fails the build rather than guessing; `src/lib/blog.ts` adds the blog's own
-  derivations: `postLang`, `postSlug`, `postUrl`. Each locale gets its own feed
-  (`/rss.xml`, `/nl/rss.xml`, ...).
-- A post belongs to one language and the filename is the URL, so a Dutch post is
-  a separate file with its own **Dutch** slug, not `<english-slug>.nl.md`. Give
-  the two files the same **`translationKey`** and they become each other's
-  official version: `hreflang` gets a real pair and the language switcher lands
-  on the translation instead of the blog index. Leave it off and the post is
-  untranslated, which is a normal state, not a defect. Start from
-  `src/content/blog/_template.md`; underscore-prefixed files are excluded from
-  the collection glob, so the template never becomes a post. `draft: true` is
-  visible in `npm run dev` and dropped from the production build - and a draft
-  translation is not advertised as a translation.
-- **The URL comes from the file path** - unless a post sets `slug:` in
-  frontmatter, which the glob loader honours first and verbatim, before the
-  schema runs. `content.config.ts` deliberately leaves it undeclared: a post
-  that wants a different URL should get a different filename rather than a
-  second place where the URL is decided.
-- **Which pages exist in which language is a page's own claim.** `SiteLayout`
-  takes `localeUrls` (a locale -> URL map); omit it and every locale gets the
-  same path, which is right for everything under `[...locale]`. Pages that
-  break that assumption - a blog post, the English-only `/embed-demo` - pass
-  the map, and both `hreflang` and the switcher follow it. A page that exists
-  in one language emits no alternates at all rather than a pair that 404s.
-- Docs (Starlight) are English-only, no switcher.
-- Dutch copy is outgoing editorial text: no em dashes (use `-` or `;`).
-- Structural data (slide-type field vocabularies, theme tokens) is **not** copy:
-  it lives beside the component, e.g. `components/marketing/anatomy/data.ts`.
-
-## The `/spec/` section
-
-Four pages under `src/pages/[...locale]/spec/` that put the deck format on the
-site as a **standard**, not as an implementation detail: `/spec/` (the
-argument), `/spec/deck-format/` (the format, both layers and the schemas),
-`/spec/slide-types/` (the catalogue) and `/spec/conformance/` (what a second
-implementation must build). Marketing register, deliberately not Starlight - in
-the docs a spec drowns between "how do I make a poll".
-
-**Four is a ceiling, not a coincidence.** It was six: the archive layer and the
-schemas had routes of their own, and each of the three had to restate the other
-two before it could say anything. `redirects` in `astro.config.mjs` keeps the two
-retired URLs reachable. The same pressure produced the rule below, which is the
-one worth keeping:
-
-> A section is worth a page when it answers a question the other pages do not.
-> A justification for a decision this project made is not that question.
-
-What that ruled out, so it does not come back: why the `runtime` facet was
-measured rather than designed, why a tier beats removing a type, why the
-evolution rule is preferable to migration freedom, that the type count used to
-say 36, 38 and 44 in three places. All of it true, none of it a thing a reader
-deciding whether to build against the format needs. Lookups (the three spellings
-of a type id, the export/import endpoints, every field of the manifest) went the
-other way, into `docs/reference/`, which is the half the site search indexes.
-
-Two things are load-bearing:
-
-- **No fact about the format is typed into copy.** The magic string, the MIME
-  type, the envelope version, the schema base URI and the content schema version
-  live in `src/data/deck-format.json`, generated from core; `src/lib/spec.ts`
-  reads them and exposes `withSpec()`, which substitutes `{magic}`, `{mime}`,
-  `{schemaBase}`, `{version}` and `{schemaVersion}` into copy strings. Two of
-  these have already moved once (the sentinel was `slidecreator.deck`; the `$id`
-  domain was `deckyard.app`), and both arrived as a one-liner instead of a sweep
-  through two languages. Keep it that way.
-  **Beware two version numbers**: the schema `$id` carries the _content_ schema
-  version (3), not the envelope version (1). Do not conflate them.
-- **The schemas are served from this repo**, at the URL their own `$id` claims.
-  `sync-slide-types` writes `public/schema/v<schemaVersion>/` - `deck.schema.json`,
-  one file per core slide type, and an `index.json` directory document - so
-  `https://deckyard.eu/schema/v3/deck.schema.json` resolves. Two rules: **core
-  types only** (a fork checkout's `custom/slide-types/` must never be published
-  on deckyard.eu), and **nothing under a published version path is ever deleted**,
-  including the schema of a retired type. Only a schema-version bump opens a new
-  directory.
-- **Three URLs are permanent, and one of them is a schema path.** The media type
-  `application/vnd.deckyard.deck` was registered with IANA in the vendor tree on
-  2026-08-14, and the registration names `deckyard.eu/spec/deck-bundle/`,
-  `deckyard.eu/spec/deck-format/` and `deckyard.eu/schema/v3/deck.schema.json` as
-  where the format is specified. Those three may be **redirected, never removed** -
-  including `/schema/v3/`, now that `public/schema/` also carries later versions.
-  This binds harder than the site copy does: a page can be rewritten this
-  afternoon, but correcting a published registration means another Expert Review
-  at IANA. The same note sits above `redirects` in `astro.config.mjs`, which is
-  where a restructuring actually passes.
-- **The whole slide-type registry is generated.** `npm run sync-slide-types`
-  imports `../deckyard`'s registry, schematic map, picker data and AI catalogue
-  and writes `src/data/slide-types.json` + `src/data/deck-format.json`, and fills
-  the type count into marker spans (`<!--gen:slide-type-count-->`) in `README.md`
-  and `docs/slide-types/index.md`. `src/lib/slideTypes.ts` is the typed view;
-  `src/lib/facts.ts` reads the count off it. This site used to say 36, 38 and 44
-  in three places.
-
-It is **not** part of `npm run build`: the generated JSON is committed so CI (and
-any checkout without core beside it) builds from the file. `npm run
-check-slide-types` fails if the file is out of date, and four `docs-sync`
-artifacts (`data-slide-type-registry`, `data-deck-format-constants`,
-`spec-deck-format`, `spec-deck-bundle`) watch the same core paths so drift shows
-up as drift.
-
-Layout glyphs are a **port of core's schematic grammar, not of its code**:
-`src/lib/schematic.ts` turns the same JSON-safe `{ kind, cells, align, ... }`
-spec each slide type declares into SVG shapes, so the editor's picker and this
-page draw the same picture from the same data. Shapes name a paint _role_
-(`fill` / `line` / `strong` / `accent` / `sky` / `stroke`), never a colour, so a
-dark surface is a token flip. A kind this file does not know renders the neutral
-text-only glyph, which is also what a deprecated type gets - core withholds a
-glyph from retired types on purpose.
-
-Copy may use backticks for inline code and nothing else: `src/lib/inline.ts`
-escapes the string first and lets exactly that one construct back in.
-
-### `/spec/` and `docs/reference/` are two halves
-
-The same format, two readers, split by **which question is being answered** and
-not by how polished the prose is:
-
-|                   | Question                              | Read                  | Language |
-| ----------------- | ------------------------------------- | --------------------- | -------- |
-| `/spec/`          | "May I build on this? Is it lock-in?" | once, start to end    | EN + NL  |
-| `docs/reference/` | "What does field `X` do?"             | repeatedly, by search | EN only  |
-
-The deciding argument is search: Starlight puts `data-pagefind-body` only on
-`dist/docs`, so **`/spec/` is not indexed at all**. Somebody searching the
-documentation for "deck format" or "slideTypes" has to land in `docs/reference/`.
-
-So the exhaustive tables (envelope fields, manifest fields, endpoints, every
-slide type's fields) live in `docs/reference/`, and each `/spec/` section ends in
-one sentence plus a `SpecReference` link instead. Every **code block** stays on
-`/spec/`: showing the envelope is a stronger claim than describing it, and
-`/spec/slide-types/` keeps its whole card grid, glyphs included - a card with a
-layout diagram is a different artifact from a naslag table.
-
-`docs/reference/slide-types.md` is **generated** by the same
-`npm run sync-slide-types`, and the other four reference pages carry the format
-constants inside marker spans:
-
-```md
-Always <!--gen:magic-->`slidecreator.deck`<!--/gen:magic-->.
-```
-
-The marker is an HTML comment pair, invisible when rendered, and the generator
-owns what is between them (`markerTokens()` in `scripts/generate-slide-types.js`;
-the token value carries its own backticks or whole fenced block, because a marker
-cannot live _inside_ a code span). `npm run check-slide-types` fails when any of
-it drifts. That is why the reference can state both version numbers without
-anybody having to remember that the schema `$id` carries 3 and the envelope
-carries 1.
-
-**A dirty `../deckyard` working tree will regenerate unreleased constants into
-these pages.** The generator reads core's files, not its git HEAD. Check
-`git -C ../deckyard status` before committing what `sync-slide-types` wrote.
-
-## Release notes (`/changelog`)
-
-The public changelog is **hand-written**, not a mirror of `deckyard/CHANGELOG.md`.
-The generated changelog is a commit list; this one is written for someone who
-runs Deckyard and is deciding whether to update. Nothing in the build reads the
-core repo's tags, so a release only reaches the site when someone writes it.
-
-- One file per language per version, named after the version:
-  `src/content/releases/en/1.3.0.md` and `.../nl/1.3.0.md`. Start from
-  `src/content/releases/_template.md` (underscore-prefixed, so the glob skips it).
-- **`latest: true` moves.** Exactly one release carries it per language; take it
-  off the previous version in the same commit.
-- Order is date-first, version as the tiebreaker (`src/lib/releases.ts`), because
-  two versions can share a date and the collection's own order is alphabetical.
-- Source material is the core repo's `CHANGELOG.md` section for the tag plus the
-  GitHub Release. `refactor`/`chore`/`docs`/`test` commits are not release-note
-  material.
-- These are outgoing editorial copy in **both** languages: no em dashes.
-
-**How a release gets here.** `deckyard`'s `merge-housekeeping` skill (section C)
-notices at re-arm that a tag was cut and files a briefing to this repo; a session
-that starts here writes the notes and closes it. So the trigger lives with the
-release, and the copy stays hand-written.
-
-## Key Files
-
-- `astro.config.mjs` - Starlight config, sidebar structure
-- `src/i18n/index.ts` - Locale registry, EN fallback, routing helpers
-- `src/styles/global.css` - The layer order, i.e. the CSS cascade contract
-- `scripts/sync-docs.js` - Doc sync script
+deep relative paths.
+
+## Hard rules
+
+**Product.** There is no pricing page and there will not be one: Deckyard is not
+a SaaS. Managed hosting lives on `/hosting`, deliberately **not** a plan-and-price
+table: self-hosting and a managed instance as two doors onto the same software,
+hosting revenue funds development, ends in an email rather than a checkout. No
+tiers, no seat counts, no prices.
+
+**Copy.** Dutch copy, blog posts and release notes are outgoing editorial text:
+no em dashes (use `-` or `;`). Copy may use backticks for inline code and nothing
+else (`src/lib/inline.ts`). Structural data (slide-type field vocabularies,
+theme tokens) is not copy: it lives beside the component, not in `src/i18n/`.
+
+**i18n.**
+
+- Do **not** add an `i18n` block to `astro.config.mjs` (routing is file-based;
+  Starlight would generate duplicate `/<lang>/docs` pages).
+- An editorial entry's language is its **folder** (`src/content/blog/nl/`),
+  never a frontmatter field; a translation is a separate file with its own slug,
+  linked by `translationKey`.
+- A page that does not exist in every language passes `localeUrls` to
+  `SiteLayout`.
+
+**CSS.**
+
+- Never write a bare `clamp()` for a size; use a `--space-*` / `--step-*` token
+  or add a step in `tokens.css`.
+- A dark section is a token flip (`.section-dark` re-points semantic tokens),
+  not a pile of overrides.
+- Brass as text colour is `--brass-text`, never `--brass*` (contrast failure).
+- Never write `outline: none` on a `:focus` rule; it cancels the global ring.
+- Component motion owns its own `prefers-reduced-motion` opt-out, and every layer
+  or component repairs its own states under `forced-colors: active`.
+- Claim `role="tablist"` / `role="radiogroup"` and you owe the keys: call
+  `initRovingIn(root)` from `src/lib/roving.ts`.
+
+**Spec and format data.**
+
+- No fact about the deck format is typed into copy: use `withSpec()` placeholders
+  from `src/data/deck-format.json`. The schema `$id` carries the content schema
+  version (3), not the envelope version (1).
+- `/spec/` is four pages, a ceiling.
+- `public/schema/`: core slide types only, and **nothing under a published
+  version path is ever deleted**.
+- `deckyard.eu/spec/deck-bundle/`, `/spec/deck-format/` and
+  `/schema/v3/deck.schema.json` are named in the IANA registration: redirect,
+  **never remove**.
+- The slide-type registry, its count and the `<!--gen:...-->` marker spans are
+  generated; never hand-edit them. Check `git -C ../deckyard status` before
+  committing what `sync-slide-types` wrote.
+
+**Share cards.** A new marketing route needs an entry in `marketingPages` in
+`src/lib/og/targets.ts`, with the hero copy, not the meta title.
+
+**Release notes** are hand-written, one file per language per version, and
+`latest: true` moves in the same commit.
+
+## Naslag
+
+Each loads automatically once you work in that folder; read it first when the
+trigger applies.
+
+| File                    | Read when                                                                    |
+| ----------------------- | ---------------------------------------------------------------------------- |
+| `src/data/CLAUDE.md`    | work on `/spec/`, `docs/reference/`, `public/schema/`, `sync-slide-types`    |
+| `src/i18n/CLAUDE.md`    | adding a language or a page, or a page not in every language                 |
+| `src/content/CLAUDE.md` | writing a blog post or release notes (`/changelog`)                          |
+| `src/styles/CLAUDE.md`  | adding or restyling a component, token or global rule                        |
+| `src/lib/og/CLAUDE.md`  | touching share cards (og:image); cross-project conventions: skill `og-image` |
+
+## Docs and cross-repo work
+
+Docs describe core features. When core changes, update `./docs/` to match: a new
+feature in its category, an API change in `docs/developer/` and the API
+reference, a new slide type in `docs/slide-types/`. A release reaches
+`/changelog` via a briefing or the hub recipe (`src/content/CLAUDE.md`).

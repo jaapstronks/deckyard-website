@@ -51,7 +51,7 @@
 
 /* Code blocks used to be styled here, which made CodeBlock.astro render as a
    bare <figure><pre> anywhere this file was not imported - and only SpecShell
-   imports it. They now live in the component, per the rule in CLAUDE.md: styles
+   imports it. They now live in the component, per the rule in src/styles/CLAUDE.md: styles
    owned by one component belong to that component. */
 
 /* ---------- tables ---------- */
